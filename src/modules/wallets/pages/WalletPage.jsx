@@ -1,4 +1,5 @@
 import { SummaryCard } from "../components/SummaryCards"
+import { WalletCard } from "../components/WalletCards"
 
 export const WalletPage = () => {
     return (
@@ -12,7 +13,11 @@ export const WalletPage = () => {
                 <h2 className="text-xl font-semibold text-[var(--text-primary)]">Mis billeteras</h2>
                 <button className="bg-[var(--btn-primary-bg)] font-semibold text-[var(--btn-primary-text)] px-4 py-2 rounded-lg transition-colors cursor-pointer border border-transparent hover:opacity-90">Crear billetera</button>
             </div>
-            <div className="grid flex-1"></div>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] grid-rows-[200px] gap-4 flex-1">
+                <WalletCard wallet={{ name: "Billetera 1", balance: "$5,000.00", currency: "USD" }} />
+                <WalletCard wallet={{ name: "Billetera 2", balance: "$3,000.00", currency: "USD" }} />
+                <WalletCard wallet={{ name: "Billetera 3", balance: "$4,345.67", currency: "USD" }} />
+            </div>
         </>
     )
 }
