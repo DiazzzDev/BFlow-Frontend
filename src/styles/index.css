@@ -1,1 +1,49 @@
 @import "tailwindcss";
+
+:root {
+    /* ── Fondos ── */
+    --bg-main: #0f1217;
+    --bg-sidebar: #161a1f;
+    --bg-card: #1a1f26;
+    --bg-card-hover: #1e2329;
+
+    /* ── Bordes ── */
+    --border-subtle: rgba(255, 255, 255, 0.05);
+
+    /* ── Texto ── */
+    --text-primary: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.35);
+    --text-label: rgba(255, 255, 255, 0.55);
+
+    /* ── Paleta principal (imagen 2) ── */
+    --color-primary: #25343F;
+    --color-secondary: #BFC9D1;
+    --color-tertiary: #FF9B51;
+    --color-neutral: #EAEFEF;
+
+    /* ── Acento ── */
+    --accent-orange: #f97316;
+
+    /* ── Transacciones ── */
+    --color-positive: #22c55e;
+    --color-negative: #ef4444;
+
+    /* ── Progreso ── */
+    --progress-bg: rgba(255, 255, 255, 0.08);
+    --progress-fill: #3b82f6;
+
+    /* ── Botones (imagen 2) ── */
+    --btn-primary-bg: #f38533;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: transparent;
+    --btn-secondary-text: #25343F;
+    --btn-inverted-bg: #1a1f26;
+    --btn-inverted-text: #ffffff;
+    --btn-outlined-border: #25343F;
+    --btn-outlined-text: #25343F;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+}

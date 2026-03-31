@@ -1,0 +1,1 @@
+export const WalletCard = ({ wallet }) => { }
