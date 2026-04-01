@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+
 import { BudgetIcon, ExpenseIcon, IncomeIcon, LayoutGrid, SettingsIcon, TransferIcon, WalletIcon } from "./NavIcons";
 
 
@@ -14,17 +15,13 @@ const navItems = [
 export const Navbar = () => {
     return (
         <aside
-            className="flex flex-col w-44 min-h-screen px-3 py-6 border-r"
-            style={{
-                backgroundColor: "var(--bg-sidebar)",
-                borderColor: "var(--border-subtle)",
-            }}
+            className="flex flex-col w-44 min-h-screen px-3 py-6 border-r bg-[var(--bg-surface)] border-[var(--border)]"
         >
             <div className="px-3 mb-8">
-                <p className="text-sm font-bold leading-none tracking-tight" style={{ color: "var(--text-primary)" }}>
+                <p className="text-sm font-bold leading-none tracking-tight text-[var(--text-primary)]">
                     BFlow
                 </p>
-                <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>
+                <p className="text-xs mt-0.5 text-[var(--text-muted)]">
                     Finance tool
                 </p>
             </div>

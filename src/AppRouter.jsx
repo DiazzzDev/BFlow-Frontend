@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+
 import { MainLayout } from "./layouts/MainLayout.jsx";
 import { DashboardPage } from "./modules/dashboard/pages/DashboardPage.jsx";
 import { WalletPage } from "./modules/wallets/pages/WalletPage.jsx";
