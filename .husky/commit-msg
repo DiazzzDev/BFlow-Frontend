@@ -1,1 +1,14 @@
-npx --no-install commitlint --edit "$1"
+# .husky/commit-msg
+commit_msg=$(cat "$1")
+
+if ! npx --no-install commitlint --edit "$1"; then
+    echo ""
+    echo "  Formato requerido: tipo: descripción"
+    echo "  Ejemplos válidos:"
+    echo "    feat: agregar pantalla de login"
+    echo "    fix: corregir error en hook useWallets"
+    echo "    ui: mejorar empty state de billeteras"
+    echo ""
+    echo "  Tipos permitidos: feat, fix, ui, refactor, chore, docs, test, perf, revert"
+    exit 1
+fi
