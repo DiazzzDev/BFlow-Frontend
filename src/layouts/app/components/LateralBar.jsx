@@ -1,6 +1,6 @@
-import { Button } from "./ui/button.jsx"
-import { Input } from "./ui/input.jsx"
-import { Label } from "./ui/label.jsx"
+import { Button } from "../../../components/ui/button.jsx"
+import { Input } from "../../../components/ui/input.jsx"
+import { Label } from "../../../components/ui/label.jsx"
 import {
     Sheet,
     SheetClose,
@@ -10,7 +10,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "./ui/sheet.jsx"
+} from "../../../components/ui/sheet.jsx"
 
 export const LateralBar = () => {
     return (

@@ -1,4 +1,4 @@
-import { formatCurrency } from "../../../utils/formaters.js";
+import { formatCurrency } from "../../../../utils/formaters.js";
 
 export const WalletProgressBar = ({ spent, budget }) => {
     if (!budget) { return null };

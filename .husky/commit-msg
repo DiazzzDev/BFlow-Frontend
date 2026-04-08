@@ -5,7 +5,7 @@ if ! npx --no-install commitlint --edit "$1"; then
     echo ""
     echo "  Formato requerido: tipo: descripción"
     echo "  Ejemplos válidos:"
-    echo "    feat: agregar pantalla de login"
+    echo "    feature: agregar pantalla de login"
     echo "    fix: corregir error en hook useWallets"
     echo "    ui: mejorar empty state de billeteras"
     echo ""

@@ -1,21 +1,30 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, matchPath } from "react-router-dom"
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../../../components/ui/sheet"
 
-const breadcrumbMap = {
-    "/": ["Dashboard"],
-    "/wallets": ["Billeteras"],
-    "/incomes": ["Ingresos"],
-    "/expenses": ["Gastos"],
-    "/budgets": ["Presupuestos"],
-    "/transfers": ["Transferencias"],
-    "/settings": ["Ajustes"],
-    "/wallets/:id": ["Billetera", "Detalle"],
+const routes = [
+    { path: "/app/dashboard", crumbs: ["Dashboard"] },
+    { path: "/app/wallets", crumbs: ["Billeteras"] },
+    { path: "/app/wallets/:id", crumbs: ["Billetera", "Detalle"] },
+    { path: "/app/incomes", crumbs: ["Ingresos"] },
+    { path: "/app/expenses", crumbs: ["Gastos"] },
+    { path: "/app/budgets", crumbs: ["Presupuestos"] },
+    { path: "/app/transfers", crumbs: ["Transferencias"] },
+    { path: "/app/settings", crumbs: ["Ajustes"] },
+];
+
+const getBreadcrumbs = (pathname) => {
+    for (const route of routes) {
+        if (matchPath(route.path, pathname)) {
+            return route.crumbs;
+        }
+    }
+    return ["..."];
 };
 
 export const Header = () => {
     const { pathname } = useLocation();
-    const crumbs = breadcrumbMap[pathname] || ["..."];
+    const crumbs = getBreadcrumbs(pathname);
 
     return (
         <header className="flex items-center justify-between px-8 py-5 border-b border-[var(--border)] bg-[var(--bg-surface)]">

@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { Users, Wallet } from "lucide-react"
 
-import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs.jsx"
+import { Tabs, TabsList, TabsTrigger } from "../../../../components/ui/tabs.jsx"
 import { SummaryCard } from "../components/SummaryCards.jsx"
 import { WalletCard } from "../components/WalletCards.jsx"
 import { useGetWallets } from "../hooks/useWallets.jsx"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table.jsx"
-import { formatCurrency, formatDate } from "../../../utils/formaters.js"
-import { Badge } from "../../../components/ui/badge.jsx"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../../components/ui/table.jsx"
+import { formatCurrency, formatDate } from "../../../../utils/formaters.js"
+import { Badge } from "../../../../components/ui/badge.jsx"
 import { CreateWalletDialog } from "../components/CreateWalletDialog.jsx"
 import { EmptyState } from "../components/EmptyState.jsx"
 import { ButtonEmpty } from "../components/ButtonEmpty.jsx"
@@ -56,7 +56,7 @@ const dataTable = [
     },
 ];
 
-export const WalletPage = () => {
+export const WalletsPage = () => {
     const { wallets, sharedWallets, isloading } = useGetWallets();
     const [activeTab, setActiveTab] = useState("wallets");
     const [openDialog, setOpenDialog] = useState(false);

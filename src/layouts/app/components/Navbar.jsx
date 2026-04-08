@@ -4,12 +4,12 @@ import { BudgetIcon, ExpenseIcon, IncomeIcon, LayoutGrid, SettingsIcon, Transfer
 
 
 const navItems = [
-    { label: "Dashboard", to: "/", icon: <LayoutGrid /> },
-    { label: "Billeteras", to: "/wallets", icon: <WalletIcon /> },
-    { label: "Ingresos", to: "/incomes", icon: <IncomeIcon /> },
-    { label: "Gastos", to: "/expenses", icon: <ExpenseIcon /> },
-    { label: "Presupuestos", to: "/budgets", icon: <BudgetIcon /> },
-    { label: "Transferencias", to: "/transfers", icon: <TransferIcon /> },
+    { label: "Dashboard", to: "/app/dashboard", icon: <LayoutGrid /> },
+    { label: "Billeteras", to: "/app/wallets", icon: <WalletIcon /> },
+    { label: "Ingresos", to: "/app/incomes", icon: <IncomeIcon /> },
+    { label: "Gastos", to: "/app/expenses", icon: <ExpenseIcon /> },
+    { label: "Presupuestos", to: "/app/budgets", icon: <BudgetIcon /> },
+    { label: "Transferencias", to: "/app/transfers", icon: <TransferIcon /> },
 ];
 
 export const Navbar = () => {

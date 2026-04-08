@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react"
 
-import { Button } from "../../../components/ui/button.jsx"
+import { Button } from "../../../../components/ui/button.jsx"
 
 export const ButtonEmpty = ({onCreateClick}) => {
     return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { API_URL } from "../../../api/config.js";
+import { API_URL } from "../../../../api/config.js";
 
 export const useGetWallets = () => {
     const [wallets, setWallets] = useState([]);
@@ -14,7 +14,7 @@ export const useGetWallets = () => {
             setSharedWallets([]);
             setIsLoading(true);
             try {
-                const response = await fetch(`${API_URL}/wallets`, {
+                const response = await fetch(`${API_URL}`, {
                     credentials: "include",
                 });
                 const data = await response.json();
