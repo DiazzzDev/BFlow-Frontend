@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 
-import { formatCurrency } from "../../../../utils/formaters.js";
-import { Avatar, AvatarImage } from "../../../../components/ui/avatar.jsx";
-import { Separator } from "../../../../components/ui/separator.jsx";
+import { formatCurrency } from "../../../../../utils/formaters.js";
+import { Avatar, AvatarImage } from "../../../../../components/ui/avatar.jsx";
+import { Separator } from "../../../../../components/ui/separator.jsx";
 
 import { WalletProgressBar } from "./WalletProgressBar.jsx";
 

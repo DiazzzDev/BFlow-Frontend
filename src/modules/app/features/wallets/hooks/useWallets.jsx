@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { API_URL } from "../../../../api/config.js";
+import { API_URL } from "../../../../../api/config.js";
 
 export const useGetWallets = () => {
     const [wallets, setWallets] = useState([]);

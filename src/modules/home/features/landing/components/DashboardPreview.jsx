@@ -1,7 +1,7 @@
 // components/DashboardPreview.jsx
 export const DashboardPreview = () => {
     return (
-        <div className="px-20 pb-20 max-w-[1200px] mx-auto w-full">
+        <div id="dashboard-preview" className="px-20 pb-20 max-w-[1200px] mx-auto w-full">
             <div className="bg-bg-surface border border-border rounded-2xl overflow-hidden p-6">
 
                 {/* Dots */}

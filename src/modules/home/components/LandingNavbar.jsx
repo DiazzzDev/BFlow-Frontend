@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom"
 
+import { useLandingHome } from "../hooks/custom/useLandingHome.jsx"
+
 export const LandingNavbar = () => {
+    const { navLinks, handleNavClick } = useLandingHome();
+
     return (
         <nav className="flex items-center justify-between px-20 py-5 border-b border-[var(--border-subtle)] sticky top-0 z-50 bg-[rgba(10,14,19,0.92)] backdrop-blur-md">
             <div className="text-lg font-bold">
@@ -8,10 +12,15 @@ export const LandingNavbar = () => {
             </div>
 
             <div className="flex items-center gap-8">
-                <a href="#features" className="text-sm text-[var(--text-muted)] hover:text-white transition-colors">Funcionalidades</a>
-                <a href="#how" className="text-sm text-[var(--text-muted)] hover:text-white transition-colors">Cómo funciona</a>
-                <a href="#pricing" className="text-sm text-[var(--text-muted)] hover:text-white transition-colors">Precios</a>
-                <a href="#about" className="text-sm text-[var(--text-muted)] hover:text-white transition-colors">A cerca de</a>
+                {navLinks.map(({ label, id }) => (
+                    <button
+                        key={id}
+                        onClick={() => handleNavClick(id)}
+                        className="text-sm text-[var(--text-muted)] hover:text-white transition-colors cursor-pointer bg-none border-none p-0"
+                    >
+                        {label}
+                    </button>
+                ))}
             </div>
 
             <div className="flex items-center gap-3">
