@@ -1,38 +1,41 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-    /* ── Fondos ── */
+    /* Fondos */
     --bg-main: #0f1217;
-    --bg-sidebar: #161a1f;
+    --bg-surface: #161a1f;
     --bg-card: #1a1f26;
-    --bg-card-hover: #1e2329;
+    --bg-hover: #1e2329;
 
-    /* ── Bordes ── */
-    --border-subtle: rgba(255, 255, 255, 0.05);
+    /* Bordes */
+    --border: rgba(255, 255, 255, 0.05);
 
-    /* ── Texto ── */
+    /* Texto */
     --text-primary: #ffffff;
     --text-muted: rgba(255, 255, 255, 0.35);
     --text-label: rgba(255, 255, 255, 0.55);
 
-    /* ── Paleta principal (imagen 2) ── */
+    /* Paleta */
     --color-primary: #25343F;
     --color-secondary: #BFC9D1;
-    --color-tertiary: #FF9B51;
-    --color-neutral: #EAEFEF;
+    --color-accent: #FF9B51;
+    --color-muted: #EAEFEF;
 
-    /* ── Acento ── */
-    --accent-orange: #f97316;
+    /* Estados */
+    --success-color: #22c55e;
+    --danger-color: #ef4444;
+    --warning-color: #f97316;
 
-    /* ── Transacciones ── */
-    --color-positive: #22c55e;
-    --color-negative: #ef4444;
-
-    /* ── Progreso ── */
+    /* Progreso */
     --progress-bg: rgba(255, 255, 255, 0.08);
     --progress-fill: #3b82f6;
 
-    /* ── Botones (imagen 2) ── */
+    /* Botones */
     --btn-primary-bg: #f38533;
     --btn-primary-text: #ffffff;
     --btn-secondary-bg: transparent;
@@ -41,9 +44,68 @@
     --btn-inverted-text: #ffffff;
     --btn-outlined-border: #25343F;
     --btn-outlined-text: #25343F;
+
+    /*  Shadcn  */
+    --background: #0f1217;
+    --foreground: #ffffff;
+    --card: #1a1f26;
+    --card-foreground: #ffffff;
+    --popover: #1a1f26;
+    --popover-foreground: #ffffff;
+    --primary: #f97316;
+    --primary-foreground: #ffffff;
+    --secondary: #1e2329;
+    --secondary-foreground: #ffffff;
+    --muted: #1a1f26;
+    --muted-foreground: rgba(255, 255, 255, 0.35);
+    --accent: #1e2329;
+    --accent-foreground: #ffffff;
+    --destructive: #ef4444;
+    --border: rgba(255, 255, 255, 0.05);
+    --input: #1a1f26;
+    --ring: #e85d26;
+    --radius: 0.5rem;
+
+    --container-sm: 30rem;
 }
 
 body {
     background-color: var(--bg-main);
     color: var(--text-primary);
+}
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Geist Variable', sans-serif;
+    /* Fondos */
+    --color-bg-main: var(--bg-main);
+    --color-bg-surface: var(--bg-surface);
+    --color-bg-card: var(--bg-card);
+    --color-bg-hover: var(--bg-hover);
+
+    /* Colores de Marca */
+    --color-brand-primary: var(--color-primary);
+    --color-brand-accent: var(--color-accent);
+    
+    /* Texto */
+    --color-text-primary: var(--text-primary);
+    --color-text-muted: var(--text-muted);
+    --color-text-label: var(--text-label);
+
+    /* Estados y Progreso */
+    --color-success: var(--success-color);
+    --color-danger: var(--danger-color);
+    --color-warning: var(--warning-color);
+    --color-progress-fill: var(--progress-fill);
+
+    /* Shadcn Overrides */
+    --color-border: var(--border);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+}
+
+@layer base {
+    html { @apply font-sans; }
 }
