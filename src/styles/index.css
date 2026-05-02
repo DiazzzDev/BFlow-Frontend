@@ -6,106 +6,120 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    /* Fondos */
-    --bg-main: #0f1217;
-    --bg-surface: #161a1f;
-    --bg-card: #1a1f26;
-    --bg-hover: #1e2329;
-
-    /* Bordes */
-    --border: rgba(255, 255, 255, 0.05);
-
-    /* Texto */
-    --text-primary: #ffffff;
-    --text-muted: rgba(255, 255, 255, 0.35);
-    --text-label: rgba(255, 255, 255, 0.55);
-
-    /* Paleta */
-    --color-primary: #25343F;
-    --color-secondary: #BFC9D1;
-    --color-accent: #FF9B51;
-    --color-muted: #EAEFEF;
-
-    /* Estados */
-    --success-color: #22c55e;
-    --danger-color: #ef4444;
-    --warning-color: #f97316;
-
-    /* Progreso */
-    --progress-bg: rgba(255, 255, 255, 0.08);
-    --progress-fill: #3b82f6;
-
-    /* Botones */
-    --btn-primary-bg: #f38533;
-    --btn-primary-text: #ffffff;
-    --btn-secondary-bg: transparent;
-    --btn-secondary-text: #25343F;
-    --btn-inverted-bg: #1a1f26;
-    --btn-inverted-text: #ffffff;
-    --btn-outlined-border: #25343F;
-    --btn-outlined-text: #25343F;
-
-    /*  Shadcn  */
+    /* --- Shadcn & Sistema --- */
     --background: #0f1217;
     --foreground: #ffffff;
+    
     --card: #1a1f26;
     --card-foreground: #ffffff;
+    
     --popover: #1a1f26;
     --popover-foreground: #ffffff;
-    --primary: #f97316;
+    
+    --primary: #f38533; /* El naranja de tus botones */
     --primary-foreground: #ffffff;
+    
     --secondary: #1e2329;
     --secondary-foreground: #ffffff;
+    
     --muted: #1a1f26;
     --muted-foreground: rgba(255, 255, 255, 0.35);
+    
     --accent: #1e2329;
     --accent-foreground: #ffffff;
+    
     --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+
     --border: rgba(255, 255, 255, 0.05);
     --input: #1a1f26;
     --ring: #e85d26;
     --radius: 0.5rem;
 
+    /* --- Tus Colores de Marca (Paleta Personalizada) --- */
+    --brand-primary: #25343F;
+    --brand-secondary: #BFC9D1;
+    --brand-accent: #FF9B51;
+    --brand-muted: #EAEFEF;
+
+    /* --- Estados --- */
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f97316;
+
+    /* --- Texto --- */
+    --text-muted: rgba(255, 255, 255, 0.35);
+    --text-label: rgba(255, 255, 255, 0.55);
+
+    /* --- Superficies adicionales --- */
+    --bg-surface: #161a1f;
+    --bg-hover: #1e2329;
+    
+    /* --- Progreso --- */
+    --progress-bg: rgba(255, 255, 255, 0.08);
+    --progress-fill: #3b82f6;
+
     --container-sm: 30rem;
 }
 
-body {
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-}
-
 @theme inline {
+    /* Tipografía */
+    --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
     --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
-    /* Fondos */
-    --color-bg-main: var(--bg-main);
-    --color-bg-surface: var(--bg-surface);
-    --color-bg-card: var(--bg-card);
-    --color-bg-hover: var(--bg-hover);
 
-    /* Colores de Marca */
-    --color-brand-primary: var(--color-primary);
-    --color-brand-accent: var(--color-accent);
+    /* Mapeo de Colores para Utilidades (bg-*, text-*, border-*) */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
     
+    /* Colores Principales (esto arregla tu botón) */
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    
+    /* Marca */
+    --color-brand-primary: var(--brand-primary);
+    --color-brand-secondary: var(--brand-secondary);
+    --color-brand-accent: var(--brand-accent);
+    --color-brand-muted: var(--brand-muted);
+
+    /* UI Elements */
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-surface: var(--bg-surface);
+    --color-hover: var(--bg-hover);
+
     /* Texto */
-    --color-text-primary: var(--text-primary);
     --color-text-muted: var(--text-muted);
     --color-text-label: var(--text-label);
 
-    /* Estados y Progreso */
-    --color-success: var(--success-color);
-    --color-danger: var(--danger-color);
-    --color-warning: var(--warning-color);
+    /* Estados */
+    --color-success: var(--success);
+    --color-danger: var(--danger);
+    --color-warning: var(--warning);
+    
+    /* Progreso */
+    --color-progress-bg: var(--progress-bg);
     --color-progress-fill: var(--progress-fill);
 
-    /* Shadcn Overrides */
-    --color-border: var(--border);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
+    /* Radios */
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-xl: calc(var(--radius) + 4px);
 }
 
 @layer base {
-    html { @apply font-sans; }
+    * {
+        @apply border-border outline-ring/50;
+    }
+    
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+    }
 }
