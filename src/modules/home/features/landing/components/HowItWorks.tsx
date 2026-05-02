@@ -31,13 +31,13 @@ export const HowItWorks = () => {
                     {steps.map(({ number, title, desc }) => (
                         <div
                             key={number}
-                            className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl p-7 relative"
+                            className="bg-card border border-[var(--border-subtle)] rounded-2xl p-7 relative"
                         >
                             <p className="absolute top-4 right-5 text-5xl font-extrabold text-[rgba(249,115,22,0.1)] leading-none select-none">
                                 {number}
                             </p>
                             <h3 className="text-base font-semibold mb-2">{title}</h3>
-                            <p className="text-sm text-[var(--text-muted)] leading-relaxed">{desc}</p>
+                            <p className="text-sm text-text-muted leading-relaxed">{desc}</p>
                         </div>
                     ))}
                 </div>

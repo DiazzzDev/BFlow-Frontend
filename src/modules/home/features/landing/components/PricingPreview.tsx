@@ -65,9 +65,9 @@ const XIcon = () => (
 export const PricingPreview = () => {
     return (
         <section id="pricing" className="px-20 py-20">
-            <p className="text-xs tracking-widest uppercase text-[var(--warning-color)] mb-3">Precios</p>
+            <p className="text-xs tracking-widest uppercase text-warning mb-3">Precios</p>
             <h2 className="text-4xl font-bold tracking-tight mb-3">Simple y transparente</h2>
-            <p className="text-base text-[var(--text-muted)] max-w-lg mb-12">
+            <p className="text-base text-text-muted max-w-lg mb-12">
                 Sin costos ocultos. Cambiá de plan cuando quieras.
             </p>
 
@@ -77,30 +77,30 @@ export const PricingPreview = () => {
                         key={name}
                         className={`bg-[var(--bg-card)] rounded-2xl p-7 relative ${
                             featured
-                                ? "border border-[var(--warning-color)]"
-                                : "border border-[var(--border-subtle)]"
+                                ? "border border-warning"
+                                : "border border-border-subtle"
                         }`}
                     >
                         {featured && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--warning-color)] text-white text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-warning text-white text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
                                 Más popular
                             </div>
                         )}
 
-                        <p className="text-sm text-[var(--text-muted)] mb-2">{name}</p>
+                        <p className="text-sm text-text-muted mb-2">{name}</p>
                         <p className="text-4xl font-bold mb-1">
-                            {price}<span className="text-base font-normal text-[var(--text-muted)]">/mes</span>
+                            {price}<span className="text-base font-normal text-text-muted">/mes</span>
                         </p>
-                        <p className="text-sm text-[var(--text-muted)] mb-6">{desc}</p>
+                        <p className="text-sm text-text-muted mb-6">{desc}</p>
 
-                        <hr className="border-[var(--border-subtle)] mb-5" />
+                        <hr className="border-border-subtle mb-5" />
 
                         <div className="flex flex-col gap-3 mb-6">
                             {features.map(({ text, active }) => (
                                 <div
                                     key={text}
                                     className={`flex items-center gap-2.5 text-sm ${
-                                        active ? "text-[var(--text-muted)]" : "text-[var(--text-label)]"
+                                        active ? "text-text-muted" : "text-text-label"
                                     }`}
                                 >
                                     <span className={active ? "text-[var(--color-positive)]" : "text-[var(--text-label)]"}>
@@ -114,8 +114,8 @@ export const PricingPreview = () => {
                         <button
                             className={`w-full py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                                 btnStyle === "filled"
-                                    ? "bg-[var(--warning-color)] text-white hover:opacity-90"
-                                    : "bg-transparent border border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-white/20 hover:text-white"
+                                    ? "bg-warning text-white hover:opacity-90"
+                                    : "bg-transparent border border-border-subtle text-text-muted hover:border-white/20 hover:text-white"
                             }`}
                         >
                             {btnText}
