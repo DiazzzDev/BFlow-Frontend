@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
 // App
-import { MainLayout } from "./modules/app/appLayout.tsx";
 import { DashboardPage } from "./modules/app/features/dashboard/pages/DashboardPage.tsx";
 import { WalletsPage } from "./modules/app/features/wallets/pages/WalletsPage.tsx";
 import { WalletDetailsPage } from "./modules/app/features/wallets/pages/WalletDetailsPage.tsx";
@@ -18,6 +17,8 @@ import { LandingLayout } from "./modules/home/LandingLayout.tsx";
 import { LandingPage } from "./modules/home/features/landing/LandingPage.tsx";
 import { TermsPage } from "./modules/home/features/terms/TermsPage.tsx";
 import { PrivacyPage } from "./modules/home/features/privacy/PrivacyPage.tsx";
+import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
+import { AppLayout } from "./modules/app/appLayout.tsx";
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -30,20 +31,24 @@ export const appRouter = createBrowserRouter([
             { path: "privacy", element: <PrivacyPage /> }
         ]
     },
-
     // App
     {
         path: "/app",
-        element: <MainLayout />,
+        element: <ProtectedRoute />,
         children: [
-            { path: "dashboard", element: <DashboardPage /> },
-            { path: "wallets", element: <WalletsPage /> },
-            { path: "wallets/:id", element: <WalletDetailsPage /> },
-            { path: "incomes", element: <IncomesPage /> },
-            { path: "expenses", element: <ExpensesPage /> },
-            { path: "settings", element: <SettingsPage /> },
-            { path: "budgets", element: <BudgetsPage /> },
-            { path: "transfers", element: <TransfersPage /> },
+            {
+                element: <AppLayout />,
+                children: [
+                    { path: "dashboard", element: <DashboardPage /> },
+                    { path: "wallets", element: <WalletsPage /> },
+                    { path: "wallets/:id", element: <WalletDetailsPage /> },
+                    { path: "incomes", element: <IncomesPage /> },
+                    { path: "expenses", element: <ExpensesPage /> },
+                    { path: "settings", element: <SettingsPage /> },
+                    { path: "budgets", element: <BudgetsPage /> },
+                    { path: "transfers", element: <TransfersPage /> },
+                ]
+            }
         ]
     },
 

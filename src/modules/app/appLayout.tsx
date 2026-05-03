@@ -5,7 +5,7 @@ import { Header } from "./components/Header.tsx"
 import { Navbar } from "./components/Navbar.tsx"
 
 
-export const MainLayout = () => {
+export const AppLayout = () => {
     return (
         <>
             <ToastContainer />

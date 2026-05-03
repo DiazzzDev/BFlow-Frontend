@@ -19,11 +19,11 @@ const steps = [
 
 export const HowItWorks = () => {
     return (
-        <section id="how" className="px-20 py-20 bg-[var(--bg-sidebar)]">
+        <section id="how" className="px-20 py-20 bg-surface">
             <div className="max-w-[1040px] mx-auto">
-                <p className="text-xs tracking-widest uppercase text-[var(--warning-color)] mb-3">Cómo funciona</p>
+                <p className="text-xs tracking-widest uppercase text-warning mb-3">Cómo funciona</p>
                 <h2 className="text-4xl font-bold tracking-tight mb-3">En 3 pasos simples</h2>
-                <p className="text-base text-[var(--text-muted)] max-w-lg mb-12">
+                <p className="text-base text-text-muted max-w-lg mb-12">
                     Sin configuraciones complicadas. Empezás a controlar tus finanzas en minutos.
                 </p>
 
@@ -31,7 +31,7 @@ export const HowItWorks = () => {
                     {steps.map(({ number, title, desc }) => (
                         <div
                             key={number}
-                            className="bg-card border border-[var(--border-subtle)] rounded-2xl p-7 relative"
+                            className="bg-card border border-border rounded-2xl p-7 relative"
                         >
                             <p className="absolute top-4 right-5 text-5xl font-extrabold text-[rgba(249,115,22,0.1)] leading-none select-none">
                                 {number}

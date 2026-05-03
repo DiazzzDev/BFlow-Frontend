@@ -5,14 +5,21 @@ import { useNavigate } from "react-router-dom"
 import { login } from "../login.services.ts"
 
 import { APIError } from "@/utils/api"
+import { isValidEmail } from "@/utils/validators.ts"
+import { useAuthStore } from "@/utils/authMe/auth.store.ts"
 
 export const useLoginActions = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const { checkAuth } = useAuthStore();
 
     const onSubmitLogin = async (email: string, password: string) => {
-        if (!email.trim() || !password.trim()) {
-            toast.warning("Credenciales vacias");
+        if (isValidEmail(email) === false) {
+            toast.warning("Por favor, ingrese un correo electrónico válido");
+            return;
+        }
+        if (!password) {
+            toast.warning("Por favor, ingrese su contraseña");
             return;
         }
         setIsLoading(true);
@@ -29,6 +36,10 @@ export const useLoginActions = () => {
                     }
                 }
             );
+
+            // Después del login exitoso, verificar y cargar datos del usuario
+            await checkAuth();
+
             navigate('/app/dashboard');
         } catch (error) {
             console.error(error);

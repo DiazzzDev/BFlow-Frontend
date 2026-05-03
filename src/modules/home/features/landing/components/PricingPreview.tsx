@@ -103,7 +103,7 @@ export const PricingPreview = () => {
                                         active ? "text-text-muted" : "text-text-label"
                                     }`}
                                 >
-                                    <span className={active ? "text-[var(--color-positive)]" : "text-[var(--text-label)]"}>
+                                    <span className={active ? "text-warning" : "text-label"}>
                                         {active ? <CheckIcon /> : <XIcon />}
                                     </span>
                                     {text}

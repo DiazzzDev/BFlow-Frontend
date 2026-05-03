@@ -13,13 +13,6 @@ interface LoginResponse {
     resetId?: string;
 }
 
-interface UserMe {
-    id: number;
-    username: string;
-    email: string;
-    roles: string[];
-}
-
 export const login = async (email: string, password: string) => {
     try {
         const body = JSON.stringify({ email, password });
@@ -34,11 +27,4 @@ export const login = async (email: string, password: string) => {
         }
         throw new APIError('Error al iniciar sesión', 0, error, `${API_URL}/login`);
     }
-};
-
-export const getAuthMe = async () => {
-    return await apiRequest<UserMe>(`${API_URL}/me`, {
-        ...defaultApiOptions,
-        method: 'GET'
-    }, 'No se pudo obtener los datos de sesión');
 };
