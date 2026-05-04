@@ -21,6 +21,7 @@
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-hook-form": "^7.75.0",
     "react-router-dom": "^7.13.2",
     "react-toastify": "^11.1.0",
     "shadcn": "^4.1.2",

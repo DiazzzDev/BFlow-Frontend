@@ -8,18 +8,25 @@ const defaultApiOptions: RequestInit = {
     headers: { 'Content-Type': 'application/json' }
 };
 
-export const login = async (email: string, password: string) => {
+interface RegisterResponse {
+    success: boolean,
+    message: string,
+    timestamp: string,
+    path: string
+}
+
+export const register = async (email: string, password: string, fullName: string) => {
     try {
-        const body = JSON.stringify({ email, password });
-        return await apiRequest(
-            `${API_URL}/login`,
+        const body = JSON.stringify({ email, password, fullName });
+        return await apiRequest<RegisterResponse>(
+            `${API_URL}/register`,
             { ...defaultApiOptions, method: 'POST', body },
-            'Error al iniciar sesión'
+            'Error crear cuenta'
         );
     } catch (error) {
         if (error instanceof APIError) {
             throw error;
         }
-        throw new APIError('Error al iniciar sesión', 0, error, `${API_URL}/login`);
+        throw new APIError('Error crear cuenta', 0, error, `${API_URL}/register`);
     }
 };

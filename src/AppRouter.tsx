@@ -19,6 +19,7 @@ import { TermsPage } from "./modules/home/features/terms/TermsPage.tsx";
 import { PrivacyPage } from "./modules/home/features/privacy/PrivacyPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
 import { AppLayout } from "./modules/app/appLayout.tsx";
+import { RegisterPage } from "./modules/auth/features/register/pages/RegisterPage.tsx";
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -58,6 +59,7 @@ export const appRouter = createBrowserRouter([
         element: <AuthLayout />,
         children: [
             { path: "login", element: <LoginPage /> },
+            { path: "register", element: <RegisterPage /> },
         ]
     }
 ]);
