@@ -13,7 +13,7 @@ export const Stats = () => {
                 {stats.map(({ value, label }, i) => (
                     <div
                         key={label}
-                        className={`bg-bg-card px-6 py-8 text-center ${i !== stats.length - 1 ? "border-r border-border" : ""}`}
+                        className={`bg-card px-6 py-8 text-center ${i !== stats.length - 1 ? "border-r border-border" : ""}`}
                     >
                         <p className="text-4xl font-bold text-brand-accent mb-2">{value}</p>
                         <p className="text-sm text-text-muted">{label}</p>

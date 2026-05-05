@@ -69,7 +69,7 @@ export const Features = () => {
                 {features.map(({ title, desc, icon }) => (
                     <div
                         key={title}
-                        className="bg-bg-card border border-border rounded-2xl p-7 hover:border-brand-accent/30 transition-colors"
+                        className="bg-bg-card border border-border rounded-2xl p-7 hover:border-brand-accent/30 transition-colors bg-card"
                     >
                         <div className="w-11 h-11 rounded-xl bg-brand-accent/10 flex items-center justify-center text-brand-accent mb-4">
                             {icon}
