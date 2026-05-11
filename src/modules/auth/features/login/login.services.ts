@@ -4,7 +4,6 @@ import { apiRequest, APIError } from "../../../../utils/api.ts";
 const API_URL = `${config.API_BASE_URL}/api/auth`;
 
 const defaultApiOptions: RequestInit = {
-    credentials: 'include',
     headers: { 'Content-Type': 'application/json' }
 };
 

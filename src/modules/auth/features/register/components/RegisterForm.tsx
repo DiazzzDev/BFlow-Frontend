@@ -1,6 +1,7 @@
-import { Eye, Lock, Mail, User } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input.tsx"
 import { Button } from "@/components/ui/button.tsx"
@@ -23,6 +24,7 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
     const onInternalSubmit = (data: RegisterFormInputs) => {
         onRegisterUser(data.email, data.password, data.fullName);
     }
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <form action="" onSubmit={handleSubmit(onInternalSubmit)}>
             <div className="w-full max-w-md flex-col space-y-4">
@@ -92,13 +94,14 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
                             disabled={isLoading}
                             {...register('password', { required: 'La contraseña es requerida', minLength: { value: 8, message: 'La contraseña debe tener al menos 8 caracteres' } })}
                             id="txtPassword"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="Minimo 8 caracteres"
                             className="h-12 rounded-xl border-border bg-bg-card px-11 text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-accent"
                         />
 
-                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary">
-                            <Eye size={18} />
+                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary" onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? <EyeOff size={18} /> :
+                            <Eye size={18} />}
                         </button>
                     </div>
                     {isSubmitted && errors.password && (

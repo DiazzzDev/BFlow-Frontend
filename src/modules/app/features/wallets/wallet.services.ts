@@ -6,7 +6,6 @@ import { CreateWalletData, Wallet } from "./interfaces/Wallets.ts";
 const API_URL = `${config.API_BASE_URL}/api/v1/wallets`;
 
 const defaultApiOptions: RequestInit = {
-    credentials: 'include',
     headers: { 'Content-Type': 'application/json' }
 };
 
