@@ -93,7 +93,7 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
                             {...register('password', { required: 'La contraseña es requerida', minLength: { value: 8, message: 'La contraseña debe tener al menos 8 caracteres' } })}
                             id="txtPassword"
                             type="password"
-                            placeholder="Minimo 8 caracteres"
+                            placeholder="Mínimo 8 caracteres"
                             className="h-12 rounded-xl border-border bg-bg-card px-11 text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-accent"
                         />
 

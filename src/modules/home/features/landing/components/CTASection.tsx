@@ -4,7 +4,7 @@ export const CTASection = () => {
         <section className="px-20 pb-20">
             <div className="bg-card border border-[rgba(249,115,22,0.15)] rounded-2xl px-16 py-16 text-center">
                 <h2 className="text-4xl font-bold tracking-tight mb-4">
-                    Empezá a controlar tus<br />finanzas hoy
+                    Comienza a controlar tus<br />finanzas hoy
                 </h2>
                 <p className="text-base text-text-muted mb-8">
                     Más de 10,000 personas ya usan BFlow para tomar el control de su dinero.
@@ -15,9 +15,6 @@ export const CTASection = () => {
                             Crear cuenta gratis
                         </button>
                     </a>
-                    <button className="text-sm text-text-muted border border-border-subtle px-7 py-3 rounded-xl hover:border-white/20 hover:text-white transition-all cursor-pointer">
-                        Ver demo →
-                    </button>
                 </div>
             </div>
         </section>

@@ -13,7 +13,7 @@ export const Hero = () => {
             </h1>
 
             <p className="text-lg text-text-muted max-w-xl mb-9">
-                Gestioná tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.
+                Gestiona tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.
             </p>
 
             <div className="flex items-center gap-3 mb-4">
@@ -22,9 +22,6 @@ export const Hero = () => {
                         Empezar gratis
                     </button>
                 </a>
-                <button className="text-sm text-text-muted border border-border px-7 py-3 rounded-xl hover:border-white/20 hover:text-white transition-all">
-                    Ver demo →
-                </button>
             </div>
 
             <p className="text-xs text-text-label">

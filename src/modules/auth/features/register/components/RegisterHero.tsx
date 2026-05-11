@@ -4,7 +4,7 @@ const benefits = [
     "Hasta 2 billeteras en el plan gratuito",
     "Gastos e ingresos ilimitados",
     "Categorización automática con IA",
-    "Podés upgradear cuando quieras",
+    "Puedes mejorar tu plan cuando quieras",
 ]
 
 export const RegisterHero = () => {

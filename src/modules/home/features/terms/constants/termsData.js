@@ -38,7 +38,7 @@ export const termsData = {
         },
         intro: {
             p1: "Somos BFlow Studio, haciendo negocios como BFlow, una empresa registrada en El Salvador. Operamos el sitio web bflow-studio.com y servicios relacionados.",
-            p2: "BFlow es una aplicación web de gestión de finanzas personales. No se conecta directamente a cuentas bancarias y no proporciona asesoría financiera, de inversión, fiscal o legal. Al usar nuestros Servicios, aceptás estos Términos.",
+            p2: "BFlow es una aplicación web de gestión de finanzas personales. No se conecta directamente a cuentas bancarias y no proporciona asesoría financiera, de inversión, fiscal o legal. Al usar nuestros Servicios, aceptas estos Términos.",
         },
         sectionTitles: {
             services: "1. Nuestros servicios",
@@ -85,19 +85,19 @@ export const termsData = {
                 footer: "Cualquier violación de estos derechos constituirá una violación material y tu acceso a los Servicios terminará inmediatamente.",
             },
             representations: {
-                intro: "Al usar los Servicios, representás y garantizás que:",
+                intro: "Al usar los Servicios, representas y garantizas que:",
                 items: [
                     "Toda información de registro será verdadera, precisa y completa",
                     "Mantendrás la precisión de tu información actualizada",
-                    "Tenés capacidad legal y aceptás estos Términos",
-                    "No sos menor de edad en tu jurisdicción",
+                    "Tienes capacidad legal y aceptas estos Términos",
+                    "No eres menor de edad en tu jurisdicción",
                     "No accederás mediante medios automatizados o no humanos",
                     "No usarás los Servicios para propósitos ilegales",
                     "Tu uso no violará ninguna ley o regulación aplicable",
                 ],
             },
             register: {
-                text: "Podrías ser requerido registrarte para usar los Servicios. Aceptás mantener tu contraseña confidencial y serás responsable de todo uso de tu cuenta. Nos reservamos el derecho a eliminar o cambiar un nombre de usuario que determinemos inapropiado u objetable.",
+                text: "Podrías ser requerido registrarte para usar los Servicios. Aceptas mantener tu contraseña confidencial y serás responsable de todo uso de tu cuenta. Nos reservamos el derecho a eliminar o cambiar un nombre de usuario que determinemos inapropiado u objetable.",
             },
             payments: {
                 intro: "Aceptamos las siguientes formas de pago:",
@@ -105,12 +105,12 @@ export const termsData = {
                 footer: "Todos los pagos serán en dólares estadounidenses. Podemos cambiar precios en cualquier momento. Nos reservamos el derecho de rechazar cualquier orden.",
             },
             subscriptions: {
-                text: "BFlow ofrece planes de suscripción mensual o anual en dólares estadounidenses. Las suscripciones se renuevan automáticamente. Podés cancelar en cualquier momento desde tu panel de cuenta.",
+                text: "BFlow ofrece planes de suscripción mensual o anual en dólares estadounidenses. Las suscripciones se renuevan automáticamente. Puedes cancelar en cualquier momento desde tu panel de cuenta.",
                 refundLabel: "Política de reembolsos:",
-                refundText: "Los reembolsos se evalúan caso a caso. Contactá a support@bflow-studio.com dentro de los 7 días de la transacción.",
+                refundText: "Los reembolsos se evalúan caso a caso. Contacta a support@bflow-studio.com dentro de los 7 días de la transacción.",
             },
             prohibited: {
-                intro: "No podés acceder ni usar los Servicios para ningún propósito diferente al que los ponemos a disposición. Está prohibido:",
+                intro: "No puedes acceder ni usar los Servicios para ningún propósito diferente al que los ponemos a disposición. Está prohibido:",
                 items: [
                     "Uso comercial no autorizado de los Servicios",
                     "Recopilar información de usuarios sin consentimiento",
@@ -127,19 +127,19 @@ export const termsData = {
                 noteTitle: "Importante sobre la IA:",
                 noteItems: [
                     "Las categorías sugeridas son orientativas, no definitivas",
-                    "Podés corregir o anular cualquier categorización",
+                    "Puedes corregir o anular cualquier categorización",
                     "Los datos usados para entrenar modelos son anonimizados",
                     "No tomamos decisiones legalmente vinculantes basadas en IA",
                 ],
             },
             contributions: {
-                text: "Los Servicios pueden permitirte crear, enviar o publicar contenido. Al hacerlo, nos otorgás una licencia no exclusiva para usar ese contenido únicamente para operar y mejorar el Servicio. Sos responsable del contenido que enviás y garantizás que tenés los derechos necesarios.",
+                text: "Los Servicios pueden permitirte crear, enviar o publicar contenido. Al hacerlo, nos otorgas una licencia no exclusiva para usar ese contenido únicamente para operar y mejorar el Servicio. Eres responsable del contenido que envías y garantizas que tienes los derechos necesarios.",
             },
             yourip: {
-                text: "Tus datos financieros son tuyos. BFlow solo los usa para proporcionar el Servicio. No reclamamos propiedad sobre los datos que introducís. Podés exportar o eliminar tus datos en cualquier momento.",
+                text: "Tus datos financieros son tuyos. BFlow solo los usa para proporcionar el Servicio. No reclamamos propiedad sobre los datos que introduces. Puedes exportar o eliminar tus datos en cualquier momento.",
             },
             social: {
-                text: "Podemos ofrecer funcionalidades de vinculación con redes sociales. Al vincular tu cuenta, aceptás que podemos acceder y usar información de tu perfil social según lo permitido por la plataforma correspondiente y esta Política.",
+                text: "Podemos ofrecer funcionalidades de vinculación con redes sociales. Al vincular tu cuenta, aceptas que podemos acceder y usar información de tu perfil social según lo permitido por la plataforma correspondiente y esta Política.",
             },
             thirdparty: {
                 text: "Los Servicios pueden contener enlaces a sitios de terceros. No somos responsables por el contenido, precisión o prácticas de esos sitios. La inclusión de un enlace no implica respaldo.",
@@ -148,15 +148,15 @@ export const termsData = {
                 text: "Nos reservamos el derecho de monitorear los Servicios, tomar acciones legales contra cualquier uso violatorio, rechazar o restringir acceso y gestionar los Servicios para proteger nuestros derechos y el correcto funcionamiento.",
             },
             dataroles: {
-                text: "BFlow actúa como Controlador de Datos para información de cuenta y como Procesador para datos financieros que introduzcás. Para más detalles sobre cómo manejamos tus datos, consultá nuestra Política de Privacidad.",
+                text: "BFlow actúa como Controlador de Datos para información de cuenta y como Procesador para datos financieros que introduces. Para más detalles sobre cómo manejamos tus datos, consulta nuestra Política de Privacidad.",
                 privacyLinkText: "Política de Privacidad",
             },
             copyright: {
-                text: "Respetamos la propiedad intelectual de terceros. Si creés que algo en los Servicios infringe tu copyright, contactá a legal@bflow-studio.com con los detalles de la infracción.",
+                text: "Respetamos la propiedad intelectual de terceros. Si crees que algo en los Servicios infringe tu copyright, contacta a legal@bflow-studio.com con los detalles de la infracción.",
             },
             termination: {
                 para1: "Estos Términos permanecen vigentes mientras uses los Servicios. Podemos suspender o terminar tu acceso sin previo aviso si violas estos Términos.",
-                para2: "Podés terminar tu cuenta en cualquier momento. Tras la terminación, las disposiciones que por naturaleza deben sobrevivir continuarán en vigor.",
+                para2: "Puedes terminar tu cuenta en cualquier momento. Tras la terminación, las disposiciones que por naturaleza deben sobrevivir continuarán en vigor.",
             },
             modifications: {
                 text: "Nos reservamos el derecho de cambiar, modificar o eliminar contenido de los Servicios sin previo aviso. No garantizamos disponibilidad ininterrumpida. No seremos responsables por interrupciones, modificaciones o discontinuación de los Servicios.",
@@ -171,7 +171,7 @@ export const termsData = {
                 ],
             },
             disputes: {
-                para1: "Antes de presentar una demanda, aceptás intentar resolver la disputa informalmente contactando a support@bflow-studio.com.",
+                para1: "Antes de presentar una demanda, aceptas intentar resolver la disputa informalmente contactando a support@bflow-studio.com.",
                 para2: "Las disputas no resueltas se someterán a los tribunales competentes de El Salvador, salvo donde leyes obligatorias de tu jurisdicción establezcan lo contrario.",
             },
             corrections: {
@@ -181,9 +181,9 @@ export const termsData = {
                 asIsLabel: "Los Servicios se proporcionan \"TAL CUAL\" y \"SEGÚN DISPONIBILIDAD\".",
                 asIsText: "BFlow no garantiza operación ininterrumpida, sin errores o segura.",
                 financialLabel: "Descargo financiero:",
-                financialText: "BFlow es una herramienta de rastreo únicamente. No proporciona asesoría financiera, de inversión, fiscal o legal. Sos únicamente responsable de la precisión de tus datos y de consultar profesionales.",
+                financialText: "BFlow es una herramienta de rastreo únicamente. No proporciona asesoría financiera, de inversión, fiscal o legal. Eres únicamente responsable de la precisión de tus datos y de consultar profesionales.",
                 dataLossLabel: "Pérdida de datos:",
-                dataLossText: "Aunque mantenemos respaldos, no garantizamos contra pérdida por fallos técnicos o ataques. Sos responsable de mantener respaldos independientes.",
+                dataLossText: "Aunque mantenemos respaldos, no garantizamos contra pérdida por fallos técnicos o ataques. Eres responsable de mantener respaldos independientes.",
             },
             liability: {
                 capTitle: "Tope de responsabilidad:",
@@ -200,20 +200,20 @@ export const termsData = {
             },
             dataprotection: {
                 para1: "BFlow recopila y procesa datos personales según nuestra Política de Privacidad. Los datos pueden transferirse a El Salvador, EE.UU. u otras jurisdicciones.",
-                para2: "Al usar los Servicios, consentís que tus datos se transfieran y procesen según sea necesario para operar el Servicio. Usamos encriptación, autenticación segura y auditorías regulares para proteger tu información.",
+                para2: "Al usar los Servicios, consientes que tus datos se transfieran y procesen según sea necesario para operar el Servicio. Usamos encriptación, autenticación segura y auditorías regulares para proteger tu información.",
             },
             indemnification: {
-                text: "Aceptás defender, indemnizar y eximirnos de responsabilidad de cualquier pérdida, daño o reclamación hecha por terceros debido a: tus Contribuciones, uso de Servicios, incumplimiento de estos Términos, violación de derechos de terceros o acto dañino hacia otro usuario.",
+                text: "Aceptas defender, indemnizar y eximirnos de responsabilidad de cualquier pérdida, daño o reclamación hecha por terceros debido a: tus Contribuciones, uso de Servicios, incumplimiento de estos Términos, violación de derechos de terceros o acto dañino hacia otro usuario.",
             },
             userdata: {
-                text: "Mantenemos ciertos datos que transmitís para monitoreo de rendimiento. Sos únicamente responsable de todos los datos que transmitís. Aunque realizamos respaldos regulares, sos responsable de mantener respaldos independientes.",
+                text: "Mantenemos ciertos datos que transmites para monitoreo de rendimiento. Eres únicamente responsable de todos los datos que transmites. Aunque realizamos respaldos regulares, eres responsable de mantener respaldos independientes.",
             },
             electronic: {
-                text: "Visitar nuestro sitio y completar formularios constituyen comunicaciones electrónicas. Aceptás que acuerdos, avisos y comunicaciones proporcionadas electrónicamente satisfacen requisitos legales de comunicación por escrito. Aceptás firmas electrónicas y entrega electrónica de avisos y registros.",
+                text: "Visitar nuestro sitio y completar formularios constituyen comunicaciones electrónicas. Aceptas que acuerdos, avisos y comunicaciones proporcionadas electrónicamente satisfacen requisitos legales de comunicación por escrito. Aceptas firmas electrónicas y entrega electrónica de avisos y registros.",
             },
             general: {
-                para1: "Estos Términos constituyen el acuerdo completo entre vos y nosotros. Si alguna disposición es considerada ilegal o inaplicable, es separable y no afecta la validez de las demás.",
-                para2: "No hay relación de socio, empleo o agencia creada entre vos y BFlow. Podemos asignar derechos u obligaciones a terceros en cualquier momento.",
+                para1: "Estos Términos constituyen el acuerdo completo entre tú y nosotros. Si alguna disposición es considerada ilegal o inaplicable, es separable y no afecta la validez de las demás.",
+                para2: "No hay relación de socio, empleo o agencia creada entre tú y BFlow. Podemos asignar derechos u obligaciones a terceros en cualquier momento.",
             },
             contact: {
                 addressLabel: "Dirección",

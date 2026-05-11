@@ -66,7 +66,7 @@ export const LeftPart = ({ Body, title, focusTitle, subtitle }: { Body: React.Re
                     </div>
 
                     <div className="flex items-center gap-6 text-sm text-text-muted mt-10">
-                        <span>© 2025 BFlow</span>
+                        <span>© 2026 BFlow</span>
                         <span>Privacidad</span>
                         <span>Términos</span>
                     </div>

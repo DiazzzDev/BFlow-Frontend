@@ -2,7 +2,7 @@
 const features = [
     {
         title: "Billeteras compartidas",
-        desc: "Controlá gastos en conjunto con tu pareja, familia o equipo. Cada miembro con su propio rol.",
+        desc: "Controla gastos en conjunto con tu pareja, familia o equipo. Cada miembro con su propio rol.",
         icon: (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 12h2"/>
@@ -20,7 +20,7 @@ const features = [
     },
     {
         title: "Presupuestos inteligentes",
-        desc: "Definí límites de gasto por categoría y recibí alertas antes de superarlos.",
+        desc: "Define límites de gasto por categoría y recibe alertas antes de superarlos.",
         icon: (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
@@ -38,7 +38,7 @@ const features = [
     },
     {
         title: "Transferencias entre billeteras",
-        desc: "Mové dinero entre tus billeteras con un registro completo de cada transferencia.",
+        desc: "Mueve dinero entre tus billeteras con un registro completo de cada transferencia.",
         icon: (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4"/>
@@ -47,7 +47,7 @@ const features = [
     },
     {
         title: "Historial completo",
-        desc: "Accedé a todo tu historial financiero con filtros por fecha, categoría, monto y más.",
+        desc: "Accede a todo tu historial financiero con filtros por fecha, categoría, monto y más.",
         icon: (
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/>
@@ -60,7 +60,7 @@ export const Features = () => {
     return (
         <section id="features" className="px-20 py-20">
             <p className="text-xs tracking-widest uppercase text-brand-accent mb-3">Funcionalidades</p>
-            <h2 className="text-4xl font-bold tracking-tight mb-3">Todo lo que necesitás para<br/>controlar tus finanzas</h2>
+            <h2 className="text-4xl font-bold tracking-tight mb-3">Todo lo que necesitas para<br/>controlar tus finanzas</h2>
             <p className="text-base text-text-muted max-w-lg">
                 Desde gastos diarios hasta billeteras compartidas con tu familia — BFlow lo tiene todo.
             </p>
