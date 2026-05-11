@@ -65,7 +65,10 @@ export const apiRequest = async <T>(
     }
 
     try {
-        const response = await fetch(url, options);
+        const response = await fetch(url, {
+            credentials: 'include',
+            ...options,
+        });
         let data: unknown = null;
 
         const contentType = response.headers.get('content-type') || '';
