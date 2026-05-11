@@ -1,10 +1,14 @@
-export interface Wallet {
+
+export interface CreateWalletData {
+    name: string;
+    description?: string;
+    initialValue: number;
+    currency: string;
+}
+
+export interface Wallet extends CreateWalletData {
     id: string,
-    name: string,
-    description: string,
-    currency: string,
     balance: number,
-    initialValue: number,
     createdAt: string,
     updatedAt: string,
     role: string

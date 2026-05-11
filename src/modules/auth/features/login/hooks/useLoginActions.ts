@@ -39,9 +39,5 @@ export const useLoginActions = () => {
         }
     }
 
-    const onRegisterWithGoogle = () => {
-        toast.info('Funcionalidad de inicio de sesión con Google no implementada aún');
-    }
-
     return { onSubmitLogin, isLoading };
 }

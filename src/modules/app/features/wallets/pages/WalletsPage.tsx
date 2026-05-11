@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Users, Wallet } from "lucide-react"
 
 
 import { SummaryCard } from "../components/SummaryCards.tsx"
 import { WalletCard } from "../components/WalletCards.tsx"
-import { useWalletStore } from "../wallet.store.ts"
 import { CreateWalletDialog } from "../components/CreateWalletDialog.tsx"
 import { EmptyState } from "../components/EmptyState.tsx"
 import { ButtonEmpty } from "../components/ButtonEmpty.tsx"
 import { WalletLoader } from "../components/WalletLoader.tsx"
 import { formatCurrency, formatDate } from "../../../../../utils/formaters.ts"
+import { useGetWallets } from "../hooks/useGetWallets.ts"
+import { usePostWallet } from "../hooks/usePostWallet.ts"
 
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { Badge } from "@/components/ui/badge.tsx"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
+
+
 
 const dataTable = [
     {
@@ -59,12 +62,12 @@ const dataTable = [
 ];
 
 export const WalletsPage = () => {
-    const { wallets, sharedWallets, isLoading, createWallet, fetchWallets, openModal, closeModal, isOpenModal } = useWalletStore();
+    const { isLoading, data } = useGetWallets();
+    const { mutate: createWallet, isPending: isCreating } = usePostWallet();
+    const [isOpenModal, setIsOpenModal] = useState(false);
+
     const [activeTab, setActiveTab] = useState("wallets");
-    const data = activeTab === "wallets" ? wallets : sharedWallets;
-    useEffect(() => {
-        fetchWallets();
-    }, [fetchWallets]);
+    const walletsToShow = activeTab === "wallets" ? data?.myWallets : data?.sharedWallets;
     return (
         <>
             <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -84,22 +87,22 @@ export const WalletsPage = () => {
                 <CreateWalletDialog
                     isShowBtn={activeTab === "wallets"}
                     open={isOpenModal}
-                    // Usa una función que maneje ambos estados
-                    onOpenChange={(open) => open ? openModal() : closeModal() }
-                    createWallet={createWallet}
+                    onOpenChange={(open) => open ? setIsOpenModal(true): setIsOpenModal(false) }
+                    onCreateWallet={createWallet}
+                    isCreating={isCreating}
                 />
             </div>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] grid-rows-[repeat(auto-fill,minmax(175px,1fr))] gap-4">
                 {isLoading && <WalletLoader />}
-                {!isLoading && data.length === 0 && (
+                {!isLoading && walletsToShow?.length === 0 && (
                     <EmptyState
-                        Button={activeTab === "wallets" ? <ButtonEmpty onCreateClick={() => openModal()} /> : null}
+                        Button={activeTab === "wallets" ? <ButtonEmpty onCreateClick={() => setIsOpenModal(true)} /> : null}
                         titleText={activeTab === "wallets" ? "No tienes billeteras aún" : "No tienes billeteras compartidas"}
                         descriptionText={activeTab === "wallets" ? "Crea tu primera billetera para empezar a gestionar tus finanzas" : "Cuando alguien te invite a una billetera, aparecerá aquí"}
                         Icon={activeTab === "wallets" ? <Wallet /> : <Users />}
                     />
                 )}
-                {!isLoading && data.length > 0 && data.map(wallet => <WalletCard wallet={wallet} key={wallet.id} />)}
+                {!isLoading && (walletsToShow || []).length > 0 && (walletsToShow || []).map(wallet => <WalletCard wallet={wallet} key={wallet.id} />)}
             </div>
             <div className="flex items-center justify-between mt-5 mb-3">
                 <h2 className="text-[var(--text-primary)] font-medium text-lg">Actividad reciente</h2>

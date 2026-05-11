@@ -1,5 +1,5 @@
+import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
-import { useRef } from "react";
 
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../../../components/ui/dialog";
 import { Field, FieldGroup, FieldLabel } from "../../../../../components/ui/field";
@@ -7,29 +7,24 @@ import { Input } from "../../../../../components/ui/input";
 import { Button } from "../../../../../components/ui/button";
 import { Textarea } from "../../../../../components/ui/textarea";
 import { NativeSelect, NativeSelectOption } from "../../../../../components/ui/native-select";
-import { WalletCreationPayload } from "../wallet.store.ts";
+import { CreateWalletData } from "../interfaces/Wallets";
 
 interface CreateWalletDialogProps {
     isShowBtn: boolean;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    createWallet: (walletData: WalletCreationPayload) => void;
+    onCreateWallet: (walletData: CreateWalletData, options?: { onSuccess?: () => void; onError?: () => void }) => void;
+    isCreating?: boolean;
 }
 
-export const CreateWalletDialog = ({ isShowBtn, open, onOpenChange, createWallet }: CreateWalletDialogProps) => {
-    const walletNameRef = useRef<HTMLInputElement>(null);
-    const walletDescriptionRef = useRef<HTMLTextAreaElement>(null);
-    const walletCurrencyRef = useRef<HTMLSelectElement>(null);
-    const walletInitialValueRef = useRef<HTMLInputElement>(null);
+export const CreateWalletDialog = ({ isShowBtn, open, onOpenChange, onCreateWallet, isCreating }: CreateWalletDialogProps) => {
+    const { register, handleSubmit, formState: { errors, isSubmitted } } = useForm<CreateWalletData>({ mode: 'onSubmit' });
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        createWallet({
-            name: walletNameRef.current?.value || '',
-            description: walletDescriptionRef.current?.value || '',
-            currency: walletCurrencyRef.current?.value || '',
-            initialValue: Number(walletInitialValueRef.current?.value) || 0
+    const onInternalSubmit = (data: CreateWalletData) => {
+        onCreateWallet(data, {
+            onSuccess: () => {
+                onOpenChange(false);
+            }
         });
     }
     return (
@@ -46,32 +41,54 @@ export const CreateWalletDialog = ({ isShowBtn, open, onOpenChange, createWallet
                 <DialogHeader>
                     <DialogTitle>Nueva billetera</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(onInternalSubmit)}>
                     <FieldGroup>
                         <Field>
                             <FieldLabel htmlFor="walletName">Nombre de la billetera</FieldLabel>
-                            <Input id="walletName" placeholder="Ingrese el nombre de la billetera" ref={walletNameRef} />
+                            <Input id="walletName" placeholder="Ingrese el nombre de la billetera" {...register("name", { required: true })} />
+                            {isSubmitted && errors.name && (
+                                <p className="text-sm text-warning mt-1">
+                                    {errors.name.message}
+                                </p>
+                            )}
                         </Field>
                         <Field>
                             <FieldLabel htmlFor="walletDescription">Descripción</FieldLabel>
-                            <Textarea id="walletDescription" placeholder="Ingrese la descripción de la billetera" ref={walletDescriptionRef} />
+                            <Textarea id="walletDescription" placeholder="Ingrese la descripción de la billetera" {...register("description")} />
+                            {isSubmitted && errors.description && (
+                                <p className="text-sm text-warning mt-1">
+                                    {errors.description.message}
+                                </p>
+                            )}
                         </Field>
                         <div className="flex gap-2">
                             <Field>
                                 <FieldLabel htmlFor="walletCurrency">Moneda</FieldLabel>
-                                <NativeSelect id="walletCurrency" ref={walletCurrencyRef}>
+                                <NativeSelect id="walletCurrency" {...register("currency", { required: true })}>
                                     <NativeSelectOption value="USD">USD</NativeSelectOption>
                                     <NativeSelectOption value="EUR">EUR</NativeSelectOption>
                                 </NativeSelect>
+                                {isSubmitted && errors.currency && (
+                                    <p className="text-sm text-warning mt-1">
+                                        {errors.currency.message}
+                                    </p>
+                                )}
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="walletInitialValue" className="text-[var(--text-primary)]">Balance inicial</FieldLabel>
-                                <Input id="walletInitialValue" placeholder="$0.00" ref={walletInitialValueRef} />
+                                <Input id="walletInitialValue" placeholder="$0.00" {...register("initialValue", { required: true })} />
+                                {isSubmitted && errors.initialValue && (
+                                    <p className="text-sm text-warning mt-1">
+                                        {errors.initialValue.message}
+                                    </p>
+                                )}
                             </Field>
                         </div>
                     </FieldGroup>
                     <DialogFooter className="mt-4">
-                        <Button type="submit">Guardar billetera</Button>
+                        <Button type="submit" disabled={isCreating}>
+                            {isCreating ? "Creando billetera..." : "Guardar billetera"}
+                        </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

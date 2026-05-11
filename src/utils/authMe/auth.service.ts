@@ -3,7 +3,7 @@ import { apiRequest, APIError } from "../../utils/api.ts";
 
 import { AuthMeResponse } from "./auth.ts";
 
-const API_URL = `${config.API_BASE_URL}/auth`;
+const API_URL = `${config.API_BASE_URL}/api/auth`;
 
 const defaultApiOptions: RequestInit = {
     credentials: 'include',
