@@ -2,18 +2,18 @@
 const steps = [
     {
         number: "01",
-        title: "Creá tu cuenta",
-        desc: "Registrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.",
+        title: "Crea tu cuenta",
+        desc: "Regístrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.",
     },
     {
         number: "02",
-        title: "Agregá tus billeteras",
-        desc: "Creá billeteras para cada cuenta bancaria, efectivo o tarjeta. Invitá miembros si querés compartirlas.",
+        title: "Agrega tus billeteras",
+        desc: "Crea billeteras para cada cuenta bancaria, efectivo o tarjeta. Invita miembros si deseas compartirlas.",
     },
     {
         number: "03",
-        title: "Controlá tus finanzas",
-        desc: "Registrá movimientos, definí presupuestos y visualizá tu situación financiera en tiempo real.",
+        title: "Controla tus finanzas",
+        desc: "Registra movimientos, define presupuestos y visualiza tu situación financiera en tiempo real.",
     },
 ];
 
@@ -24,7 +24,7 @@ export const HowItWorks = () => {
                 <p className="text-xs tracking-widest uppercase text-warning mb-3">Cómo funciona</p>
                 <h2 className="text-4xl font-bold tracking-tight mb-3">En 3 pasos simples</h2>
                 <p className="text-base text-text-muted max-w-lg mb-12">
-                    Sin configuraciones complicadas. Empezás a controlar tus finanzas en minutos.
+                    Sin configuraciones complicadas. Comienza a controlar tus finanzas en minutos.
                 </p>
 
                 <div className="grid grid-cols-3 gap-6">

@@ -96,6 +96,7 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
                             id="txtPassword"
                             type={showPassword ? "text" : "password"}
                             placeholder="Minimo 8 caracteres"
+
                             className="h-12 rounded-xl border-border bg-bg-card px-11 text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-accent"
                         />
 

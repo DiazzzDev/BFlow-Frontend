@@ -23,7 +23,7 @@ const dataTable = [
         id: 1,
         movement: "Compra en Amazon",
         category: "Compras",
-        date: "2024-06-01",
+        date: "2026-06-01",
         amount: -50.00,
         wallet: "Legislative Office"
     },
@@ -31,7 +31,7 @@ const dataTable = [
         id: 2,
         movement: "Sueldo",
         category: "Ingresos",
-        date: "2024-06-01",
+        date: "2026-06-01",
         amount: 2000.00,
         wallet: "Legislative Office"
     },
@@ -39,7 +39,7 @@ const dataTable = [
         id: 3,
         movement: "Cena en restaurante",
         category: "Comida",
-        date: "2024-06-02",
+        date: "2026-06-02",
         amount: -30.00,
         wallet: "Legislative Office"
     },
@@ -47,7 +47,7 @@ const dataTable = [
         id: 4,
         movement: "Pago de servicios",
         category: "Servicios",
-        date: "2024-06-03",
+        date: "2026-06-03",
         amount: -100.00,
         wallet: "Legislative Office"
     },
@@ -55,7 +55,7 @@ const dataTable = [
         id: 5,
         movement: "Venta de bicicleta",
         category: "Ingresos",
-        date: "2024-06-04",
+        date: "2026-06-04",
         amount: 150.00,
         wallet: "Legislative Office"
     },
@@ -113,7 +113,7 @@ export const WalletsPage = () => {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Movimiento</TableHead>
-                            <TableHead>Categoria</TableHead>
+                            <TableHead>Categoría</TableHead>
                             <TableHead>Fecha</TableHead>
                             <TableHead>Monto</TableHead>
                         </TableRow>

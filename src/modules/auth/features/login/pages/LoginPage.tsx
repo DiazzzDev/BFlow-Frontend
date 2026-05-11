@@ -10,8 +10,8 @@ export const LoginPage = () => {
 
 	return (
 		<main className='w-full h-screen flex gap-4'>
-			<LeftPart Body={<LoginHero  />} title="Tu dinero bajo tu" focusTitle="control total" subtitle="Gestioná ingresos, gastos y billeteras compartidas desde un solo lugar. Simple, seguro y diseñado para tu día a día." />
-			<RightPart Body={<LoginForm onSubmitLogin={onSubmitLogin} isLoading={isLoading} />} isLoading={isLoading} separatorText="O inicia sesión con tu email" title="Bienvenido de vuelta" subtitle="Ingresá tus credenciales para continuar" />
+			<LeftPart Body={<LoginHero  />} title="Tu dinero bajo tu" focusTitle="control total" subtitle="Gestiona ingresos, gastos y billeteras compartidas desde un solo lugar. Simple, seguro y diseñado para tu día a día." />
+			<RightPart Body={<LoginForm onSubmitLogin={onSubmitLogin} isLoading={isLoading} />} isLoading={isLoading} separatorText="O inicia sesión con tu email" title="Bienvenido de vuelta" subtitle="Ingresa tus credenciales para continuar" />
 		</main>
 	)
 }

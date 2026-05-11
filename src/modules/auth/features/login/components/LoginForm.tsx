@@ -96,12 +96,12 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
             </div>
 
             <p className="mt-8 text-center text-sm text-text-muted">
-                ¿No tenés cuenta?{" "}
+                ¿No tienes cuenta?{" "}
                 <Link to="/auth/register" className="font-medium text-brand-accent hover:opacity-80" style={{
                     pointerEvents: isLoading ? 'none' : 'auto',
                     color: isLoading ? 'gray' : '',
                 }}>
-                    Creá una gratis
+                    Crea una gratis
                 </Link>
             </p>
         </form>

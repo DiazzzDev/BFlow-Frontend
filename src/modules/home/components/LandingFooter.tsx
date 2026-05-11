@@ -31,9 +31,9 @@ export const LandingFooter = () => {
 
                 <div>
                     <h4 className="text-sm font-semibold mb-4">Empresa</h4>
-                    {/* Esto todavia no esta implementado */}
+                    {/* Esto todavía no está implementado */}
                     <div className="flex flex-col gap-3">
-                        <a href="/about" className="text-sm text-text-muted hover:text-white transition-colors">A cerca de</a>
+                        <a href="/about" className="text-sm text-text-muted hover:text-white transition-colors">Acerca de</a>
                         <p className="text-sm text-text-muted hover:text-white transition-colors">Blog</p>
                         <p className="text-sm text-text-muted hover:text-white transition-colors">Contacto</p>
                     </div>
@@ -44,7 +44,7 @@ export const LandingFooter = () => {
                     <div className="flex flex-col gap-3">
                         <Link to="/privacy" className="text-sm text-text-muted hover:text-white transition-colors">Política de privacidad</Link>
                         <Link to="/terms" className="text-sm text-text-muted hover:text-white transition-colors">Términos de uso</Link>
-                        {/* Esto de cookies no esta todavia */}
+                        {/* Esto de cookies no está todavía */}
                         <Link to="#" className="text-sm text-text-muted hover:text-white transition-colors">Cookies</Link>
                     </div>
                 </div>
