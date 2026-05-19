@@ -17,7 +17,7 @@ export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: {
             <div className="w-full max-w-md">
                 <Link style={{
                     pointerEvents: isLoading ? 'none' : 'auto',
-                    color: isLoading ? 'gray' : '',
+                    color: isLoading ? 'var(--text-muted)' : '',
                 }} to="/" className="mb-10 flex items-center gap-2 text-sm text-text-muted transition-colors hover:text-warning">
                     <ArrowLeft size={16} />
                     Volver al inicio
