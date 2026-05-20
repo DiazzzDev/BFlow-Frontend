@@ -10,7 +10,7 @@ export const TermsPage = () => {
     const [locale, setLocale] = useState("es");
     const { header, sidebarItems, intro, sectionTitles, sections, footerNote } = getTermsData(locale)
     return (
-        <div className="min-h-screen bg-[var(--bg-main)] text-[var(--text-primary)]">
+        <div className="min-h-screen bg-[var(--background)] text-[var(--text-foreground)]">
             <PolicyHeader setLocale={setLocale} header={header} />
             <div className="flex px-20 py-12 gap-12 max-w-[1200px] mx-auto">
                 <PolicySidebar sidebarItems={sidebarItems} />
@@ -19,3 +19,4 @@ export const TermsPage = () => {
         </div>
     );
 };
+

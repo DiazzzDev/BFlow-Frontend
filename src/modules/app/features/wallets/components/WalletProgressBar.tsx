@@ -8,11 +8,11 @@ export const WalletProgressBar = ({ spent, budget }: { spent: number, budget: nu
 
     return (
         <div className="flex flex-col gap-1 mt-2">
-            <div className="flex justify-between text-xs text-[var(--text-muted)]">
+            <div className="flex justify-between text-xs text-text-muted">
                 <span>Gasto del mes</span>
                 <span>{formatCurrency(spent)} / {formatCurrency(budget)}</span>
             </div>
-            <div className="h-1 rounded-full bg-[var(--progress-bg)]">
+            <div className="h-1 rounded-full bg-info">
                 <div
                     className="h-full rounded-full"
                     style={{ width: `${percentage}%`, backgroundColor: color }}

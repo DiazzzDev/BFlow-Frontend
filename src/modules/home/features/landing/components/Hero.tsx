@@ -18,7 +18,7 @@ export const Hero = () => {
 
             <div className="flex items-center gap-3 mb-4">
                 <a href="/auth/register">
-                    <button className="bg-brand-accent text-white text-sm font-medium px-7 py-3 rounded-xl hover:opacity-90 transition-opacity">
+                    <button className="bg-primary text-white text-sm font-medium px-7 py-3 rounded-xl hover:opacity-90 transition-opacity">
                         Empezar gratis
                     </button>
                 </a>

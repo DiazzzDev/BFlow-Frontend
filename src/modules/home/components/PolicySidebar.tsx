@@ -8,7 +8,7 @@ export const PolicySidebar = ({ sidebarItems }) => {
                         <button
                             key={id}
                             onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                            className="text-sm text-[var(--text-primary)] hover:text-white transition-colors py-1.5 px-3 rounded-lg hover:bg-[var(--bg-card)] leading-snug cursor-pointer text-left"
+                            className="text-sm text-[var(--text-foreground)] hover:text-white transition-colors py-1.5 px-3 rounded-lg hover:bg-[var(--card)] leading-snug cursor-pointer text-left"
                         >
                             {label}
                         </button>
@@ -18,3 +18,4 @@ export const PolicySidebar = ({ sidebarItems }) => {
         </aside>
     );
 }
+

@@ -107,10 +107,10 @@ export const WalletsPage = () => {
                 {!isLoading && (walletsToShow || []).length > 0 && (walletsToShow || []).map(wallet => <WalletCard wallet={wallet} key={wallet.id} />)}
             </div>
             <div className="flex items-center justify-between mt-5 mb-3">
-                <h2 className="text-[var(--text-primary)] font-medium text-lg">Actividad reciente</h2>
-                <h3 className="text-[var(--text-label)]">Todas mis billeteras</h3>
+                <h2 className="text-foreground font-medium text-lg">Actividad reciente</h2>
+                <h3 className="text-text-label">Todas mis billeteras</h3>
             </div>
-            <div className="border border-border rounded-xl flex-1 bg-surface">
+            <div className="border border-border rounded-xl flex-1 bg-card">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -122,13 +122,13 @@ export const WalletsPage = () => {
                     </TableHeader>
                     <TableBody>
                         {dataTable.map(({ id, movement, category, date, amount, wallet }) => (
-                            <TableRow key={id} className="cursor-pointer hover:bg-[var(--bg-card-hover)] transition-colors">
+                            <TableRow key={id} className="cursor-pointer hover:bg-[var(--secondary)] transition-colors">
                                 <TableCell className="text-foreground flex flex-col gap-1">
                                     <span className="text-base">{movement}</span>
-                                    <span className="text-xs text-brand-secondary">{wallet}</span>
+                                    <span className="text-xs text-text-label">{wallet}</span>
                                 </TableCell>
                                 <TableCell className="text-foreground"><Badge variant="outline">{category}</Badge></TableCell>
-                                <TableCell className="text-brand-secondary">{formatDate(date)}</TableCell>
+                                <TableCell className="text-foreground">{formatDate(date)}</TableCell>
                                 <TableCell className={amount < 0 ? "text-red-500 font-bold text-base" : "text-green-500 font-bold text-base"}>{amount < 0 ? `${formatCurrency(amount)}` : `${formatCurrency(amount)}`}</TableCell>
                             </TableRow>
                         ))}
@@ -138,3 +138,4 @@ export const WalletsPage = () => {
         </>
     )
 }
+

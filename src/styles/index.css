@@ -6,9 +6,6 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-    /* ===========================================
-    PALETA SIMPLIFICADA - BFlow
-    =========================================== */
 
     /* Fondos */
     --background: #111317;          /* Fondo principal */
@@ -16,60 +13,46 @@
     --surface: #1a1c20;             /* Superficies intermedias */
 
     /* Texto */
-    --foreground: #ffffff;          /* Texto principal */
-    --text-primary: #ffffff;        /* Alias para consistencia */
+    --text-foreground: #ffffff;          /* Texto principal */
     --text-muted: rgba(255, 255, 255, 0.35); /* Texto secundario */
     --text-label: rgba(255, 255, 255, 0.55); /* Etiquetas */
 
-    /* Colores Interactivos */
-    --primary: #ffa200;             /* Botones principales (naranja) */
-    --secondary: #1e2329;           /* Elementos secundarios */
-    --accent: #efbd65;              /* Acentos (naranja claro) */
+    --primary: #f97316;      /* Naranja fuerte */
+    --secondary: #2f3846;    /* Gris azulado oscuro para elementos secundarios */
+    --tertiary: #ffcc66;     /* Naranja claro / dorado para acentos */
 
     /* Estados */
     --success: #22c55e;             /* Éxito */
-    --warning: #f97316;             /* Advertencias */
+    --warning: #ffa200;             /* Advertencias */
     --error: #ef4444;              /* Errores */
     --info: #3b82f6;               /* Información */
 
-    /* Marca BFlow */
-    --brand-primary: #25343F;       /* Azul-gris profesional */
-    --brand-secondary: #d5c2a6;     /* Gris claro unificado */
 
     /* UI Elements */
     --border: rgba(255, 255, 255, 0.05); /* Bordes sutiles */
-    --ring: #e85d26;                /* Enfoque/anillos */
-    --bg-hover: #1e2329;            /* Hover states */
-    --bg-card-hover: #1e2329;       /* Hover para tarjetas */
-
-    /* Componentes Específicos */
-    --progress-bg: rgba(255, 255, 255, 0.08);
-    --progress-fill: #3b82f6;
 
     /* Layout */
     --radius: 0.5rem;
     --container-sm: 30rem;
 
-    /* ===========================================
-    ALIASES PARA COMPATIBILIDAD CON SHADCN
-    =========================================== */
+    /* Compatibilidad con Shadcn */
     --popover: var(--card);
-    --popover-foreground: var(--foreground);
-    --card-foreground: var(--foreground);
-    --primary-foreground: var(--foreground);
-    --secondary-foreground: var(--foreground);
-    --accent-foreground: var(--foreground);
+    --popover-foreground: var(--text-foreground);
+    --card-foreground: var(--text-foreground);
+    --primary-foreground: var(--text-foreground);
+    --secondary-foreground: var(--text-foreground);
+    --accent-foreground: var(--text-foreground);
     --muted: var(--card);
     --muted-foreground: var(--text-muted);
     --destructive: var(--error);
-    --destructive-foreground: var(--foreground);
+    --destructive-foreground: var(--text-foreground);
     --input: var(--card);
     --danger: var(--error);
-    --danger-foreground: var(--foreground);
-    --warning-foreground: var(--foreground);
-    --info-foreground: var(--foreground);
-    --success-foreground: var(--foreground);
-    --brand-muted: var(--brand-secondary); /* Alias para compatibilidad */
+    --danger-foreground: var(--text-foreground);
+    --warning-foreground: var(--text-foreground);
+    --info-foreground: var(--text-foreground);
+    --success-foreground: var(--text-foreground);
+    --brand-muted: var(--secondary); /* Alias para compatibilidad */
 }
 
 @theme inline {
@@ -85,19 +68,19 @@
 
     /* Base */
     --color-background: var(--background);
-    --color-foreground: var(--foreground);
+    --color-foreground: var(--text-foreground);
     --color-card: var(--card);
     --color-surface: var(--surface);
 
     /* Texto */
-    --color-text-primary: var(--text-primary);
+    --color-text-primary: var(--text-foreground);
     --color-text-muted: var(--text-muted);
     --color-text-label: var(--text-label);
 
     /* Interactivos */
     --color-primary: var(--primary);
     --color-secondary: var(--secondary);
-    --color-accent: var(--accent);
+    --color-accent: var(--tertiary);
 
     /* Estados */
     --color-success: var(--success);
@@ -106,36 +89,36 @@
     --color-info: var(--info);
 
     /* Marca */
-    --color-brand-primary: var(--brand-primary);
-    --color-brand-secondary: var(--brand-secondary);
+    --color-brand-primary: var(--primary);
+    --color-brand-secondary: var(--secondary);
 
     /* UI */
     --color-border: var(--border);
-    --color-ring: var(--ring);
-    --color-bg-hover: var(--bg-hover);
-    --color-bg-card-hover: var(--bg-card-hover);
+    --color-ring: var(--primary);
+    --color-bg-hover: var(--secondary);
+    --color-bg-card-hover: var(--secondary);
 
     /* ===========================================
     ALIASES PARA COMPATIBILIDAD CON SHADCN
     =========================================== */
-    --color-card-foreground: var(--foreground);
+    --color-card-foreground: var(--text-foreground);
     --color-popover: var(--card);
-    --color-popover-foreground: var(--foreground);
-    --color-primary-foreground: var(--foreground);
-    --color-secondary-foreground: var(--foreground);
-    --color-accent-foreground: var(--foreground);
+    --color-popover-foreground: var(--text-foreground);
+    --color-primary-foreground: var(--text-foreground);
+    --color-secondary-foreground: var(--text-foreground);
+    --color-accent-foreground: var(--text-foreground);
     --color-muted: var(--card);
     --color-muted-foreground: var(--text-muted);
     --color-destructive: var(--error);
-    --color-destructive-foreground: var(--foreground);
+    --color-destructive-foreground: var(--text-foreground);
     --color-input: var(--card);
     --color-danger: var(--error);
-    --color-danger-foreground: var(--foreground);
-    --color-warning-foreground: var(--foreground);
-    --color-info-foreground: var(--foreground);
-    --color-success-foreground: var(--foreground);
-    --color-brand-accent: var(--accent);
-    --color-brand-muted: var(--brand-secondary);
+    --color-danger-foreground: var(--text-foreground);
+    --color-warning-foreground: var(--text-foreground);
+    --color-info-foreground: var(--text-foreground);
+    --color-success-foreground: var(--text-foreground);
+    --color-brand-accent: var(--tertiary);
+    --color-brand-muted: var(--secondary);
 }
 
 

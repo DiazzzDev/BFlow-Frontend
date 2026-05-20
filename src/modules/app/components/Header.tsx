@@ -43,7 +43,7 @@ export const Header = () => {
     };
 
     return (
-        <header className="flex items-center justify-between px-8 py-5 border-b border-border bg-background text-brand-secondary">
+        <header className="flex items-center justify-between px-8 py-5 border-b border-border bg-background text-foreground">
             <div className="flex items-center gap-2 text-lg font-medium">
                 {crumbs.map((crumb, i) => (
                     <span className="flex items-center gap-2" key={i}>

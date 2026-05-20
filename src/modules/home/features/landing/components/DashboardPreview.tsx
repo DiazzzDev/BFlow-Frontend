@@ -2,13 +2,13 @@
 export const DashboardPreview = () => {
     return (
         <div id="dashboard-preview" className="px-20 pb-20 max-w-[1200px] mx-auto w-full">
-            <div className="bg-surface border border-border rounded-2xl overflow-hidden p-6">
+            <div className="bg-card border border-border rounded-2xl overflow-hidden p-6">
 
                 {/* Dots */}
                 <div className="flex items-center gap-2 mb-5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--error)]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--warning)]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--success)]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-error" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-warning" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-success" />
                 </div>
 
                 {/* Summary cards */}

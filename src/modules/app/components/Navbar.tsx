@@ -31,21 +31,16 @@ export const Navbar = () => {
                         key={to}
                         to={to}
                         end={to === "/"}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150"
+                        className="flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150"
                         style={({ isActive }) => ({
-                            backgroundColor: isActive ? "var(--bg-card-hover)" : "transparent",
-                            color: isActive ? "var(--accent)" : "var(--brand-secondary)",
+                            backgroundColor: isActive ? "var(--secondary)" : "transparent",
                             fontWeight: isActive ? "500" : "400",
                         })}
                     >
-                        {({ isActive }) => (
-                            <>
-                                <span style={{ color: isActive ? "var(--brand-accent)" : "var(--brand-secondary)" }}>
-                                    {icon}
-                                </span>
-                                {label}
-                            </>
-                        )}
+                        <span>
+                            {icon}
+                        </span>
+                        {label}
                     </NavLink>
                 ))}
             </nav>
@@ -53,23 +48,19 @@ export const Navbar = () => {
             <div className="mt-auto">
                 <NavLink
                     to="/settings"
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150"
+                    className="flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150"
                     style={({ isActive }) => ({
-                        backgroundColor: isActive ? "var(--bg-card-hover)" : "transparent",
-                        color: isActive ? "var(--brand-accent)" : "var(--brand-secondary)",
+                        backgroundColor: isActive ? "var(--secondary)" : "transparent",
                         fontWeight: isActive ? "500" : "400",
                     })}
                 >
-                    {({ isActive }) => (
-                        <>
-                            <span style={{ color: isActive ? "var(--brand-accent)" : "var(--brand-secondary)" }}>
-                                <Settings />
-                            </span>
-                            Ajustes
-                        </>
-                    )}
+                    <span>
+                        <Settings />
+                    </span>
+                    Ajustes
                 </NavLink>
             </div>
         </aside>
     );
 };
+
