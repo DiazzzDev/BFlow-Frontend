@@ -2,10 +2,6 @@
 export const Hero = () => {
     return (
         <div className="flex flex-col items-center text-center px-20 pt-24 pb-20 max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-xs px-4 py-1.5 rounded-full mb-6">
-                <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
-                Categorización inteligente con IA
-            </div>
 
             <h1 className="text-6xl font-bold leading-tight tracking-tight mb-5">
                 El control financiero que{" "}
