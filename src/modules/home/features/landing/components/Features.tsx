@@ -1,4 +1,3 @@
-// components/Features.tsx
 const features = [
     {
         title: "Billeteras compartidas",
@@ -58,27 +57,36 @@ const features = [
 
 export const Features = () => {
     return (
-        <section id="features" className="px-20 py-20">
-            <p className="text-xs tracking-widest uppercase text-brand-accent mb-3">Funcionalidades</p>
-            <h2 className="text-4xl font-bold tracking-tight mb-3">Todo lo que necesitas para<br/>controlar tus finanzas</h2>
-            <p className="text-base text-text-muted max-w-lg">
-                Desde gastos diarios hasta billeteras compartidas con tu familia — BFlow lo tiene todo.
-            </p>
+        <section id="features" className="px-6 md:px-20 py-24">
+            <div className="mx-auto">
+                <p className="text-xs tracking-widest uppercase text-[#ff8a14] mb-3">Funcionalidades</p>
+                <h2 className="text-4xl font-bold tracking-tight mb-3">Todo lo que necesitas para<br />controlar tus finanzas</h2>
+                <p className="text-base text-text-muted max-w-lg">
+                    Desde gastos diarios hasta billeteras compartidas con tu familia — BFlow lo tiene todo.
+                </p>
 
-            <div className="grid grid-cols-3 gap-4 mt-12">
-                {features.map(({ title, desc, icon }) => (
-                    <div
-                        key={title}
-                        className="bg-bg-card border border-border rounded-2xl p-7 hover:border-brand-accent/30 transition-colors bg-card"
-                    >
-                        <div className="w-11 h-11 rounded-xl bg-brand-accent/10 flex items-center justify-center text-brand-accent mb-4">
-                            {icon}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
+                    {features.map(({ title, desc, icon }) => (
+                        <div
+                            key={title}
+                            className="group relative bg-card border border-border rounded-2xl p-7 transition-all duration-300 hover:border-[#ff8a14]/30 hover:-translate-y-0.5 overflow-hidden"
+                        >
+                            {/* Hover glow */}
+                            <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                style={{ background: "radial-gradient(ellipse at 50% 120%, rgba(255,138,20,0.07) 0%, transparent 70%)" }} />
+
+                            <div className="relative z-10">
+                                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-[#ff8a14] mb-4 transition-all duration-300 group-hover:scale-110"
+                                    style={{ background: "rgba(255,138,20,0.1)" }}>
+                                    {icon}
+                                </div>
+                                <h3 className="text-base font-semibold mb-2">{title}</h3>
+                                <p className="text-sm text-text-muted leading-relaxed">{desc}</p>
+                            </div>
                         </div>
-                        <h3 className="text-base font-semibold mb-2">{title}</h3>
-                        <p className="text-sm text-text-muted leading-relaxed">{desc}</p>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </section>
-    )
-}
+    );
+} 

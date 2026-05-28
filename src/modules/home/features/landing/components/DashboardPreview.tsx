@@ -2,13 +2,13 @@
 export const DashboardPreview = () => {
     return (
         <div id="dashboard-preview" className="px-20 pb-20 max-w-[1200px] mx-auto w-full">
-            <div className="bg-surface border border-border rounded-2xl overflow-hidden p-6">
+            <div className="bg-card border border-border rounded-2xl overflow-hidden p-6">
 
                 {/* Dots */}
                 <div className="flex items-center gap-2 mb-5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-error" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-warning" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-success" />
                 </div>
 
                 {/* Summary cards */}
@@ -29,9 +29,9 @@ export const DashboardPreview = () => {
                 {/* Wallet cards */}
                 <div className="grid grid-cols-3 gap-3 mb-4">
                     {[
-                        { name: "Bóveda Física", balance: "$12,450.00", pct: 21, color: "#f97316" },
-                        { name: "Sapphire Prime", balance: "$45,000.00", pct: 24, color: "#3b82f6" },
-                        { name: "Corporate Ops", balance: "$8,210.55", pct: 70, color: "#ef4444" },
+                        { name: "Bóveda Física", balance: "$12,450.00", pct: 21, color: "var(--warning)" },
+                        { name: "Sapphire Prime", balance: "$45,000.00", pct: 24, color: "var(--info)" },
+                        { name: "Corporate Ops", balance: "$8,210.55", pct: 70, color: "var(--error)" },
                     ].map(({ name, balance, pct, color }) => (
                         <div key={name} className="bg-bg-card border border-border rounded-xl p-4 bg-card">
                             <p className="text-sm font-medium mb-3">{name}</p>

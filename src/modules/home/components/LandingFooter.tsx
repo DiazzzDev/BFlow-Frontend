@@ -44,8 +44,7 @@ export const LandingFooter = () => {
                     <div className="flex flex-col gap-3">
                         <Link to="/privacy" className="text-sm text-text-muted hover:text-white transition-colors">Política de privacidad</Link>
                         <Link to="/terms" className="text-sm text-text-muted hover:text-white transition-colors">Términos de uso</Link>
-                        {/* Esto de cookies no está todavía */}
-                        <Link to="#" className="text-sm text-text-muted hover:text-white transition-colors">Cookies</Link>
+                        <Link to="/cookies" className="text-sm text-text-muted hover:text-white transition-colors">Cookies</Link>
                     </div>
                 </div>
             </div>

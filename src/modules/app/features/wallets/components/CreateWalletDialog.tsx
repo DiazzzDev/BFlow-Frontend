@@ -75,7 +75,7 @@ export const CreateWalletDialog = ({ isShowBtn, open, onOpenChange, onCreateWall
                                 )}
                             </Field>
                             <Field>
-                                <FieldLabel htmlFor="walletInitialValue" className="text-[var(--text-primary)]">Balance inicial</FieldLabel>
+                                <FieldLabel htmlFor="walletInitialValue" className="text-foreground">Balance inicial</FieldLabel>
                                 <Input id="walletInitialValue" placeholder="$0.00" {...register("initialValue", { required: true })} />
                                 {isSubmitted && errors.initialValue && (
                                     <p className="text-sm text-warning mt-1">
@@ -95,3 +95,4 @@ export const CreateWalletDialog = ({ isShowBtn, open, onOpenChange, onCreateWall
         </Dialog>
     )
 };
+

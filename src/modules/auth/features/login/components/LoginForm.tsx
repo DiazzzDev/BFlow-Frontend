@@ -99,7 +99,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                 ¿No tienes cuenta?{" "}
                 <Link to="/auth/register" className="font-medium text-brand-accent hover:opacity-80" style={{
                     pointerEvents: isLoading ? 'none' : 'auto',
-                    color: isLoading ? 'gray' : '',
+                    color: isLoading ? 'var(--text-muted)' : '',
                 }}>
                     Crea una gratis
                 </Link>

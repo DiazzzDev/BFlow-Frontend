@@ -75,7 +75,7 @@ export const PricingPreview = () => {
                 {plans.map(({ name, price, desc, featured, btnText, btnStyle, features }) => (
                     <div
                         key={name}
-                        className={`bg-[var(--bg-card)] rounded-2xl p-7 relative bg-card ${
+                        className={`bg-[var(--card)] rounded-2xl p-7 relative bg-card ${
                             featured
                                 ? "border border-warning"
                                 : "border border-border-subtle"
@@ -126,3 +126,4 @@ export const PricingPreview = () => {
         </section>
     )
 }
+

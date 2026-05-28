@@ -2,7 +2,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
     return (
         <main className="flex-1 min-w-0 flex flex-col gap-10">
             {/* Intro */}
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-6">
+            <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-6">
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3">
                     {intro.p1.split("BFlow Studio").map((part, i) =>
                         i === 0 ? (
@@ -15,7 +15,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                                 {part.split("BFlow")[0]}
                                 <span className="text-white font-medium">BFlow</span>
                                 {part.split("BFlow")[1]?.split("bflow-studio.com")[0]}
-                                <a href="https://bflow-studio.com" className="text-[var(--accent-orange)] hover:underline">
+                                <a href="https://bflow-studio.com" className="text-[var(--tertiary)] hover:underline">
                                     bflow-studio.com
                                 </a>
                                 {part.split("bflow-studio.com")[1]}
@@ -40,7 +40,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
             <section id="ip" style={{ scrollMarginTop: "96px" }}>
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.ip}</h2>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">{sections.ip.intro}</p>
-                <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-5 mb-4">
+                <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-5 mb-4">
                     <p className="text-sm font-medium mb-2">{sections.ip.licenseTitle}</p>
                     <ul className="flex flex-col gap-2">
                         {sections.ip.licenseItems.map(item => (
@@ -60,8 +60,8 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">{sections.representations.intro}</p>
                 <div className="grid grid-cols-2 gap-3">
                     {sections.representations.items.map(item => (
-                        <div key={item} className="flex items-start gap-2 bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg px-4 py-3 text-sm text-[var(--text-muted)]">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent-orange)] flex-shrink-0 mt-1.5" />
+                        <div key={item} className="flex items-start gap-2 bg-[var(--card)] border border-[var(--border-subtle)] rounded-lg px-4 py-3 text-sm text-[var(--text-muted)]">
+                            <div className="w-1.5 h-1.5 rounded-full bg-[var(--tertiary)] flex-shrink-0 mt-1.5" />
                             {item}
                         </div>
                     ))}
@@ -80,7 +80,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">{sections.payments.intro}</p>
                 <div className="flex gap-3 mb-4">
                     {sections.payments.methods.map(method => (
-                        <div key={method} className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-lg px-4 py-2 text-sm font-medium">
+                        <div key={method} className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-lg px-4 py-2 text-sm font-medium">
                             {method}
                         </div>
                     ))}
@@ -96,7 +96,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                     <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                         <span className="text-white font-medium">{sections.subscriptions.refundLabel}</span>{" "}
                         {sections.subscriptions.refundText.split("support@bflow-studio.com")[0]}
-                        <a href="mailto:support@bflow-studio.com" className="text-[var(--accent-orange)] hover:underline">support@bflow-studio.com</a>
+                        <a href="mailto:support@bflow-studio.com" className="text-[var(--tertiary)] hover:underline">support@bflow-studio.com</a>
                         {sections.subscriptions.refundText.split("support@bflow-studio.com")[1]}
                     </p>
                 </div>
@@ -120,12 +120,12 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
             <section id="ai" style={{ scrollMarginTop: "96px" }}>
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.ai}</h2>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3">{sections.ai.intro}</p>
-                <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-5">
+                <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-5">
                     <p className="text-sm font-medium mb-3">{sections.ai.noteTitle}</p>
                     <ul className="flex flex-col gap-2">
                         {sections.ai.noteItems.map(item => (
                             <li key={item} className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                                <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent-orange)] flex-shrink-0" />
+                                <div className="w-1.5 h-1.5 rounded-full bg-[var(--tertiary)] flex-shrink-0" />
                                 {item}
                             </li>
                         ))}
@@ -168,7 +168,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.dataroles}</h2>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3">
                     {sections.dataroles.text.split(sections.dataroles.privacyLinkText)[0]}
-                    <a href="/privacy" className="text-[var(--accent-orange)] hover:underline">{sections.dataroles.privacyLinkText}</a>
+                    <a href="/privacy" className="text-[var(--tertiary)] hover:underline">{sections.dataroles.privacyLinkText}</a>
                     {sections.dataroles.text.split(sections.dataroles.privacyLinkText)[1]}
                 </p>
             </section>
@@ -178,7 +178,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.copyright}</h2>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                     {sections.copyright.text.split("legal@bflow-studio.com")[0]}
-                    <a href="mailto:legal@bflow-studio.com" className="text-[var(--accent-orange)] hover:underline">legal@bflow-studio.com</a>
+                    <a href="mailto:legal@bflow-studio.com" className="text-[var(--tertiary)] hover:underline">legal@bflow-studio.com</a>
                     {sections.copyright.text.split("legal@bflow-studio.com")[1]}
                 </p>
             </section>
@@ -202,7 +202,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4">{sections.law.intro}</p>
                 <div className="grid grid-cols-2 gap-3">
                     {sections.law.lawItems.map(({ region, law }) => (
-                        <div key={region} className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-4">
+                        <div key={region} className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-4">
                             <p className="text-sm font-medium mb-1">{region}</p>
                             <p className="text-xs text-[var(--text-muted)]">{law}</p>
                         </div>
@@ -215,7 +215,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.disputes}</h2>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-3">
                     {sections.disputes.para1.split("support@bflow-studio.com")[0]}
-                    <a href="mailto:support@bflow-studio.com" className="text-[var(--accent-orange)] hover:underline">support@bflow-studio.com</a>
+                    <a href="mailto:support@bflow-studio.com" className="text-[var(--tertiary)] hover:underline">support@bflow-studio.com</a>
                     {sections.disputes.para1.split("support@bflow-studio.com")[1]}
                 </p>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed">{sections.disputes.para2}</p>
@@ -249,7 +249,7 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
             {/* Section 22 */}
             <section id="liability" style={{ scrollMarginTop: "96px" }}>
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.liability}</h2>
-                <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-5 mb-4">
+                <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-5 mb-4">
                     <p className="text-sm font-medium mb-2">{sections.liability.capTitle}</p>
                     <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                         {sections.liability.capText.split(sections.liability.capHighlight)[0]}
@@ -304,22 +304,22 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
             {/* Section 28 */}
             <section id="contact" style={{ scrollMarginTop: "96px" }}>
                 <h2 className="text-xl font-semibold mb-4 pb-3 border-b border-[var(--border-subtle)]">{sectionTitles.contact}</h2>
-                <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-6 flex flex-col gap-4">
+                <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-6 flex flex-col gap-4">
                     <div>
                         <p className="text-xs uppercase tracking-widest text-[var(--text-label)] mb-1">{sections.contact.addressLabel}</p>
                         <p className="text-sm text-[var(--text-muted)]">{sections.contact.addressValue}</p>
                     </div>
                     <div>
                         <p className="text-xs uppercase tracking-widest text-[var(--text-label)] mb-1">{sections.contact.supportLabel}</p>
-                        <a href="mailto:support@bflow-studio.com" className="text-sm text-[var(--accent-orange)] hover:underline">support@bflow-studio.com</a>
+                        <a href="mailto:support@bflow-studio.com" className="text-sm text-[var(--tertiary)] hover:underline">support@bflow-studio.com</a>
                     </div>
                     <div>
                         <p className="text-xs uppercase tracking-widest text-[var(--text-label)] mb-1">{sections.contact.legalLabel}</p>
-                        <a href="mailto:legal@bflow-studio.com" className="text-sm text-[var(--accent-orange)] hover:underline">legal@bflow-studio.com</a>
+                        <a href="mailto:legal@bflow-studio.com" className="text-sm text-[var(--tertiary)] hover:underline">legal@bflow-studio.com</a>
                     </div>
                     <div>
                         <p className="text-xs uppercase tracking-widest text-[var(--text-label)] mb-1">{sections.contact.openSourceLabel}</p>
-                        <a href="https://github.com/DiazzzDev/BFlow-Backend-Open-Source" target="_blank" rel="noreferrer" className="text-sm text-[var(--accent-orange)] hover:underline">
+                        <a href="https://github.com/DiazzzDev/BFlow-Backend-Open-Source" target="_blank" rel="noreferrer" className="text-sm text-[var(--tertiary)] hover:underline">
                             github.com/DiazzzDev/BFlow-Backend-Open-Source
                         </a>
                     </div>
@@ -327,9 +327,10 @@ export const TermsContent = ({ intro, sectionTitles, sections, footerNote }) => 
             </section>
 
             {/* Footer note */}
-            <div className="bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-5 text-center">
+            <div className="bg-[var(--card)] border border-[var(--border-subtle)] rounded-xl p-5 text-center">
                 <p className="text-xs text-[var(--text-label)]">{footerNote}</p>
             </div>
         </main>
     );
 };
+

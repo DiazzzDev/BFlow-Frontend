@@ -16,7 +16,7 @@ export const LateralBar = () => {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="outline">Open</Button>
+                <Button>Open</Button>
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>
@@ -38,7 +38,7 @@ export const LateralBar = () => {
                 <SheetFooter>
                     <Button type="submit">Save changes</Button>
                     <SheetClose asChild>
-                        <Button variant="outline">Close</Button>
+                        <Button>Close</Button>
                     </SheetClose>
                 </SheetFooter>
             </SheetContent>
