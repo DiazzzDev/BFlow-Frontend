@@ -1,4 +1,3 @@
-
 export class APIError extends Error {
     status: number;
     cause: unknown;
@@ -57,7 +56,8 @@ export const apiRequest = async <T>(
     url: string,
     options: RequestInit = {},
     friendlyMessage: string = 'Error de API',
-    requiredPrivileges: string[] = []
+    requiredPrivileges: string[] = [],
+    token?: string
 ): Promise<T> => {
 
     if (requiredPrivileges.length > 0) {
@@ -66,9 +66,34 @@ export const apiRequest = async <T>(
 
     try {
         const response = await fetch(url, {
-            credentials: 'include',
             ...options,
+            headers: {
+                ...(options.headers || {}),
+                ...(token
+                    ? {
+                        Authorization: `Bearer ${token}`
+                    }
+                    : {})
+            }
         });
+
+        /*
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                ...(options.headers || {}),
+                ...(token
+                    ? {
+                        Authorization: `Bearer ${token}`
+                    }
+                    : {})
+            }
+        });*/
+
+        //const response = await fetch(url, {
+        //    credentials: 'include',
+        //    ...options,
+        //});
         let data: unknown = null;
 
         const contentType = response.headers.get('content-type') || '';
@@ -81,7 +106,7 @@ export const apiRequest = async <T>(
         if (!response.ok) {
             let errorMessage = `${friendlyMessage}. Código: ${response.status}`;
 
-            if (data && typeof data === 'object' && data !== null) {
+            if (data !== null && typeof data === "object") {
                 // Manejo de errores de Spring Boot (DTO errors)
                 const dataObj = data as Record<string, unknown>;
                 if (dataObj.errors && typeof dataObj.errors === 'object') {
@@ -105,10 +130,10 @@ export const apiRequest = async <T>(
             throw error;
         }
 
-        const isNetworkError = error instanceof TypeError || /network|failed/i.test((error as Error)?.message || '');
+        const isNetworkError = error instanceof TypeError || /network|failed/i.test((error as Error).message || '');
         const errorMessage = isNetworkError
             ? `${friendlyMessage}. El servicio no está disponible.`
-            : `${friendlyMessage}. ${(error as Error)?.message || 'Error inesperado.'}`;
+            : `${friendlyMessage}. ${(error as Error).message || 'Error inesperado.'}`;
 
         throw new APIError(errorMessage, isNetworkError ? 0 : 500, error, url);
     }

@@ -26,7 +26,9 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
     }
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <form action="" onSubmit={handleSubmit(onInternalSubmit)}>
+        <form action="" onSubmit={(e) => {
+                void handleSubmit(onInternalSubmit)(e);
+            }}>
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-text-label" htmlFor="txtFullName">

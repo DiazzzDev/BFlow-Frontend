@@ -12,7 +12,6 @@ import { TransfersPage } from "./modules/app/features/transfers/pages/TransfersP
 import { LoginPage } from "./modules/auth/features/login/pages/LoginPage.tsx";
 // Auth
 import { AuthLayout } from "./modules/auth/AuthLayout.tsx";
-
 // Landing
 import { LandingLayout } from "./modules/home/LandingLayout.tsx";
 import { LandingPage } from "./modules/home/features/landing/LandingPage.tsx";
@@ -22,6 +21,7 @@ import { CookiesPage } from "./modules/home/features/cookies/CookiesPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
 import { AppLayout } from "./modules/app/appLayout.tsx";
 import { RegisterPage } from "./modules/auth/features/register/pages/RegisterPage.tsx";
+import { AuthCallbackPage } from "./modules/auth/features/callback/pages/AuthCallbackPage.tsx";
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -63,6 +63,7 @@ export const appRouter = createBrowserRouter([
         children: [
             { path: "login", element: <LoginPage /> },
             { path: "register", element: <RegisterPage /> },
+            { path: "callback", element: <AuthCallbackPage /> },
         ]
     }
 ]); 
