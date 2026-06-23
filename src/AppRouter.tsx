@@ -21,7 +21,9 @@ import { CookiesPage } from "./modules/home/features/cookies/CookiesPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
 import { AppLayout } from "./modules/app/appLayout.tsx";
 import { RegisterPage } from "./modules/auth/features/register/pages/RegisterPage.tsx";
-import { AuthCallbackPage } from "./modules/auth/features/callback/pages/AuthCallbackPage.tsx";
+import { ForgotPasswordPage } from "./modules/auth/features/login/pages/ForgotPasswordPage.tsx";
+import { ResetPasswordPage } from "./modules/auth/features/login/pages/ResetPasswordPage.tsx";
+import { VerifyAccountPage } from "./modules/auth/features/verifyAccount/pages/VerifyAccountPage.tsx"
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -63,7 +65,9 @@ export const appRouter = createBrowserRouter([
         children: [
             { path: "login", element: <LoginPage /> },
             { path: "register", element: <RegisterPage /> },
-            { path: "callback", element: <AuthCallbackPage /> },
+            { path: "forgot-password", element: <ForgotPasswordPage /> },
+            { path: "reset-password", element: <ResetPasswordPage /> },
+            { path: "verify-account", element: <VerifyAccountPage /> },
         ]
     }
 ]); 

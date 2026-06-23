@@ -62,9 +62,12 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             Contraseña
                         </label>
 
-                        <button className="text-sm font-medium text-brand-accent hover:opacity-80" type="button" disabled={isLoading}>
+                        <Link
+                            to="/auth/forgot-password"
+                            className="text-sm font-medium text-brand-accent hover:opacity-80"
+                        >
                             ¿Olvidaste tu contraseña?
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="relative">

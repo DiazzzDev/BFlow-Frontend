@@ -1,1 +1,1 @@
-export { useAuth } from "react-oidc-context";
+export { useSession as useAuth } from "./useSession";

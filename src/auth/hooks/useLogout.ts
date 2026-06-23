@@ -1,32 +1,38 @@
-import { useAuthStore } from "../store/authStore";
+import { useNavigate } from "react-router-dom";
 
-const CLIENT_ID = "ijaq5ej2a05pjerccifrrscaa";
-const COGNITO_DOMAIN = "https://us-east-1m6tn3h360.auth.us-east-1.amazoncognito.com";
+import { authService } from "@/auth/services/authService";
+import { useAuthStore } from "@/auth/store/authStore";
 
 export const useLogout = () => {
 
-    const logout = () => {
+    const navigate = useNavigate();
 
-        // limpiar usuario interno persistido
-        useAuthStore
-            .getState()
-            .clearUser();
+    const logout = async () => {
 
-        localStorage.clear();
-        sessionStorage.clear();    
+        try {
 
-        const logoutUrl =
-            `${COGNITO_DOMAIN}/logout` +
-            `?client_id=${CLIENT_ID}` +
-            `&logout_uri=${encodeURIComponent(
-                `${window.location.origin}/auth/login`
-            )}`;
+            await authService.logout();
 
-        window.location.assign(logoutUrl);
+        } finally {
+
+            useAuthStore
+                .getState()
+                .clearUser();
+
+            localStorage.removeItem(
+                "bflow-auth-storage"
+            );
+
+            await navigate(
+                "/auth/login",
+                {
+                    replace: true
+                }
+            );
+        }
     };
 
     return {
         logout
     };
-
 };
