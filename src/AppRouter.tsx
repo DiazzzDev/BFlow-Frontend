@@ -24,6 +24,7 @@ import { RegisterPage } from "./modules/auth/features/register/pages/RegisterPag
 import { ForgotPasswordPage } from "./modules/auth/features/login/pages/ForgotPasswordPage.tsx";
 import { ResetPasswordPage } from "./modules/auth/features/login/pages/ResetPasswordPage.tsx";
 import { VerifyAccountPage } from "./modules/auth/features/verifyAccount/pages/VerifyAccountPage.tsx"
+import { OAuthCallbackPage } from "./modules/auth/features/login/pages/OAuthCallbackPage.tsx"
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -64,6 +65,7 @@ export const appRouter = createBrowserRouter([
         element: <AuthLayout />,
         children: [
             { path: "login", element: <LoginPage /> },
+            { path: "callback", element: <OAuthCallbackPage /> },
             { path: "register", element: <RegisterPage /> },
             { path: "forgot-password", element: <ForgotPasswordPage /> },
             { path: "reset-password", element: <ResetPasswordPage /> },

@@ -6,7 +6,8 @@ import {
     fetchAuthSession,
     getCurrentUser,
     resetPassword,
-    confirmResetPassword
+    confirmResetPassword,
+    signInWithRedirect
 } from "aws-amplify/auth";
 
 export const authService = {
@@ -46,7 +47,6 @@ export const authService = {
         code: string,
         password: string
     ) {
-
         return confirmResetPassword({
             username: email,
             confirmationCode: code,
@@ -59,7 +59,6 @@ export const authService = {
         password: string,
         fullName: string
     ) {
-
         return await signUp({
             username: email,
             password,
@@ -76,12 +75,15 @@ export const authService = {
         email: string,
         code: string
     ) {
-
         return await confirmSignUp({
-
             username: email,
-
             confirmationCode: code,
+        });
+    },
+
+    async loginWithGoogle() {
+        await signInWithRedirect({
+            provider: "Google"
         });
     },
 };

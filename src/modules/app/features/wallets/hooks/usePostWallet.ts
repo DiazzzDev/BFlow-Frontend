@@ -8,14 +8,15 @@ import { APIError } from "@/utils/api";
 
 export const usePostWallet = () => {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: (newWalletData: CreateWalletData) => postWallet(newWalletData),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['wallets'] });
+            void queryClient.invalidateQueries({ queryKey: ['wallets'] });
             toast.success('Billetera creada');
         },
         onError: (error: APIError) => {
             toast.error(error.message || 'Error al crear la billetera');
-        }
+        },
     });
 };

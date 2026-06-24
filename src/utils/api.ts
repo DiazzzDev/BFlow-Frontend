@@ -1,3 +1,5 @@
+import { fetchAuthSession } from "aws-amplify/auth";
+
 export class APIError extends Error {
     status: number;
     cause: unknown;
@@ -52,12 +54,20 @@ export interface PaginatedListResponse<T> {
     path: string
 }
 
+async function getAmplifyToken(): Promise<string | undefined> {
+    try {
+        const session = await fetchAuthSession();
+        return session.tokens?.accessToken?.toString();
+    } catch {
+        return undefined;
+    }
+}
+
 export const apiRequest = async <T>(
     url: string,
     options: RequestInit = {},
     friendlyMessage: string = 'Error de API',
     requiredPrivileges: string[] = [],
-    token?: string
 ): Promise<T> => {
 
     if (requiredPrivileges.length > 0) {
@@ -65,37 +75,17 @@ export const apiRequest = async <T>(
     }
 
     try {
+        const token = await getAmplifyToken();
+
         const response = await fetch(url, {
             ...options,
             headers: {
                 ...(options.headers || {}),
-                ...(token
-                    ? {
-                        Authorization: `Bearer ${token}`
-                    }
-                    : {})
-            }
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
         });
 
-        /*
-        const response = await fetch(url, {
-            ...options,
-            headers: {
-                ...(options.headers || {}),
-                ...(token
-                    ? {
-                        Authorization: `Bearer ${token}`
-                    }
-                    : {})
-            }
-        });*/
-
-        //const response = await fetch(url, {
-        //    credentials: 'include',
-        //    ...options,
-        //});
         let data: unknown = null;
-
         const contentType = response.headers.get('content-type') || '';
         if (contentType.includes('application/json')) {
             data = await response.json();
@@ -107,10 +97,8 @@ export const apiRequest = async <T>(
             let errorMessage = `${friendlyMessage}. Código: ${response.status}`;
 
             if (data !== null && typeof data === "object") {
-                // Manejo de errores de Spring Boot (DTO errors)
                 const dataObj = data as Record<string, unknown>;
                 if (dataObj.errors && typeof dataObj.errors === 'object') {
-                    // Tipamos Object.values como string[] para poder usar .join
                     const errorsObj = dataObj.errors as Record<string, string>;
                     const validationErrors = Object.values(errorsObj).join('. ');
                     errorMessage = validationErrors || (dataObj.message as string) || 'Errores de validación';
@@ -124,13 +112,16 @@ export const apiRequest = async <T>(
             throw new APIError(errorMessage, response.status, null, url);
         }
 
-        return data as T; // "Casteamos" el resultado al tipo esperado
+        return data as T;
     } catch (error) {
         if (error instanceof APIError) {
-            throw error;
-        }
+            throw error
+        };
 
-        const isNetworkError = error instanceof TypeError || /network|failed/i.test((error as Error).message || '');
+        const isNetworkError =
+            error instanceof TypeError ||
+            /network|failed/i.test((error as Error).message || '');
+
         const errorMessage = isNetworkError
             ? `${friendlyMessage}. El servicio no está disponible.`
             : `${friendlyMessage}. ${(error as Error).message || 'Error inesperado.'}`;
