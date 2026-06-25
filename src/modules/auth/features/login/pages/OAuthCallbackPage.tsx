@@ -4,6 +4,7 @@ import { fetchAuthSession } from "aws-amplify/auth";
 
 import { useAuthStore } from "@/auth/store/authStore";
 import type { InternalUser } from "@/auth/types/InternalUser";
+import { config } from "@/api/config";
 
 export const OAuthCallbackPage = () => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const OAuthCallbackPage = () => {
                 }
 
                 const response = await fetch(
-                    "http://localhost:8080/api/v2/auth/sync",
+                    `${config.API_BASE_URL}/api/v2/auth/sync`,
                     {
                         method: "POST",
                         headers: {
