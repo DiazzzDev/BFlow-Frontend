@@ -24,11 +24,13 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
         formState: { errors, isSubmitted },
     } = useForm<LoginFormInputs>({ mode: 'onSubmit' });
     const onInternalSubmit = (data: LoginFormInputs) => {
-        onSubmitLogin(data.email, data.password);
+        void onSubmitLogin(data.email, data.password);
     };
     const [showPassword, setShowPassword] = useState(false);
     return (
-        <form action="" onSubmit={handleSubmit(onInternalSubmit)}>
+        <form action="" onSubmit={(e) => {
+                void handleSubmit(onInternalSubmit)(e);
+            }}>
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-text-label" htmlFor="txtEmail">
@@ -43,7 +45,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                         <Input
                             disabled={isLoading}
                             {...register('email', { required: 'El correo electrónico es requerido', validate: (value) => isValidEmail(value) || "El formato del correo no es válido" })}
-                            placeholder="tu@correo.com"
+                            placeholder="Correo electrónico"
                             className="h-12 rounded-xl border-border bg-bg-card pl-11 text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-accent"
                         />
                     </div>
@@ -60,9 +62,12 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             Contraseña
                         </label>
 
-                        <button className="text-sm font-medium text-brand-accent hover:opacity-80" type="button" disabled={isLoading}>
+                        <Link
+                            to="/auth/forgot-password"
+                            className="text-sm font-medium text-brand-accent hover:opacity-80"
+                        >
                             ¿Olvidaste tu contraseña?
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="relative">

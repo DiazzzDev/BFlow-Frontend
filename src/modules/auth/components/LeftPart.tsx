@@ -4,8 +4,6 @@ export const LeftPart = ({ Body, title, focusTitle, subtitle }: { Body: React.Re
 
             <div className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(255,255,255,.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.6)_1px,transparent_1px)] [background-size:40px_40px]" />
 
-            <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-white/5 blur-[120px]" />
-
             <div className="absolute left-20 top-20 h-72 w-72 rounded-full bg-brand-accent/10 blur-[120px]" />
 
             <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-white/5 blur-[120px]" />
@@ -36,26 +34,8 @@ export const LeftPart = ({ Body, title, focusTitle, subtitle }: { Body: React.Re
                 </div>
 
                 <div>
-                    <div className="grid grid-cols-2 gap-6">
-                        <div className="border-l border-white/10 pl-5">
-                            <h4 className="text-4xl font-semibold text-brand-accent">10K+</h4>
-                            <p className="mt-1 text-base text-text-muted">
-                                Usuarios activos
-                            </p>
-                        </div>
-
-                        <div className="border-l border-white/10 pl-5">
-                            <h4 className="text-4xl font-semibold text-brand-accent">$2M+</h4>
-                            <p className="mt-1 text-base text-text-muted">
-                                Gestionados/mes
-                            </p>
-                        </div>
-                    </div>
-
                     <div className="flex items-center gap-6 text-sm text-text-muted mt-10">
-                        <span>© 2026 BFlow</span>
-                        <span>Privacidad</span>
-                        <span>Términos</span>
+                        <span>© 2026 BFlow studio</span>
                     </div>
                 </div>
             </div>

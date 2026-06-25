@@ -6,14 +6,14 @@ export const useLandingHome = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
-    const handleNavClick = (id) => {
+    const handleNavClick = (id: string) => {
         if (pathname === "/") {
             const element = document.getElementById(id)
             if (element) {
                 element.scrollIntoView({ behavior: "smooth" })
             }
         } else {
-            navigate(`/#${id}`)
+            void navigate(`/#${id}`)
         }
     }
 

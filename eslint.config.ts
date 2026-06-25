@@ -22,6 +22,11 @@ export default tseslint.config(
     ...tseslint.configs.recommended,
     {
         files: ['**/*.{ts,tsx}'],
+
+        extends: [
+        ...tseslint.configs.recommendedTypeChecked,
+        ],
+
         plugins: {
             react,
             import: importPlugin,
@@ -53,6 +58,8 @@ export default tseslint.config(
             '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' }],
             'no-shadow': 'off',
             '@typescript-eslint/no-shadow': 'error',
+            '@typescript-eslint/no-misused-promises': 'error',
+            '@typescript-eslint/no-unnecessary-condition': 'warn',
 
             // Calidad de código
             'eqeqeq': ['error', 'always'],

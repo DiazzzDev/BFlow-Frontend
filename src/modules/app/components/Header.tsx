@@ -1,9 +1,12 @@
-import { useLocation, matchPath, useNavigate } from "react-router-dom"
+import { useLocation, matchPath } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Bell, LogOut, User } from "lucide-react";
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../../../components/ui/sheet"
-import { useAuthStore } from "../../../utils/authMe/auth.store.ts"
+//import { useAuthStore } from "../../../utils/authMe/auth.store.ts"
+
+import { useAuthStore } from "@/auth/store/authStore";
+import { useLogout } from "@/auth/hooks/useLogout";
 
 const routes = [
     { path: "/app/dashboard", crumbs: ["Dashboard"] },
@@ -27,18 +30,27 @@ const getBreadcrumbs = (pathname: string) => {
 
 export const Header = () => {
     const { pathname } = useLocation();
-    const navigate = useNavigate();
-    const { user, logout } = useAuthStore();
     const crumbs = getBreadcrumbs(pathname);
+    //const { user, logout } = useAuthStore();
 
+    const user = useAuthStore(
+        state => state.user
+    );
+
+    const { logout } = useLogout();
+    
     const handleLogout = async () => {
         try {
+            //Congito se encarga del redireccionamiento
             await logout();
             toast.success('Sesión cerrada correctamente');
-            navigate('/');
-        } catch (error) {
-            console.error('Error al cerrar sesión:', error);
+        } catch(error){
             toast.error('Error al cerrar sesión');
+            console.error(
+                "Error logout:",
+                error
+            );
+
         }
     };
 
