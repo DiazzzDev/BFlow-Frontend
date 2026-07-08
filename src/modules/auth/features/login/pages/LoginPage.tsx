@@ -1,7 +1,7 @@
 //import { useLoginActions } from "../hooks/useLoginActions.ts";
 import { LoginHero } from "../components/LoginHero.tsx";
 import { LoginForm } from "../components/LoginForm.tsx";
-import { useLoginActions } from "../../../../../auth/hooks/useLoginActions.ts";
+import { useLogin } from "../../../../../auth/hooks/useLogin.ts";
 
 import { RightPart } from "@/modules/auth/components/RightPart.tsx";
 import { LeftPart } from "@/modules/auth/components/LeftPart.tsx";
@@ -9,7 +9,7 @@ import { LeftPart } from "@/modules/auth/components/LeftPart.tsx";
 
 export const LoginPage = () => {
 
-	const { onSubmitLogin, isLoading, } = useLoginActions();
+	const { onSubmitLogin, isLoading, } = useLogin();
 
 	return (
 		<main className='w-full h-screen flex gap-4'>

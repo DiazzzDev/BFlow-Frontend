@@ -1,40 +1,32 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { InternalUser } from "../types/InternalUser";
+import { InternalUser } from "./InternalUser";
 
 interface AuthState {
   user: InternalUser | null;
 
-  setUser: (
-    user: InternalUser
-  ) => void;
+  setUser: (user: InternalUser) => void;
 
   clearUser: () => void;
 }
 
-
 export const useAuthStore = create<AuthState>()(
-
   persist(
-
     (set) => ({
-
       user: null,
-
       setUser: (user) =>
         set({
-          user
+          user,
         }),
 
       clearUser: () =>
         set({
-          user: null
+          user: null,
         }),
-
     }),
     {
       name: "bflow-auth-storage",
-    }
-  )
+    },
+  ),
 );

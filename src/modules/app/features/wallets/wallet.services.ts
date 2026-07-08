@@ -1,7 +1,7 @@
 import { CreateWalletData, Wallet } from "./interfaces/Wallets";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
-import { config } from "@/api/config";
+import { config } from "@/config/config";
 
 const API_URL = `${config.API_BASE_URL}/api/v1/wallets`;
 

@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAuthSession } from "aws-amplify/auth";
 
-import { useAuthStore } from "@/auth/store/authStore";
-import type { InternalUser } from "@/auth/types/InternalUser";
-import { config } from "@/api/config";
+import { useAuthStore } from "@/auth/authStore";
+import type { InternalUser } from "@/auth/InternalUser";
+import { config } from "@/config/config";
 
 export const OAuthCallbackPage = () => {
     const navigate = useNavigate();

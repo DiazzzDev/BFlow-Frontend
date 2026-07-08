@@ -1,38 +1,22 @@
-import { useEffect, useState } from "react";
-import { fetchAuthSession } from "aws-amplify/auth";
+import { useQuery } from "@tanstack/react-query";
+import { authService } from "@/auth/services/authService";
 
 export const useSession = () => {
+  return useQuery({
+    // Llave única para identificar la sesión en la caché de TanStack
+    queryKey: ["auth-session"],
+    
+    queryFn: async () => {
+      // Usamos el método de tu servicio centralizado
+      const session = await authService.getSession();
+      
+      // Validamos si existe el accessToken y retornamos un booleano puro
+      return !!session.tokens?.accessToken;
+    },
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    useEffect(() => {
-
-        const validate = async () => {
-
-            try {
-
-                const session =
-                    await fetchAuthSession();
-
-                setIsAuthenticated(
-                    !!session.tokens?.accessToken
-                );
-
-            } catch {
-                setIsAuthenticated(false);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        void validate();
-
-    }, []);
-
-    return {
-        isLoading,
-        isAuthenticated,
-    };
+    // Configuración de optimización para la sesión:
+    staleTime: 1000 * 60 * 5, // Considera la sesión "fresca" por 5 minutos antes de volver a validar de fondo
+    gcTime: 1000 * 60 * 30,    // Mantiene el valor en memoria por 30 minutos (antiguo cacheTime)
+    retry: false,              // Si falla (usuario no logueado), no reintentes la petición para evitar bucles
+  });
 };

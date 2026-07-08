@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { useResetPasswordActions } from "../../../../../auth/hooks/useResetPasswordActions";
+import { useResetPassword } from "../../../../../auth/hooks/useResetPassword";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,7 @@ export const ResetPasswordPage = () => {
     const {
         onSubmit,
         isLoading
-    } = useResetPasswordActions();
+    } = useResetPassword();
 
     return (
         <div className="flex min-h-screen items-center justify-center">

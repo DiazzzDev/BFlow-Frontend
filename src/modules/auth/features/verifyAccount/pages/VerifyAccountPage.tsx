@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { useVerifyAccountActions } from "../../../../../auth/hooks/useVerifyAccountActions";
+import { useVerifyAccount } from "../../../../../auth/hooks/useVerifyAccount";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,7 +29,7 @@ export const VerifyAccountPage = () => {
     const {
         onSubmit,
         isLoading
-    } = useVerifyAccountActions();
+    } = useVerifyAccount();
 
     return (
         <div className="flex min-h-screen items-center justify-center">

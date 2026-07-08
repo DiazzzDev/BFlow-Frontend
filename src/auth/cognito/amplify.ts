@@ -1,6 +1,6 @@
 import { Amplify } from "aws-amplify";
 
-import { config } from "@/api/config";
+import { config } from "@/config/config";
 
 Amplify.configure({
     Auth: {

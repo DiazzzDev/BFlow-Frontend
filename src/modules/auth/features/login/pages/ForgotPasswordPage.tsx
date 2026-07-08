@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { useForgotPasswordActions } from "../../../../../auth/hooks/useForgotPasswordActions";
+import { useForgotPassword } from "../../../../../auth/hooks/useForgotPassword";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,7 @@ export const ForgotPasswordPage = () => {
     const {
         onSubmit,
         isLoading
-    } = useForgotPasswordActions();
+    } = useForgotPassword();
 
     return (
         <div className="flex min-h-screen items-center justify-center">

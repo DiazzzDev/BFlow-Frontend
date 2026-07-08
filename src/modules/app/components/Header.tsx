@@ -5,7 +5,7 @@ import { Bell, LogOut, User } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../../../components/ui/sheet"
 //import { useAuthStore } from "../../../utils/authMe/auth.store.ts"
 
-import { useAuthStore } from "@/auth/store/authStore";
+import { useAuthStore } from "@/auth/authStore";
 import { useLogout } from "@/auth/hooks/useLogout";
 
 const routes = [
