@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 
 export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: { Body: React.ReactElement; isLoading: boolean; separatorText: string; title: string; subtitle: string }) => {
 
-    const { loginWithGoogle } = useGoogleLogin();
+    const { mutateAsync: loginWithGoogle } = useGoogleLogin();
 
     return (
         <section className="flex flex-1 items-center justify-center bg-background px-6 py-10 lg:px-14">

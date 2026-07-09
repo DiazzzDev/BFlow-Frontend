@@ -27,7 +27,7 @@ export const OAuthCallbackPage = () => {
                 }
 
                 const response = await fetch(
-                    `${config.API_BASE_URL}/api/v2/auth/sync`,
+                    `${config.API_BASE_URL}/api/v1/auth/sync`,
                     {
                         method: "POST",
                         headers: {
