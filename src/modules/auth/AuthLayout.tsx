@@ -1,11 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'sonner'
+
 
 export const AuthLayout = () => {
     return (
         <>
             <Outlet />
-            <ToastContainer />
+            <Toaster />
         </>
     );
 }

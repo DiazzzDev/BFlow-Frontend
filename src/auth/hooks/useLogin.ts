@@ -1,9 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
+
+import { apiRequest } from "../../utils/api";
+
+import { config } from "@/config/config";
 import { authService } from "@/auth/services/authService";
 import { useAuthStore } from "@/auth/authStore";
 import type { InternalUser } from "@/auth/InternalUser";
-import { config } from "@/config/config";
-import { apiRequest } from "../../utils/api";
+
 
 interface LoginArgs {
   email: string;

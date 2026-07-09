@@ -1,28 +1,32 @@
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useResetPassword } from "../../../../../auth/hooks/useResetPassword";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+const resetPasswordSchema = z
+    .object({
+        code: z.string().min(1, "Código requerido"),
+        password: z.string().min(8, "La contraseña debe tener mínimo 8 caracteres"),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Las contraseñas no coinciden",
+        path: ["confirmPassword"], // Esto asigna el error específicamente a este campo
+    });
 
-type FormData = {
-    code: string;
-    password: string;
-    confirmPassword: string;
-};
+
+type ResetPasswordRawData = z.infer<typeof resetPasswordSchema>;
 
 export const ResetPasswordPage = () => {
 
     const [params] = useSearchParams();
 
     const email = params.get("email") ?? "";
-
-    console.log(
-        "EMAIL PARAM:",
-        email
-    );
 
     const {
         register,
@@ -33,10 +37,7 @@ export const ResetPasswordPage = () => {
         }
     } = useForm<FormData>();
 
-    const {
-        onSubmit,
-        isLoading
-    } = useResetPassword();
+    const { mutateAsync: onSubmit, isPending: isLoading } = useResetPassword();
 
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -45,12 +46,8 @@ export const ResetPasswordPage = () => {
                 className="w-full max-w-md space-y-4"
                 onSubmit={(e) => {
                     void handleSubmit(
-                        (data) =>
-                            onSubmit(
-                                email,
-                                data.code,
-                                data.password
-                            )
+                        (data: FormData) =>
+                            onSubmit(data)
                     )(e);
                 }}
             >

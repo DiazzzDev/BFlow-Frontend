@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+
 import { authService } from "@/auth/services/authService";
 
 interface VerifyAccountArgs {

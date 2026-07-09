@@ -20,10 +20,7 @@ export const ForgotPasswordPage = () => {
         }
     } = useForm<FormData>();
 
-    const {
-        onSubmit,
-        isLoading
-    } = useForgotPassword();
+    const { mutateAsync: onSubmit, isPending: isLoading } = useForgotPassword();
 
     return (
         <div className="flex min-h-screen items-center justify-center">

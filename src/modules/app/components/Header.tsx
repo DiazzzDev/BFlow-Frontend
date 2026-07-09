@@ -37,7 +37,7 @@ export const Header = () => {
         state => state.user
     );
 
-    const { logout } = useLogout();
+    const { mutateAsync: logout } = useLogout();
     
     const handleLogout = async () => {
         try {
@@ -94,7 +94,7 @@ export const Header = () => {
 
                 {/* Botón de logout */}
                 <button
-                    onClick={handleLogout}
+                    onClick={() => { void handleLogout()}}
                     className="hover:text-white transition-colors"
                     title="Cerrar sesión"
                 >

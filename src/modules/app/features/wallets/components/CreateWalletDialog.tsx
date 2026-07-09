@@ -41,7 +41,7 @@ export const CreateWalletDialog = ({ isShowBtn, open, onOpenChange, onCreateWall
                 <DialogHeader>
                     <DialogTitle>Nueva billetera</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={handleSubmit(onInternalSubmit)}>
+                <form onSubmit={ void handleSubmit(onInternalSubmit)}>
                     <FieldGroup>
                         <Field>
                             <FieldLabel htmlFor="walletName">Nombre de la billetera</FieldLabel>

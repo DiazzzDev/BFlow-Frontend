@@ -6,14 +6,15 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { isValidEmail } from "@/utils/validators"
+import { InternalUser } from "@/auth/InternalUser"
 
-type LoginFormInputs = {
+interface LoginFormInputs {
     email: string;
     password: string;
 };
 
 interface LoginFormProps {
-    onSubmitLogin: (email: string, password: string) => Promise<void>;
+   onSubmitLogin: (data: LoginFormInputs) => Promise<InternalUser | null>;
     isLoading: boolean;
 }
 
@@ -24,7 +25,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
         formState: { errors, isSubmitted },
     } = useForm<LoginFormInputs>({ mode: 'onSubmit' });
     const onInternalSubmit = (data: LoginFormInputs) => {
-        void onSubmitLogin(data.email, data.password);
+        void onSubmitLogin(data);
     };
     const [showPassword, setShowPassword] = useState(false);
     return (

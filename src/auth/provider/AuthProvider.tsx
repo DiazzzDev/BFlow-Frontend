@@ -5,5 +5,5 @@ interface Props {
 export const AuthProvider = ({
     children,
 }: Props) => {
-    return <>{children}</>;
+    return{children};
 };
