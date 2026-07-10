@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { ArrowUpDown, ChartBarIcon, LayoutDashboard, Settings, TrendingDown, TrendingUp, Wallet } from "lucide-react";
 
-
 const navItems = [
     { label: "Dashboard", to: "/app/dashboard", icon: <LayoutDashboard size={17} /> },
     { label: "Billeteras", to: "/app/wallets", icon: <Wallet size={17} /> },
@@ -17,10 +16,10 @@ export const Navbar = () => {
             className="flex flex-col w-50 min-h-screen px-3 py-6 border-r bg-surface border-border"
         >
             <div className="px-3 mb-8">
-                <p className="text-sm font-bold leading-none tracking-tight text-brand-accent">
+                <p className="text-sm font-bold leading-none tracking-tight text-primary">
                     BFlow
                 </p>
-                <p className="text-xs mt-0.5 text-text-muted">
+                <p className="text-xs mt-0.5 text-muted-foreground">
                     Finance tool
                 </p>
             </div>
@@ -31,11 +30,11 @@ export const Navbar = () => {
                         key={to}
                         to={to}
                         end={to === "/"}
-                        className="flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150"
-                        style={({ isActive }) => ({
-                            backgroundColor: isActive ? "var(--secondary)" : "transparent",
-                            fontWeight: isActive ? "500" : "400",
-                        })}
+                        className={({ isActive }) =>
+                            `flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
+                                isActive ? "bg-secondary font-medium" : "font-normal"
+                            }`
+                        }
                     >
                         <span>
                             {icon}
@@ -48,11 +47,11 @@ export const Navbar = () => {
             <div className="mt-auto">
                 <NavLink
                     to="/settings"
-                    className="flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150"
-                    style={({ isActive }) => ({
-                        backgroundColor: isActive ? "var(--secondary)" : "transparent",
-                        fontWeight: isActive ? "500" : "400",
-                    })}
+                    className={({ isActive }) =>
+                        `flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
+                            isActive ? "bg-secondary font-medium" : "font-normal"
+                        }`
+                    }
                 >
                     <span>
                         <Settings />
@@ -63,4 +62,3 @@ export const Navbar = () => {
         </aside>
     );
 };
-

@@ -57,7 +57,7 @@ export interface PaginatedListResponse<T> {
 async function getAmplifyToken(): Promise<string | undefined> {
     try {
         const session = await fetchAuthSession();
-        return session.tokens?.accessToken?.toString();
+        return session.tokens?.accessToken.toString();
     } catch {
         return undefined;
     }

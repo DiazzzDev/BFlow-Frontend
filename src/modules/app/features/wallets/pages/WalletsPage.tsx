@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Plus, Users, Wallet } from "lucide-react"
 
-
 import { SummaryCard } from "../components/SummaryCards.tsx"
 import { WalletCard } from "../components/WalletCards.tsx"
 import { CreateWalletDialog } from "../components/CreateWalletDialog.tsx"
@@ -10,14 +9,6 @@ import { WalletLoader } from "../components/WalletLoader.tsx"
 import { formatCurrency, formatDate } from "../../../../../utils/formaters.ts"
 import { useGetWallets } from "../hooks/useGetWallets.ts"
 import { usePostWallet } from "../hooks/usePostWallet.ts"
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
-import { Badge } from "@/components/ui/badge.tsx"
-import { Button } from "@/components/ui/button.tsx"
-import { Separator } from "@/components/ui/separator.tsx"
-
-
 
 const dataTable = [
     {
@@ -77,13 +68,29 @@ export const WalletsPage = () => {
                 <SummaryCard title="Gastos de este mes" quantity="$12,345.67" subtitle="vs $6,100 mes anterior" />
             </div>
             <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center g-3">
-                    <Tabs defaultValue="wallets">
-                        <TabsList variant="line">
-                            <TabsTrigger value="wallets" onClick={() => setActiveTab("wallets")} className="text-base">Mis billeteras</TabsTrigger>
-                            <TabsTrigger value="sharedWallets" onClick={() => setActiveTab("sharedWallets")} className="text-base">Compartidas</TabsTrigger>
-                        </TabsList>
-                    </Tabs>
+                <div className="flex items-center gap-1 border-b border-border">
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab("wallets")}
+                        className={`px-3 py-2 text-base border-b-2 -mb-px cursor-pointer ${
+                            activeTab === "wallets"
+                                ? "border-primary text-primary"
+                                : "border-transparent text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                        Mis billeteras
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setActiveTab("sharedWallets")}
+                        className={`px-3 py-2 text-base border-b-2 -mb-px cursor-pointer ${
+                            activeTab === "sharedWallets"
+                                ? "border-primary text-primary"
+                                : "border-transparent text-muted-foreground hover:text-foreground"
+                        }`}
+                    >
+                        Compartidas
+                    </button>
                 </div>
                 <CreateWalletDialog
                     isShowBtn={activeTab === "wallets"}
@@ -93,12 +100,21 @@ export const WalletsPage = () => {
                     isCreating={isCreating}
                 />
             </div>
-            <Separator className="mb-4"/>
+            <div className="h-px w-full bg-border mb-4" />
             <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] grid-rows-[repeat(auto-fill,minmax(175px,1fr))] gap-4">
                 {isLoading && <WalletLoader />}
                 {!isLoading && walletsToShow?.length === 0 && (
                     <EmptyState
-                        Button={activeTab === "wallets" ? <Button variant="secondary" onClick={() => setIsOpenModal(true)}><Plus className="h-4 w-4" />Crear billetera</Button> : null}
+                        Button={activeTab === "wallets" ? (
+                            <button
+                                type="button"
+                                onClick={() => setIsOpenModal(true)}
+                                className="inline-flex items-center gap-2 h-10 px-4 rounded-lg border border-border text-primary hover:bg-secondary cursor-pointer"
+                            >
+                                <Plus className="h-4 w-4" />
+                                Crear billetera
+                            </button>
+                        ) : null}
                         titleText={activeTab === "wallets" ? "No tienes billeteras aún" : "No tienes billeteras compartidas"}
                         descriptionText={activeTab === "wallets" ? "Crea tu primera billetera para empezar a gestionar tus finanzas" : "Cuando alguien te invite a una billetera, aparecerá aquí"}
                         Icon={activeTab === "wallets" ? <Wallet /> : <Users />}
@@ -108,34 +124,41 @@ export const WalletsPage = () => {
             </div>
             <div className="flex items-center justify-between mt-5 mb-3">
                 <h2 className="text-foreground font-medium text-lg">Actividad reciente</h2>
-                <h3 className="text-text-label">Todas mis billeteras</h3>
+                <h3 className="text-label">Todas mis billeteras</h3>
             </div>
-            <div className="border border-border rounded-xl flex-1 bg-card">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="text-foreground">Movimiento</TableHead>
-                            <TableHead className="text-foreground">Categoría</TableHead>
-                            <TableHead className="text-foreground">Fecha</TableHead>
-                            <TableHead className="text-foreground">Monto</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
+            <div className="border border-border rounded-xl flex-1 bg-card overflow-hidden">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b border-border">
+                            <th className="h-10 px-2 text-left font-medium text-foreground">Movimiento</th>
+                            <th className="h-10 px-2 text-left font-medium text-foreground">Categoría</th>
+                            <th className="h-10 px-2 text-left font-medium text-foreground">Fecha</th>
+                            <th className="h-10 px-2 text-left font-medium text-foreground">Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {dataTable.map(({ id, movement, category, date, amount, wallet }) => (
-                            <TableRow key={id} className="cursor-pointer hover:bg-[var(--secondary)] transition-colors">
-                                <TableCell className="text-foreground flex flex-col gap-1">
-                                    <span className="text-base">{movement}</span>
-                                    <span className="text-xs text-text-label">{wallet}</span>
-                                </TableCell>
-                                <TableCell className="text-foreground"><Badge variant="outline">{category}</Badge></TableCell>
-                                <TableCell className="text-foreground">{formatDate(date)}</TableCell>
-                                <TableCell className={amount < 0 ? "text-red-500 font-bold text-base" : "text-green-500 font-bold text-base"}>{amount < 0 ? `${formatCurrency(amount)}` : `${formatCurrency(amount)}`}</TableCell>
-                            </TableRow>
+                            <tr key={id} className="border-b border-border last:border-0 cursor-pointer hover:bg-secondary transition-colors">
+                                <td className="px-2 py-3 text-foreground">
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-base">{movement}</span>
+                                        <span className="text-xs text-label">{wallet}</span>
+                                    </div>
+                                </td>
+                                <td className="px-2 py-3 text-foreground">
+                                    <span className="inline-flex rounded-md border border-border px-2 py-0.5 text-xs">
+                                        {category}
+                                    </span>
+                                </td>
+                                <td className="px-2 py-3 text-foreground">{formatDate(date)}</td>
+                                <td className={`px-2 py-3 font-bold text-base ${amount < 0 ? "text-danger" : "text-success"}`}>
+                                    {formatCurrency(amount)}
+                                </td>
+                            </tr>
                         ))}
-                    </TableBody>
-                </Table>
+                    </tbody>
+                </table>
             </div>
         </>
     )
 }
-

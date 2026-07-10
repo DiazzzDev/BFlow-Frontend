@@ -1,5 +1,5 @@
 import { Outlet } from "react-router"
-import { ToastContainer } from "react-toastify"
+import { Toaster } from "sonner"
 
 import { Header } from "./components/Header.tsx"
 import { Navbar } from "./components/Navbar.tsx"
@@ -8,7 +8,7 @@ import { Navbar } from "./components/Navbar.tsx"
 export const AppLayout = () => {
     return (
         <>
-            <ToastContainer />
+            <Toaster />
             <div className="flex h-screen">
                 <Navbar />
                 <section className="flex flex-col flex-1">
@@ -20,4 +20,4 @@ export const AppLayout = () => {
             </div>
         </>
     )
-} 
+}

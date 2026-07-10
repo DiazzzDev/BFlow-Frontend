@@ -3,10 +3,11 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { isValidEmail } from "@/utils/validators"
 import { InternalUser } from "@/auth/InternalUser"
+
+const inputClass =
+    "h-12 w-full rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
 
 interface LoginFormInputs {
     email: string;
@@ -34,24 +35,25 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
             }}>
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-text-label" htmlFor="txtEmail">
+                    <label className="text-sm font-medium text-label" htmlFor="txtEmail">
                         Correo electrónico
                     </label>
 
                     <div className="relative">
                         <Mail
                             size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                         />
-                        <Input
+                        <input
+                            id="txtEmail"
                             disabled={isLoading}
                             {...register('email', { required: 'El correo electrónico es requerido', validate: (value) => isValidEmail(value) || "El formato del correo no es válido" })}
                             placeholder="Correo electrónico"
-                            className="h-12 rounded-xl border-border bg-bg-card pl-11 text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-accent"
+                            className={`${inputClass} pl-11`}
                         />
                     </div>
                     {isSubmitted && errors.email && (
-                        <p className="text-sm text-warning mt-1">
+                        <p className="text-sm text-danger mt-1">
                             {errors.email.message}
                         </p>
                     )}
@@ -59,13 +61,13 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
 
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <label className="text-sm font-medium text-text-label" htmlFor="txtPassword">
+                        <label className="text-sm font-medium text-label" htmlFor="txtPassword">
                             Contraseña
                         </label>
 
                         <Link
                             to="/auth/forgot-password"
-                            className="text-sm font-medium text-brand-accent hover:opacity-80"
+                            className="text-sm font-medium text-primary hover:opacity-80"
                         >
                             ¿Olvidaste tu contraseña?
                         </Link>
@@ -74,39 +76,48 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     <div className="relative">
                         <Lock
                             size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                         />
 
-                        <Input
+                        <input
+                            id="txtPassword"
                             disabled={isLoading}
                             {...register('password', { required: 'La contraseña es requerida' })}
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••••"
-                            className="h-12 rounded-xl border-border bg-bg-card px-11 text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-accent"
+                            className={`${inputClass} px-11`}
                         />
 
-                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary" onClick={() => setShowPassword(!showPassword)}>
+                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
                         {isSubmitted && errors.password && (
-                            <p className="text-sm text-warning mt-1">
+                            <p className="text-sm text-danger mt-1">
                                 {errors.password.message}
                             </p>
                         )}
                 </div>
 
-                <Button type="submit" className="h-12 w-full rounded-xl font-medium text-white hover:brightness-110" disabled={isLoading}>
+                <button
+                    type="submit"
+                    className="h-12 w-full rounded-xl font-medium bg-primary text-primary-foreground hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
+                    disabled={isLoading}
+                >
                     {isLoading ? "Iniciando sesión..." : "Iniciar sesión →"}
-                </Button>
+                </button>
             </div>
 
-            <p className="mt-8 text-center text-sm text-text-muted">
+            <p className="mt-8 text-center text-sm text-muted-foreground">
                 ¿No tienes cuenta?{" "}
-                <Link to="/auth/register" className="font-medium text-brand-accent hover:opacity-80" style={{
-                    pointerEvents: isLoading ? 'none' : 'auto',
-                    color: isLoading ? 'var(--text-muted)' : '',
-                }}>
+                <Link
+                    to="/auth/register"
+                    className={`font-medium hover:opacity-80 ${
+                        isLoading
+                            ? "pointer-events-none text-muted-foreground"
+                            : "text-primary"
+                    }`}
+                >
                     Crea una gratis
                 </Link>
             </p>

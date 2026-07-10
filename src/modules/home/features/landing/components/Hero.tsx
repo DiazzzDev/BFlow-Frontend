@@ -5,22 +5,22 @@ export const Hero = () => {
 
             <h1 className="text-6xl font-bold leading-tight tracking-tight mb-5">
                 El control financiero que{" "}
-                <span className="text-brand-accent">siempre quisiste</span>
+                <span className="text-primary">siempre quisiste</span>
             </h1>
 
-            <p className="text-lg text-text-muted max-w-xl mb-9">
+            <p className="text-lg text-muted-foreground max-w-xl mb-9">
                 Gestiona tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.
             </p>
 
             <div className="flex items-center gap-3 mb-4">
                 <a href="/auth/register">
-                    <button className="bg-primary text-white text-sm font-medium px-7 py-3 rounded-xl hover:opacity-90 transition-opacity">
+                    <button className="bg-primary text-primary-foreground text-sm font-medium px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors">
                         Empezar gratis
                     </button>
                 </a>
             </div>
 
-            <p className="text-xs text-text-label">
+            <p className="text-xs text-label">
                 Sin tarjeta de crédito · Gratis para siempre en el plan básico
             </p>
         </div>

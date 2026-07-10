@@ -4,11 +4,11 @@ export const WalletLoader = () => (
     <div className="flex flex-col items-center justify-center py-12 gap-6 col-span-full">
         <div className="relative w-14 h-14">
             <svg className="animate-spin" width="56" height="56" viewBox="0 0 56 56" fill="none">
-                <circle cx="28" cy="28" r="24" stroke="var(--border)" strokeWidth="3"/>
-                <path d="M28 4 A24 24 0 0 1 52 28" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round"/>
+                <circle cx="28" cy="28" r="24" className="stroke-border" strokeWidth="3"/>
+                <path d="M28 4 A24 24 0 0 1 52 28" className="stroke-primary" strokeWidth="3" strokeLinecap="round"/>
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-                <Wallet className="h-5 w-5 text-[var(--primary)]" />
+                <Wallet className="h-5 w-5 text-primary" />
             </div>
         </div>
         <div className="flex flex-col items-center gap-2">
@@ -21,4 +21,3 @@ export const WalletLoader = () => (
         </div>
     </div>
 )
-
