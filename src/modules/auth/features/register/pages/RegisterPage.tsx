@@ -7,24 +7,20 @@ import { RightPart } from "@/modules/auth/components/RightPart"
 
 
 export const RegisterPage = () => {
-    const { onRegisterUser, isLoading } = useRegister();
+    const { mutateAsync: onRegisterUser, isPending: isLoading } = useRegister();
     return (
-        <main className='w-full h-screen flex gap-4'> 
+        <main className='w-full h-screen flex gap-4'>
             <LeftPart Body={<RegisterHero />} title="Comienza gratis, crece con" focusTitle="BFlow" subtitle="Crea tu cuenta en segundos y toma el control de tus finanzas desde el primer día. Sin tarjeta de crédito requerida." />
             <RightPart Body={
                 <RegisterForm
                     onRegisterUser={(email, password, fullName) =>
-                        void onRegisterUser(
-                            email,
-                            password,
-                            fullName
-                        )
+                        void onRegisterUser({ email, password, fullName })
                     }
                     isLoading={isLoading}
-                />} 
-                    isLoading={isLoading} 
-                    separatorText="O completa el formulario" title="Crear cuenta" subtitle="Completa tus datos para empezar" 
-                />
+                />}
+                isLoading={isLoading}
+                separatorText="O completa el formulario" title="Crear cuenta" subtitle="Completa tus datos para empezar"
+            />
         </main>
     )
 }   

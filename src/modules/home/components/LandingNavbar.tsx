@@ -9,6 +9,7 @@ export const LandingNavbar = () => {
     const { navLinks, handleNavClick } = useLandingHome();
 
     const auth = useAuth();
+    console.log(auth)
     /* 
     const { isAuthenticated, isInitializing, checkAuth } = useAuthStore();
 

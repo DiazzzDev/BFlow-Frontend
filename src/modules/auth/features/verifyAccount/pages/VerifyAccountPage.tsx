@@ -26,10 +26,7 @@ export const VerifyAccountPage = () => {
         }
     } = useForm<FormData>();
 
-    const {
-        onSubmit,
-        isLoading
-    } = useVerifyAccount();
+    const { mutateAsync: onSubmit, isPending: isLoading } = useVerifyAccount();
 
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -38,10 +35,7 @@ export const VerifyAccountPage = () => {
                 className="w-full max-w-md space-y-4"
                 onSubmit={(e) => {
                     void handleSubmit(
-                        data => onSubmit(
-                            email,
-                            data.code
-                        )
+                        data => onSubmit({ email, code: data.code })
                     )(e);
                 }}
             >
