@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 
 // App
 import { DashboardPage } from "./modules/app/features/dashboard/pages/DashboardPage.tsx";
-import { WalletsPage } from "./modules/app/features/wallets/pages/WalletsPage.tsx";
-import { WalletDetailsPage } from "./modules/app/features/wallets/pages/WalletDetailsPage.tsx";
+import { WalletsPage } from "./modules/app/features/wallets/walletView/WalletsPage.tsx";
+import { WalletDetailsPage } from "./modules/app/features/wallets/walletDetail/WalletDetailsPage.tsx";
 import { IncomesPage } from "./modules/app/features/incomes/pages/IncomesPage.tsx";
 import { ExpensesPage } from "./modules/app/features/expenses/pages/ExpensesPage.tsx";
 import { SettingsPage } from "./modules/app/features/settings/pages/SettingsPage.tsx";

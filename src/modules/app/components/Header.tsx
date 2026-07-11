@@ -1,29 +1,38 @@
 import { useState } from "react"
-import { useLocation, matchPath } from "react-router-dom"
+import { useLocation, matchPath, Link } from "react-router-dom"
 import { toast } from "sonner"
 import { Bell, LogOut, User, X } from "lucide-react";
 
 import { useAuthStore } from "@/auth/authStore";
 import { useLogout } from "@/auth/hooks/useLogout";
 
+type Crumb = { text: string; path?: string };
+
 const routes = [
-    { path: "/app/dashboard", crumbs: ["Dashboard"] },
-    { path: "/app/wallets", crumbs: ["Billeteras"] },
-    { path: "/app/wallets/:id", crumbs: ["Billetera", "Detalle"] },
-    { path: "/app/incomes", crumbs: ["Ingresos"] },
-    { path: "/app/expenses", crumbs: ["Gastos"] },
-    { path: "/app/budgets", crumbs: ["Presupuestos"] },
-    { path: "/app/transfers", crumbs: ["Transferencias"] },
-    { path: "/app/settings", crumbs: ["Ajustes"] },
+    { path: "/app/dashboard", crumbs: [{ text: "Dashboard" }] },
+    { path: "/app/wallets", crumbs: [{ text: "Billeteras" }] },
+    // Para las subrutas, le asignamos la ruta estática al padre
+    {
+        path: "/app/wallets/:id",
+        crumbs: [
+            { text: "Billeteras", path: "/app/wallets" },
+            { text: "Detalle" }
+        ]
+    },
+    { path: "/app/incomes", crumbs: [{ text: "Ingresos" }] },
+    { path: "/app/expenses", crumbs: [{ text: "Gastos" }] },
+    { path: "/app/budgets", crumbs: [{ text: "Presupuestos" }] },
+    { path: "/app/transfers", crumbs: [{ text: "Transferencias" }] },
+    { path: "/app/settings", crumbs: [{ text: "Ajustes" }] },
 ];
 
-const getBreadcrumbs = (pathname: string) => {
+const getBreadcrumbs = (pathname: string): Crumb[] => {
     for (const route of routes) {
         if (matchPath(route.path, pathname)) {
             return route.crumbs;
         }
     }
-    return ["..."];
+    return [{ text: "..." }];
 };
 
 export const Header = () => {
@@ -36,12 +45,12 @@ export const Header = () => {
     );
 
     const { mutateAsync: logout } = useLogout();
-    
+
     const handleLogout = async () => {
         try {
             await logout();
             toast.success('Sesión cerrada correctamente');
-        } catch(error){
+        } catch (error) {
             toast.error('Error al cerrar sesión');
             console.error(
                 "Error logout:",
@@ -54,17 +63,29 @@ export const Header = () => {
     return (
         <header className="flex items-center justify-between px-8 py-5 border-b border-border bg-background text-foreground">
             <div className="flex items-center gap-2 text-lg font-medium">
-                {crumbs.map((crumb, i) => (
-                    <span className="flex items-center gap-2" key={i}>
-                        {i > 0 && <span className="text-muted-foreground">/</span>}
-                        <span className={i === crumbs.length - 1
-                            ? "text-foreground font-medium"
-                            : "text-muted-foreground"
-                        }>
-                            {crumb}
+                {crumbs.map((crumb, i) => {
+                    const isLast = i === crumbs.length - 1;
+
+                    return (
+                        <span className="flex items-center gap-2" key={i}>
+                            {i > 0 && <span className="text-muted-foreground">/</span>}
+
+                            {/* Si no es el último y tiene un path, se vuelve un Link clickeable */}
+                            {!isLast && crumb.path ? (
+                                <Link
+                                    to={crumb.path}
+                                    className="text-muted-foreground hover:text-foreground transition-colors"
+                                >
+                                    {crumb.text}
+                                </Link>
+                            ) : (
+                                <span className={isLast ? "text-foreground font-medium" : "text-muted-foreground"}>
+                                    {crumb.text}
+                                </span>
+                            )}
                         </span>
-                    </span>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="flex items-center gap-4">
@@ -106,7 +127,7 @@ export const Header = () => {
                 )}
 
                 <button
-                    onClick={() => { void handleLogout()}}
+                    onClick={() => { void handleLogout() }}
                     className="hover:text-foreground transition-colors cursor-pointer"
                     title="Cerrar sesión"
                 >

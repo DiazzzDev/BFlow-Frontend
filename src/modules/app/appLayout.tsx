@@ -13,7 +13,7 @@ export const AppLayout = () => {
                 <Navbar />
                 <section className="flex flex-col flex-1">
                     <Header />
-                    <div className="flex-1 p-8 flex flex-col overflow-auto height-[calc(100%-4rem)]">
+                    <div className="flex-1 flex flex-col overflow-auto height-[calc(100%-4rem)]">
                         <Outlet />
                     </div>
                 </section>
