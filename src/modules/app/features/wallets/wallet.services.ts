@@ -1,4 +1,4 @@
-import { CreateWalletData, Wallet } from "./interfaces/Wallets";
+import { CreateWalletData, Wallet } from "./walletView/interfaces/Wallets";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";
