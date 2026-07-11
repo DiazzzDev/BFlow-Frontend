@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getWallets } from "../wallet.services";
 
-import { useAuthStore } from "@/auth/store/authStore";
+import { useAuthStore } from "@/auth/authStore";
 
 export const useGetWallets = () => {
     const user = useAuthStore((state) => state.user);

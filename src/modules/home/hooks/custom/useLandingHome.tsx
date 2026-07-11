@@ -1,6 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom"
 
-import { navLinks } from "../../constants/navLinks"
+export const navLinks = [
+    { label: "Funcionalidades", id: "features" },
+    { label: "Cómo funciona", id: "how" },
+    { label: "Precios", id: "pricing" },
+    { label: "Acerca de", id: "dashboard-preview" },
+];
 
 export const useLandingHome = () => {
     const { pathname } = useLocation();

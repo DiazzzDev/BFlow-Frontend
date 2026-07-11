@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
 
-import { useForgotPasswordActions } from "../../../../../auth/hooks/useForgotPasswordActions";
+import { useForgotPassword } from "../../../../../auth/hooks/useForgotPassword";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { isValidEmail } from "@/utils/validators";
 
 type FormData = {
     email: string;
 };
+
+const inputClass =
+    "h-10 w-full rounded-lg border border-border bg-card px-3 text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
 
 export const ForgotPasswordPage = () => {
 
@@ -20,10 +21,7 @@ export const ForgotPasswordPage = () => {
         }
     } = useForm<FormData>();
 
-    const {
-        onSubmit,
-        isLoading
-    } = useForgotPasswordActions();
+    const { mutateAsync: onSubmit, isPending: isLoading } = useForgotPassword();
 
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -41,13 +39,14 @@ export const ForgotPasswordPage = () => {
                     Recuperar contraseña
                 </h1>
 
-                <p className="text-text-muted">
+                <p className="text-muted-foreground">
                     Te enviaremos un código de recuperación.
                 </p>
 
-                <Input
+                <input
                     placeholder="Correo electrónico"
                     disabled={isLoading}
+                    className={inputClass}
                     {...register("email", {
                         required: "El correo es requerido",
 
@@ -58,22 +57,22 @@ export const ForgotPasswordPage = () => {
                 />
 
                 {errors.email && (
-                    <p className="text-warning text-sm">
+                    <p className="text-danger text-sm">
                         {errors.email.message}
                     </p>
                 )}
 
-                <Button
+                <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full"
+                    className="w-full h-10 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
                 >
                     {
                         isLoading
                             ? "Enviando..."
                             : "Enviar código"
                     }
-                </Button>
+                </button>
             </form>
         </div>
     );

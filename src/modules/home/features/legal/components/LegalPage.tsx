@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Calendar, Mail, Globe } from "lucide-react";
+
 import type { LegalDocumentType } from "../../legal.service.ts";
 import { useGetLegalDocument } from "../hooks/useGetLegalDocument.ts";
 
@@ -67,13 +68,13 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
         <>
             <LegalScrollProgress />
 
-            <div className="min-h-screen bg-background text-(--text-foreground)">
+            <div className="min-h-screen bg-background text-foreground">
 
                 {/* Header */}
                 <div className="border-b border-border px-6 md:px-20 py-10 md:py-14">
                     <div className="max-w-300 mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs tracking-widest uppercase text-(--tertiary) mb-3">
+                            <p className="text-xs tracking-widest uppercase text-primary mb-3">
                                 Legal
                             </p>
 
@@ -81,19 +82,19 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                                 {title}
                             </h1>
 
-                            <p className="text-sm text-(--text-muted) max-w-lg">{description}</p>
+                            <p className="text-sm text-muted-foreground max-w-lg">{description}</p>
 
                             {data && (
                                 <div className="flex flex-wrap items-center gap-4 mt-5">
-                                    <span className="flex items-center gap-1.5 text-xs text-text-label">
+                                    <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Calendar className="w-3.5 h-3.5" />
                                         Actualizado el {data.lastUpdated}
                                     </span>
-                                    <span className="flex items-center gap-1.5 text-xs text-text-label">
+                                    <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Mail className="w-3.5 h-3.5" />
                                         {data.contactEmail}
                                     </span>
-                                    <span className="flex items-center gap-1.5 text-xs text-text-label">
+                                    <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Globe className="w-3.5 h-3.5" />
                                         {LANG_LABELS[data.language] ?? data.language}
                                     </span>
@@ -104,7 +105,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                         {/* Language selector */}
                         <div className="shrink-0">
                             <select
-                                className="bg-(--card) border border-border text-(--text-foreground) rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-white/20 transition-colors outline-none"
+                                className="bg-card border border-border text-foreground rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-dark-25 transition-colors outline-none"
                                 value={lang}
                                 onChange={(e) => setLang(e.target.value as "es" | "en")}
                             >
@@ -123,7 +124,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                     {!isLoading && !isError && headings.length > 0 && (
                         <aside className="hidden lg:block w-56 shrink-0">
                             <div className="sticky top-28">
-                                <p className="text-xs tracking-widest uppercase text-text-label mb-4">
+                                <p className="text-xs tracking-widest uppercase text-label mb-4">
                                     Contenido
                                 </p>
 
@@ -132,7 +133,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                                         <button
                                             key={id}
                                             onClick={() => scrollTo(id)}
-                                            className="text-xs text-(--text-muted) hover:text-(--text-foreground) transition-colors py-1.5 px-3 rounded-lg hover:bg-(--card) leading-snug cursor-pointer text-left"
+                                            className="text-xs text-muted-foreground hover:text-foreground transition-colors py-1.5 px-3 rounded-lg hover:bg-card leading-snug cursor-pointer text-left"
                                         >
                                             {label}
                                         </button>
@@ -145,8 +146,8 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                     {/* Main content */}
                     <main className="flex-1 min-w-0 max-w-3xl">
                         {isLoading && <LegalSkeleton />}
-                        {isError && <LegalError onRetry={refetch} />}
-                        {data && !isLoading && <LegalMarkdown content={data.content} />}
+                        {isError && <LegalError onRetry={() => { void refetch(); }} />}
+                        {data && <LegalMarkdown content={data.content} />}
                     </main>
                 </div>
             </div>

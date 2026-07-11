@@ -14,8 +14,8 @@ export const Stats = () => {
                         key={label}
                         className={`bg-card px-6 py-8 text-center ${i !== stats.length - 1 ? "border-r border-border" : ""}`}
                     >
-                        <p className="text-4xl font-bold text-brand-accent mb-2">{value}</p>
-                        <p className="text-sm text-text-muted">{label}</p>
+                        <p className="text-4xl font-bold text-primary mb-2">{value}</p>
+                        <p className="text-sm text-muted-foreground">{label}</p>
                     </div>
                 ))}
             </div>

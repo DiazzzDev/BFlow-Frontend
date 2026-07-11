@@ -1,13 +1,9 @@
 import { NavLink } from "react-router-dom";
 
 import { formatCurrency } from "../../../../../utils/formaters.ts";
-import { Avatar, AvatarImage } from "../../../../../components/ui/avatar.tsx";
-import { Separator } from "../../../../../components/ui/separator.tsx";
 import { Wallet } from "../interfaces/Wallets.ts";
 
 import { WalletProgressBar } from "./WalletProgressBar.tsx";
-
-
 
 export const WalletCard = ({wallet}: {wallet: Wallet}) => {
     return (
@@ -16,23 +12,16 @@ export const WalletCard = ({wallet}: {wallet: Wallet}) => {
                 <h3 className="text-foreground font-medium text-lg">{wallet.name}</h3>
                 <p className="text-foreground text-lg font-medium">{wallet.currency}</p>
             </div>
-            <Separator />
+            <div className="h-px w-full bg-border" />
             <div className="flex flex-col pt-3 gap-1">
-                <p className="text-text-muted text-xs">Balance actual:</p>
+                <p className="text-muted-foreground text-xs">Balance actual:</p>
                 <p className="text-foreground text-xl">{formatCurrency(wallet.balance)}</p>
             </div>
             <WalletProgressBar spent={wallet.balance} budget={wallet.initialValue} />
             <div className="flex items-center mt-auto gap-2 pt-4">
-                <p className="text-text-label text-xs">Compartida con:</p>
-                <div className="flex -space-x-2">
-                    {/*wallet.users.map(user => (
-                        <Avatar size="sm" key={user.id}>
-                            <AvatarImage src={user.image} alt={user.name} />
-                        </Avatar>
-                    ))*/}
-                </div>
+                <p className="text-label text-xs">Compartida con:</p>
+                <div className="flex -space-x-2" />
             </div>
         </NavLink>
     );
 }
-

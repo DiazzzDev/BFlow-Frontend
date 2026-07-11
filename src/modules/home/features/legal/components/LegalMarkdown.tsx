@@ -7,7 +7,7 @@ import type { Components } from "react-markdown";
 const mdComponents: Components = {
 
     h1: ({ children }) => (
-        <h1 className="text-3xl font-bold tracking-tight mb-6 mt-10 first:mt-0 text-(--text-foreground)">
+        <h1 className="text-3xl font-bold tracking-tight mb-6 mt-10 first:mt-0 text-foreground">
             {children}
         </h1>
     ),
@@ -29,7 +29,7 @@ const mdComponents: Components = {
         return (
             <h2
                 id={id}
-                className="text-xl font-semibold tracking-tight mt-10 mb-4 text-(--text-foreground) scroll-mt-28"
+                className="text-xl font-semibold tracking-tight mt-10 mb-4 text-foreground scroll-mt-28"
             >
                 {children}
             </h2>
@@ -37,21 +37,21 @@ const mdComponents: Components = {
     },
 
     h3: ({ children }) => (
-        <h3 className="text-base font-semibold mt-7 mb-3 text-(--text-foreground)">{children}</h3>
+        <h3 className="text-base font-semibold mt-7 mb-3 text-foreground">{children}</h3>
     ),
 
     p: ({ children }) => (
-        <p className="text-sm text-(--text-muted) leading-relaxed mb-4">{children}</p>
+        <p className="text-sm text-muted-foreground leading-relaxed mb-4">{children}</p>
     ),
 
     ul: ({ children }) => (
-        <ul className="list-disc list-inside text-sm text-(--text-muted) leading-relaxed mb-4 space-y-1 pl-2">
+        <ul className="list-disc list-inside text-sm text-muted-foreground leading-relaxed mb-4 space-y-1 pl-2">
             {children}
         </ul>
     ),
 
     ol: ({ children }) => (
-        <ol className="list-decimal list-inside text-sm text-(--text-muted) leading-relaxed mb-4 space-y-1 pl-2">
+        <ol className="list-decimal list-inside text-sm text-muted-foreground leading-relaxed mb-4 space-y-1 pl-2">
             {children}
         </ol>
     ),
@@ -63,20 +63,20 @@ const mdComponents: Components = {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-(--primary) underline underline-offset-2 hover:opacity-80 transition-opacity"
+            className="text-primary underline underline-offset-2 hover:opacity-80 transition-opacity"
         >
             {children}
         </a>
     ),
 
     strong: ({ children }) => (
-        <strong className="font-semibold text-(--text-foreground)">{children}</strong>
+        <strong className="font-semibold text-foreground">{children}</strong>
     ),
 
-    em: ({ children }) => <em className="italic text-text-label">{children}</em>,
+    em: ({ children }) => <em className="italic text-label">{children}</em>,
 
     blockquote: ({ children }) => (
-        <blockquote className="border-l-2 border-(--primary) pl-4 my-4 text-sm text-text-label italic">
+        <blockquote className="border-l-2 border-primary pl-4 my-4 text-sm text-label italic">
             {children}
         </blockquote>
     ),
@@ -88,14 +88,14 @@ const mdComponents: Components = {
             <table className="w-full text-sm">{children}</table>
         </div>
     ),
-    thead: ({ children }) => <thead className="bg-(--card)">{children}</thead>,
+    thead: ({ children }) => <thead className="bg-card">{children}</thead>,
     th: ({ children }) => (
-        <th className="px-4 py-3 text-left font-semibold text-(--text-foreground) border-b border-border">
+        <th className="px-4 py-3 text-left font-semibold text-foreground border-b border-border">
             {children}
         </th>
     ),
     td: ({ children }) => (
-        <td className="px-4 py-3 text-(--text-muted) border-b border-border last-of-type:border-b-0">
+        <td className="px-4 py-3 text-muted-foreground border-b border-border last-of-type:border-b-0">
             {children}
         </td>
     ),
@@ -104,12 +104,12 @@ const mdComponents: Components = {
         const isInline = !className;
 
         return isInline ? (
-            <code className="bg-(--card) text-(--primary) px-1.5 py-0.5 rounded text-xs font-mono" {...props}>
+            <code className="bg-card text-primary px-1.5 py-0.5 rounded text-xs font-mono" {...props}>
                 {children}
             </code>
         ) : (
             <code
-                className={`${className ?? ""} block bg-(--card) rounded-xl p-4 text-xs font-mono overflow-x-auto`}
+                className={`${className} block bg-card rounded-xl p-4 text-xs font-mono overflow-x-auto`}
                 {...props}
             >
                 {children}
@@ -117,7 +117,7 @@ const mdComponents: Components = {
         );
     },
     pre: ({ children }) => (
-        <pre className="my-4 overflow-x-auto rounded-xl bg-(--card) border border-border">{children}</pre>
+        <pre className="my-4 overflow-x-auto rounded-xl bg-card border border-border">{children}</pre>
     ),
 };
 

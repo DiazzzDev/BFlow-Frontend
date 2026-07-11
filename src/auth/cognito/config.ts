@@ -1,4 +1,4 @@
-import { config } from "@/api/config";
+import { config } from "@/config/config";
 
 export const cognitoConfig = {
 

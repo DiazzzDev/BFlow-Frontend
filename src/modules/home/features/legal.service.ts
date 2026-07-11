@@ -1,4 +1,4 @@
-import { config } from "../../../api/config.ts";
+import { config } from "../../../config/config.ts";
 import { apiRequest } from "../../../utils/api.ts";
 
 export type LegalDocumentType = "privacy" | "terms" | "cookies";

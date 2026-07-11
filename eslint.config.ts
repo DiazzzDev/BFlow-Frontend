@@ -81,7 +81,6 @@ export default tseslint.config(
             'react/self-closing-comp': 'error',
             'react/jsx-no-duplicate-props': 'error',
             'react/jsx-no-useless-fragment': 'warn',
-            'react/no-array-index-key': 'warn',
             'react/no-unstable-nested-components': 'error',
             'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
             'react/hook-use-state': 'warn',

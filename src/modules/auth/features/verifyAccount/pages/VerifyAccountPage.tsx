@@ -1,14 +1,14 @@
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { useVerifyAccountActions } from "../../../../../auth/hooks/useVerifyAccountActions";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useVerifyAccount } from "../../../../../auth/hooks/useVerifyAccount";
 
 type FormData = {
     code: string;
 };
+
+const inputClass =
+    "h-10 w-full rounded-lg border border-border bg-card px-3 text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
 
 export const VerifyAccountPage = () => {
 
@@ -26,10 +26,7 @@ export const VerifyAccountPage = () => {
         }
     } = useForm<FormData>();
 
-    const {
-        onSubmit,
-        isLoading
-    } = useVerifyAccountActions();
+    const { mutateAsync: onSubmit, isPending: isLoading } = useVerifyAccount();
 
     return (
         <div className="flex min-h-screen items-center justify-center">
@@ -38,10 +35,7 @@ export const VerifyAccountPage = () => {
                 className="w-full max-w-md space-y-4"
                 onSubmit={(e) => {
                     void handleSubmit(
-                        data => onSubmit(
-                            email,
-                            data.code
-                        )
+                        data => onSubmit({ email, code: data.code })
                     )(e);
                 }}
             >
@@ -50,13 +44,14 @@ export const VerifyAccountPage = () => {
                     Verificar cuenta
                 </h1>
 
-                <p className="text-text-muted">
+                <p className="text-muted-foreground">
                     Revisa tu correo e ingresa el código.
                 </p>
 
-                <Input
+                <input
                     placeholder="Código"
                     disabled={isLoading}
+                    className={inputClass}
                     {...register(
                         "code",
                         {
@@ -67,22 +62,22 @@ export const VerifyAccountPage = () => {
                 />
 
                 {errors.code && (
-                    <p className="text-warning text-sm">
+                    <p className="text-danger text-sm">
                         {errors.code.message}
                     </p>
                 )}
 
-                <Button
+                <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full"
+                    className="w-full h-10 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
                 >
                     {
                         isLoading
                             ? "Verificando..."
                             : "Verificar cuenta"
                     }
-                </Button>
+                </button>
 
             </form>
 

@@ -1,135 +1,106 @@
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useResetPasswordActions } from "../../../../../auth/hooks/useResetPasswordActions";
+import { useResetPassword } from "../../../../../auth/hooks/useResetPassword";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+const resetPasswordSchema = z
+    .object({
+        code: z.string().min(1, "Código requerido"),
+        password: z.string().min(8, "La contraseña debe tener mínimo 8 caracteres"),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Las contraseñas no coinciden",
+        path: ["confirmPassword"],
+    });
 
+type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
-type FormData = {
-    code: string;
-    password: string;
-    confirmPassword: string;
-};
+const inputClass =
+    "h-10 w-full rounded-lg border border-border bg-card px-3 text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
 
 export const ResetPasswordPage = () => {
-
     const [params] = useSearchParams();
-
     const email = params.get("email") ?? "";
-
-    console.log(
-        "EMAIL PARAM:",
-        email
-    );
 
     const {
         register,
         handleSubmit,
-        watch,
-        formState: {
-            errors
-        }
-    } = useForm<FormData>();
+        formState: { errors },
+    } = useForm<ResetPasswordFormData>({
+        resolver: zodResolver(resetPasswordSchema),
+    });
 
-    const {
-        onSubmit,
-        isLoading
-    } = useResetPasswordActions();
+    const { mutateAsync: resetPassword, isPending: isLoading } = useResetPassword();
+
+    const onSubmit = async (data: ResetPasswordFormData) => {
+        await resetPassword({
+            email,
+            code: data.code,
+            password: data.password,
+        });
+    };
 
     return (
         <div className="flex min-h-screen items-center justify-center">
-
             <form
                 className="w-full max-w-md space-y-4"
                 onSubmit={(e) => {
-                    void handleSubmit(
-                        (data) =>
-                            onSubmit(
-                                email,
-                                data.code,
-                                data.password
-                            )
-                    )(e);
+                    void handleSubmit(onSubmit)(e);
                 }}
             >
-
                 <h1 className="text-3xl font-semibold">
                     Nueva contraseña
                 </h1>
 
-                <p className="text-text-muted">
+                <p className="text-muted-foreground">
                     Revisa tu correo y pega el código recibido.
                 </p>
 
-                <Input
+                <input
                     placeholder="Código"
                     disabled={isLoading}
-                    {...register(
-                        "code",
-                        {
-                            required:
-                                "Código requerido"
-                        }
-                    )}
+                    className={inputClass}
+                    {...register("code")}
                 />
+                {errors.code && (
+                    <p className="text-danger text-sm">{errors.code.message}</p>
+                )}
 
-                <Input
+                <input
                     type="password"
                     placeholder="Nueva contraseña"
                     disabled={isLoading}
-                    {...register(
-                        "password",
-                        {
-                            required:
-                                "Contraseña requerida",
-                            minLength: {
-                                value: 8,
-                                message:
-                                    "Mínimo 8 caracteres"
-                            }
-                        }
-                    )}
+                    className={inputClass}
+                    {...register("password")}
                 />
+                {errors.password && (
+                    <p className="text-danger text-sm">{errors.password.message}</p>
+                )}
 
-                <Input
+                <input
                     type="password"
                     placeholder="Confirmar contraseña"
                     disabled={isLoading}
-                    {...register(
-                        "confirmPassword",
-                        {
-                            validate:
-                                value =>
-                                    value === watch("password")
-                                    || "Las contraseñas no coinciden"
-                        }
-                    )}
+                    className={inputClass}
+                    {...register("confirmPassword")}
                 />
-
                 {errors.confirmPassword && (
-                    <p className="text-warning text-sm">
-                        {
-                            errors.confirmPassword.message
-                        }
+                    <p className="text-danger text-sm">
+                        {errors.confirmPassword.message}
                     </p>
                 )}
 
-                <Button
+                <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full"
+                    className="w-full h-10 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
                 >
-                    {
-                        isLoading
-                            ? "Actualizando..."
-                            : "Actualizar contraseña"
-                    }
-                </Button>
-
+                    {isLoading ? "Actualizando..." : "Actualizar contraseña"}
+                </button>
             </form>
-
         </div>
     );
 };

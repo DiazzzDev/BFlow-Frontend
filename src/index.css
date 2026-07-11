@@ -1,0 +1,270 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+    /* --- MARCA --- */
+    --color-primary: #f97316;
+    --color-primary-dark: #ea580c;
+    --color-primary-75: #f97316bf;
+    --color-primary-50: #f9731680;
+    --color-primary-25: #f9731640;
+    --color-primary-15: #f9731626;
+
+    --color-secondary: #2f3846;
+    --color-secondary-dark: #1e2530;
+    --color-secondary-75: #2f3846bf;
+    --color-secondary-50: #2f384680;
+    --color-secondary-25: #2f384640;
+    --color-secondary-15: #2f384626;
+
+    /* --- TEXTO --- */
+    --color-dark: #ffffff;
+    --color-dark-75: #ffffffbf;
+    --color-dark-50: #ffffff80;
+    --color-dark-25: #ffffff40;
+    --color-dark-10: #ffffff1a;
+
+    --color-helper: #ffffff59;
+    --color-label: #ffffff8c;
+    --color-placeholder: #ffffff66;
+
+    /* --- SUPERFICIES --- */
+    --color-surface: #1a1c20;
+    --color-surface-hard: #111317;
+    --color-surface-95: #1a1c20f9;
+    --color-surface-75: #1a1c20bf;
+    --color-surface-50: #1a1c2080;
+    --color-surface-30: #1a1c204d;
+    --color-surface-25: #1a1c2040;
+    --color-surface-20: #1a1c2033;
+    --color-surface-10: #1a1c201a;
+
+    --color-card-base: #1a1f26;
+    --color-background-base: #111317;
+    --color-border-base: #ffffff0d;
+
+    /* --- ESTADOS --- */
+    --color-success: #22c55e;
+    --color-success-dark: #16a34a;
+    --color-success-75: #22c55ebf;
+    --color-success-50: #22c55e80;
+    --color-success-25: #22c55e40;
+    --color-success-sweet: rgb(34 197 94 / 0.1);
+
+    --color-warning: #ffa200;
+    --color-warning-dark: #e69100;
+    --color-warning-75: #ffa200bf;
+    --color-warning-50: #ffa20080;
+    --color-warning-25: #ffa20040;
+    --color-warning-sweet: rgb(255 162 0 / 0.1);
+
+    --color-danger: #ef4444;
+    --color-danger-dark: #dc2626;
+    --color-danger-75: #ef4444bf;
+    --color-danger-50: #ef444480;
+    --color-danger-25: #ef444440;
+    --color-danger-sweet: rgb(239 68 68 / 0.1);
+
+    --color-info: #3b82f6;
+    --color-info-dark: #2563eb;
+    --color-info-75: #3b82f6bf;
+    --color-info-50: #3b82f680;
+    --color-info-25: #3b82f640;
+
+    --color-item-nav: rgb(249 115 22 / 0.08);
+
+    /* --- TIPOGRAFÍA --- */
+    --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+
+    /* --- ALIASES UI --- */
+    --background: var(--color-background-base);
+    --foreground: var(--color-dark);
+    --surface: var(--color-surface);
+    --surface-hard: var(--color-surface-hard);
+
+    --primary: var(--color-primary);
+    --primary-dark: var(--color-primary-dark);
+    --primary-foreground: #ffffff;
+
+    --card: var(--color-card-base);
+    --card-foreground: var(--color-dark);
+    --popover: var(--color-card-base);
+    --popover-foreground: var(--color-dark);
+
+    --secondary: var(--color-secondary);
+    --secondary-foreground: var(--color-dark);
+
+    --muted: var(--color-secondary);
+    --muted-foreground: var(--color-helper);
+    --accent: var(--color-secondary);
+    --accent-foreground: var(--color-dark);
+
+    --destructive: var(--color-danger);
+    --destructive-foreground: #ffffff;
+
+    --border: var(--color-border-base);
+    --input: var(--color-card-base);
+    --ring: var(--color-primary);
+    --radius: 0.5rem;
+    --container-sm: 30rem;
+
+    --sidebar: var(--color-surface);
+    --sidebar-foreground: var(--color-dark);
+    --sidebar-primary: var(--color-primary);
+    --sidebar-border: var(--color-border-base);
+
+    --scrollbar-bg: var(--background);
+    --scrollbar-thumb: var(--color-secondary);
+
+    --shadow-custom: 0 2px 10px 0 rgb(0 0 0 / 0.25);
+}
+
+@theme inline {
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-sans);
+
+    /* Base */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-surface: var(--surface);
+    --color-surface-hard: var(--surface-hard);
+    --color-surface-95: var(--color-surface-95);
+    --color-surface-75: var(--color-surface-75);
+    --color-surface-50: var(--color-surface-50);
+    --color-surface-30: var(--color-surface-30);
+    --color-surface-25: var(--color-surface-25);
+    --color-surface-20: var(--color-surface-20);
+    --color-surface-10: var(--color-surface-10);
+
+    /* Marca */
+    --color-primary: var(--color-primary);
+    --color-primary-dark: var(--color-primary-dark);
+    --color-primary-75: var(--color-primary-75);
+    --color-primary-50: var(--color-primary-50);
+    --color-primary-25: var(--color-primary-25);
+    --color-primary-15: var(--color-primary-15);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--color-secondary);
+    --color-secondary-dark: var(--color-secondary-dark);
+    --color-secondary-75: var(--color-secondary-75);
+    --color-secondary-50: var(--color-secondary-50);
+    --color-secondary-25: var(--color-secondary-25);
+    --color-secondary-15: var(--color-secondary-15);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    /* Texto */
+    --color-dark: var(--color-dark);
+    --color-dark-75: var(--color-dark-75);
+    --color-dark-50: var(--color-dark-50);
+    --color-dark-25: var(--color-dark-25);
+    --color-dark-10: var(--color-dark-10);
+    --color-helper: var(--color-helper);
+    --color-label: var(--color-label);
+    --color-placeholder: var(--color-placeholder);
+
+    /* Estados */
+    --color-success: var(--color-success);
+    --color-success-dark: var(--color-success-dark);
+    --color-success-75: var(--color-success-75);
+    --color-success-50: var(--color-success-50);
+    --color-success-25: var(--color-success-25);
+    --color-success-sweet: var(--color-success-sweet);
+    --color-success-foreground: #ffffff;
+
+    --color-warning: var(--color-warning);
+    --color-warning-dark: var(--color-warning-dark);
+    --color-warning-75: var(--color-warning-75);
+    --color-warning-50: var(--color-warning-50);
+    --color-warning-25: var(--color-warning-25);
+    --color-warning-sweet: var(--color-warning-sweet);
+    --color-warning-foreground: #ffffff;
+
+    --color-danger: var(--color-danger);
+    --color-danger-dark: var(--color-danger-dark);
+    --color-danger-75: var(--color-danger-75);
+    --color-danger-50: var(--color-danger-50);
+    --color-danger-25: var(--color-danger-25);
+    --color-danger-sweet: var(--color-danger-sweet);
+    --color-danger-foreground: #ffffff;
+
+    --color-error: var(--color-danger);
+    --color-error-foreground: #ffffff;
+
+    --color-info: var(--color-info);
+    --color-info-dark: var(--color-info-dark);
+    --color-info-75: var(--color-info-75);
+    --color-info-50: var(--color-info-50);
+    --color-info-25: var(--color-info-25);
+    --color-info-foreground: #ffffff;
+
+    --color-item-nav: var(--color-item-nav);
+
+    /* Aliases UI */
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-border: var(--sidebar-border);
+
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+
+    --shadow-custom: var(--shadow-custom);
+    --container-sm: var(--container-sm);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+        width: 100dvw;
+        height: 100dvh;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    #root {
+        width: 100%;
+        min-height: 100dvh;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-dark);
+}
+
+@media screen and (width <= 600px) {
+    body {
+        font-size: 14px;
+    }
+}

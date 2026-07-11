@@ -1,17 +1,14 @@
-// components/DashboardPreview.tsx
 export const DashboardPreview = () => {
     return (
         <div id="dashboard-preview" className="px-20 pb-20 max-w-[1200px] mx-auto w-full">
             <div className="bg-card border border-border rounded-2xl overflow-hidden p-6">
 
-                {/* Dots */}
                 <div className="flex items-center gap-2 mb-5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-error" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-danger" />
                     <div className="w-2.5 h-2.5 rounded-full bg-warning" />
                     <div className="w-2.5 h-2.5 rounded-full bg-success" />
                 </div>
 
-                {/* Summary cards */}
                 <div className="grid grid-cols-3 gap-3 mb-4">
                     {[
                         { label: "Balance total", value: "$65,660.55", sub: "en todas las billeteras" },
@@ -19,40 +16,38 @@ export const DashboardPreview = () => {
                         { label: "Gastos este mes", value: "-$8,620.00", sub: "vs $6,100 mes anterior", neg: true },
                     ].map(({ label, value, sub, neg }) => (
                         <div key={label} className="bg-card border border-border rounded-xl p-4">
-                            <p className="text-[10px] uppercase tracking-widest text-text-label mb-1.5">{label}</p>
-                            <p className={`text-xl font-semibold mb-1 ${neg ? "text-danger" : "text-white"}`}>{value}</p>
-                            <p className="text-[11px] text-text-label">{sub}</p>
+                            <p className="text-[10px] uppercase tracking-widest text-label mb-1.5">{label}</p>
+                            <p className={`text-xl font-semibold mb-1 ${neg ? "text-danger" : "text-foreground"}`}>{value}</p>
+                            <p className="text-[11px] text-label">{sub}</p>
                         </div>
                     ))}
                 </div>
 
-                {/* Wallet cards */}
                 <div className="grid grid-cols-3 gap-3 mb-4">
                     {[
-                        { name: "Bóveda Física", balance: "$12,450.00", pct: 21, color: "var(--warning)" },
-                        { name: "Sapphire Prime", balance: "$45,000.00", pct: 24, color: "var(--info)" },
-                        { name: "Corporate Ops", balance: "$8,210.55", pct: 70, color: "var(--error)" },
-                    ].map(({ name, balance, pct, color }) => (
-                        <div key={name} className="bg-bg-card border border-border rounded-xl p-4 bg-card">
+                        { name: "Bóveda Física", balance: "$12,450.00", pct: 21, barClass: "bg-warning" },
+                        { name: "Sapphire Prime", balance: "$45,000.00", pct: 24, barClass: "bg-info" },
+                        { name: "Corporate Ops", balance: "$8,210.55", pct: 70, barClass: "bg-danger" },
+                    ].map(({ name, balance, pct, barClass }) => (
+                        <div key={name} className="bg-card border border-border rounded-xl p-4">
                             <p className="text-sm font-medium mb-3">{name}</p>
-                            <p className="text-[11px] text-text-label mb-1">Balance actual</p>
+                            <p className="text-[11px] text-label mb-1">Balance actual</p>
                             <p className="text-base font-semibold mb-3">{balance}</p>
-                            <div className="flex justify-between text-[10px] text-text-label mb-1">
+                            <div className="flex justify-between text-[10px] text-label mb-1">
                                 <span>Gasto del mes</span>
                                 <span>{pct}%</span>
                             </div>
-                            <div className="h-1 rounded-full bg-white/10">
-                                <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
+                            <div className="h-1 rounded-full bg-dark-10">
+                                <div className={`h-full rounded-full ${barClass}`} style={{ width: `${pct}%` }} />
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Table */}
-                <div className="bg-bg-card border border-border rounded-xl overflow-hidden">
+                <div className="bg-card border border-border rounded-xl overflow-hidden">
                     <div className="grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-border bg-card">
                         {["Concepto", "Categoría", "Monto"].map(h => (
-                            <p key={h} className="text-[10px] uppercase tracking-widest text-text-label">{h}</p>
+                            <p key={h} className="text-[10px] uppercase tracking-widest text-label">{h}</p>
                         ))}
                     </div>
                     {[
@@ -60,12 +55,12 @@ export const DashboardPreview = () => {
                         { name: "Nómina — Octubre", wallet: "Corporate Ops", cat: "Ingresos", amount: "+$5,800.00", neg: false },
                         { name: "AWS — Infraestructura", wallet: "Corporate Ops", cat: "Tecnología", amount: "-$890.50", neg: true },
                     ].map(({ name, wallet, cat, amount, neg }) => (
-                        <div key={name} className="bg-card grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-[rgba(255,255,255,0.03)] last:border-0 items-center">
+                        <div key={name} className="bg-card grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-dark-10 last:border-0 items-center">
                             <div>
-                                <p className="text-xs text-white">{name}</p>
-                                <p className="text-[10px] text-text-label">{wallet}</p>
+                                <p className="text-xs text-foreground">{name}</p>
+                                <p className="text-[10px] text-label">{wallet}</p>
                             </div>
-                            <span className="text-[10px] bg-white/5 text-text-muted px-2 py-1 rounded-full inline-block">{cat}</span>
+                            <span className="text-[10px] bg-dark-10 text-muted-foreground px-2 py-1 rounded-full inline-block">{cat}</span>
                             <p className={`text-xs font-semibold text-right ${neg ? "text-danger" : "text-success"}`}>{amount}</p>
                         </div>
                     ))}

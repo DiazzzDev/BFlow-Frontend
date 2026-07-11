@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { useAuthStore } from "@/auth/store/authStore";
+import { useAuthStore } from "@/auth/authStore";
 
 export const ProtectedRoute = () => {
 
