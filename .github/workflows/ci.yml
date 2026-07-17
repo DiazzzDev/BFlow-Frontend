@@ -1,0 +1,22 @@
+name: BFlow Frontend CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security:
+    uses: ./.github/workflows/security.yml
+
+  quality:
+    needs: security
+    uses: ./.github/workflows/quality.yml
