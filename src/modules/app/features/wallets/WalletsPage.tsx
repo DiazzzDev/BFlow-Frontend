@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { Users, Wallet } from "lucide-react";
 
@@ -12,12 +13,13 @@ import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SearchInput } from "@/components/controls/SearchInput";
 import { Button } from "@/components/controls/Button";
 import { formatMonthYear } from "@/utils/formatters/formatMonthYear";
+import { TabFilter } from "@/components/controls/TabFilter";
 
-const getEmptyTitle = (search: string, activeTab: "wallets" | "sharedWallets") => {
+const getEmptyTitle = (search: string, activeTab: "myWallets" | "sharedWallets") => {
     if (search.trim()) {
         return "Sin resultados";
     }
-    if (activeTab === "wallets") {
+    if (activeTab === "myWallets") {
         return "No tienes billeteras aún";
     }
     return "No tienes billeteras compartidas";
@@ -25,25 +27,26 @@ const getEmptyTitle = (search: string, activeTab: "wallets" | "sharedWallets") =
 
 const getEmptyDescription = (
     search: string,
-    activeTab: "wallets" | "sharedWallets",
+    activeTab: "myWallets" | "sharedWallets",
 ) => {
     if (search.trim()) {
         return "Prueba con otro término de búsqueda";
     }
-    if (activeTab === "wallets") {
+    if (activeTab === "myWallets") {
         return "Crea tu primera billetera para empezar a gestionar tus finanzas";
     }
     return "Cuando alguien te invite a una billetera, aparecerá aquí";
 };
 
 export const WalletsPage = () => {
+    const [params] = useSearchParams();
+    const activeTab = (params.get("wallets") as "myWallets" | "sharedWallets") ?? "myWallets";
     const { isLoading, data } = useGetWallets();
     const user = useAuthStore((state) => state.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<"wallets" | "sharedWallets">("wallets");
     const [search, setSearch] = useState("");
 
-    const walletsToShow = activeTab === "wallets" ? data?.myWallets : data?.sharedWallets;
+    const walletsToShow = activeTab === "myWallets" ? data?.myWallets : data?.sharedWallets;
     const ownerLabel = user?.email || "—";
 
     const filteredWallets = useMemo(() => {
@@ -64,50 +67,25 @@ export const WalletsPage = () => {
         });
     }, [walletsToShow, search]);
 
-    const showCreateButton = activeTab === "wallets" && !search.trim();
+    const showCreateButton = activeTab === "myWallets" && !search.trim();
 
     return (
         <div className="flex gap-6 h-full min-h-0">
             <section className="flex-1 min-w-0 flex flex-col px-6 py-5">
                 <div className="flex flex-col gap-4 mb-6">
-                    <div className="flex items-center justify-end">
-                        <div className="flex items-center gap-1 text-sm">
-                            <button
-                                type="button"
-                                onClick={() => setActiveTab("wallets")}
-                                className={`cursor-pointer transition-colors ${
-                                    activeTab === "wallets"
-                                        ? "text-light font-medium"
-                                        : "text-helper hover:text-light"
-                                }`}
-                            >
-                                Mis wallets
-                            </button>
-                            <span className="text-helper">/</span>
-                            <button
-                                type="button"
-                                onClick={() => setActiveTab("sharedWallets")}
-                                className={`cursor-pointer transition-colors ${
-                                    activeTab === "sharedWallets"
-                                        ? "text-light font-medium"
-                                        : "text-helper hover:text-light"
-                                }`}
-                            >
-                                Compartidas
-                            </button>
+                    <div className="flex items-center gap-3 flex-wrap justify-between">
+                        <div className="flex gap-4 flex-1 justify-start">
+                            <SearchInput
+                                id="txtSearch"
+                                placeholder="Buscar billetera..."
+                                className="max-w-2xl"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <TabFilter options={[{ label: "Mis wallets", value: "myWallets" }, { label: "Compartidas", value: "sharedWallets" }]} selected={activeTab} keyFilter="wallets" />
                         </div>
-                    </div>
 
-                    <div className="flex items-center gap-3 flex-wrap">
-                        <SearchInput
-                            id="txtSearch"
-                            placeholder="Buscar billetera..."
-                            className="max-w-xl"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-
-                        {activeTab === "wallets" && (
+                        {activeTab === "myWallets" && (
                             <Button
                                 type="button"
                                 onClick={() => setIsModalOpen(true)}
@@ -194,7 +172,7 @@ export const WalletsPage = () => {
             <CustomEmptyState
                 title={getEmptyTitle(search, activeTab)}
                 description={getEmptyDescription(search, activeTab)}
-                Icon={activeTab === "wallets" ? Wallet : Users}
+                Icon={activeTab === "myWallets" ? Wallet : Users}
                 buttonText={showCreateButton ? "Crear billetera" : undefined}
                 onButtonClick={showCreateButton ? () => setIsModalOpen(true) : undefined}
             />
