@@ -1,8 +1,5 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "@fontsource-variable/geist";
-
-@custom-variant dark (&:is(.dark *));
 
 :root {
     /* --- MARCA --- */
@@ -20,12 +17,13 @@
     --color-secondary-25: #2f384640;
     --color-secondary-15: #2f384626;
 
-    /* --- TEXTO --- */
-    --color-dark: #ffffff;
-    --color-dark-75: #ffffffbf;
-    --color-dark-50: #ffffff80;
-    --color-dark-25: #ffffff40;
-    --color-dark-10: #ffffff1a;
+    /* --- TEXTO (tema oscuro: light = tinta principal) --- */
+    --color-light: #ffffff;
+    --color-light-75: #ffffffbf;
+    --color-light-50: #ffffff80;
+    --color-light-25: #ffffff40;
+    --color-light-10: #ffffff1a;
+    --color-light-5: #ffffff0d;
 
     --color-helper: #ffffff59;
     --color-label: #ffffff8c;
@@ -41,10 +39,6 @@
     --color-surface-25: #1a1c2040;
     --color-surface-20: #1a1c2033;
     --color-surface-10: #1a1c201a;
-
-    --color-card-base: #1a1f26;
-    --color-background-base: #111317;
-    --color-border-base: #ffffff0d;
 
     /* --- ESTADOS --- */
     --color-success: #22c55e;
@@ -75,63 +69,48 @@
     --color-info-25: #3b82f640;
 
     --color-item-nav: rgb(249 115 22 / 0.08);
+    --color-skeleton: #ffffff14;
 
-    /* --- TIPOGRAFÍA --- */
+    /* --- TIPOGRAFÍA / UI --- */
     --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-
-    /* --- ALIASES UI --- */
-    --background: var(--color-background-base);
-    --foreground: var(--color-dark);
-    --surface: var(--color-surface);
-    --surface-hard: var(--color-surface-hard);
-
-    --primary: var(--color-primary);
-    --primary-dark: var(--color-primary-dark);
-    --primary-foreground: #ffffff;
-
-    --card: var(--color-card-base);
-    --card-foreground: var(--color-dark);
-    --popover: var(--color-card-base);
-    --popover-foreground: var(--color-dark);
-
-    --secondary: var(--color-secondary);
-    --secondary-foreground: var(--color-dark);
-
-    --muted: var(--color-secondary);
-    --muted-foreground: var(--color-helper);
-    --accent: var(--color-secondary);
-    --accent-foreground: var(--color-dark);
-
-    --destructive: var(--color-danger);
-    --destructive-foreground: #ffffff;
-
-    --border: var(--color-border-base);
-    --input: var(--color-card-base);
-    --ring: var(--color-primary);
-    --radius: 0.5rem;
+    --radius-base: 0.5rem;
     --container-sm: 30rem;
-
-    --sidebar: var(--color-surface);
-    --sidebar-foreground: var(--color-dark);
-    --sidebar-primary: var(--color-primary);
-    --sidebar-border: var(--color-border-base);
-
-    --scrollbar-bg: var(--background);
-    --scrollbar-thumb: var(--color-secondary);
-
     --shadow-custom: 0 2px 10px 0 rgb(0 0 0 / 0.25);
+    --scrollbar-bg: var(--color-surface-hard);
+    --scrollbar-thumb: var(--color-secondary);
 }
 
-@theme inline {
+@theme {
     --font-sans: var(--font-sans);
     --font-heading: var(--font-sans);
 
-    /* Base */
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --color-card: var(--card);
-    --color-surface: var(--surface);
-    --color-surface-hard: var(--surface-hard);
+    --color-primary: var(--color-primary);
+    --color-primary-dark: var(--color-primary-dark);
+    --color-primary-75: var(--color-primary-75);
+    --color-primary-50: var(--color-primary-50);
+    --color-primary-25: var(--color-primary-25);
+    --color-primary-15: var(--color-primary-15);
+
+    --color-secondary: var(--color-secondary);
+    --color-secondary-dark: var(--color-secondary-dark);
+    --color-secondary-75: var(--color-secondary-75);
+    --color-secondary-50: var(--color-secondary-50);
+    --color-secondary-25: var(--color-secondary-25);
+    --color-secondary-15: var(--color-secondary-15);
+
+    --color-light: var(--color-light);
+    --color-light-75: var(--color-light-75);
+    --color-light-50: var(--color-light-50);
+    --color-light-25: var(--color-light-25);
+    --color-light-10: var(--color-light-10);
+    --color-light-5: var(--color-light-5);
+
+    --color-helper: var(--color-helper);
+    --color-label: var(--color-label);
+    --color-placeholder: var(--color-placeholder);
+
+    --color-surface: var(--color-surface);
+    --color-surface-hard: var(--color-surface-hard);
     --color-surface-95: var(--color-surface-95);
     --color-surface-75: var(--color-surface-75);
     --color-surface-50: var(--color-surface-50);
@@ -140,41 +119,12 @@
     --color-surface-20: var(--color-surface-20);
     --color-surface-10: var(--color-surface-10);
 
-    /* Marca */
-    --color-primary: var(--color-primary);
-    --color-primary-dark: var(--color-primary-dark);
-    --color-primary-75: var(--color-primary-75);
-    --color-primary-50: var(--color-primary-50);
-    --color-primary-25: var(--color-primary-25);
-    --color-primary-15: var(--color-primary-15);
-    --color-primary-foreground: var(--primary-foreground);
-
-    --color-secondary: var(--color-secondary);
-    --color-secondary-dark: var(--color-secondary-dark);
-    --color-secondary-75: var(--color-secondary-75);
-    --color-secondary-50: var(--color-secondary-50);
-    --color-secondary-25: var(--color-secondary-25);
-    --color-secondary-15: var(--color-secondary-15);
-    --color-secondary-foreground: var(--secondary-foreground);
-
-    /* Texto */
-    --color-dark: var(--color-dark);
-    --color-dark-75: var(--color-dark-75);
-    --color-dark-50: var(--color-dark-50);
-    --color-dark-25: var(--color-dark-25);
-    --color-dark-10: var(--color-dark-10);
-    --color-helper: var(--color-helper);
-    --color-label: var(--color-label);
-    --color-placeholder: var(--color-placeholder);
-
-    /* Estados */
     --color-success: var(--color-success);
     --color-success-dark: var(--color-success-dark);
     --color-success-75: var(--color-success-75);
     --color-success-50: var(--color-success-50);
     --color-success-25: var(--color-success-25);
     --color-success-sweet: var(--color-success-sweet);
-    --color-success-foreground: #ffffff;
 
     --color-warning: var(--color-warning);
     --color-warning-dark: var(--color-warning-dark);
@@ -182,7 +132,6 @@
     --color-warning-50: var(--color-warning-50);
     --color-warning-25: var(--color-warning-25);
     --color-warning-sweet: var(--color-warning-sweet);
-    --color-warning-foreground: #ffffff;
 
     --color-danger: var(--color-danger);
     --color-danger-dark: var(--color-danger-dark);
@@ -190,53 +139,30 @@
     --color-danger-50: var(--color-danger-50);
     --color-danger-25: var(--color-danger-25);
     --color-danger-sweet: var(--color-danger-sweet);
-    --color-danger-foreground: #ffffff;
-
-    --color-error: var(--color-danger);
-    --color-error-foreground: #ffffff;
 
     --color-info: var(--color-info);
     --color-info-dark: var(--color-info-dark);
     --color-info-75: var(--color-info-75);
     --color-info-50: var(--color-info-50);
     --color-info-25: var(--color-info-25);
-    --color-info-foreground: #ffffff;
 
     --color-item-nav: var(--color-item-nav);
+    --color-skeleton: var(--color-skeleton);
 
-    /* Aliases UI */
-    --color-card-foreground: var(--card-foreground);
-    --color-popover: var(--popover);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-accent: var(--accent);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-destructive: var(--destructive);
-    --color-destructive-foreground: var(--destructive-foreground);
-    --color-border: var(--border);
-    --color-input: var(--input);
-    --color-ring: var(--ring);
-
-    --color-sidebar: var(--sidebar);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-border: var(--sidebar-border);
-
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-
+    --radius-base: var(--radius-base);
+    --radius-md: calc(var(--radius-base) * 0.8);
+    --radius-lg: var(--radius-base);
     --shadow-custom: var(--shadow-custom);
     --container-sm: var(--container-sm);
 }
 
 @layer base {
     * {
-        @apply border-border outline-ring/50;
+        @apply border-light-10;
     }
 
     body {
-        @apply bg-background text-foreground font-sans antialiased;
+        @apply bg-surface-hard text-light font-sans antialiased;
         width: 100dvw;
         height: 100dvh;
         margin: 0;

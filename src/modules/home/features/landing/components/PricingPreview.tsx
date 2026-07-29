@@ -66,7 +66,7 @@ export const PricingPreview = () => {
         <section id="pricing" className="px-20 py-20">
             <p className="text-xs tracking-widest uppercase text-primary mb-3">Precios</p>
             <h2 className="text-4xl font-bold tracking-tight mb-3">Simple y transparente</h2>
-            <p className="text-base text-muted-foreground max-w-lg mb-12">
+            <p className="text-base text-helper max-w-lg mb-12">
                 Sin costos ocultos. Cambiá de plan cuando quieras.
             </p>
 
@@ -74,32 +74,32 @@ export const PricingPreview = () => {
                 {plans.map(({ name, price, desc, featured, btnText, btnStyle, features }) => (
                     <div
                         key={name}
-                        className={`bg-card rounded-2xl p-7 relative ${
+                        className={`bg-surface rounded-2xl p-7 relative ${
                             featured
                                 ? "border border-primary"
-                                : "border border-border"
+                                : "border border-light-10"
                         }`}
                     >
                         {featured && (
-                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
+                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-light text-xs font-semibold px-4 py-1 rounded-full whitespace-nowrap">
                                 Más popular
                             </div>
                         )}
 
-                        <p className="text-sm text-muted-foreground mb-2">{name}</p>
+                        <p className="text-sm text-helper mb-2">{name}</p>
                         <p className="text-4xl font-bold mb-1">
-                            {price}<span className="text-base font-normal text-muted-foreground">/mes</span>
+                            {price}<span className="text-base font-normal text-helper">/mes</span>
                         </p>
-                        <p className="text-sm text-muted-foreground mb-6">{desc}</p>
+                        <p className="text-sm text-helper mb-6">{desc}</p>
 
-                        <hr className="border-border mb-5" />
+                        <hr className="border-light-10 mb-5" />
 
                         <div className="flex flex-col gap-3 mb-6">
                             {features.map(({ text, active }) => (
                                 <div
                                     key={text}
                                     className={`flex items-center gap-2.5 text-sm ${
-                                        active ? "text-muted-foreground" : "text-label"
+                                        active ? "text-helper" : "text-label"
                                     }`}
                                 >
                                     <span className={active ? "text-primary" : "text-label"}>
@@ -113,8 +113,8 @@ export const PricingPreview = () => {
                         <button
                             className={`w-full py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                                 btnStyle === "filled"
-                                    ? "bg-primary text-primary-foreground hover:bg-primary-dark"
-                                    : "bg-transparent border border-border text-muted-foreground hover:border-dark-25 hover:text-foreground"
+                                    ? "bg-primary text-light hover:bg-primary-dark"
+                                    : "bg-transparent border border-light-10 text-helper hover:border-light-25 hover:text-light"
                             }`}
                         >
                             {btnText}

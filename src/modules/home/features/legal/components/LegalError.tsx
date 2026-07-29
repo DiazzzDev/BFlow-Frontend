@@ -12,18 +12,18 @@ export const LegalError = ({ onRetry }: LegalErrorProps) => {
             </div>
 
             <div>
-                <p className="text-base font-semibold text-foreground mb-1">
+                <p className="text-base font-semibold text-light mb-1">
                     No se pudo cargar el documento
                 </p>
 
-                <p className="text-sm text-muted-foreground max-w-xs">
+                <p className="text-sm text-helper max-w-xs">
                     Hubo un problema al obtener el contenido. Revisá tu conexión e intentá de nuevo.
                 </p>
             </div>
 
             <button
                 onClick={onRetry}
-                className="flex items-center gap-2 text-sm font-medium bg-card border border-border px-4 py-2 rounded-lg hover:border-dark-25 transition-colors cursor-pointer"
+                className="flex items-center gap-2 text-sm font-medium bg-surface border border-light-10 px-4 py-2 rounded-lg hover:border-light-25 transition-colors cursor-pointer"
             >
                 <RefreshCw className="w-4 h-4" />
                 Reintentar

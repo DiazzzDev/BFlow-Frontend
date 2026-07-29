@@ -25,7 +25,7 @@ export const HowItWorks = () => {
                 <p className="text-xs tracking-widest uppercase text-primary mb-3">Cómo funciona</p>
                 <h2 className="text-4xl font-bold tracking-tight mb-3">En 3 pasos simples</h2>
 
-                <p className="text-base text-muted-foreground max-w-lg mb-16">
+                <p className="text-base text-helper max-w-lg mb-16">
                     Sin configuraciones complicadas. Comienza a controlar tus finanzas en minutos.
                 </p>
 
@@ -35,20 +35,20 @@ export const HowItWorks = () => {
                     {steps.map(({ number, title, desc }, i) => (
                         <div
                             key={number}
-                            className="relative bg-card border border-border rounded-2xl p-7 hover:border-primary-25 transition-colors duration-300"
+                            className="relative bg-surface border border-light-10 rounded-2xl p-7 hover:border-primary-25 transition-colors duration-300"
                         >
                             <div
                                 className={`w-14 h-14 rounded-xl flex items-center justify-center mb-5 font-bold text-sm border ${
                                     i === 0
                                         ? "bg-primary-15 border-primary-25 text-primary"
-                                        : "bg-dark-10 border-border text-muted-foreground"
+                                        : "bg-light-10 border-light-10 text-helper"
                                 }`}
                             >
                                 {number}
                             </div>
 
                             <h3 className="text-base font-semibold mb-2">{title}</h3>
-                            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                            <p className="text-sm text-helper leading-relaxed">{desc}</p>
                         </div>
                     ))}
                 </div>

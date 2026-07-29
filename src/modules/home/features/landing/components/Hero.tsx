@@ -8,13 +8,13 @@ export const Hero = () => {
                 <span className="text-primary">siempre quisiste</span>
             </h1>
 
-            <p className="text-lg text-muted-foreground max-w-xl mb-9">
+            <p className="text-lg text-helper max-w-xl mb-9">
                 Gestiona tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.
             </p>
 
             <div className="flex items-center gap-3 mb-4">
                 <a href="/auth/register">
-                    <button className="bg-primary text-primary-foreground text-sm font-medium px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors">
+                    <button className="bg-primary text-light text-sm font-medium px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors">
                         Empezar gratis
                     </button>
                 </a>

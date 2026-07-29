@@ -13,13 +13,13 @@ const navItems = [
 export const Navbar = () => {
     return (
         <aside
-            className="flex flex-col w-50 min-h-screen px-3 py-6 border-r bg-surface border-border"
+            className="flex flex-col w-50 min-h-screen px-3 py-6 border-r bg-surface border-light-10"
         >
             <div className="px-3 mb-8">
                 <p className="text-sm font-bold leading-none tracking-tight text-primary">
                     BFlow
                 </p>
-                <p className="text-xs mt-0.5 text-muted-foreground">
+                <p className="text-xs mt-0.5 text-helper">
                     Finance tool
                 </p>
             </div>
@@ -31,7 +31,7 @@ export const Navbar = () => {
                         to={to}
                         end={to === "/"}
                         className={({ isActive }) =>
-                            `flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
+                            `flex items-center text-light gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
                                 isActive ? "bg-secondary font-medium" : "font-normal"
                             }`
                         }
@@ -48,7 +48,7 @@ export const Navbar = () => {
                 <NavLink
                     to="/settings"
                     className={({ isActive }) =>
-                        `flex items-center text-foreground gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
+                        `flex items-center text-light gap-3 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
                             isActive ? "bg-secondary font-medium" : "font-normal"
                         }`
                     }

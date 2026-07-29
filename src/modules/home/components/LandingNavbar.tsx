@@ -5,10 +5,10 @@ import { useLandingHome } from "../hooks/custom/useLandingHome.tsx"
 
 export const LandingNavbar = () => {
     const { navLinks, handleNavClick } = useLandingHome();
-    const { data: isAuthenticated } = useAuth();
+    const { isAuthenticated, isChecking } = useAuth();
 
     return (
-        <nav className="flex items-center justify-between px-20 py-5 border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur-md">
+        <nav className="flex items-center justify-between px-20 py-5 border-b border-light-10 sticky top-0 z-50 bg-surface-hard/95 backdrop-blur-md">
             <div className="text-lg font-bold">
                 B<span className="text-primary">Flow</span>
             </div>
@@ -18,7 +18,7 @@ export const LandingNavbar = () => {
                     <button
                         key={id}
                         onClick={() => handleNavClick(id)}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-none border-none p-0"
+                        className="text-sm text-helper hover:text-light transition-colors cursor-pointer bg-none border-none p-0"
                     >
                         {label}
                     </button>
@@ -26,24 +26,26 @@ export const LandingNavbar = () => {
             </div>
 
             <div className="flex items-center gap-3">
-                {isAuthenticated ? (
+                {isChecking ? null : isAuthenticated ? (
                     <Link to="/app/dashboard">
-                        <button className="text-sm text-muted-foreground border border-border px-4 py-2 rounded-lg hover:border-dark-25 hover:text-foreground transition-all">
+                        <button className="text-sm text-helper border border-light-10 px-4 py-2 rounded-lg hover:border-light-25 hover:text-light transition-all">
                             Ir al dashboard
                         </button>
                     </Link>
                 ) : (
                     <Link to="/auth/login">
-                        <button className="text-sm text-muted-foreground border border-border px-4 py-2 rounded-lg hover:border-dark-25 hover:text-foreground transition-all">
+                        <button className="text-sm text-helper border border-light-10 px-4 py-2 rounded-lg hover:border-light-25 hover:text-light transition-all">
                             Iniciar sesión
                         </button>
                     </Link>
                 )}
-                <Link to="/auth/register">
-                    <button className="text-sm font-medium bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
-                        Empezar gratis
-                    </button>
-                </Link>
+                {!isAuthenticated && !isChecking && (
+                    <Link to="/auth/register">
+                        <button className="text-sm font-medium bg-primary text-light px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                            Empezar gratis
+                        </button>
+                    </Link>
+                )}
             </div>
         </nav>
     )

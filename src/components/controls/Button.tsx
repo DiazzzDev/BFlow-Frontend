@@ -18,10 +18,10 @@ export const Button = ({ type = "submit", hidden = false, disabled = false, text
             type={type}
             hidden={hidden}
             className={`
-                flex items-center justify-center gap-2 font-medium px-6 py-2 rounded-lg transition-all font-popins text-sm
+                flex items-center justify-center gap-2 font-medium px-6 py-2 rounded-lg transition-all font-sans text-sm
                 ${disabled
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none'
-                    : 'bg-primary hover:bg-primary-hover text-foreground shadow-sm cursor-pointer active:scale-95'}
+                    : 'bg-primary hover:bg-primary-dark text-light shadow-sm cursor-pointer active:scale-95'}
                 ${className}
             `}
         >

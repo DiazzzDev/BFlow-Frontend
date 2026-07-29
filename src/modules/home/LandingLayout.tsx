@@ -9,7 +9,7 @@ export const LandingLayout = () => {
     return (
         <div className="flex flex-col">
             <LandingNavbar />
-            <div className="max-w-screen-2xl mx-auto bg-background text-foreground flex-1">
+            <div className="max-w-screen-2xl mx-auto bg-surface-hard text-light flex-1">
                 <Outlet />
             </div>
             <LandingFooter />

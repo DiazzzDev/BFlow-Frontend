@@ -61,7 +61,7 @@ export const Features = () => {
             <div className="mx-auto">
                 <p className="text-xs tracking-widest uppercase text-primary mb-3">Funcionalidades</p>
                 <h2 className="text-4xl font-bold tracking-tight mb-3">Todo lo que necesitas para<br />controlar tus finanzas</h2>
-                <p className="text-base text-muted-foreground max-w-lg">
+                <p className="text-base text-helper max-w-lg">
                     Desde gastos diarios hasta billeteras compartidas con tu familia — BFlow lo tiene todo.
                 </p>
 
@@ -69,7 +69,7 @@ export const Features = () => {
                     {features.map(({ title, desc, icon }) => (
                         <div
                             key={title}
-                            className="group relative bg-card border border-border rounded-2xl p-7 transition-all duration-300 hover:border-primary-25 hover:-translate-y-0.5 overflow-hidden"
+                            className="group relative bg-surface border border-light-10 rounded-2xl p-7 transition-all duration-300 hover:border-primary-25 hover:-translate-y-0.5 overflow-hidden"
                         >
                             <div className="pointer-events-none absolute inset-0 rounded-2xl bg-primary-15 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -78,7 +78,7 @@ export const Features = () => {
                                     {icon}
                                 </div>
                                 <h3 className="text-base font-semibold mb-2">{title}</h3>
-                                <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                                <p className="text-sm text-helper leading-relaxed">{desc}</p>
                             </div>
                         </div>
                     ))}

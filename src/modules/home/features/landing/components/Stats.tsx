@@ -8,14 +8,14 @@ export const Stats = () => {
 
     return (
         <div className="px-20 pb-20 max-w-[1040px] mx-auto w-full">
-            <div className="grid grid-cols-3 border border-border rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-3 border border-light-10 rounded-2xl overflow-hidden">
                 {stats.map(({ value, label }, i) => (
                     <div
                         key={label}
-                        className={`bg-card px-6 py-8 text-center ${i !== stats.length - 1 ? "border-r border-border" : ""}`}
+                        className={`bg-surface px-6 py-8 text-center ${i !== stats.length - 1 ? "border-r border-light-10" : ""}`}
                     >
                         <p className="text-4xl font-bold text-primary mb-2">{value}</p>
-                        <p className="text-sm text-muted-foreground">{label}</p>
+                        <p className="text-sm text-helper">{label}</p>
                     </div>
                 ))}
             </div>

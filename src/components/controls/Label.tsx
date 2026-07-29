@@ -7,7 +7,7 @@ export const Label = ({ htmlFor, children, className, ...props }: LabelProps) =>
     return (
         <label
             htmlFor={htmlFor}
-            className={`text-sm font-medium text-foreground ${className ?? ''}`}
+            className={`text-sm font-medium text-light ${className ?? ''}`}
             {...props}
         >
             {children}

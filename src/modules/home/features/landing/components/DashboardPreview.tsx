@@ -1,7 +1,7 @@
 export const DashboardPreview = () => {
     return (
         <div id="dashboard-preview" className="px-20 pb-20 max-w-[1200px] mx-auto w-full">
-            <div className="bg-card border border-border rounded-2xl overflow-hidden p-6">
+            <div className="bg-surface border border-light-10 rounded-2xl overflow-hidden p-6">
 
                 <div className="flex items-center gap-2 mb-5">
                     <div className="w-2.5 h-2.5 rounded-full bg-danger" />
@@ -15,9 +15,9 @@ export const DashboardPreview = () => {
                         { label: "Billeteras activas", value: "5", sub: "3 propias · 2 compartidas" },
                         { label: "Gastos este mes", value: "-$8,620.00", sub: "vs $6,100 mes anterior", neg: true },
                     ].map(({ label, value, sub, neg }) => (
-                        <div key={label} className="bg-card border border-border rounded-xl p-4">
+                        <div key={label} className="bg-surface border border-light-10 rounded-xl p-4">
                             <p className="text-[10px] uppercase tracking-widest text-label mb-1.5">{label}</p>
-                            <p className={`text-xl font-semibold mb-1 ${neg ? "text-danger" : "text-foreground"}`}>{value}</p>
+                            <p className={`text-xl font-semibold mb-1 ${neg ? "text-danger" : "text-light"}`}>{value}</p>
                             <p className="text-[11px] text-label">{sub}</p>
                         </div>
                     ))}
@@ -29,7 +29,7 @@ export const DashboardPreview = () => {
                         { name: "Sapphire Prime", balance: "$45,000.00", pct: 24, barClass: "bg-info" },
                         { name: "Corporate Ops", balance: "$8,210.55", pct: 70, barClass: "bg-danger" },
                     ].map(({ name, balance, pct, barClass }) => (
-                        <div key={name} className="bg-card border border-border rounded-xl p-4">
+                        <div key={name} className="bg-surface border border-light-10 rounded-xl p-4">
                             <p className="text-sm font-medium mb-3">{name}</p>
                             <p className="text-[11px] text-label mb-1">Balance actual</p>
                             <p className="text-base font-semibold mb-3">{balance}</p>
@@ -37,15 +37,15 @@ export const DashboardPreview = () => {
                                 <span>Gasto del mes</span>
                                 <span>{pct}%</span>
                             </div>
-                            <div className="h-1 rounded-full bg-dark-10">
+                            <div className="h-1 rounded-full bg-light-10">
                                 <div className={`h-full rounded-full ${barClass}`} style={{ width: `${pct}%` }} />
                             </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="bg-card border border-border rounded-xl overflow-hidden">
-                    <div className="grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-border bg-card">
+                <div className="bg-surface border border-light-10 rounded-xl overflow-hidden">
+                    <div className="grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-light-10 bg-surface">
                         {["Concepto", "Categoría", "Monto"].map(h => (
                             <p key={h} className="text-[10px] uppercase tracking-widest text-label">{h}</p>
                         ))}
@@ -55,12 +55,12 @@ export const DashboardPreview = () => {
                         { name: "Nómina — Octubre", wallet: "Corporate Ops", cat: "Ingresos", amount: "+$5,800.00", neg: false },
                         { name: "AWS — Infraestructura", wallet: "Corporate Ops", cat: "Tecnología", amount: "-$890.50", neg: true },
                     ].map(({ name, wallet, cat, amount, neg }) => (
-                        <div key={name} className="bg-card grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-dark-10 last:border-0 items-center">
+                        <div key={name} className="bg-surface grid grid-cols-[2fr_1fr_1fr] px-4 py-3 border-b border-light-10 last:border-0 items-center">
                             <div>
-                                <p className="text-xs text-foreground">{name}</p>
+                                <p className="text-xs text-light">{name}</p>
                                 <p className="text-[10px] text-label">{wallet}</p>
                             </div>
-                            <span className="text-[10px] bg-dark-10 text-muted-foreground px-2 py-1 rounded-full inline-block">{cat}</span>
+                            <span className="text-[10px] bg-light-10 text-helper px-2 py-1 rounded-full inline-block">{cat}</span>
                             <p className={`text-xs font-semibold text-right ${neg ? "text-danger" : "text-success"}`}>{amount}</p>
                         </div>
                     ))}

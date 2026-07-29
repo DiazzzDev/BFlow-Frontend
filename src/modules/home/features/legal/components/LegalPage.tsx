@@ -68,10 +68,10 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
         <>
             <LegalScrollProgress />
 
-            <div className="min-h-screen bg-background text-foreground">
+            <div className="min-h-screen bg-surface-hard text-light">
 
                 {/* Header */}
-                <div className="border-b border-border px-6 md:px-20 py-10 md:py-14">
+                <div className="border-b border-light-10 px-6 md:px-20 py-10 md:py-14">
                     <div className="max-w-300 mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                         <div className="flex-1 min-w-0">
                             <p className="text-xs tracking-widest uppercase text-primary mb-3">
@@ -82,7 +82,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                                 {title}
                             </h1>
 
-                            <p className="text-sm text-muted-foreground max-w-lg">{description}</p>
+                            <p className="text-sm text-helper max-w-lg">{description}</p>
 
                             {data && (
                                 <div className="flex flex-wrap items-center gap-4 mt-5">
@@ -105,7 +105,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                         {/* Language selector */}
                         <div className="shrink-0">
                             <select
-                                className="bg-card border border-border text-foreground rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-dark-25 transition-colors outline-none"
+                                className="bg-surface border border-light-10 text-light rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-light-25 transition-colors outline-none"
                                 value={lang}
                                 onChange={(e) => setLang(e.target.value as "es" | "en")}
                             >
@@ -133,7 +133,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                                         <button
                                             key={id}
                                             onClick={() => scrollTo(id)}
-                                            className="text-xs text-muted-foreground hover:text-foreground transition-colors py-1.5 px-3 rounded-lg hover:bg-card leading-snug cursor-pointer text-left"
+                                            className="text-xs text-helper hover:text-light transition-colors py-1.5 px-3 rounded-lg hover:bg-surface leading-snug cursor-pointer text-left"
                                         >
                                             {label}
                                         </button>
