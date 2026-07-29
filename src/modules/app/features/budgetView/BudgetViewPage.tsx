@@ -12,7 +12,7 @@ import { formatCurrency } from "@/utils/formatters/formatCurrency";
 export const BudgetViewPage = () => {
     const budgetId = useBudgetRouteId();
     const { budget, isLoading, isNotFound } = useGetBudget(budgetId);
-
+    console.log(isLoading)
     if (isNotFound) {
         return (
             <CustomEmptyState
