@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky",
     "test": "echo 'No hay tests instalados aún' && exit 0"
