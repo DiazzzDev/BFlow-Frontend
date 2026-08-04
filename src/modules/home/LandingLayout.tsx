@@ -7,9 +7,9 @@ import { useLandingHashScroll } from "./hooks/custom/useLandingHashScroll.tsx"
 export const LandingLayout = () => {
     useLandingHashScroll();
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col min-h-screen bg-surface-hard text-light">
             <LandingNavbar />
-            <div className="max-w-screen-2xl mx-auto bg-surface-hard text-light flex-1">
+            <div className="w-full max-w-[1440px] mx-auto flex-1">
                 <Outlet />
             </div>
             <LandingFooter />
