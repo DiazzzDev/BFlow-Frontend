@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 import { ResetPasswordForm } from "./components/ResetPasswordForm";
 import { useResetPassword } from "./hooks/useResetPassword";

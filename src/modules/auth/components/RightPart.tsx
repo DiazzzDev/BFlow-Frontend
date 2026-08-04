@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { ArrowLeft } from "lucide-react"
 
 import { useGoogleLogin } from "@/modules/auth/features/login/hooks/useGoogleLogin";

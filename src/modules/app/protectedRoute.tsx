@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router";
 
 import { AuthLoadingScreen } from "@/auth/components/AuthLoadingScreen";
 import { useAuthStore } from "@/auth/authStore";

@@ -1,4 +1,4 @@
-import { RouterProvider } from "react-router";
+import { RouterProvider } from "react-router/dom";
 
 import { appRouter } from "./AppRouter.tsx";
 import { AuthProvider } from "./auth/provider/AuthProvider.tsx";

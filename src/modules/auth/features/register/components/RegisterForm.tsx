@@ -1,6 +1,6 @@
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useState } from "react";
 
 import { isValidEmail } from "@/utils/validators";

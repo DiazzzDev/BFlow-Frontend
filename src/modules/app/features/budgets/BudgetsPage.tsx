@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { ChevronDown, ListFilter, Plus, WalletCards } from "lucide-react";
 
 import { BudgetOverview } from "./components/BudgetOverview";

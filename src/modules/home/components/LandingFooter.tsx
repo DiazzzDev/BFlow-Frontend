@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useLandingHome } from "../hooks/custom/useLandingHome.tsx";
 import BflowLogo from ".././../../assets/BFlow logo.svg";

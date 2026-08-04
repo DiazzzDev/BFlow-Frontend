@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router"
 
 import { LandingNavbar } from "./components/LandingNavbar.tsx"
 import { LandingFooter } from "./components/LandingFooter.tsx"

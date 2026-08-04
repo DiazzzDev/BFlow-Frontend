@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router";
 
 // App
 import { DashboardPage } from "./modules/app/features/dashboard/pages/DashboardPage.tsx";

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { ArrowUpDown, ChartBarIcon, LayoutDashboard, Settings, TrendingDown, TrendingUp, Wallet } from "lucide-react";
 
 const navItems = [

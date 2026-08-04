@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { useMemo, useState } from "react";
 import { Users, Wallet } from "lucide-react";
 

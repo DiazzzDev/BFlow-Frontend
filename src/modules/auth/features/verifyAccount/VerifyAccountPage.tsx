@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 
 import { VerifyAccountForm } from "./components/VerifyAccountForm";
 import { useVerifyAccount } from "./hooks/useVerifyAccount";
