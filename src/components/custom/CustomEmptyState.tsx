@@ -30,7 +30,7 @@ export const CustomEmptyState = ({
 }: CustomEmptyStateProps) => {
     return (
         <motion.div
-            className={`flex flex-col items-center justify-center text-center p-8 border border-dashed border-dark-25 rounded-2xl gap-2 w-full my-4 h-full flex-1 ${className || ''}`}
+            className={`flex flex-col items-center justify-center text-center p-8 border border-dashed border-light-25 rounded-2xl gap-2 w-full my-4 h-full flex-1 ${className || ''}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -61,7 +61,7 @@ export const CustomEmptyState = ({
             {/* Steps opcionales */}
             {steps && (
                 <motion.div
-                    className="flex items-center gap-2 text-xs text-dark-50"
+                    className="flex items-center gap-2 text-xs text-light-50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.4 }}
@@ -69,14 +69,14 @@ export const CustomEmptyState = ({
                     {steps.map((step, i) => (
                         <div key={i} className="flex items-center gap-2">
                             <motion.span
-                                className="flex items-center gap-1.5 bg-dark-5 border border-dark-10 rounded-full px-3 py-1"
+                                className="flex items-center gap-1.5 bg-light-5 border border-light-10 rounded-full px-3 py-1"
                                 initial={{ opacity: 0, y: 6 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 + i * 0.1, duration: 0.3 }}
                             >
                                 {step}
                             </motion.span>
-                            {i < steps.length - 1 && <span className="text-dark-25">›</span>}
+                            {i < steps.length - 1 && <span className="text-light-25">›</span>}
                         </div>
                     ))}
                 </motion.div>
@@ -89,8 +89,8 @@ export const CustomEmptyState = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.35 }}
             >
-                <h3 className="text-dark font-semibold text-lg">{title}</h3>
-                {description && <p className="text-dark-75 text-sm">{description}</p>}
+                <h3 className="text-light font-semibold text-lg">{title}</h3>
+                {description && <p className="text-light-75 text-sm">{description}</p>}
             </motion.div>
 
             {/* Botones */}

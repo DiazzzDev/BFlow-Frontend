@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useLocation, matchPath, Link } from "react-router-dom"
+import { useLocation, matchPath, Link } from "react-router"
 import { toast } from "sonner"
 import { Bell, LogOut, User, X } from "lucide-react";
 
@@ -22,6 +22,13 @@ const routes = [
     { path: "/app/incomes", crumbs: [{ text: "Ingresos" }] },
     { path: "/app/expenses", crumbs: [{ text: "Gastos" }] },
     { path: "/app/budgets", crumbs: [{ text: "Presupuestos" }] },
+    {
+        path: "/app/budgets/:id",
+        crumbs: [
+            { text: "Presupuestos", path: "/app/budgets" },
+            { text: "Detalle" },
+        ],
+    },
     { path: "/app/transfers", crumbs: [{ text: "Transferencias" }] },
     { path: "/app/settings", crumbs: [{ text: "Ajustes" }] },
 ];
@@ -61,25 +68,25 @@ export const Header = () => {
     };
 
     return (
-        <header className="flex items-center justify-between px-8 py-5 border-b border-border bg-background text-foreground">
+        <header className="flex items-center justify-between px-8 py-5 border-b border-light-10 bg-surface-hard text-light">
             <div className="flex items-center gap-2 text-lg font-medium">
                 {crumbs.map((crumb, i) => {
                     const isLast = i === crumbs.length - 1;
 
                     return (
                         <span className="flex items-center gap-2" key={i}>
-                            {i > 0 && <span className="text-muted-foreground">/</span>}
+                            {i > 0 && <span className="text-helper">/</span>}
 
                             {/* Si no es el último y tiene un path, se vuelve un Link clickeable */}
                             {!isLast && crumb.path ? (
                                 <Link
                                     to={crumb.path}
-                                    className="text-muted-foreground hover:text-foreground transition-colors"
+                                    className="text-helper hover:text-light transition-colors"
                                 >
                                     {crumb.text}
                                 </Link>
                             ) : (
-                                <span className={isLast ? "text-foreground font-medium" : "text-muted-foreground"}>
+                                <span className={isLast ? "text-light font-medium" : "text-helper"}>
                                     {crumb.text}
                                 </span>
                             )}
@@ -97,7 +104,7 @@ export const Header = () => {
 
                 <button
                     type="button"
-                    className="hover:text-foreground transition-colors cursor-pointer"
+                    className="hover:text-light transition-colors cursor-pointer"
                     onClick={() => setNotificationsOpen(true)}
                 >
                     <Bell className="h-5 w-5" />
@@ -108,16 +115,16 @@ export const Header = () => {
                         <button
                             type="button"
                             aria-label="Cerrar notificaciones"
-                            className="absolute inset-0 bg-background/70"
+                            className="absolute inset-0 bg-surface-hard/70"
                             onClick={() => setNotificationsOpen(false)}
                         />
-                        <aside className="absolute right-0 top-0 h-full w-full max-w-sm border-l border-border bg-card p-4 shadow-custom">
+                        <aside className="absolute right-0 top-0 h-full w-full max-w-sm border-l border-light-10 bg-surface p-4 shadow-custom">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-base font-medium">Notificaciones</h2>
                                 <button
                                     type="button"
                                     onClick={() => setNotificationsOpen(false)}
-                                    className="text-muted-foreground hover:text-foreground cursor-pointer"
+                                    className="text-helper hover:text-light cursor-pointer"
                                 >
                                     <X className="h-4 w-4" />
                                 </button>
@@ -128,7 +135,7 @@ export const Header = () => {
 
                 <button
                     onClick={() => { void handleLogout() }}
-                    className="hover:text-foreground transition-colors cursor-pointer"
+                    className="hover:text-light transition-colors cursor-pointer"
                     title="Cerrar sesión"
                 >
                     <LogOut className="h-5 w-5" />

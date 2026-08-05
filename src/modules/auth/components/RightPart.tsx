@@ -1,21 +1,26 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { ArrowLeft } from "lucide-react"
 
-import { useGoogleLogin } from "@/auth/hooks/useGoogleLogin";
+import { useGoogleLogin } from "@/modules/auth/features/login/hooks/useGoogleLogin";
 
 export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: { Body: React.ReactElement; isLoading: boolean; separatorText: string; title: string; subtitle: string }) => {
 
-    const { mutateAsync: loginWithGoogle } = useGoogleLogin();
+    const {
+        mutateAsync: loginWithGoogle,
+        isPending: isGoogleLoading,
+    } = useGoogleLogin();
+
+    const busy = isLoading || isGoogleLoading;
 
     return (
-        <section className="flex flex-1 items-center justify-center bg-background px-6 py-10 lg:px-14">
+        <section className="flex flex-1 items-center justify-center bg-surface-hard px-6 py-10 lg:px-14">
             <div className="w-full max-w-md">
                 <Link
                     to="/"
                     className={`mb-10 flex items-center gap-2 text-sm transition-colors hover:text-primary ${
-                        isLoading
-                            ? "pointer-events-none text-muted-foreground"
-                            : "text-muted-foreground"
+                        busy
+                            ? "pointer-events-none text-helper"
+                            : "text-helper"
                     }`}
                 >
                     <ArrowLeft size={16} />
@@ -26,7 +31,7 @@ export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: {
                     <h2 className="text-4xl font-semibold tracking-tight">
                         {title}
                     </h2>
-                    <p className="text-base text-muted-foreground">
+                    <p className="text-base text-helper">
                         {subtitle}
                     </p>
                 </div>
@@ -37,8 +42,8 @@ export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: {
                         onClick={() => {
                             void loginWithGoogle();
                         }}
-                        className="h-12 w-full rounded-xl border border-border bg-card text-foreground hover:bg-secondary inline-flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
-                        disabled={isLoading}
+                        className="h-12 w-full rounded-xl border border-light-10 bg-surface text-light hover:bg-secondary inline-flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                        disabled={busy}
                     >
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="size-5">
                             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -51,7 +56,7 @@ export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: {
 
                     <div className="relative">
                         <div className="h-px w-full bg-border" />
-                        <span className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-sm text-muted-foreground">
+                        <span className="absolute z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-surface-hard px-3 text-sm text-helper">
                             {separatorText}
                         </span>
                     </div>

@@ -1,10 +1,9 @@
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router"
 
 export const navLinks = [
-    { label: "Funcionalidades", id: "features" },
-    { label: "Cómo funciona", id: "how" },
+    { label: "Características", id: "how" },
     { label: "Precios", id: "pricing" },
-    { label: "Acerca de", id: "dashboard-preview" },
+    { label: "Preguntas frecuentes", id: "faq" },
 ];
 
 export const useLandingHome = () => {

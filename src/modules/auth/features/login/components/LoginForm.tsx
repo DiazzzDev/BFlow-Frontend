@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { useState } from "react"
 
 import { isValidEmail } from "@/utils/validators"
 import { InternalUser } from "@/auth/InternalUser"
 
 const inputClass =
-    "h-12 w-full rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
 
 interface LoginFormInputs {
     email: string;
@@ -42,7 +42,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     <div className="relative">
                         <Mail
                             size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
                         />
                         <input
                             id="txtEmail"
@@ -76,7 +76,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     <div className="relative">
                         <Lock
                             size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
                         />
 
                         <input
@@ -88,7 +88,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             className={`${inputClass} px-11`}
                         />
 
-                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" onClick={() => setShowPassword(!showPassword)}>
+                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light" onClick={() => setShowPassword(!showPassword)}>
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
@@ -101,20 +101,20 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
 
                 <button
                     type="submit"
-                    className="h-12 w-full rounded-xl font-medium bg-primary text-primary-foreground hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
+                    className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
                     disabled={isLoading}
                 >
                     {isLoading ? "Iniciando sesión..." : "Iniciar sesión →"}
                 </button>
             </div>
 
-            <p className="mt-8 text-center text-sm text-muted-foreground">
+            <p className="mt-8 text-center text-sm text-helper">
                 ¿No tienes cuenta?{" "}
                 <Link
                     to="/auth/register"
                     className={`font-medium hover:opacity-80 ${
                         isLoading
-                            ? "pointer-events-none text-muted-foreground"
+                            ? "pointer-events-none text-helper"
                             : "text-primary"
                     }`}
                 >

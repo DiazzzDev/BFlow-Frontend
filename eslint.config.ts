@@ -65,7 +65,6 @@ export default tseslint.config(
             'eqeqeq': ['error', 'always'],
             'curly': ['error', 'all'],
             'no-param-reassign': 'error',
-            'no-nested-ternary': 'error',
             'prefer-destructuring': ['warn', { object: true, array: false }],
 
             // Imports
