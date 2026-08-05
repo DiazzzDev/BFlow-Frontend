@@ -13,7 +13,7 @@ export default tseslint.config(
         ignores: [
             '**/dist/**', 
             '**/node_modules/**', 
-            'commitlint.config.cjs', // Esto elimina el error de la terminal
+            'commitlint.config.cjs',
             'vite.config.ts',
             'eslint.config.ts'
         ],
@@ -89,6 +89,8 @@ export default tseslint.config(
             'jsx-a11y/anchor-is-valid': 'warn',
             'jsx-a11y/click-events-have-key-events': 'warn',
             'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+
+            
         },
     }
 )

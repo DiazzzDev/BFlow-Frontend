@@ -27,6 +27,7 @@ import { LandingPage } from "./modules/home/features/landing/LandingPage.tsx";
 import { TermsPage } from "./modules/home/features/terms/TermsPage.tsx";
 import { PrivacyPage } from "./modules/home/features/privacy/PrivacyPage.tsx";
 import { CookiesPage } from "./modules/home/features/cookies/CookiesPage.tsx";
+import { NotFoundPage } from "./modules/404Page.tsx";
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -79,5 +80,9 @@ export const appRouter = createBrowserRouter([
             { path: "reset-password", element: <ResetPasswordPage /> },
             { path: "verify-account", element: <VerifyAccountPage /> },
         ],
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />,
     },
 ]);

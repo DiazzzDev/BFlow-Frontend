@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useSearchParams } from "react-router";
+
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
 type option = {
     label: string,
@@ -14,25 +15,16 @@ interface TabFilterProps {
 }
 
 export const TabFilter = ({ options, selected, fullWidthMobile = false, keyFilter }: TabFilterProps) => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const { params, updateSearchParams } = useUpdateSearchParams();
 
-    const urlValue = keyFilter ? searchParams.get(keyFilter) : null;
+    const urlValue = keyFilter ? params.get(keyFilter) : null;
     const selectedOption = urlValue ?? selected ?? options[0]?.value;
 
     const handelSearch = (value: string) => {
-        const newSearchParams = new URLSearchParams(searchParams);
-
-        if (value) {
-            newSearchParams.set(keyFilter, value);
-        } else {
-            newSearchParams.delete(keyFilter);
-        }
-
-        if (searchParams.get("page")) {
-            newSearchParams.set("page", "1");
-        }
-
-        setSearchParams(newSearchParams);
+        updateSearchParams(
+            { [keyFilter]: value || null },
+            { resetPage: true, replace: false },
+        );
     };
 
     return (
