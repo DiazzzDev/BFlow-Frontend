@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router";
 import { ArrowLeftRight, Plus, Receipt } from "lucide-react";
 
@@ -6,6 +7,7 @@ import { useGetTransactions } from "./hooks/useGetTransactions";
 import { useGetWallet } from "./hooks/useGetWallet";
 import { WalletViewSidebar } from "./components/WalletViewSidebar";
 import { TransactionsTable } from "./components/TransactionsTable";
+import { NewTransactionModal } from "./components/NewTransactionModal";
 import type { TransactionType } from "./interfaces/Transaction";
 import { useGetWalletDetails } from "./hooks/useGetWalletDetails";
 
@@ -39,6 +41,7 @@ const isDetailTab = (value: string | null): value is DetailTab =>
 export const WalletViewPage = () => {
     const { id = "" } = useParams<{ id: string }>();
     const { params, updateSearchParams } = useUpdateSearchParams();
+    const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
 
     const query = params.get("query") || "";
     const debouncedQuery = useDebounce(query, 500);
@@ -106,7 +109,7 @@ export const WalletViewPage = () => {
                         type="button"
                         text="New transaction"
                         icon={<Plus className="h-4 w-4" />}
-                        onClick={() => undefined}
+                        onClick={() => setIsNewTransactionOpen(true)}
                         className="shrink-0"
                     />
                 </div>
@@ -170,6 +173,13 @@ export const WalletViewPage = () => {
                 currency={wallet?.currency ?? "USD"}
                 upcoming={walletDetails?.upcoming ?? []}
                 isLoading={isWalletDetailsLoading}
+            />
+
+            <NewTransactionModal
+                isModalOpen={isNewTransactionOpen}
+                setIsModalOpen={setIsNewTransactionOpen}
+                walletId={id}
+                initialType={transactionType}
             />
         </div>
     );

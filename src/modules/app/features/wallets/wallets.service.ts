@@ -1,5 +1,6 @@
-import type { CreateWalletData, Wallet } from "./interfaces/Wallets";
 import type { Transaction } from "../walletView/interfaces/Transaction";
+
+import type { CreateWalletData, Wallet } from "./interfaces/Wallets";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";

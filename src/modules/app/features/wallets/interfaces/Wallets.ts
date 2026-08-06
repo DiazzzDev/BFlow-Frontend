@@ -11,4 +11,5 @@ export interface Wallet extends CreateWalletData {
     createdAt: string;
     updatedAt: string;
     role: string;
+    memberCount?: number;
 }

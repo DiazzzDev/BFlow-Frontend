@@ -40,16 +40,17 @@ export const TransactionsTable = ({
 
     if (transactions.length === 0) {
         return (
-            <CustomEmptyState
-                title={query.trim() ? "Sin resultados" : "Sin transacciones"}
-                description={
-                    query.trim()
-                        ? "Prueba con otro término de búsqueda"
-                        : "Aún no hay movimientos en esta billetera."
-                }
-                Icon={Receipt}
-                className="m-7"
-            />
+            <div className="h-full p-7">
+                <CustomEmptyState
+                    title={query.trim() ? "Sin resultados" : "Sin transacciones"}
+                    description={
+                        query.trim()
+                            ? "Prueba con otro término de búsqueda"
+                            : "Aún no hay movimientos en esta billetera."
+                    }
+                    Icon={Receipt}
+                />
+            </div>
         );
     }
 

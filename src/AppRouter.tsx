@@ -5,8 +5,8 @@ import { DashboardPage } from "./modules/app/features/dashboard/pages/DashboardP
 import { WalletsPage } from "./modules/app/features/wallets/WalletsPage.tsx";
 import { WalletViewPage } from "./modules/app/features/walletView/WalletViewPage.tsx";
 import { IncomesPage } from "./modules/app/features/incomes/pages/IncomesPage.tsx";
-import { ExpensesPage } from "./modules/app/features/expenses/pages/ExpensesPage.tsx";
-import { SettingsPage } from "./modules/app/features/settings/pages/SettingsPage.tsx";
+import { ExpensesPage } from "./modules/app/features/expenses/ExpensesPage.tsx";
+import { SettingsPage } from "./modules/app/features/settings/SettingsPage.tsx";
 import { BudgetsPage } from "./modules/app/features/budgets/BudgetsPage.tsx";
 import { BudgetViewPage } from "./modules/app/features/budgetView/BudgetViewPage.tsx";
 import { TransfersPage } from "./modules/app/features/transfers/pages/TransfersPage.tsx";
