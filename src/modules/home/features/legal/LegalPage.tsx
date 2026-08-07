@@ -2,8 +2,8 @@ import { useEffect, useMemo } from "react";
 import { Calendar, Mail, Globe } from "lucide-react";
 
 import type { LegalDocumentType } from "../legal.service.ts";
-import { useGetLegalDocument } from "./hooks/useGetLegalDocument.ts";
 
+import { useGetLegalDocument } from "./hooks/useGetLegalDocument.ts";
 import { LegalMarkdown } from "./components/LegalMarkdown.tsx";
 import { LegalSkeleton } from "./components/LegalSkeleton.tsx";
 import { LegalError } from "./components/LegalError.tsx";

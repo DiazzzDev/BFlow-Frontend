@@ -1,7 +1,76 @@
-import { getWallets } from "../wallets/wallets.service";
 import type { Wallet } from "../wallets/interfaces/Wallets";
 
-export const getWalletById = async (walletId: string): Promise<Wallet | null> => {
-    const response = await getWallets();
-    return response.data.content.find((wallet) => wallet.id === walletId) ?? null;
+import type { Transaction, TransactionType, WalletDetails } from "./interfaces/Transaction";
+
+import { apiRequest, PaginatedListResponse } from "@/utils/api";
+import { config } from "@/config/config";
+
+const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;
+const transactionsUrl = `${config.API_BASE_URL}/api/v1/transactions`;
+
+const defaultApiOptions: RequestInit = {
+    headers: { "Content-Type": "application/json" },
+};
+
+type ApiResponse<T> = {
+    success: boolean;
+    message: string;
+    data: T;
+};
+
+export const getWalletById = async (walletId: string) => {
+    return await apiRequest<ApiResponse<Wallet>>(
+        `${walletsUrl}/${walletId}`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener la billetera"
+    );
+};
+
+export const getWalletDetails = async (walletId: string) => {
+    return await apiRequest<ApiResponse<WalletDetails>>(
+        `${walletsUrl}/${walletId}/info`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener los detalles de la billetera"
+    );
+};
+
+export const getOverview = async (walletId: string, query?: string) => {
+    const params = new URLSearchParams();
+
+    if (query?.trim()) {
+        params.set("query", query.trim());
+    }
+
+    const qs = params.toString();
+
+    return await apiRequest<PaginatedListResponse<Transaction>>(
+        `${walletsUrl}/${walletId}/transactions${qs ? `?${qs}` : ""}`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener las transacciones"
+    );
+};
+
+export const getTransactions = async ({
+    type,
+    walletId,
+    query,
+}: {
+    type: TransactionType;
+    walletId: string;
+    query?: string;
+}) => {
+    const params = new URLSearchParams({
+        type,
+        walletId,
+    });
+
+    if (query?.trim()) {
+        params.set("query", query.trim());
+    }
+
+    return await apiRequest<PaginatedListResponse<Transaction>>(
+        `${transactionsUrl}?${params.toString()}`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener las transacciones"
+    );
 };

@@ -10,7 +10,7 @@ import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { Textarea } from "@/components/controls/Textarea";
-import { formatDecimal } from "@/utils/formatters/formatterDecimal";
+import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { Button } from "@/components/controls/Button";
 
 const walletSchema = z.object({
@@ -18,8 +18,9 @@ const walletSchema = z.object({
     description: z.string().min(1, "La descripción es obligatoria"),
     currency: z.enum(currencies.map((c) => c.code) as [string, ...string[]]),
     initialValue: z
-        .number({ error: "El balance inicial es obligatorio" })
-        .min(0, "El balance inicial debe ser 0 o mayor"),
+        .string()
+        .min(1, "El balance inicial es obligatorio")
+        .refine((value) => Number(value) >= 0, "El balance inicial debe ser 0 o mayor"),
 });
 
 type WalletFormValues = z.infer<typeof walletSchema>;
@@ -28,7 +29,7 @@ const defaultFormValues: WalletFormValues = {
     name: "",
     description: "",
     currency: "USD",
-    initialValue: 0,
+    initialValue: "0",
 };
 
 interface WalletFormProps {
@@ -52,7 +53,7 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
             name: formData.name,
             description: formData.description || undefined,
             currency: formData.currency,
-            initialValue: formData.initialValue,
+            initialValue: Number(formData.initialValue),
         });
 
         toast.promise(promise, {
@@ -150,14 +151,15 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
                             <Input
                                 id="initialValue"
                                 type="text"
+                                inputMode="decimal"
                                 placeholder="0.00"
                                 disabled={createWallet.isPending}
                                 name={field.name}
                                 value={field.value}
                                 onChange={(e) => {
-                                    const formatted = formatDecimal(e.target.value);
+                                    const formatted = formatterDecimal(e.target.value);
                                     if (formatted !== null) {
-                                        field.onChange(Number(formatted));
+                                        field.onChange(formatted);
                                     }
                                 }}
                             />

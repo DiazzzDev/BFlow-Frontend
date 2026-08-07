@@ -4,19 +4,12 @@ import { getWallets } from "../wallets.service";
 
 import { useAuthStore } from "@/auth/authStore";
 
-export const useGetWallets = () => {
+export const useGetWallets = (scope: "MINE" | "SHARED", query = "") => {
     const user = useAuthStore((state) => state.user);
 
     return useQuery({
-        queryKey: ["wallets"],
-        queryFn: () => getWallets(),
+        queryKey: ["wallets", scope, query],
+        queryFn: () => getWallets(scope, query),
         enabled: !!user,
-        select: (response) => {
-            const { content } = response.data;
-            return {
-                myWallets: content.filter((w) => w.role === "OWNER"),
-                sharedWallets: content.filter((w) => w.role !== "OWNER"),
-            };
-        },
     });
 };
