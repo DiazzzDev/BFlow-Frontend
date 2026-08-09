@@ -9,16 +9,20 @@ export const useGetTransactions = (
     walletId: string,
     type: TransactionType | null,
     query = "",
+    page = 0,
+    size = 5,
 ) => {
     const user = useAuthStore((state) => state.user);
 
     return useQuery({
-        queryKey: ["wallet-transactions", walletId, type, query],
+        queryKey: ["wallet-transactions", walletId, type, query, page, size],
         queryFn: () =>
             getTransactions({
                 type: type!,
                 walletId,
                 query,
+                page,
+                size,
             }),
         enabled: !!user && !!walletId && !!type,
     });

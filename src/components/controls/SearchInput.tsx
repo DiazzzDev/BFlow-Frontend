@@ -37,7 +37,7 @@ export const SearchInput = ({
     };
 
     return (
-        <div className="relative min-w-75 max-w-140 flex-2!">
+        <div className="relative w-full min-w-0 max-w-140 flex-1">
             <Search
                 size={18}
                 className="absolute left-4 top-1/2 -translate-y-1/2"

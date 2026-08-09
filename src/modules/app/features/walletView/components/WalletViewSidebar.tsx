@@ -11,6 +11,7 @@ interface WalletViewSidebarProps {
     upcoming: Array<{ title: string; nextExecutionDate: string }>;
     onSchedule?: () => void;
     isLoading?: boolean;
+    className?: string;
 }
 
 const infoSkeletonRows = [
@@ -35,11 +36,14 @@ export const WalletViewSidebar = ({
     upcoming,
     onSchedule,
     isLoading = false,
+    className = "",
 }: WalletViewSidebarProps) => {
     return (
-        <aside className="w-full lg:w-80 xl:w-96 shrink-0 border-t lg:border-t-0 lg:border-l border-light-10 flex flex-col px-6 py-5 gap-8">
+        <aside
+            className={`flex flex-col gap-8 px-6 py-5 ${className}`}
+        >
             <section>
-                <h2 className="text-xl font-semibold text-light mb-5">Information</h2>
+                <h2 className="mb-5 text-xl font-semibold text-light">Information</h2>
                 {isLoading ? (
                     <div className="flex flex-col gap-4">
                         {infoSkeletonRows.map((row) => (
@@ -65,15 +69,15 @@ export const WalletViewSidebar = ({
                 )}
             </section>
 
-            <section className="flex flex-col flex-1">
-                <div className="flex items-center justify-between mb-5">
+            <section className="flex flex-1 flex-col">
+                <div className="mb-5 flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-light">Upcoming</h2>
                     {isLoading ? (
                         <SkeletonText className="h-3.5 w-16" />
                     ) : (
                         <button
                             type="button"
-                            className="text-sm text-primary hover:text-primary-dark transition-colors cursor-pointer"
+                            className="cursor-pointer text-sm text-primary transition-colors hover:text-primary-dark"
                         >
                             See all →
                         </button>
@@ -81,7 +85,7 @@ export const WalletViewSidebar = ({
                 </div>
 
                 {isLoading ? (
-                    <ul className="flex flex-col gap-4 mb-6">
+                    <ul className="mb-6 flex flex-col gap-4">
                         {upcomingSkeletonRows.map((row) => (
                             <li
                                 key={row.titleClassName}
@@ -93,14 +97,14 @@ export const WalletViewSidebar = ({
                         ))}
                     </ul>
                 ) : (
-                    <ul className="flex flex-col gap-4 mb-6">
+                    <ul className="mb-6 flex flex-col gap-4">
                         {upcoming.map((item) => (
                             <li
                                 key={`${item.title}-${item.nextExecutionDate}`}
                                 className="flex items-center justify-between gap-3 text-sm"
                             >
-                                <span className="text-light truncate">{item.title}</span>
-                                <span className="text-helper shrink-0">
+                                <span className="truncate text-light">{item.title}</span>
+                                <span className="shrink-0 text-helper">
                                     {formatterDynamicDate(item.nextExecutionDate) || "—"}
                                 </span>
                             </li>
@@ -114,7 +118,7 @@ export const WalletViewSidebar = ({
                     <button
                         type="button"
                         onClick={() => onSchedule?.()}
-                        className="w-full mt-auto h-11 rounded-lg border border-light-10 bg-transparent text-light text-sm font-medium hover:bg-secondary transition-colors cursor-pointer"
+                        className="mt-auto h-11 w-full cursor-pointer rounded-lg border border-light-10 bg-transparent text-sm font-medium text-light transition-colors hover:bg-secondary"
                     >
                         Schedule a transaction
                     </button>
@@ -127,6 +131,6 @@ export const WalletViewSidebar = ({
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
     <div className="flex items-center justify-between gap-3 text-sm">
         <dt className="text-helper">{label}</dt>
-        <dd className="text-light font-medium text-right">{value}</dd>
+        <dd className="text-right font-medium text-light">{value}</dd>
     </div>
 );

@@ -12,8 +12,24 @@ const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
 };
 
-export const getWallets = async (scope: "MINE" | "SHARED", query?: string) => {
-    const params = new URLSearchParams({ scope });
+export interface GetWalletsParams {
+    scope: "MINE" | "SHARED";
+    query?: string;
+    page?: number;
+    size?: number;
+}
+
+export const getWallets = async ({
+    scope,
+    query,
+    page = 0,
+    size = 5,
+}: GetWalletsParams) => {
+    const params = new URLSearchParams({
+        scope,
+        page: String(page),
+        size: String(size),
+    });
 
     if (query?.trim()) {
         params.set("query", query.trim());
@@ -22,7 +38,7 @@ export const getWallets = async (scope: "MINE" | "SHARED", query?: string) => {
     return await apiRequest<PaginatedListResponse<Wallet>>(
         `${walletsUrl}?${params.toString()}`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener las billeteras"
+        "Error al obtener las billeteras",
     );
 };
 
@@ -30,7 +46,7 @@ export const getHistory = async () => {
     return await apiRequest<PaginatedListResponse<Transaction>>(
         transactionsUrl,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener el historial"
+        "Error al obtener el historial",
     );
 };
 
@@ -42,6 +58,6 @@ export const postWallet = async (walletData: CreateWalletData) => {
             method: "POST",
             body: JSON.stringify(walletData),
         },
-        "Error al crear la billetera"
+        "Error al crear la billetera",
     );
 };

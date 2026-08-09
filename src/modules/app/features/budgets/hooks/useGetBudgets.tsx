@@ -1,19 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { getBudgets } from "../budgets.service";
+import type { GetBudgetsParams } from "../interfaces/Budget";
 
 import { useAuthStore } from "@/auth/authStore";
 
-export const useGetWallets = () => {
+export const useGetBudgets = (filters: GetBudgetsParams = {}) => {
     const user = useAuthStore((state) => state.user);
 
     return useQuery({
-        queryKey: ["wallets"],
-        queryFn: () => getBudgets(),
+        queryKey: ["budgets", filters],
+        queryFn: () => getBudgets(filters),
         enabled: !!user,
-        select: (response) => {
-            const { content } = response.data;
-            return content;
-        },
     });
 };

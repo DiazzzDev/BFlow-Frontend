@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { useMutateIncomes } from "../hooks/useMutateIncomes";
+import { usePostIncome, usePutIncome } from "../hooks/useMutateIncomes";
 import type { RecurrencePattern } from "../interfaces/Income";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
@@ -67,12 +67,27 @@ const defaultFormValues: IncomeFormValues = {
 interface IncomeFormProps {
     walletId: string;
     onSuccess?: () => void;
+    readOnly?: boolean;
+    transactionId?: string;
+    source?: string;
+    initialValues?: Partial<IncomeFormValues> & { categoryName?: string };
 }
 
-export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
-    const { createIncome } = useMutateIncomes();
+export const IncomeForm = ({
+    walletId,
+    onSuccess,
+    readOnly = false,
+    transactionId,
+    source = "manual",
+    initialValues,
+}: IncomeFormProps) => {
+    const createIncome = usePostIncome();
+    const updateIncome = usePutIncome();
     const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
     const [categoryQuery, setCategoryQuery] = useState("");
+    const isEditing = Boolean(transactionId);
+    const isSaving = createIncome.isPending || updateIncome.isPending;
+    const isDisabled = readOnly || isSaving;
 
     const incomeCategories =
         categoriesResponse?.data.filter((category) => category.type === "INCOME") ?? [];
@@ -84,38 +99,60 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
         formState: { errors },
     } = useForm<IncomeFormValues>({
         resolver: zodResolver(incomeSchema),
-        defaultValues: defaultFormValues,
+        defaultValues: {
+            ...defaultFormValues,
+            ...initialValues,
+        },
     });
 
     const recurring = useWatch({ control, name: "recurring" });
     const categoryId = useWatch({ control, name: "categoryId" });
     const selectedCategory =
-        incomeCategories.find((category) => category.id === categoryId) ?? null;
+        incomeCategories.find((category) => category.id === categoryId) ??
+        (initialValues?.categoryId && initialValues.categoryName
+            ? {
+                  id: initialValues.categoryId,
+                  name: initialValues.categoryName,
+                  type: "INCOME" as const,
+                  icon: "",
+                  color: "",
+              }
+            : null);
 
     const onSubmit = async (formData: IncomeFormValues) => {
-        const promise = createIncome.mutateAsync({
+        const payload = {
             title: formData.title,
             description: formData.description,
             amount: Number(formData.amount),
             date: formData.date,
             walletId,
-            source: "manual",
+            source,
             recurring: formData.recurring,
             recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
             categoryId: formData.categoryId,
             taxable: formData.taxable,
-        });
+        };
+
+        const promise = isEditing
+            ? updateIncome.mutateAsync({ id: transactionId!, data: payload })
+            : createIncome.mutateAsync(payload);
 
         toast.promise(promise, {
-            loading: "Creando ingreso...",
-            success: "Ingreso creado",
+            loading: isEditing ? "Actualizando ingreso..." : "Creando ingreso...",
+            success: isEditing ? "Ingreso actualizado" : "Ingreso creado",
             error: (err) =>
-                err instanceof Error ? err.message : "Error al crear el ingreso",
+                err instanceof Error
+                    ? err.message
+                    : isEditing
+                      ? "Error al actualizar el ingreso"
+                      : "Error al crear el ingreso",
         });
 
         await promise;
-        reset({ ...defaultFormValues, date: today() });
-        setCategoryQuery("");
+        if (!isEditing) {
+            reset({ ...defaultFormValues, date: today() });
+            setCategoryQuery("");
+        }
         onSuccess?.();
     };
 
@@ -123,6 +160,10 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
         <form
             className="flex flex-col gap-5"
             onSubmit={(e) => {
+                e.preventDefault();
+                if (readOnly) {
+                    return;
+                }
                 void handleSubmit(onSubmit)(e);
             }}
         >
@@ -135,7 +176,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                         <Input
                             id="title"
                             placeholder="Ej. Salario"
-                            disabled={createIncome.isPending}
+                            disabled={isDisabled}
                             {...field}
                         />
                     )}
@@ -155,7 +196,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                             id="description"
                             placeholder="Detalle del ingreso"
                             rows={3}
-                            disabled={createIncome.isPending}
+                            disabled={isDisabled}
                             {...field}
                         />
                     )}
@@ -177,7 +218,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                                 type="text"
                                 inputMode="decimal"
                                 placeholder="0.00"
-                                disabled={createIncome.isPending}
+                                disabled={isDisabled}
                                 name={field.name}
                                 value={field.value}
                                 onChange={(e) => {
@@ -204,7 +245,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                                 id="date"
                                 type="date"
                                 placeholder=""
-                                disabled={createIncome.isPending}
+                                disabled={isDisabled}
                                 {...field}
                             />
                         )}
@@ -235,7 +276,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                             data={incomeCategories}
                             getKey={(category) => category.id}
                             getLabel={(category) => category.name}
-                            disabled={createIncome.isPending || isCategoriesLoading}
+                            disabled={isDisabled || isCategoriesLoading}
                         />
                     )}
                 />
@@ -252,7 +293,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                         <ToggleSwitch
                             label="Ingreso recurrente"
                             checked={field.value}
-                            disabled={createIncome.isPending}
+                            disabled={isDisabled}
                             onChange={field.onChange}
                         />
                     )}
@@ -268,7 +309,7 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                                 <Select
                                     id="recurrencePattern"
                                     value={field.value ?? ""}
-                                    disabled={createIncome.isPending}
+                                    disabled={isDisabled}
                                     onChange={(event) =>
                                         field.onChange(
                                             event.target.value
@@ -302,19 +343,27 @@ export const IncomeForm = ({ walletId, onSuccess }: IncomeFormProps) => {
                         <ToggleSwitch
                             label="Gravable"
                             checked={field.value}
-                            disabled={createIncome.isPending}
+                            disabled={isDisabled}
                             onChange={field.onChange}
                         />
                     )}
                 />
             </div>
 
-            <Button
-                type="submit"
-                disabled={createIncome.isPending}
-                text={createIncome.isPending ? "Guardando..." : "Crear ingreso"}
-                className="self-end"
-            />
+            {!readOnly && (
+                <Button
+                    type="submit"
+                    disabled={isSaving}
+                    text={
+                        isSaving
+                            ? "Guardando..."
+                            : isEditing
+                              ? "Guardar cambios"
+                              : "Crear ingreso"
+                    }
+                    className="self-end"
+                />
+            )}
         </form>
     );
 };

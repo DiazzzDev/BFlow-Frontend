@@ -1,13 +1,13 @@
-import { motion, AnimatePresence } from "framer-motion";
-import React from 'react';
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface CustomModalProps {
-    isModalOpen: boolean,
-    setIsModalOpen: (param: boolean) => void,
-    title: string,
-    children: React.ReactNode, 
-    maxWidth?: string,
-    variant?: "bottom-sheet" | "center"
+    isModalOpen: boolean;
+    setIsModalOpen: (open: boolean) => void;
+    title: string;
+    children: React.ReactNode;
+    maxWidth?: string;
 }
 
 export const CustomModal = ({
@@ -16,81 +16,71 @@ export const CustomModal = ({
     title,
     children,
     maxWidth = "max-w-2xl",
-    variant = "bottom-sheet"
 }: CustomModalProps) => {
+    useEffect(() => {
+        if (!isModalOpen) {
+            return;
+        }
 
-    // Configuración de animaciones dinámicas según la variante elegida
-    const isBottomSheet = variant === "bottom-sheet";
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
 
-    const modalVariants = {
-        initial: isBottomSheet
-            ? { opacity: 0, y: "100%", scale: 1 } // Emerge desde abajo en móviles
-            : { opacity: 0, scale: 0.95, y: 20 },  // Centrado clásico
-        animate: {
-            opacity: 1,
-            y: 0,
-            scale: 1
-        },
-        exit: isBottomSheet
-            ? { opacity: 0, y: "100%", scale: 1 } // Se desliza hacia abajo al cerrar
-            : { opacity: 0, scale: 0.95, y: 20 }
-    };
+        return () => {
+            document.body.style.overflow = previousOverflow;
+        };
+    }, [isModalOpen]);
 
-    return (
+    return createPortal(
         <AnimatePresence>
             {isModalOpen && (
-                // Cambiado: Justify-end en móvil para pegarlo abajo, justify-center en pantallas grandes si aplica
-                <div className={`fixed inset-0 z-50 flex ${isBottomSheet ? "items-end sm:items-center" : "items-center"} justify-center`}>
-
-                    {/* Fondo Oscurecido (Backdrop) */}
+                <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setIsModalOpen(false)}
-                        className="absolute inset-0 bg-dark-25/40 backdrop-blur-sm"
+                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                     />
 
-                    {/* Contenedor del Modal / Bottom Sheet */}
                     <motion.div
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
-                        variants={modalVariants}
+                        initial={{ opacity: 0, y: "100%" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        // Cambiado: Clases responsivas para redondear solo esquinas superiores en móvil si es bottom-sheet
-                        className={`bg-surface w-full relative z-10 font-sans text-light shadow-custom overflow-hidden
-                            ${isBottomSheet
-                                ? "rounded-t-3xl sm:rounded-2xl p-6 sm:p-10 max-h-[90vh] overflow-y-auto mb-0 sm:mb-2 sm:mt-2 sm:mx-4"
-                                : "rounded-2xl p-10 mb-2 mt-2 mx-4"
-                            } ${maxWidth}`}
+                        className={`relative z-10 mb-0 max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-surface p-6 font-sans text-light shadow-custom sm:mx-4 sm:mb-2 sm:mt-2 sm:rounded-2xl sm:p-10 ${maxWidth}`}
                     >
-                        {/* Indicador de arrastre visual (La pequeña barra superior típica de las Bottom Sheets) */}
-                        {isBottomSheet && (
-                            <div className="w-12 h-1.5 bg-light-25/20 rounded-full mx-auto mb-5 sm:hidden" />
-                        )}
+                        <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-light-25/20 sm:hidden" />
 
-                        {/* Botón Cerrar (X) */}
                         <button
+                            type="button"
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute cursor-pointer right-6 top-6 sm:right-8 sm:top-8 text-helper hover:text-light transition-colors p-1 rounded-lg hover:bg-light-10 active:scale-95"
+                            className="absolute right-6 top-6 cursor-pointer rounded-lg p-1 text-helper transition-colors hover:bg-light-10 hover:text-light active:scale-95 sm:right-8 sm:top-8"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={2.5}
+                                stroke="currentColor"
+                                className="h-6 w-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
                             </svg>
                         </button>
 
-                        {/* Título */}
-                        <h2 className="text-xl font-medium text-light mb-6 sm:mb-8 pr-8">{title}</h2>
+                        <h2 className="mb-6 pr-8 text-xl font-medium text-light sm:mb-8">
+                            {title}
+                        </h2>
 
-                        {/* Cuerpo de filtros / contenido inyectado */}
-                        <div className="pb-5 sm:pb-0">
-                            {children}
-                        </div>
-
+                        <div className="pb-5 sm:pb-0">{children}</div>
                     </motion.div>
                 </div>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body,
     );
 };

@@ -42,21 +42,27 @@ const defaultFormValues: TransferFormValues = {
 
 interface TransferFormProps {
     walletId: string;
-    direction: TransferDirection;
-    onDirectionChange: (direction: TransferDirection) => void;
     onSuccess?: () => void;
+    readOnly?: boolean;
+    initialValues?: Partial<TransferFormValues> & {
+        direction?: TransferDirection;
+        counterpartWalletName?: string;
+    };
 }
 
 export const TransferForm = ({
     walletId,
-    direction,
-    onDirectionChange,
     onSuccess,
+    readOnly = false,
+    initialValues,
 }: TransferFormProps) => {
     const { createTransfer } = useMutateTransfers();
     const { data: currentWalletResponse, isLoading: isCurrentWalletLoading } =
         useGetWallet(walletId);
 
+    const [direction, setDirection] = useState<TransferDirection>(
+        initialValues?.direction ?? "outgoing",
+    );
     const [walletQuery, setWalletQuery] = useState("");
     const debouncedWalletQuery = useDebounce(walletQuery, 400);
     const { data: walletsResponse, isLoading: isWalletsLoading } = useGetWallets(
@@ -67,6 +73,7 @@ export const TransferForm = ({
     const currentWallet = currentWalletResponse?.data;
     const availableWallets =
         walletsResponse?.data.content.filter((wallet) => wallet.id !== walletId) ?? [];
+    const isDisabled = readOnly || createTransfer.isPending;
 
     const {
         control,
@@ -77,17 +84,35 @@ export const TransferForm = ({
         formState: { errors },
     } = useForm<TransferFormValues>({
         resolver: zodResolver(transferSchema),
-        defaultValues: defaultFormValues,
+        defaultValues: {
+            ...defaultFormValues,
+            ...initialValues,
+        },
     });
 
     const counterpartWalletId = watch("counterpartWalletId");
     const selectedWallet =
         availableWallets.find((wallet) => wallet.id === counterpartWalletId) ?? null;
 
+    const counterpartCardWallet =
+        selectedWallet ??
+        (initialValues?.counterpartWalletId
+            ? {
+                  name: initialValues.counterpartWalletName || "Billetera",
+                  balance: 0,
+                  currency: currentWallet?.currency || "USD",
+                  description: "",
+                  role: "",
+              }
+            : null);
+
     const isOutgoing = direction === "outgoing";
 
     const toggleDirection = () => {
-        onDirectionChange(isOutgoing ? "incoming" : "outgoing");
+        if (readOnly) {
+            return;
+        }
+        setDirection(isOutgoing ? "incoming" : "outgoing");
     };
 
     const onSubmit = async (formData: TransferFormValues) => {
@@ -118,6 +143,10 @@ export const TransferForm = ({
         <form
             className="flex flex-col gap-6"
             onSubmit={(e) => {
+                e.preventDefault();
+                if (readOnly) {
+                    return;
+                }
                 void handleSubmit(onSubmit)(e);
             }}
         >
@@ -144,8 +173,13 @@ export const TransferForm = ({
                         type="button"
                         onClick={toggleDirection}
                         title="Invertir dirección"
-                        whileTap={{ scale: 0.92 }}
-                        className="flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors hover:border-primary-25 hover:bg-primary-15 cursor-pointer"
+                        disabled={readOnly}
+                        whileTap={readOnly ? undefined : { scale: 0.92 }}
+                        className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors ${
+                            readOnly
+                                ? "cursor-default opacity-70"
+                                : "cursor-pointer hover:border-primary-25 hover:bg-primary-15"
+                        }`}
                     >
                         <motion.span
                             animate={{ rotate: isOutgoing ? 0 : 180, scale: [1, 1.15, 1] }}
@@ -158,15 +192,17 @@ export const TransferForm = ({
                 </div>
 
                 <div className="min-w-0">
-                    {selectedWallet ? (
+                    {counterpartCardWallet ? (
                         <WalletTransferCard
-                            wallet={selectedWallet}
+                            wallet={counterpartCardWallet}
                             label={isOutgoing ? "Destino" : "Origen"}
                         />
                     ) : (
                         <div className="flex min-h-36 flex-col items-center justify-center rounded-2xl border border-dashed border-light-10 bg-surface-hard/30 px-4 text-center">
                             <p className="text-sm font-medium text-light">
-                                {isOutgoing ? "Elige la billetera destino" : "Elige la billetera origen"}
+                                {isOutgoing
+                                    ? "Elige la billetera destino"
+                                    : "Elige la billetera origen"}
                             </p>
                             <p className="mt-1 text-xs text-helper">
                                 Busca y selecciona una de tus billeteras
@@ -175,49 +211,57 @@ export const TransferForm = ({
                     )}
                 </div>
 
-                <div className="min-w-0 sm:col-start-3">
-                    <Controller
-                        name="counterpartWalletId"
-                        control={control}
-                        render={({ field }) => (
-                            <SelectAutoComplete<Wallet>
-                                idSelect="counterpartWalletId"
-                                label={isOutgoing ? "Billetera destino" : "Billetera origen"}
-                                placeholder={
-                                    isWalletsLoading
-                                        ? "Cargando billeteras..."
-                                        : "Buscar billetera..."
-                                }
-                                selectedItem={selectedWallet}
-                                setSelectedItem={(wallet) => {
-                                    field.onChange(wallet.id);
-                                    setValue("counterpartWalletId", wallet.id, {
-                                        shouldValidate: true,
-                                    });
-                                }}
-                                query={walletQuery}
-                                setQuery={setWalletQuery}
-                                data={availableWallets}
-                                getKey={(wallet) => wallet.id}
-                                getLabel={(wallet) => wallet.name}
-                                disabled={createTransfer.isPending || isWalletsLoading}
-                            />
+                {!readOnly && (
+                    <div className="min-w-0 sm:col-start-3">
+                        <Controller
+                            name="counterpartWalletId"
+                            control={control}
+                            render={({ field }) => (
+                                <SelectAutoComplete<Wallet>
+                                    idSelect="counterpartWalletId"
+                                    label={
+                                        isOutgoing
+                                            ? "Billetera destino"
+                                            : "Billetera origen"
+                                    }
+                                    placeholder={
+                                        isWalletsLoading
+                                            ? "Cargando billeteras..."
+                                            : "Buscar billetera..."
+                                    }
+                                    selectedItem={selectedWallet}
+                                    setSelectedItem={(wallet) => {
+                                        field.onChange(wallet.id);
+                                        setValue("counterpartWalletId", wallet.id, {
+                                            shouldValidate: true,
+                                        });
+                                    }}
+                                    query={walletQuery}
+                                    setQuery={setWalletQuery}
+                                    data={availableWallets}
+                                    getKey={(wallet) => wallet.id}
+                                    getLabel={(wallet) => wallet.name}
+                                    disabled={isDisabled || isWalletsLoading}
+                                />
+                            )}
+                        />
+                        {errors.counterpartWalletId && (
+                            <span className="text-danger text-xs">
+                                {errors.counterpartWalletId.message}
+                            </span>
                         )}
-                    />
-                    {errors.counterpartWalletId && (
-                        <span className="text-danger text-xs">
-                            {errors.counterpartWalletId.message}
-                        </span>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
 
-            <p className="text-center text-xs text-helper">
-                {isOutgoing
-                    ? "El dinero saldrá de esta billetera hacia la seleccionada."
-                    : "El dinero entrará a esta billetera desde la seleccionada."}{" "}
-                Toca la flecha para invertir el sentido.
-            </p>
+            {!readOnly && (
+                <p className="text-center text-xs text-helper">
+                    {isOutgoing
+                        ? "El dinero saldrá de esta billetera hacia la seleccionada."
+                        : "El dinero entrará a esta billetera desde la seleccionada."}{" "}
+                    Toca la flecha para invertir el sentido.
+                </p>
+            )}
 
             <div className="flex flex-col gap-1">
                 <Label htmlFor="amount">Monto</Label>
@@ -230,7 +274,7 @@ export const TransferForm = ({
                             type="text"
                             inputMode="decimal"
                             placeholder="0.00"
-                            disabled={createTransfer.isPending}
+                            disabled={isDisabled}
                             name={field.name}
                             value={field.value}
                             onChange={(e) => {
@@ -257,7 +301,7 @@ export const TransferForm = ({
                             id="description"
                             placeholder="Motivo de la transferencia"
                             rows={3}
-                            disabled={createTransfer.isPending}
+                            disabled={isDisabled}
                             {...field}
                         />
                     )}
@@ -267,12 +311,14 @@ export const TransferForm = ({
                 )}
             </div>
 
-            <Button
-                type="submit"
-                disabled={createTransfer.isPending}
-                text={createTransfer.isPending ? "Guardando..." : "Crear transferencia"}
-                className="self-end"
-            />
+            {!readOnly && (
+                <Button
+                    type="submit"
+                    disabled={createTransfer.isPending}
+                    text={createTransfer.isPending ? "Guardando..." : "Crear transferencia"}
+                    className="self-end"
+                />
+            )}
         </form>
     );
 };

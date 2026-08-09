@@ -4,7 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { useMutateExpenses } from "../hooks/useMutateExpenses";
+import { usePostExpense, usePutExpense } from "../hooks/useMutateExpenses";
 import type { RecurrencePattern } from "../interfaces/Expense";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
@@ -69,12 +69,27 @@ const defaultFormValues: ExpenseFormValues = {
 interface ExpenseFormProps {
     walletId: string;
     onSuccess?: () => void;
+    readOnly?: boolean;
+    transactionId?: string;
+    source?: string;
+    initialValues?: Partial<ExpenseFormValues> & { categoryName?: string };
 }
 
-export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
-    const { createExpense } = useMutateExpenses();
+export const ExpenseForm = ({
+    walletId,
+    onSuccess,
+    readOnly = false,
+    transactionId,
+    source = "manual",
+    initialValues,
+}: ExpenseFormProps) => {
+    const createExpense = usePostExpense();
+    const updateExpense = usePutExpense();
     const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
     const [categoryQuery, setCategoryQuery] = useState("");
+    const isEditing = Boolean(transactionId);
+    const isSaving = createExpense.isPending || updateExpense.isPending;
+    const isDisabled = readOnly || isSaving;
 
     const expenseCategories =
         categoriesResponse?.data.filter((category) => category.type === "EXPENSE") ?? [];
@@ -86,39 +101,61 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
         formState: { errors },
     } = useForm<ExpenseFormValues>({
         resolver: zodResolver(expenseSchema),
-        defaultValues: defaultFormValues,
+        defaultValues: {
+            ...defaultFormValues,
+            ...initialValues,
+        },
     });
 
     const recurring = useWatch({ control, name: "recurring" });
     const categoryId = useWatch({ control, name: "categoryId" });
     const selectedCategory =
-        expenseCategories.find((category) => category.id === categoryId) ?? null;
+        expenseCategories.find((category) => category.id === categoryId) ??
+        (initialValues?.categoryId && initialValues.categoryName
+            ? {
+                  id: initialValues.categoryId,
+                  name: initialValues.categoryName,
+                  type: "EXPENSE" as const,
+                  icon: "",
+                  color: "",
+              }
+            : null);
 
     const onSubmit = async (formData: ExpenseFormValues) => {
-        const promise = createExpense.mutateAsync({
+        const payload = {
             title: formData.title,
             description: formData.description,
             amount: Number(formData.amount),
             date: formData.date,
             walletId,
-            source: "manual",
+            source,
             recurring: formData.recurring,
             recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
             categoryId: formData.categoryId,
             taxDeductible: formData.taxDeductible,
             reimbursable: formData.reimbursable,
-        });
+        };
+
+        const promise = isEditing
+            ? updateExpense.mutateAsync({ id: transactionId!, data: payload })
+            : createExpense.mutateAsync(payload);
 
         toast.promise(promise, {
-            loading: "Creando gasto...",
-            success: "Gasto creado",
+            loading: isEditing ? "Actualizando gasto..." : "Creando gasto...",
+            success: isEditing ? "Gasto actualizado" : "Gasto creado",
             error: (err) =>
-                err instanceof Error ? err.message : "Error al crear el gasto",
+                err instanceof Error
+                    ? err.message
+                    : isEditing
+                      ? "Error al actualizar el gasto"
+                      : "Error al crear el gasto",
         });
 
         await promise;
-        reset({ ...defaultFormValues, date: today() });
-        setCategoryQuery("");
+        if (!isEditing) {
+            reset({ ...defaultFormValues, date: today() });
+            setCategoryQuery("");
+        }
         onSuccess?.();
     };
 
@@ -126,6 +163,10 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
         <form
             className="flex flex-col gap-5"
             onSubmit={(e) => {
+                e.preventDefault();
+                if (readOnly) {
+                    return;
+                }
                 void handleSubmit(onSubmit)(e);
             }}
         >
@@ -138,7 +179,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                         <Input
                             id="title"
                             placeholder="Ej. Almuerzo"
-                            disabled={createExpense.isPending}
+                            disabled={isDisabled}
                             {...field}
                         />
                     )}
@@ -158,7 +199,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                             id="description"
                             placeholder="Detalle del gasto"
                             rows={3}
-                            disabled={createExpense.isPending}
+                            disabled={isDisabled}
                             {...field}
                         />
                     )}
@@ -180,7 +221,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                                 type="text"
                                 inputMode="decimal"
                                 placeholder="0.00"
-                                disabled={createExpense.isPending}
+                                disabled={isDisabled}
                                 name={field.name}
                                 value={field.value}
                                 onChange={(e) => {
@@ -207,7 +248,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                                 id="date"
                                 type="date"
                                 placeholder=""
-                                disabled={createExpense.isPending}
+                                disabled={isDisabled}
                                 {...field}
                             />
                         )}
@@ -238,7 +279,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                             data={expenseCategories}
                             getKey={(category) => category.id}
                             getLabel={(category) => category.name}
-                            disabled={createExpense.isPending || isCategoriesLoading}
+                            disabled={isDisabled || isCategoriesLoading}
                         />
                     )}
                 />
@@ -255,7 +296,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                         <ToggleSwitch
                             label="Gasto recurrente"
                             checked={field.value}
-                            disabled={createExpense.isPending}
+                            disabled={isDisabled}
                             onChange={field.onChange}
                         />
                     )}
@@ -271,7 +312,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                                 <Select
                                     id="recurrencePattern"
                                     value={field.value ?? ""}
-                                    disabled={createExpense.isPending}
+                                    disabled={isDisabled}
                                     onChange={(event) =>
                                         field.onChange(
                                             event.target.value
@@ -305,7 +346,7 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                         <ToggleSwitch
                             label="Deducible de impuestos"
                             checked={field.value}
-                            disabled={createExpense.isPending}
+                            disabled={isDisabled}
                             onChange={field.onChange}
                         />
                     )}
@@ -317,19 +358,27 @@ export const ExpenseForm = ({ walletId, onSuccess }: ExpenseFormProps) => {
                         <ToggleSwitch
                             label="Reembolsable"
                             checked={field.value}
-                            disabled={createExpense.isPending}
+                            disabled={isDisabled}
                             onChange={field.onChange}
                         />
                     )}
                 />
             </div>
 
-            <Button
-                type="submit"
-                disabled={createExpense.isPending}
-                text={createExpense.isPending ? "Guardando..." : "Crear gasto"}
-                className="self-end"
-            />
+            {!readOnly && (
+                <Button
+                    type="submit"
+                    disabled={isSaving}
+                    text={
+                        isSaving
+                            ? "Guardando..."
+                            : isEditing
+                              ? "Guardar cambios"
+                              : "Crear gasto"
+                    }
+                    className="self-end"
+                />
+            )}
         </form>
     );
 };
