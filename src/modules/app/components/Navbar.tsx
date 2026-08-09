@@ -35,7 +35,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
     }, [pathname]);
 
     useEffect(() => {
-        if (!isOpen) return;
+        if (!isOpen) {return;}
 
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";

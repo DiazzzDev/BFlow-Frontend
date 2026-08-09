@@ -74,9 +74,12 @@ export const NewTransactionModal = ({
     );
 
     useEffect(() => {
-        if (isModalOpen) {
-            setActiveType(resolveInitialType(mode, transaction, initialType));
+        const f = () => {
+            if (isModalOpen) {
+                setActiveType(resolveInitialType(mode, transaction, initialType));
+            }
         }
+        f();
     }, [isModalOpen, initialType, mode, transaction]);
 
     const handleClose = (open: boolean) => {
@@ -91,13 +94,13 @@ export const NewTransactionModal = ({
     const sharedInitialValues =
         lockType && transaction
             ? {
-                  title: transaction.title,
-                  description: transaction.description,
-                  amount: amountValue,
-                  date: dateValue,
-                  categoryId: transaction.categoryId,
-                  categoryName: transaction.categoryName,
-              }
+                title: transaction.title,
+                description: transaction.description,
+                amount: amountValue,
+                date: dateValue,
+                categoryId: transaction.categoryId,
+                categoryName: transaction.categoryName,
+            }
             : undefined;
 
     return (
@@ -161,18 +164,18 @@ export const NewTransactionModal = ({
                         initialValues={
                             isViewMode && transaction
                                 ? {
-                                      counterpartWalletId:
-                                          transaction.counterpartWalletId ?? "",
-                                      counterpartWalletName:
-                                          transaction.counterpartWalletName ??
-                                          undefined,
-                                      amount: amountValue,
-                                      description: transaction.description,
-                                      direction:
-                                          transaction.amount < 0
-                                              ? "outgoing"
-                                              : "incoming",
-                                  }
+                                    counterpartWalletId:
+                                        transaction.counterpartWalletId ?? "",
+                                    counterpartWalletName:
+                                        transaction.counterpartWalletName ??
+                                        undefined,
+                                    amount: amountValue,
+                                    description: transaction.description,
+                                    direction:
+                                        transaction.amount < 0
+                                            ? "outgoing"
+                                            : "incoming",
+                                }
                                 : undefined
                         }
                         onSuccess={() => handleClose(false)}

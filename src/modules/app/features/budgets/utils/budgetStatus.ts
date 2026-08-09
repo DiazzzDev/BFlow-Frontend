@@ -9,7 +9,7 @@ export const resolveBudgetStatus = (budget: Budget): BudgetStatus => {
         return normalized;
     }
 
-    if (budget.percentage == null) {
+    if (budget.percentage === null) {
         return "healthy";
     }
 

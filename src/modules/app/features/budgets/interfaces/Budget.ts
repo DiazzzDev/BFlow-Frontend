@@ -4,8 +4,8 @@ export type BudgetScope = "WALLET" | "CATEGORY_GLOBAL" | "WALLET_CATEGORY";
 export interface Budget {
     id: string;
     budgetLimit: number;
-    period: BudgetPeriod | string;
-    scope: BudgetScope | string;
+    period: BudgetPeriod ;
+    scope: BudgetScope;
     startDate: string;
     thresholdCritical: number;
     thresholdWarning: number;
@@ -31,7 +31,7 @@ export interface GetBudgetsParams {
 
 export interface CreateBudgetData {
     amount: number;
-    period: BudgetPeriod | string;
+    period: BudgetPeriod;
     startDate: string;
     scope: BudgetScope;
     thresholdWarning: number;

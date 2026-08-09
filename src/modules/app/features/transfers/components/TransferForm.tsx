@@ -98,12 +98,12 @@ export const TransferForm = ({
         selectedWallet ??
         (initialValues?.counterpartWalletId
             ? {
-                  name: initialValues.counterpartWalletName || "Billetera",
-                  balance: 0,
-                  currency: currentWallet?.currency || "USD",
-                  description: "",
-                  role: "",
-              }
+                name: initialValues.counterpartWalletName || "Billetera",
+                balance: 0,
+                currency: currentWallet?.currency || "USD",
+                description: "",
+                role: "",
+            }
             : null);
 
     const isOutgoing = direction === "outgoing";
@@ -175,11 +175,10 @@ export const TransferForm = ({
                         title="Invertir dirección"
                         disabled={readOnly}
                         whileTap={readOnly ? undefined : { scale: 0.92 }}
-                        className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors ${
-                            readOnly
+                        className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors ${readOnly
                                 ? "cursor-default opacity-70"
                                 : "cursor-pointer hover:border-primary-25 hover:bg-primary-15"
-                        }`}
+                            }`}
                     >
                         <motion.span
                             animate={{ rotate: isOutgoing ? 0 : 180, scale: [1, 1.15, 1] }}

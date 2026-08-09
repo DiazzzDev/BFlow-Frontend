@@ -4,9 +4,9 @@ import { Link } from "react-router"
 import { useState } from "react"
 import { toast } from "sonner"
 
-import { isValidEmail } from "@/utils/validators"
-import { InternalUser } from "@/auth/InternalUser"
 import { useLogin } from "../hooks/useLogin"
+
+import { isValidEmail } from "@/utils/validators"
 
 const inputClass =
     "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
