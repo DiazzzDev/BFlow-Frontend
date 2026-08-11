@@ -41,7 +41,7 @@ export const BudgetsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const query = params.get("query") || "";
-    const debouncedQuery = useDebounce(query, 500);
+    const debouncedQuery = useDebounce(query, 650);
     const sort = params.get("sort") || "amount,desc";
     const periodParam = params.get("period") || "ALL";
     const period = periodParam === "ALL" ? undefined : periodParam;
@@ -63,14 +63,14 @@ export const BudgetsPage = () => {
     const hasActiveFilters = Boolean(query.trim() || period || sort !== "amount,desc");
 
     return (
-        <div className="flex h-fit @xl:h-full min-h-0 flex-col px-4 py-5 sm:px-6">
+        <div className="flex h-full min-h-0 flex-col px-4 py-5 sm:px-6 pb-10">
             <BudgetOverview
                 totalBudgets={totalBudgets}
                 totalLimit={totalLimit}
                 isLoading={isLoading}
             />
 
-            <section className="flex min-h-0 flex-1 flex-col">
+            <section className="flex h-fit @xl:min-h-0 @xl:flex-1 flex-col">
                 <div className="mb-5 flex flex-col gap-3 @3xl:flex-row @xl:justify-between">
                     <SearchInput
                         id="txtSearchBudgets"
@@ -123,20 +123,20 @@ export const BudgetsPage = () => {
                     </Select>
                 </div>
 
-                <div className="min-h-0 flex-1 overflow-y-visible @xl:overflow-y-auto">
+                <div className="@xl:min-h-0 h-fit @xl:flex-1">
                     {renderList()}
                 </div>
 
-                {!isLoading && totalBudgets > 0 && (
-                    <div className="mt-4 flex flex-col items-center gap-3 border-t border-light-10 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                        <PaginationSelect
-                            totalItems={totalBudgets}
-                            numberOfElements={numberOfElements}
-                        />
-                        <Pagination totalPages={totalPages} />
-                    </div>
-                )}
             </section>
+            {!isLoading && totalBudgets > 0 && (
+                <div className="mt-4 flex flex-col items-center gap-3 border-t border-light-10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <PaginationSelect
+                        totalItems={totalBudgets}
+                        numberOfElements={numberOfElements}
+                    />
+                    <Pagination totalPages={totalPages} />
+                </div>
+            )}
 
             <CustomModal
                 isModalOpen={isModalOpen}
