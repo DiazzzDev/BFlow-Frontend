@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 // App
-import { DashboardPage } from "./modules/app/features/dashboard/pages/DashboardPage.tsx";
+import { DashboardPage } from "./modules/app/features/dashboard/DashboardPage.tsx";
 import { WalletsPage } from "./modules/app/features/wallets/WalletsPage.tsx";
 import { WalletViewPage } from "./modules/app/features/walletView/WalletViewPage.tsx";
 import { IncomesPage } from "./modules/app/features/incomes/pages/IncomesPage.tsx";
