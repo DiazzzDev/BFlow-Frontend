@@ -229,7 +229,7 @@ export const WalletsPage = () => {
                         View all
                     </button>
                 </div>
-                <div className="min-h-0 flex-1 overflow-y-auto px-5">
+                <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">
                     {renderHistory()}
                 </div>
             </>
@@ -268,6 +268,7 @@ export const WalletsPage = () => {
                 title="Sin historial"
                 description="Cuando registres movimientos, aparecerán aquí."
                 Icon={Receipt}
+                className="m-0!"
             />
         );
     }
