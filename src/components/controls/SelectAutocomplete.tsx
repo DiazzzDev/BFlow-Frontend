@@ -45,7 +45,7 @@ export const SelectAutoComplete = <T,>({
             value={selectedItem}
             disabled={disabled}
             onChange={(item: T | null) => {
-                if (!item) return;
+                if (!item) {return;}
                 setQuery("");
                 setSelectedItem(item);
             }}

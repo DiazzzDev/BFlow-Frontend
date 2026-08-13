@@ -2,9 +2,11 @@ import { useForm } from "react-hook-form"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { Link } from "react-router"
 import { useState } from "react"
+import { toast } from "sonner"
+
+import { useLogin } from "../hooks/useLogin"
 
 import { isValidEmail } from "@/utils/validators"
-import { InternalUser } from "@/auth/InternalUser"
 
 const inputClass =
     "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
@@ -14,25 +16,26 @@ interface LoginFormInputs {
     password: string;
 };
 
-interface LoginFormProps {
-   onSubmitLogin: (data: LoginFormInputs) => Promise<InternalUser | null>;
-    isLoading: boolean;
-}
-
-export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
+export const LoginForm = () => {
+    const { mutateAsync: onSubmitLogin, isPending: isLoading } = useLogin();
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitted },
     } = useForm<LoginFormInputs>({ mode: 'onSubmit' });
     const onInternalSubmit = (data: LoginFormInputs) => {
-        void onSubmitLogin(data);
+        toast.promise(onSubmitLogin(data), {
+            loading: "Iniciando sesión...",
+            success: "Bienvenido",
+            error: (err) =>
+                err instanceof Error ? err.message : "Error al iniciar sesión",
+        });
     };
     const [showPassword, setShowPassword] = useState(false);
     return (
         <form action="" onSubmit={(e) => {
-                void handleSubmit(onInternalSubmit)(e);
-            }}>
+            void handleSubmit(onInternalSubmit)(e);
+        }}>
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-label" htmlFor="txtEmail">
@@ -92,11 +95,11 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
-                        {isSubmitted && errors.password && (
-                            <p className="text-sm text-danger mt-1">
-                                {errors.password.message}
-                            </p>
-                        )}
+                    {isSubmitted && errors.password && (
+                        <p className="text-sm text-danger mt-1">
+                            {errors.password.message}
+                        </p>
+                    )}
                 </div>
 
                 <button
@@ -112,11 +115,10 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                 ¿No tienes cuenta?{" "}
                 <Link
                     to="/auth/register"
-                    className={`font-medium hover:opacity-80 ${
-                        isLoading
-                            ? "pointer-events-none text-helper"
-                            : "text-primary"
-                    }`}
+                    className={`font-medium hover:opacity-80 ${isLoading
+                        ? "pointer-events-none text-helper"
+                        : "text-primary"
+                        }`}
                 >
                     Crea una gratis
                 </Link>

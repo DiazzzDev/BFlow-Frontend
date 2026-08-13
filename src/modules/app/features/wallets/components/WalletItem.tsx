@@ -1,60 +1,22 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router";
-import { ChevronRight } from "lucide-react";
-
-import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 export interface WalletItemProps {
-    title: string;
-    subtitle: string;
-    meta: string;
-    dateLabel: string;
-    amount: number;
-    currency?: string;
+    children: ReactNode;
     to?: string;
-    showChevron?: boolean;
-    /** Color for positive amounts. List uses info; detail uses success. */
-    positiveAmountClassName?: string;
     className?: string;
 }
 
 export const WalletItem = ({
-    title,
-    subtitle,
-    meta,
-    dateLabel,
-    amount,
-    currency = "USD",
+    children,
     to,
-    showChevron = Boolean(to),
-    positiveAmountClassName = "text-success",
     className = "",
 }: WalletItemProps) => {
-    const isNegative = amount < 0;
-
     const content = (
         <div
-            className={`flex justify-between items-center gap-4 py-6 border-b border-b-2 border-light-10 hover:bg-secondary/40 transition-colors px-2 ${className}`}
+            className={`border-b border-light-10 px-1 py-4 transition-colors hover:bg-secondary/40 sm:border-b-2 sm:px-2 sm:py-6 ${className}`}
         >
-            <div className="min-w-0 w-[28%]">
-                <p className="text-sm font-semibold text-light truncate">{title}</p>
-                <p className="text-xs text-helper truncate mt-0.5">{subtitle}</p>
-            </div>
-
-            <p className="text-sm text-helper text-center truncate flex-1">{meta}</p>
-
-            <p className="text-sm text-helper text-center truncate flex-1">
-                {dateLabel}
-            </p>
-
-            <p
-                className={`text-sm font-semibold text-right tabular-nums min-w-20 ${
-                    isNegative ? "text-danger" : positiveAmountClassName
-                }`}
-            >
-                {formatCurrency(amount, currency)}
-            </p>
-
-            {showChevron && <ChevronRight className="h-7 w-7 text-light shrink-0" />}
+            {children}
         </div>
     );
 
@@ -66,5 +28,5 @@ export const WalletItem = ({
         );
     }
 
-    return <div>{content}</div>;
+    return content;
 };

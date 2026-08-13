@@ -22,7 +22,7 @@ export const getWalletById = async (walletId: string) => {
     return await apiRequest<ApiResponse<Wallet>>(
         `${walletsUrl}/${walletId}`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener la billetera"
+        "Error al obtener la billetera",
     );
 };
 
@@ -30,23 +30,35 @@ export const getWalletDetails = async (walletId: string) => {
     return await apiRequest<ApiResponse<WalletDetails>>(
         `${walletsUrl}/${walletId}/info`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener los detalles de la billetera"
+        "Error al obtener los detalles de la billetera",
     );
 };
 
-export const getOverview = async (walletId: string, query?: string) => {
-    const params = new URLSearchParams();
+export const getOverview = async (
+    walletId: string,
+    {
+        query,
+        page = 0,
+        size = 5,
+    }: {
+        query?: string;
+        page?: number;
+        size?: number;
+    } = {},
+) => {
+    const params = new URLSearchParams({
+        page: String(page),
+        size: String(size),
+    });
 
     if (query?.trim()) {
         params.set("query", query.trim());
     }
 
-    const qs = params.toString();
-
     return await apiRequest<PaginatedListResponse<Transaction>>(
-        `${walletsUrl}/${walletId}/transactions${qs ? `?${qs}` : ""}`,
+        `${walletsUrl}/${walletId}/transactions?${params.toString()}`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener las transacciones"
+        "Error al obtener las transacciones",
     );
 };
 
@@ -54,14 +66,20 @@ export const getTransactions = async ({
     type,
     walletId,
     query,
+    page = 0,
+    size = 5,
 }: {
     type: TransactionType;
     walletId: string;
     query?: string;
+    page?: number;
+    size?: number;
 }) => {
     const params = new URLSearchParams({
         type,
         walletId,
+        page: String(page),
+        size: String(size),
     });
 
     if (query?.trim()) {
@@ -71,6 +89,6 @@ export const getTransactions = async ({
     return await apiRequest<PaginatedListResponse<Transaction>>(
         `${transactionsUrl}?${params.toString()}`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener las transacciones"
+        "Error al obtener las transacciones",
     );
 };

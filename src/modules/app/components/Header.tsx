@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { useLocation, matchPath, Link } from "react-router"
-import { toast } from "sonner"
-import { Bell, LogOut, User, X } from "lucide-react";
+import { useState } from "react";
+import { useLocation, matchPath, Link } from "react-router";
+import { toast } from "sonner";
+import { Bell, LogOut, Menu, User, X } from "lucide-react";
 
 import { useAuthStore } from "@/auth/authStore";
 import { useLogout } from "@/auth/hooks/useLogout";
@@ -11,13 +11,12 @@ type Crumb = { text: string; path?: string };
 const routes = [
     { path: "/app/dashboard", crumbs: [{ text: "Dashboard" }] },
     { path: "/app/wallets", crumbs: [{ text: "Billeteras" }] },
-    // Para las subrutas, le asignamos la ruta estática al padre
     {
         path: "/app/wallets/:id",
         crumbs: [
             { text: "Billeteras", path: "/app/wallets" },
-            { text: "Detalle" }
-        ]
+            { text: "Detalle" },
+        ],
     },
     { path: "/app/incomes", crumbs: [{ text: "Ingresos" }] },
     { path: "/app/expenses", crumbs: [{ text: "Gastos" }] },
@@ -42,70 +41,82 @@ const getBreadcrumbs = (pathname: string): Crumb[] => {
     return [{ text: "..." }];
 };
 
-export const Header = () => {
+interface HeaderProps {
+    onOpenNav: () => void;
+}
+
+export const Header = ({ onOpenNav }: HeaderProps) => {
     const { pathname } = useLocation();
     const crumbs = getBreadcrumbs(pathname);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
 
-    const user = useAuthStore(
-        state => state.user
-    );
-
+    const user = useAuthStore((state) => state.user);
     const { mutateAsync: logout } = useLogout();
 
     const handleLogout = async () => {
         try {
             await logout();
-            toast.success('Sesión cerrada correctamente');
+            toast.success("Sesión cerrada correctamente");
         } catch (error) {
-            toast.error('Error al cerrar sesión');
-            console.error(
-                "Error logout:",
-                error
-            );
-
+            toast.error("Error al cerrar sesión");
+            console.error("Error logout:", error);
         }
     };
 
     return (
-        <header className="flex items-center justify-between px-8 py-5 border-b border-light-10 bg-surface-hard text-light">
-            <div className="flex items-center gap-2 text-lg font-medium">
-                {crumbs.map((crumb, i) => {
-                    const isLast = i === crumbs.length - 1;
+        <header className="flex items-center justify-between gap-3 border-b border-light-10 bg-surface-hard px-4 py-4 text-light sm:px-6 lg:px-8 lg:py-5">
+            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                <button
+                    type="button"
+                    onClick={onOpenNav}
+                    aria-label="Abrir menú"
+                    className="shrink-0 rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer lg:hidden"
+                >
+                    <Menu className="h-5 w-5" />
+                </button>
 
-                    return (
-                        <span className="flex items-center gap-2" key={i}>
-                            {i > 0 && <span className="text-helper">/</span>}
+                <div className="flex min-w-0 items-center gap-2 text-base font-medium sm:text-lg">
+                    {crumbs.map((crumb, i) => {
+                        const isLast = i === crumbs.length - 1;
 
-                            {/* Si no es el último y tiene un path, se vuelve un Link clickeable */}
-                            {!isLast && crumb.path ? (
-                                <Link
-                                    to={crumb.path}
-                                    className="text-helper hover:text-light transition-colors"
-                                >
-                                    {crumb.text}
-                                </Link>
-                            ) : (
-                                <span className={isLast ? "text-light font-medium" : "text-helper"}>
-                                    {crumb.text}
-                                </span>
-                            )}
-                        </span>
-                    );
-                })}
+                        return (
+                            <span className="flex min-w-0 items-center gap-2" key={i}>
+                                {i > 0 && <span className="shrink-0 text-helper">/</span>}
+
+                                {!isLast && crumb.path ? (
+                                    <Link
+                                        to={crumb.path}
+                                        className="truncate text-helper transition-colors hover:text-light"
+                                    >
+                                        {crumb.text}
+                                    </Link>
+                                ) : (
+                                    <span
+                                        className={`truncate ${
+                                            isLast ? "text-light font-medium" : "text-helper"
+                                        }`}
+                                    >
+                                        {crumb.text}
+                                    </span>
+                                )}
+                            </span>
+                        );
+                    })}
+                </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-4">
                 {user?.email && (
-                    <span className="text-sm">
+                    <span className="hidden max-w-48 truncate text-sm text-helper md:inline">
                         {user.email}
                     </span>
                 )}
 
                 <button
                     type="button"
-                    className="hover:text-light transition-colors cursor-pointer"
+                    className="rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                     onClick={() => setNotificationsOpen(true)}
+                    aria-label="Notificaciones"
                 >
                     <Bell className="h-5 w-5" />
                 </button>
@@ -119,12 +130,12 @@ export const Header = () => {
                             onClick={() => setNotificationsOpen(false)}
                         />
                         <aside className="absolute right-0 top-0 h-full w-full max-w-sm border-l border-light-10 bg-surface p-4 shadow-custom">
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="mb-4 flex items-center justify-between">
                                 <h2 className="text-base font-medium">Notificaciones</h2>
                                 <button
                                     type="button"
                                     onClick={() => setNotificationsOpen(false)}
-                                    className="text-helper hover:text-light cursor-pointer"
+                                    className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                                 >
                                     <X className="h-4 w-4" />
                                 </button>
@@ -134,14 +145,18 @@ export const Header = () => {
                 )}
 
                 <button
-                    onClick={() => { void handleLogout() }}
-                    className="hover:text-light transition-colors cursor-pointer"
+                    type="button"
+                    onClick={() => {
+                        void handleLogout();
+                    }}
+                    className="rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                     title="Cerrar sesión"
+                    aria-label="Cerrar sesión"
                 >
                     <LogOut className="h-5 w-5" />
                 </button>
 
-                <div className="w-9 h-9 rounded-full flex items-center justify-center">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
                     <User className="h-5 w-5" />
                 </div>
             </div>

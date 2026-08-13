@@ -1,20 +1,16 @@
 import { ChevronRight } from "lucide-react";
 
-export type BudgetStatus = "exceeded" | "healthy" | "critical" | "warning";
+import type { Budget } from "../interfaces/Budget";
+import {
+    getBudgetDisplayName,
+    resolveBudgetStatus,
+    type BudgetStatus,
+} from "../utils/budgetStatus";
 
-export interface BudgetItemData {
-    id: string;
-    name: string;
-    amountLabel: string;
-    updatedLabel: string;
-    tags: string[];
-    status: BudgetStatus;
-}
+import { formatCurrency } from "@/utils/formatters/formatCurrency";
+import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 
-const statusStyles: Record<
-    BudgetStatus,
-    { label: string; className: string }
-> = {
+const statusStyles: Record<BudgetStatus, { label: string; className: string }> = {
     exceeded: {
         label: "Exceeded",
         className: "bg-danger-sweet text-danger",
@@ -33,31 +29,59 @@ const statusStyles: Record<
     },
 };
 
+const periodLabels: Record<string, string> = {
+    DAILY: "Daily",
+    WEEKLY: "Weekly",
+    MONTHLY: "Monthly",
+    YEARLY: "Yearly",
+};
+
+const scopeLabels: Record<string, string> = {
+    WALLET: "Wallet",
+    CATEGORY_GLOBAL: "Category",
+    WALLET_CATEGORY: "Wallet · Category",
+};
+
 interface BudgetItemProps {
-    budget: BudgetItemData;
+    budget: Budget;
     onClick?: () => void;
 }
 
 export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
-    const status = statusStyles[budget.status];
+    const status = statusStyles[resolveBudgetStatus(budget)];
+    const name = getBudgetDisplayName(budget);
+    const updatedLabel = budget.updatedAt
+        ? `Updated ${formatterDynamicDate(budget.updatedAt)}`
+        : "Sin fecha de actualización";
+
+    const tags = [
+        periodLabels[budget.period] ?? budget.period,
+        scopeLabels[budget.scope] ?? budget.scope,
+        budget.walletName,
+        budget.categoryName,
+    ].filter(Boolean) as string[];
 
     return (
         <button
             type="button"
             onClick={onClick}
-            className="w-full flex items-center justify-between gap-4 py-5 border-b border-light-10 last:border-b-0 text-left hover:bg-secondary/40 transition-colors cursor-pointer px-1"
+            className="flex w-full cursor-pointer items-start justify-between gap-3 border-b border-light-10 px-1 py-4 text-left transition-colors last:border-b-0 hover:bg-secondary/40 sm:items-center sm:gap-4 sm:py-5"
         >
             <div className="min-w-0 flex-1">
-                <p className="text-base font-semibold text-light truncate">
-                    {budget.name}
+                <p className="truncate text-base font-semibold text-light">{name}</p>
+                <p className="mt-1 line-clamp-2 text-sm text-helper sm:truncate sm:line-clamp-none">
+                    {formatCurrency(budget.budgetLimit)}
+                    {" · "}
+                    {updatedLabel}
+                    {budget.spent !== null && (
+                        <>
+                            {" · "}
+                            Spent {formatCurrency(budget.spent)}
+                        </>
+                    )}
                 </p>
-                <p className="text-sm text-helper mt-1 truncate">
-                    {budget.amountLabel}
-                    {" - "}
-                    {budget.updatedLabel}
-                </p>
-                <div className="flex flex-wrap items-center gap-2 mt-3">
-                    {budget.tags.map((tag) => (
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                    {tags.map((tag) => (
                         <span
                             key={`${budget.id}-${tag}`}
                             className="inline-flex items-center rounded-full border border-light-10 bg-surface-hard px-2.5 py-0.5 text-xs text-helper"
@@ -68,13 +92,13 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
                 </div>
             </div>
 
-            <div className="flex items-center gap-3 shrink-0">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                 <span
-                    className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${status.className}`}
+                    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium sm:px-3 ${status.className}`}
                 >
                     {status.label}
                 </span>
-                <ChevronRight className="h-5 w-5 text-helper" />
+                <ChevronRight className="hidden h-5 w-5 text-helper sm:block" />
             </div>
         </button>
     );

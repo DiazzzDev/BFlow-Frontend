@@ -1,144 +1,194 @@
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import { ChevronDown, ListFilter, Plus, WalletCards } from "lucide-react";
+import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+import { Plus, WalletCards } from "lucide-react";
 
 import { BudgetOverview } from "./components/BudgetOverview";
-import { BudgetItem, type BudgetItemData } from "./components/BudgetItem";
+import { BudgetItem } from "./components/BudgetItem";
+import { BudgetItemSkeleton } from "./components/BudgetItemSkeleton";
+import { BudgetForm } from "./components/BudgetForm";
+import { useGetBudgets } from "./hooks/useGetBudgets";
 
 import { SearchInput } from "@/components/controls/SearchInput";
+import { Select } from "@/components/controls/Select";
+import { TabFilter } from "@/components/controls/TabFilter";
 import { Button } from "@/components/controls/Button";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
+import { CustomModal } from "@/components/custom/CustomModal";
+import { Pagination } from "@/components/Pagination";
+import { PaginationSelect } from "@/components/PaginationSelect";
+import { useDebounce } from "@/hooks/useDebounce";
+import { usePaginationParams } from "@/hooks/usePaginationParams";
+import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
-const MOCK_BUDGETS: BudgetItemData[] = [
-    {
-        id: "1",
-        name: "Food",
-        amountLabel: "$120.00",
-        updatedLabel: "Updated a minute ago",
-        tags: ["Monthly", "Category", "Expense", "Wallet"],
-        status: "exceeded",
-    },
-    {
-        id: "2",
-        name: "Credit card",
-        amountLabel: "$500.00",
-        updatedLabel: "Updated 2 hours ago",
-        tags: ["Monthly", "Category", "Expense", "Wallet"],
-        status: "healthy",
-    },
-    {
-        id: "3",
-        name: "Savings",
-        amountLabel: "$200.00",
-        updatedLabel: "Updated yesterday",
-        tags: ["Monthly", "Category", "Expense", "Wallet"],
-        status: "critical",
-    },
-    {
-        id: "4",
-        name: "Entertainment",
-        amountLabel: "$80.00",
-        updatedLabel: "Updated 3 days ago",
-        tags: ["Monthly", "Category", "Expense", "Wallet"],
-        status: "warning",
-    },
+const sortOptions = [
+    { value: "amount,desc", label: "Mayor monto" },
+    { value: "amount,asc", label: "Menor monto" },
+    { value: "updatedAt,desc", label: "Más recientes" },
+    { value: "startDate,desc", label: "Inicio reciente" },
+];
+
+const periodOptions = [
+    { label: "Todos", value: "ALL" },
+    { label: "Mensual", value: "MONTHLY" },
+    { label: "Semanal", value: "WEEKLY" },
+    { label: "Anual", value: "YEARLY" },
 ];
 
 export const BudgetsPage = () => {
     const navigate = useNavigate();
-    const [search, setSearch] = useState("");
+    const [params] = useSearchParams();
+    const { updateSearchParams } = useUpdateSearchParams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const filteredBudgets = useMemo(() => {
-        const query = search.trim().toLowerCase();
-        if (!query) {
-            return MOCK_BUDGETS;
-        }
+    const query = params.get("query") || "";
+    const debouncedQuery = useDebounce(query, 650);
+    const sort = params.get("sort") || "amount,desc";
+    const periodParam = params.get("period") || "ALL";
+    const period = periodParam === "ALL" ? undefined : periodParam;
+    const { apiPage, limit } = usePaginationParams();
 
-        return MOCK_BUDGETS.filter((budget) => {
-            const inName = budget.name.toLowerCase().includes(query);
-            const inTags = budget.tags.some((tag) =>
-                tag.toLowerCase().includes(query),
-            );
-            return inName || inTags;
-        });
-    }, [search]);
+    const { data, isLoading } = useGetBudgets({
+        query: debouncedQuery,
+        sort,
+        period,
+        page: apiPage,
+        size: limit,
+    });
+
+    const budgets = data?.data.content ?? [];
+    const totalBudgets = data?.data.totalElements ?? budgets.length;
+    const totalPages = data?.data.totalPages ?? 0;
+    const numberOfElements = data?.data.numberOfElements ?? budgets.length;
+    const totalLimit = budgets.reduce((sum, budget) => sum + (budget.budgetLimit ?? 0), 0);
+    const hasActiveFilters = Boolean(query.trim() || period || sort !== "amount,desc");
 
     return (
-        <div className="flex flex-col h-full min-h-0 px-6 py-5">
+        <div className="flex h-full min-h-0 flex-col px-4 py-5 sm:px-6 pb-10">
             <BudgetOverview
-                improvementPercent={50}
-                fromAmount="$500"
-                toAmount="$250"
+                totalBudgets={totalBudgets}
+                totalLimit={totalLimit}
+                isLoading={isLoading}
             />
 
-            <section className="flex flex-col flex-1 min-h-0">
-                <h2 className="text-lg font-semibold text-light mb-4">
-                    Active budgets ({filteredBudgets.length})
-                </h2>
-
-                <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
-                    <div className="flex gap-3 flex-1   ">
-                        <SearchInput
-                            id="txtSearchBudgets"
-                            placeholder="Search budgets..."
-                            className="max-w-xl"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-
-                        <button
-                            type="button"
-                            aria-label="Filter budgets"
-                            className="h-10 w-10 inline-flex items-center justify-center rounded-xl border border-light-10 bg-surface text-helper hover:text-light hover:bg-secondary transition-colors cursor-pointer"
-                        >
-                            <ListFilter className="h-4 w-4" />
-                        </button>
-                    </div>
-
-                    <Button
-                        type="button"
-                        text="Crear presupuesto"
-                        icon={<Plus className="h-4 w-4" />}
-                        onClick={() => undefined}
+            <section className="flex h-fit @xl:min-h-0 @xl:flex-1 flex-col">
+                <div className="mb-5 flex flex-col gap-3 @3xl:flex-row @xl:justify-between">
+                    <SearchInput
+                        id="txtSearchBudgets"
+                        placeholder="Search budgets..."
+                        className="w-full max-w-none min-w-0 @xl:max-w-xl"
+                        syncToParams
                     />
-                </div>
 
-                <div className="flex-1">
-                    {filteredBudgets.length > 0 ? (
-                        <div className="flex flex-col">
-                            {filteredBudgets.map((budget) => (
-                                <BudgetItem
-                                    key={budget.id}
-                                    budget={budget}
-                                    onClick={() => {
-                                        void navigate(`/app/budgets/${budget.id}`);
-                                    }}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <CustomEmptyState
-                            title={search.trim() ? "Sin resultados" : "Sin presupuestos"}
-                            description={
-                                search.trim()
-                                    ? "Prueba con otro término de búsqueda"
-                                    : "Crea tu primer presupuesto para controlar tus gastos."
-                            }
-                            Icon={WalletCards}
+                    <div className="flex min-w-0 flex-col gap-3 @lg:flex-row @md:items-center justify-between">
+                        <TabFilter
+                            options={periodOptions}
+                            selected={periodParam}
+                            keyFilter="period"
+                            layoutId="budgetPeriodTab"
+                            responsive="stretch"
                         />
-                    )}
+
+                        <Button
+                            type="button"
+                            text="Crear presupuesto"
+                            icon={<Plus className="h-4 w-4" />}
+                            onClick={() => setIsModalOpen(true)}
+                            className="w-full shrink-0 @lg:w-auto"
+                        />
+                    </div>
                 </div>
 
-                {filteredBudgets.length > 0 && (
-                    <button
-                        type="button"
-                        className="mt-6 inline-flex items-center justify-center gap-1.5 text-sm text-helper hover:text-light transition-colors cursor-pointer self-center"
+                <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <h2 className="text-base font-semibold text-light sm:text-lg">
+                        Active budgets {isLoading ? "" : `(${totalBudgets})`}
+                    </h2>
+
+                    <Select
+                        id="budgetSort"
+                        value={sort}
+                        aria-label="Ordenar presupuestos"
+                        className="w-full sm:min-w-44 sm:max-w-52"
+                        onChange={(event) =>
+                            updateSearchParams(
+                                { sort: event.target.value || null },
+                                { resetPage: true },
+                            )
+                        }
                     >
-                        Show more budgets
-                        <ChevronDown className="h-4 w-4" />
-                    </button>
-                )}
+                        {sortOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </Select>
+                </div>
+
+                <div className="@xl:min-h-0 h-fit @xl:flex-1">
+                    {renderList()}
+                </div>
+
             </section>
+            {!isLoading && totalBudgets > 0 && (
+                <div className="mt-4 flex flex-col items-center gap-3 border-t border-light-10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <PaginationSelect
+                        totalItems={totalBudgets}
+                        numberOfElements={numberOfElements}
+                    />
+                    <Pagination totalPages={totalPages} />
+                </div>
+            )}
+
+            <CustomModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                title="Nuevo presupuesto"
+                maxWidth="max-w-xl"
+            >
+                <BudgetForm
+                    key={isModalOpen ? "open" : "closed"}
+                    onSuccess={() => setIsModalOpen(false)}
+                />
+            </CustomModal>
         </div>
     );
+
+    function renderList() {
+        if (isLoading) {
+            return (
+                <div className="flex flex-col">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <BudgetItemSkeleton key={index} />
+                    ))}
+                </div>
+            );
+        }
+
+        if (budgets.length > 0) {
+            return (
+                <div className="flex flex-col">
+                    {budgets.map((budget) => (
+                        <BudgetItem
+                            key={budget.id}
+                            budget={budget}
+                            onClick={() => {
+                                void navigate(`/app/budgets/${budget.id}`);
+                            }}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        return (
+            <CustomEmptyState
+                title={hasActiveFilters ? "Sin resultados" : "Sin presupuestos"}
+                description={
+                    hasActiveFilters
+                        ? "Prueba ajustando la búsqueda o los filtros"
+                        : "Crea tu primer presupuesto para controlar tus gastos."
+                }
+                Icon={WalletCards}
+            />
+        );
+    }
 };
