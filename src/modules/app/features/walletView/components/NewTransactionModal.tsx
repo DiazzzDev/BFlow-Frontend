@@ -4,7 +4,7 @@ import type { Transaction, TransactionType } from "../interfaces/Transaction";
 import { ExpenseForm } from "../../expenses/components/ExpenseForm";
 import { IncomeForm } from "../../incomes/components/IncomeForm";
 import { TransferForm } from "../../transfers/components/TransferForm";
-import { toDateInputValue } from "../../wallets/utils/transactionActions";
+import { toDateInputValue } from "../../wallets/utils/transaction.service";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";

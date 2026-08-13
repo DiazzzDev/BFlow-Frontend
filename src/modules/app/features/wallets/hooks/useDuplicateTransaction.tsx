@@ -8,7 +8,7 @@ import {
     buildDuplicateExpensePayload,
     buildDuplicateIncomePayload,
     buildDuplicateTransferPayload,
-} from "../utils/transactionActions";
+} from "../utils/transaction.service";
 
 export const useDuplicateTransaction = () => {
     const createExpense = usePostExpense();

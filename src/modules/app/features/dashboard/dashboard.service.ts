@@ -1,0 +1,77 @@
+import type {
+    BudgetHealth,
+    DashboardAverages,
+    DashboardBalance,
+    DashboardSpending,
+    DashboardStatistics,
+    RecentActivityItem,
+} from "./interfaces/dashboard";
+
+import { apiRequest } from "@/utils/api";
+import { config } from "@/config/config";
+
+const dashboardUrl = `${config.API_BASE_URL}/api/v1/dashboard`;
+
+const defaultApiOptions: RequestInit = {
+    headers: { "Content-Type": "application/json" },
+};
+
+export const getBalance = async () => {
+    return await apiRequest<DashboardBalance>(
+        `${dashboardUrl}/balance`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener el balance",
+    );
+};
+
+export const getAverages = async () => {
+    return await apiRequest<DashboardAverages>(
+        `${dashboardUrl}/averages`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener los promedios",
+    );
+};
+
+export const getSpending = async () => {
+    return await apiRequest<DashboardSpending>(
+        `${dashboardUrl}/spending`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener el spending",
+    );
+};
+
+export interface GetStatisticsParams {
+    year?: number;
+}
+
+export const getStatistics = async ({ year }: GetStatisticsParams = {}) => {
+    const params = new URLSearchParams();
+
+    if (year) {
+        params.set("year", String(year));
+    }
+
+    const query = params.toString();
+
+    return await apiRequest<DashboardStatistics>(
+        `${dashboardUrl}/statistics${query ? `?${query}` : ""}`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener las estadísticas",
+    );
+};
+
+export const getBudgetsHealth = async () => {
+    return await apiRequest<BudgetHealth[]>(
+        `${dashboardUrl}/budgets-health`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener la salud de los presupuestos",
+    );
+};
+
+export const getRecentActivity = async () => {
+    return await apiRequest<RecentActivityItem[]>(
+        `${dashboardUrl}/recent-activity`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener la actividad reciente",
+    );
+};
