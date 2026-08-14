@@ -1,6 +1,7 @@
+import { dashboardCardClass } from "../utils/dashboardCard";
+
 import { Button } from "@/components/controls/Button";
 
-import { dashboardCardClass } from "../utils/dashboardCard";
 
 interface UpgradeProCardProps {
     onUpgrade?: () => void;

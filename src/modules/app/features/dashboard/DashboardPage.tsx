@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { NewTransactionModal } from "../transactions/components/NewTransactionModal";
+import { NewTransactionModal } from "../../components/NewTransactionModal";
 
 import { BalanceCard } from "./components/Balancecard";
 import { ThisMonthCard } from "./components/ThisMonthCard";

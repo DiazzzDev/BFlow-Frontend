@@ -1,7 +1,8 @@
-import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 import { dashboardCardClass } from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
+
+import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 interface AverageRowProps {
     isLoading: boolean;
@@ -28,9 +29,9 @@ const AmountDisplay = ({ amount, currency }: { amount: number; currency: string 
     const cents = formatted.slice(decimalIndex);
 
     return (
-        <p className="mt-3 text-3xl font-semibold tracking-tight text-light @3xl:text-4xl">
+        <p className="mt-3 text-4xl font-semibold tracking-tight text-light @3xl:text-5xl">
             {whole}
-            <span className="text-xl font-semibold @3xl:text-2xl">{cents}</span>
+            <span className="text-2xl font-semibold @3xl:text-3xl">{cents}</span>
         </p>
     );
 };

@@ -7,6 +7,7 @@ import { ArrowLeftRight, PanelRightClose, PanelRightOpen, Plus, Receipt, X } fro
 import { useDeleteExpense } from "../expenses/hooks/useMutateExpenses";
 import { useDeleteIncome } from "../incomes/hooks/useMutateIncomes";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
+import { NewTransactionModal } from "../../components/NewTransactionModal";
 
 import { useGetOverview } from "./hooks/useGetOverview";
 import { useGetTransactions } from "./hooks/useGetTransactions";
@@ -16,7 +17,6 @@ import {
     TransactionsTable,
     transactionColumnsClassName,
 } from "./components/TransactionsTable";
-import { NewTransactionModal } from "../transactions/components/NewTransactionModal";
 import type { Transaction, TransactionType } from "./interfaces/Transaction";
 import { useGetWalletDetails } from "./hooks/useGetWalletDetails";
 
