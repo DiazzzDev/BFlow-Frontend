@@ -1,12 +1,39 @@
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
+import { dashboardCardClass } from "../utils/dashboardCard";
+import { formatPercentValue } from "../utils/formatPercent";
+
 interface AverageRowProps {
     isLoading: boolean;
     label: string;
     amount: number;
     currency: string;
-    percentageChangeLastMonth: number; // fraccion 0-1
+    percentageChangeLastMonth: number;
+    changeTone: "info" | "danger";
 }
+
+const AmountDisplay = ({ amount, currency }: { amount: number; currency: string }) => {
+    const formatted = formatCurrency(amount, currency);
+    const decimalIndex = formatted.lastIndexOf(".");
+
+    if (decimalIndex === -1) {
+        return (
+            <p className="mt-3 text-4xl font-semibold tracking-tight text-light @3xl:text-5xl">
+                {formatted}
+            </p>
+        );
+    }
+
+    const whole = formatted.slice(0, decimalIndex);
+    const cents = formatted.slice(decimalIndex);
+
+    return (
+        <p className="mt-3 text-3xl font-semibold tracking-tight text-light @3xl:text-4xl">
+            {whole}
+            <span className="text-xl font-semibold @3xl:text-2xl">{cents}</span>
+        </p>
+    );
+};
 
 const AverageRow = ({
     isLoading,
@@ -14,28 +41,29 @@ const AverageRow = ({
     amount,
     currency,
     percentageChangeLastMonth,
+    changeTone,
 }: AverageRowProps) => {
-    const changePercent = Math.round(percentageChangeLastMonth * 100 * 10) / 10;
-    const isPositive = changePercent >= 0;
+    const changePercent = formatPercentValue(percentageChangeLastMonth);
+    const isPositive = percentageChangeLastMonth >= 0;
+    const toneClass = changeTone === "info" ? "text-info" : "text-danger";
 
     return (
-        <div>
-            <p className="text-sm font-medium text-helper">{label}</p>
+        <div className="flex flex-1 flex-col justify-center">
+            <p className="text-base font-medium text-helper">{label}</p>
 
             {isLoading ? (
-                <div className="mt-2 h-8 w-32 animate-pulse rounded-md bg-skeleton" />
+                <div className="mt-3 h-12 w-48 animate-pulse rounded-lg bg-skeleton" />
             ) : (
-                <p className="mt-1 text-2xl font-semibold tracking-tight text-light">
-                    {formatCurrency(amount, currency)}
-                </p>
+                <AmountDisplay amount={amount} currency={currency} />
             )}
 
             {!isLoading && (
-                <p className="mt-1 text-xs text-helper">
-                    <span className={isPositive ? "text-success" : "text-danger"}>
+                <p className="mt-3 text-base text-helper">
+                    <span className={`font-semibold ${toneClass}`}>
                         {isPositive ? "+" : ""}
                         {changePercent}%
-                    </span>{" "}
+                    </span>
+                    {" "}
                     compared to last month
                 </p>
             )}
@@ -61,13 +89,14 @@ export const AverageStatsCard = ({
     expensesPercentageChangeLastMonth,
 }: AverageStatsCardProps) => {
     return (
-        <div className="flex flex-col justify-center gap-5 rounded-lg border border-light-10 bg-surface p-5">
+        <div className={`${dashboardCardClass} h-full min-h-72 justify-evenly gap-8`}>
             <AverageRow
                 isLoading={isLoading}
                 label="Average income"
                 amount={averageIncome}
                 currency={currency}
                 percentageChangeLastMonth={incomePercentageChangeLastMonth}
+                changeTone="info"
             />
             <div className="border-t border-light-10" />
             <AverageRow
@@ -76,6 +105,7 @@ export const AverageStatsCard = ({
                 amount={averageExpenses}
                 currency={currency}
                 percentageChangeLastMonth={expensesPercentageChangeLastMonth}
+                changeTone="danger"
             />
         </div>
     );

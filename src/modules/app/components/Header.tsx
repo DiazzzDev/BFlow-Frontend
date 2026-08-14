@@ -106,11 +106,11 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
             </div>
 
             <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-                {user?.email && (
+                {user?.name || user?.email ? (
                     <span className="hidden max-w-48 truncate text-sm text-helper md:inline">
-                        {user.email}
+                        {user.name || user.email}
                     </span>
-                )}
+                ) : null}
 
                 <button
                     type="button"
@@ -156,9 +156,18 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                     <LogOut className="h-5 w-5" />
                 </button>
 
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
-                    <User className="h-5 w-5" />
-                </div>
+                {user?.pictureUrl ? (
+                    <img
+                        src={user.pictureUrl}
+                        alt={user.name || user.email || "Usuario"}
+                        className="h-9 w-9 rounded-full object-cover"
+                        referrerPolicy="no-referrer"
+                    />
+                ) : (
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
+                        <User className="h-5 w-5" />
+                    </div>
+                )}
             </div>
         </header>
     );

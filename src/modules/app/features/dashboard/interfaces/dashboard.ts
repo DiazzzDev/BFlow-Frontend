@@ -11,12 +11,14 @@ export interface DashboardStatistics {
 export interface SpendingCategory {
     categoryId: string;
     categoryName: string;
-    percentage: number; // 0-1 segun ejemplo del swagger (0.1 = 10%)
+    /** Percent units as returned by API (e.g. 58.7 = 58.7%). */
+    percentage: number;
 }
 
 export interface DashboardSpending {
     totalSpent: number;
-    totalActivityPercentage: number; // 0-1
+    /** Percent units as returned by API (e.g. 5.8 = 5.8%). */
+    totalActivityPercentage: number;
     topCategories: SpendingCategory[];
 }
 
@@ -40,12 +42,13 @@ export interface BudgetHealth {
 
 export interface DashboardBalance {
     total: number;
-    percentageChangeLastMonth: number; // 0-1
+    /** Percent units as returned by API (e.g. 8.4 = 8.4%). */
+    percentageChangeLastMonth: number;
 }
 
 export interface DashboardAverages {
     averageIncome: number;
-    incomePercentageChangeLastMonth: number; // 0-1
+    incomePercentageChangeLastMonth: number;
     averageExpenses: number;
-    expensesPercentageChangeLastMonth: number; // 0-1
+    expensesPercentageChangeLastMonth: number;
 }

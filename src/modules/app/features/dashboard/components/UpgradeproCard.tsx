@@ -1,20 +1,24 @@
 import { Button } from "@/components/controls/Button";
 
+import { dashboardCardClass } from "../utils/dashboardCard";
+
 interface UpgradeProCardProps {
     onUpgrade?: () => void;
 }
 
 export const UpgradeProCard = ({ onUpgrade }: UpgradeProCardProps) => {
     return (
-        <div className="flex flex-col justify-center gap-3 rounded-lg border border-primary-25 bg-primary-15 p-5">
-            <p className="text-lg font-semibold text-light">
+        <div
+            className={`${dashboardCardClass} justify-center gap-5 border-primary-25 bg-primary-15`}
+        >
+            <p className="text-center text-xl font-semibold leading-snug text-light">
                 Mejora tu experiencia con Bflow Pro
             </p>
             <Button
                 type="button"
                 onClick={onUpgrade}
                 text="Ver más"
-                className="w-fit"
+                className="mx-auto w-fit"
             />
         </div>
     );

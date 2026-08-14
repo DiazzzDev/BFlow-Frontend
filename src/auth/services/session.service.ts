@@ -1,7 +1,7 @@
 import { apiRequest } from "@/utils/api";
 import { config } from "@/config/config";
 import { authService } from "@/auth/services/authService";
-import type { InternalUser } from "@/auth/InternalUser";
+import type { InternalUser, UserProfile } from "@/auth/InternalUser";
 
 const AUTH_SYNC_URL = `${config.API_BASE_URL}/api/v1/auth/sync`;
 
@@ -15,6 +15,25 @@ export type CognitoSessionTokens = {
     email?: string;
 };
 
+type SyncAuthResponse = {
+    id: string;
+    email: string;
+    roles: string[];
+    isNewUser: boolean;
+    subscription?: unknown;
+    wallets?: unknown[];
+    profile?: UserProfile | null;
+};
+
+const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => ({
+    id: response.id,
+    email: response.email,
+    roles: response.roles ?? [],
+    isNewUser: response.isNewUser,
+    name: response.profile?.name ?? null,
+    pictureUrl: response.profile?.pictureUrl ?? null,
+});
+
 export const isUserAlreadyAuthenticatedError = (error: unknown): boolean => {
     if (typeof error !== "object" || error === null || !("name" in error)) {
         return false;
@@ -23,16 +42,19 @@ export const isUserAlreadyAuthenticatedError = (error: unknown): boolean => {
     return (error as { name: string }).name === "UserAlreadyAuthenticatedException";
 };
 
-export const syncAuthUser = (idToken: string, email?: string) =>
-    apiRequest<InternalUser>(
+export const syncAuthUser = async (idToken: string, email?: string) => {
+    const response = await apiRequest<SyncAuthResponse>(
         AUTH_SYNC_URL,
         {
             ...defaultApiOptions,
             method: "POST",
             body: JSON.stringify(email ? { idToken, email } : { idToken }),
         },
-        "Error al sincronizar el usuario"
+        "Error al sincronizar el usuario",
     );
+
+    return mapSyncResponseToUser(response);
+};
 
 export const getSessionTokens = async (): Promise<CognitoSessionTokens | null> => {
     const session = await authService.getSession();

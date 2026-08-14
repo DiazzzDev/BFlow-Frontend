@@ -16,7 +16,7 @@ import {
     TransactionsTable,
     transactionColumnsClassName,
 } from "./components/TransactionsTable";
-import { NewTransactionModal } from "./components/NewTransactionModal";
+import { NewTransactionModal } from "../transactions/components/NewTransactionModal";
 import type { Transaction, TransactionType } from "./interfaces/Transaction";
 import { useGetWalletDetails } from "./hooks/useGetWalletDetails";
 

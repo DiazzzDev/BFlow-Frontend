@@ -1,34 +1,32 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { NewTransactionModal } from "../walletView/components/NewTransactionModal";
+import { NewTransactionModal } from "../transactions/components/NewTransactionModal";
 
 import { BalanceCard } from "./components/Balancecard";
 import { ThisMonthCard } from "./components/ThisMonthCard";
-import { SpendingCard } from "./components/SendingCard";
+import { SpendingCard } from "./components/SpendingCard";
 import { BudgetsHealthCard } from "./components/BudgetsHealthCard";
 import { StatisticsCard } from "./components/StatisticsCard";
 import { AverageStatsCard } from "./components/AverageStatsCard";
 import { RecentActivityCard } from "./components/RecentActivityCard";
 import { UpgradeProCard } from "./components/UpgradeproCard";
-
 import { useGetBalance } from "./hooks/useGetBalance";
 import { useGetAverages } from "./hooks/useGetAverages";
 import { useGetSpending } from "./hooks/useGetSpending";
 import { useGetStatistics } from "./hooks/useGetStatistics";
 import { useGetBudgetsHealth } from "./hooks/useGetBudgetsHealth";
 import { useGetRecentActivity } from "./hooks/useGetTrecentActivity";
+import { getFirstName, getTimeGreeting } from "./utils/greeting";
 
 import { useAuthStore } from "@/auth/authStore";
 import { Button } from "@/components/controls/Button";
 
-// TODO: el dashboard no trae "currency" en ningun endpoint del swagger.
-// Ajustar si el backend agrega un campo (o si el user tiene una moneda default).
 const DEFAULT_CURRENCY = "USD";
 
 export const DashboardPage = () => {
     const user = useAuthStore((state) => state.user);
-    const firstName = user?.email?.split("@")[0] ?? "";
+    const firstName = getFirstName(user?.name);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,27 +46,28 @@ export const DashboardPage = () => {
 
     return (
         <div className="flex h-full min-h-0 flex-col overflow-y-auto px-4 py-5 sm:px-6">
-            <div className="mb-6 flex flex-col justify-between gap-3 @xl:flex-row @xl:items-center">
+            <div className="mb-6 flex flex-col justify-between gap-4 @xl:flex-row @xl:items-center">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight text-light">
-                        Good morning{firstName ? `, ${firstName}` : ""}
+                    <h1 className="text-2xl font-semibold tracking-tight text-light sm:text-3xl">
+                        {getTimeGreeting()}
+                        {firstName ? `, ${firstName}` : ""}
                     </h1>
                     <p className="mt-1 text-sm text-helper">
-                        Here&apos;s what&apos;s happening with your money
+                        Here&apos;s what&apos;s happening with your money.
                     </p>
                 </div>
 
                 <Button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    text="Nueva transacción"
+                    text="New transaction"
                     icon={<Plus className="h-4 w-4" />}
-                    className="w-fit"
+                    className="w-fit shrink-0"
                 />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 @3xl:grid-cols-3">
-                <div className="@3xl:col-span-2">
+            <div className="grid grid-cols-1 gap-4 @3xl:grid-cols-2 @5xl:grid-cols-3">
+                <div className="@5xl:col-span-2">
                     <BalanceCard
                         isLoading={isLoadingBalance}
                         total={balance?.total ?? 0}
@@ -82,7 +81,7 @@ export const DashboardPage = () => {
                     topCategories={spending?.topCategories ?? []}
                 />
 
-                <div className="@3xl:col-span-2">
+                <div className="@5xl:col-span-2">
                     <SpendingCard
                         isLoading={isLoadingSpending}
                         totalSpent={spending?.totalSpent ?? 0}
@@ -93,19 +92,23 @@ export const DashboardPage = () => {
                 </div>
                 <BudgetsHealthCard isLoading={isLoadingBudgets} budgets={budgets} />
 
-                <div className="@3xl:col-span-2">
+                <div className="@5xl:col-span-2">
                     <StatisticsCard isLoading={isLoadingStatistics} months={months} />
                 </div>
                 <AverageStatsCard
                     isLoading={isLoadingAverages}
                     currency={DEFAULT_CURRENCY}
                     averageIncome={averages?.averageIncome ?? 0}
-                    incomePercentageChangeLastMonth={averages?.incomePercentageChangeLastMonth ?? 0}
+                    incomePercentageChangeLastMonth={
+                        averages?.incomePercentageChangeLastMonth ?? 0
+                    }
                     averageExpenses={averages?.averageExpenses ?? 0}
-                    expensesPercentageChangeLastMonth={averages?.expensesPercentageChangeLastMonth ?? 0}
+                    expensesPercentageChangeLastMonth={
+                        averages?.expensesPercentageChangeLastMonth ?? 0
+                    }
                 />
 
-                <div className="@3xl:col-span-2">
+                <div className="@5xl:col-span-2">
                     <RecentActivityCard
                         isLoading={isLoadingActivity}
                         activities={activities}
@@ -119,6 +122,7 @@ export const DashboardPage = () => {
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 mode="create"
+                requireWalletSelect
             />
         </div>
     );
