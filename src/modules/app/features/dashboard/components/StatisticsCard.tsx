@@ -1,3 +1,4 @@
+import { TrendingUp } from "lucide-react";
 import {
     Line,
     LineChart,
@@ -9,6 +10,8 @@ import {
 
 import type { MonthlyStatistic } from "../interfaces/dashboard";
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
+
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 
 interface StatisticsCardProps {
     isLoading: boolean;
@@ -81,9 +84,16 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                 <div className="min-h-8 min-w-0 shrink-0" aria-hidden />
             </div>
 
-            <div className="mt-4 h-64 w-full">
+            <div className="mt-4 flex h-64 w-full items-center">
                 {isLoading ? (
                     <div className="h-full w-full animate-pulse rounded-xl bg-skeleton" />
+                ) : months.length === 0 ? (
+                    <CustomEmptyState
+                        title="Sin estadísticas"
+                        description="Cuando tengas movimientos, verás ingresos y gastos acá."
+                        Icon={TrendingUp}
+                        className="m-0!"
+                    />
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart

@@ -1,4 +1,4 @@
-import type { Budget, CreateBudgetData, GetBudgetsParams } from "./interfaces/Budget";
+import type { Budget, CreateBudgetData, GetBudgetsParams, UpdateBudgetData } from "./interfaces/Budget";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";
@@ -41,5 +41,25 @@ export const postBudget = async (budgetData: CreateBudgetData) => {
             body: JSON.stringify(budgetData),
         },
         "Error al crear el presupuesto",
+    );
+};
+
+export const patchBudget = async (id: string, budgetData: UpdateBudgetData) => {
+    return await apiRequest<Budget>(
+        `${budgetsUrl}/${id}`,
+        {
+            ...defaultApiOptions,
+            method: "PATCH",
+            body: JSON.stringify(budgetData),
+        },
+        "Error al actualizar el presupuesto",
+    );
+};
+
+export const deleteBudget = async (id: string) => {
+    return await apiRequest<unknown>(
+        `${budgetsUrl}/${id}`,
+        { method: "DELETE" },
+        "Error al eliminar el presupuesto",
     );
 };

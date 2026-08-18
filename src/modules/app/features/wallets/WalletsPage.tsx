@@ -55,6 +55,7 @@ export const WalletsPage = () => {
     const [params] = useSearchParams();
     const query = params.get("query") || "";
     const debouncedQuery = useDebounce(query, 500);
+    /* eslint-disable */
     const walletType = (params.get("walletType") as "MINE" | "SHARED") ?? "MINE";
     const { apiPage, limit } = usePaginationParams();
 

@@ -1,8 +1,12 @@
+import { PieChart } from "lucide-react";
+
 import type { SpendingCategory } from "../interfaces/dashboard";
 import { dashboardCardClass, dashboardHeroClass, dashboardLabelClass } from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
 
 import { SegmentedBar } from "./SegmentedBar";
+
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 
 interface SpendingCardProps {
     isLoading: boolean;
@@ -46,6 +50,13 @@ export const SpendingCard = ({
 
             {isLoading ? (
                 <div className="mt-5 h-2 w-full animate-pulse rounded-full bg-skeleton" />
+            ) : topCategories.length === 0 ? (
+                <CustomEmptyState
+                    title="Sin gastos"
+                    description="Cuando registres gastos, vas a ver las categorías acá."
+                    Icon={PieChart}
+                    className="m-0! mt-4!"
+                />
             ) : (
                 <SegmentedBar segments={segments} showSegmentLabels />
             )}

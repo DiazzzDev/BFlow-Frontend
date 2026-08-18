@@ -1,8 +1,11 @@
+import { CalendarClock } from "lucide-react";
+
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 
-interface WalletViewSidebarProps {
+export interface WalletViewSidebarProps {
     lastActivity: string;
     highestExpense: string;
     transactionsCount: number;
@@ -86,6 +89,13 @@ export const WalletViewSidebar = ({
                             </li>
                         ))}
                     </ul>
+                ) : upcoming.length === 0 ? (
+                    <CustomEmptyState
+                        title="Sin programadas"
+                        description="No hay transacciones recurrentes próximas."
+                        Icon={CalendarClock}
+                        className="m-0! mb-6! p-4!"
+                    />
                 ) : (
                     <ul className="mb-6 flex flex-col gap-4">
                         {upcoming.map((item) => (

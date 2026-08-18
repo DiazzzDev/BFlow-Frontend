@@ -26,7 +26,33 @@ export const resolveBudgetStatus = (budget: Budget): BudgetStatus => {
     return "healthy";
 };
 
-export const getBudgetDisplayName = (budget: Budget) => {
+export const budgetPeriodLabels: Record<string, string> = {
+    DAILY: "Daily",
+    WEEKLY: "Weekly",
+    MONTHLY: "Monthly",
+    YEARLY: "Yearly",
+};
+
+export const budgetScopeLabels: Record<string, string> = {
+    WALLET: "Wallet",
+    CATEGORY_GLOBAL: "Category",
+    WALLET_CATEGORY: "Wallet · Category",
+};
+
+export const getBudgetStatusLabel = (status?: string | null) => {
+    const normalized = status?.trim();
+    if (!normalized) {
+        return "Active";
+    }
+    if (normalized.toUpperCase() === "OK") {
+        return "Active";
+    }
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
+};
+
+export const getBudgetDisplayName = (
+    budget: Pick<Budget, "scope" | "walletName" | "categoryName">,
+) => {
     if (budget.scope === "CATEGORY_GLOBAL" && budget.categoryName) {
         return budget.categoryName;
     }
