@@ -72,16 +72,6 @@ export const WalletViewSidebar = ({
             <section className="flex flex-1 flex-col">
                 <div className="mb-5 flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-light">Upcoming</h2>
-                    {isLoading ? (
-                        <SkeletonText className="h-3.5 w-16" />
-                    ) : (
-                        <button
-                            type="button"
-                            className="cursor-pointer text-sm text-primary transition-colors hover:text-primary-dark"
-                        >
-                            See all →
-                        </button>
-                    )}
                 </div>
 
                 {isLoading ? (

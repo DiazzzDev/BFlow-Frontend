@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
-import type { Transaction, TransactionType } from "../features/walletView/interfaces/Transaction";
-import { ExpenseForm } from "../features/expenses/components/ExpenseForm";
-import { IncomeForm } from "../features/incomes/components/IncomeForm";
-import { TransferForm } from "../features/transfers/components/TransferForm";
-import { useGetWallets } from "../features/wallets/hooks/useGetWallets";
-import type { Wallet } from "../features/wallets/interfaces/Wallets";
-import { toDateInputValue } from "../features/wallets/utils/transaction.service";
+import type { Transaction, TransactionType } from "../../features/walletView/interfaces/Transaction";
+import { useGetWallets } from "../../features/wallets/hooks/useGetWallets";
+import type { Wallet } from "../../features/wallets/interfaces/Wallets";
+import { toDateInputValue } from "../../features/wallets/utils/transaction.service";
+
+import { ExpenseForm } from "./forms/ExpenseForm";
+import { IncomeForm } from "./forms/IncomeForm";
+import { TransferForm } from "./forms/TransferForm";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
@@ -22,6 +23,7 @@ interface NewTransactionModalProps {
     /** When true (or when create mode has no walletId), show a wallet picker. */
     requireWalletSelect?: boolean;
     initialType?: TransactionType | null;
+    allowedTypes?: readonly TransactionType[];
     mode?: ModalMode;
     transaction?: Transaction | null;
 }
@@ -50,15 +52,24 @@ const modalTitles: Record<ModalMode, Record<TransactionType, string>> = {
     },
 };
 
+const ALL_TRANSACTION_TYPES: readonly TransactionType[] = ["INCOME", "EXPENSE", "TRANSFER"];
+
 const resolveInitialType = (
     mode: ModalMode,
     transaction?: Transaction | null,
     initialType?: TransactionType | null,
+    allowedTypes: readonly TransactionType[] = ALL_TRANSACTION_TYPES,
 ): TransactionType => {
     if ((mode === "view" || mode === "edit") && transaction) {
         return transaction.type;
     }
-    return initialType ?? "INCOME";
+
+    const preferred = initialType ?? "INCOME";
+    if (allowedTypes.includes(preferred)) {
+        return preferred;
+    }
+
+    return allowedTypes[0] ?? "INCOME";
 };
 
 export const NewTransactionModal = ({
@@ -67,6 +78,7 @@ export const NewTransactionModal = ({
     walletId = "",
     requireWalletSelect,
     initialType = null,
+    allowedTypes,
     mode = "create",
     transaction = null,
 }: NewTransactionModalProps) => {
@@ -75,9 +87,11 @@ export const NewTransactionModal = ({
     const lockType = isViewMode || isEditMode;
     const needsWalletSelect =
         requireWalletSelect ?? (mode === "create" && !walletId);
+    const visibleTypes = allowedTypes ?? ALL_TRANSACTION_TYPES;
+    const visibleTabs = transactionTabs.filter((tab) => visibleTypes.includes(tab.id));
 
     const [activeType, setActiveType] = useState<TransactionType>(
-        resolveInitialType(mode, transaction, initialType),
+        resolveInitialType(mode, transaction, initialType, visibleTypes),
     );
     const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
     const [walletQuery, setWalletQuery] = useState("");
@@ -95,18 +109,18 @@ export const NewTransactionModal = ({
     useEffect(() => {
         const f = () => {
             if (!isModalOpen) { return };
-            setActiveType(resolveInitialType(mode, transaction, initialType));
+            setActiveType(resolveInitialType(mode, transaction, initialType, visibleTypes));
             if (needsWalletSelect) {
                 setSelectedWallet(null);
                 setWalletQuery("");
             }
         }
         f();
-    }, [isModalOpen, initialType, mode, transaction, needsWalletSelect]);
+    }, [isModalOpen, initialType, mode, transaction, needsWalletSelect, allowedTypes, visibleTypes]);
 
     const handleClose = (open: boolean) => {
         if (!open) {
-            setActiveType(resolveInitialType(mode, transaction, initialType));
+            setActiveType(resolveInitialType(mode, transaction, initialType, visibleTypes));
             setSelectedWallet(null);
             setWalletQuery("");
         }
@@ -165,7 +179,7 @@ export const NewTransactionModal = ({
 
                 {!lockType && (
                     <SegmentedTabs
-                        tabs={transactionTabs}
+                        tabs={visibleTabs}
                         selected={activeType}
                         onChange={setActiveType}
                         ariaLabel="Tipo de transacción"
@@ -210,7 +224,7 @@ export const NewTransactionModal = ({
                     />
                 )}
 
-                {canShowForms && activeType === "TRANSFER" && (
+                {canShowForms && activeType === "TRANSFER" && visibleTypes.includes("TRANSFER") && (
                     <TransferForm
                         key={
                             isViewMode

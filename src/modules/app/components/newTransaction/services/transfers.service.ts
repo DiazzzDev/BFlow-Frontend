@@ -1,4 +1,4 @@
-import type { CreateTransferData, Transfer } from "./interfaces/Transfer";
+import type { CreateTransferData, Transfer } from "../interfaces/Transfer";
 
 import { config } from "@/config/config";
 import { idempotentPost } from "@/utils/idempotentPost";

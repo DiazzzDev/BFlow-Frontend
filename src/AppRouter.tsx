@@ -4,12 +4,9 @@ import { createBrowserRouter } from "react-router";
 import { DashboardPage } from "./modules/app/features/dashboard/DashboardPage.tsx";
 import { WalletsPage } from "./modules/app/features/wallets/WalletsPage.tsx";
 import { WalletViewPage } from "./modules/app/features/walletView/WalletViewPage.tsx";
-import { IncomesPage } from "./modules/app/features/incomes/pages/IncomesPage.tsx";
-import { ExpensesPage } from "./modules/app/features/expenses/ExpensesPage.tsx";
 import { SettingsPage } from "./modules/app/features/settings/SettingsPage.tsx";
 import { BudgetsPage } from "./modules/app/features/budgets/BudgetsPage.tsx";
 import { BudgetViewPage } from "./modules/app/features/budgetView/BudgetViewPage.tsx";
-import { TransfersPage } from "./modules/app/features/transfers/pages/TransfersPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
 import { AppLayout } from "./modules/app/appLayout.tsx";
 // Auth
@@ -52,12 +49,9 @@ export const appRouter = createBrowserRouter([
                     { path: "dashboard", element: <DashboardPage /> },
                     { path: "wallets", element: <WalletsPage /> },
                     { path: "wallets/:id", element: <WalletViewPage /> },
-                    { path: "incomes", element: <IncomesPage /> },
-                    { path: "expenses", element: <ExpensesPage /> },
                     { path: "settings", element: <SettingsPage /> },
                     { path: "budgets", element: <BudgetsPage /> },
                     { path: "budgets/:id", element: <BudgetViewPage /> },
-                    { path: "transfers", element: <TransfersPage /> },
                 ],
             },
         ],

@@ -2,7 +2,7 @@ import { ChevronRight, Receipt } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import type { RecentActivityItem } from "../interfaces/dashboard";
-import { dashboardCardClass } from "../utils/dashboardCard";
+import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 
 import { RecentActivityRow } from "./RecentActivityRow";
 
@@ -34,7 +34,7 @@ export const RecentActivityCard = ({
     return (
         <div className={dashboardCardClass}>
             <div className="mb-3 flex items-center justify-between">
-                <p className="text-sm font-medium text-helper">Recent activity</p>
+                <p className={dashboardLabelClass}>Recent activity</p>
                 <button
                     type="button"
                     onClick={handleViewAll}

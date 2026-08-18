@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { deleteExpense, postExpense, putExpense } from "../expenses.service";
+import { deleteExpense, postExpense, putExpense } from "../services/expenses.service";
 import type { CreateExpenseData } from "../interfaces/Expense";
 
 const invalidateExpenseQueries = (

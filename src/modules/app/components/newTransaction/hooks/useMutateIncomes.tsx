@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { deleteIncome, postIncome, putIncome } from "../incomes.service";
+import { deleteIncome, postIncome, putIncome } from "../services/incomes.service";
 import type { CreateIncomeData } from "../interfaces/Income";
 
 const invalidateIncomeQueries = (

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { ChevronRight, Receipt, Users, Wallet, X } from "lucide-react";
 
-import { NewTransactionModal } from "../../components/NewTransactionModal";
+import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
 import type { Transaction } from "../walletView/interfaces/Transaction";
 
 import { WalletItem } from "./components/WalletItem";

@@ -31,7 +31,7 @@ export const RecentActivityRow = ({ activity, currency }: RecentActivityRowProps
 
             <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-light">{activity.name}</p>
-                <p className="truncate text-xs text-helper">
+                <p className="truncate text-[11px] text-helper">
                     {formatterDynamicDate(activity.createdAt)}
                 </p>
             </div>

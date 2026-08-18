@@ -1,5 +1,6 @@
 import type {
     BudgetHealth,
+    DashboardActivityBreakdown,
     DashboardAverages,
     DashboardBalance,
     DashboardSpending,
@@ -43,6 +44,14 @@ export const getSpending = async () => {
         `${dashboardUrl}/spending`,
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener el spending",
+    );
+};
+
+export const getActivityBreakdown = async () => {
+    return await apiRequest<ApiResponse<DashboardActivityBreakdown>>(
+        `${dashboardUrl}/activity-breakdown`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener el desglose de actividad",
     );
 };
 

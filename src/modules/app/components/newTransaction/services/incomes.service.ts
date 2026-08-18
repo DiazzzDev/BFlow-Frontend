@@ -1,4 +1,4 @@
-import type { CreateIncomeData, Income } from "./interfaces/Income";
+import type { CreateIncomeData, Income } from "../interfaces/Income";
 
 import { apiRequest } from "@/utils/api";
 import { config } from "@/config/config";

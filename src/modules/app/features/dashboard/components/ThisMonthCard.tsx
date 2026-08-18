@@ -1,45 +1,54 @@
-import type { SpendingCategory } from "../interfaces/dashboard";
-import { dashboardCardClass } from "../utils/dashboardCard";
+import type { DashboardActivityBreakdown } from "../interfaces/dashboard";
+import { dashboardCardClass, dashboardHeroClass, dashboardLabelClass } from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
 
 import { SegmentedBar } from "./SegmentedBar";
 
 interface ThisMonthCardProps {
     isLoading: boolean;
-    totalActivityPercentage: number;
-    topCategories: SpendingCategory[];
+    breakdown: DashboardActivityBreakdown | undefined;
 }
 
-export const ThisMonthCard = ({
-    isLoading,
-    totalActivityPercentage,
-    topCategories,
-}: ThisMonthCardProps) => {
-    const activityPercent = formatPercentValue(totalActivityPercentage);
-    const segments = topCategories.map((category) => ({
-        label: category.categoryName,
-        percent: category.percentage,
+const ACTIVITY_SEGMENTS: Array<{
+    key: keyof Pick<
+        DashboardActivityBreakdown,
+        "incomePercentage" | "expensePercentage" | "transferPercentage"
+    >;
+    label: string;
+    colorClass: string;
+}> = [
+    { key: "incomePercentage", label: "Income", colorClass: "bg-info" },
+    { key: "expensePercentage", label: "Expenses", colorClass: "bg-primary" },
+    { key: "transferPercentage", label: "Transfers", colorClass: "bg-success" },
+];
+
+export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
+    const activityPercent = formatPercentValue(breakdown?.activityChangePercentage ?? 0);
+    const segments = ACTIVITY_SEGMENTS.map((segment) => ({
+        label: segment.label,
+        percent: breakdown?.[segment.key] ?? 0,
+        colorClass: segment.colorClass,
     }));
 
     return (
-        <div className={`${dashboardCardClass} min-h-36 justify-between`}>
-            <p className="text-sm font-medium text-helper">This month</p>
+        <div className={dashboardCardClass}>
+            <p className={dashboardLabelClass}>This month</p>
 
-            <div className="mt-4 flex items-baseline gap-2">
+            <div className="mt-3 flex items-center gap-2.5">
                 {isLoading ? (
-                    <div className="h-10 w-16 animate-pulse rounded-lg bg-skeleton" />
+                    <div className="h-10 w-20 animate-pulse rounded-lg bg-skeleton" />
                 ) : (
-                    <p className="text-4xl font-semibold tracking-tight text-light">
-                        {activityPercent}%
-                    </p>
+                    <p className={dashboardHeroClass}>{activityPercent}%</p>
                 )}
-                <span className="text-sm text-helper">Total activity</span>
+                <span className="max-w-16 text-xs leading-tight text-helper">
+                    Total activity
+                </span>
             </div>
 
             {isLoading ? (
-                <div className="mt-6 h-3 w-full animate-pulse rounded-full bg-skeleton" />
+                <div className="mt-5 h-2 w-full animate-pulse rounded-full bg-skeleton" />
             ) : (
-                <SegmentedBar segments={segments} showLegend={false} />
+                <SegmentedBar segments={segments} showSegmentLabels />
             )}
         </div>
     );

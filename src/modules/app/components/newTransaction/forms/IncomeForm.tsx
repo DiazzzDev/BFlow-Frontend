@@ -4,10 +4,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
-import { usePostExpense, usePutExpense } from "../hooks/useMutateExpenses";
-import type { RecurrencePattern } from "../interfaces/Expense";
-import { useGetCategories } from "../../settings/hooks/useGetCategories";
-import type { Category } from "../../settings/interfaces/Category";
+import { usePostIncome, usePutIncome } from "../hooks/useMutateIncomes";
+import type { RecurrencePattern } from "../interfaces/Income";
+import { useGetCategories } from "../../../features/settings/hooks/useGetCategories";
+import type { Category } from "../../../features/settings/interfaces/Category";
 
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
@@ -25,7 +25,7 @@ const recurrencePatterns: Array<{ value: RecurrencePattern; label: string }> = [
     { value: "YEARLY", label: "Anual" },
 ];
 
-const expenseSchema = z
+const incomeSchema = z
     .object({
         title: z.string().min(1, "El título es obligatorio"),
         description: z.string().min(1, "La descripción es obligatoria"),
@@ -37,8 +37,7 @@ const expenseSchema = z
         recurring: z.boolean(),
         recurrencePattern: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]).nullable(),
         categoryId: z.string().uuid("Selecciona una categoría"),
-        taxDeductible: z.boolean(),
-        reimbursable: z.boolean(),
+        taxable: z.boolean(),
     })
     .superRefine((values, ctx) => {
         if (values.recurring && !values.recurrencePattern) {
@@ -50,11 +49,11 @@ const expenseSchema = z
         }
     });
 
-type ExpenseFormValues = z.infer<typeof expenseSchema>;
+type IncomeFormValues = z.infer<typeof incomeSchema>;
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-const defaultFormValues: ExpenseFormValues = {
+const defaultFormValues: IncomeFormValues = {
     title: "",
     description: "",
     amount: "",
@@ -62,45 +61,44 @@ const defaultFormValues: ExpenseFormValues = {
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
-    taxDeductible: false,
-    reimbursable: false,
+    taxable: false,
 };
 
-interface ExpenseFormProps {
+interface IncomeFormProps {
     walletId: string;
     onSuccess?: () => void;
     readOnly?: boolean;
     transactionId?: string;
     source?: string;
-    initialValues?: Partial<ExpenseFormValues> & { categoryName?: string };
+    initialValues?: Partial<IncomeFormValues> & { categoryName?: string };
 }
 
-export const ExpenseForm = ({
+export const IncomeForm = ({
     walletId,
     onSuccess,
     readOnly = false,
     transactionId,
     source = "manual",
     initialValues,
-}: ExpenseFormProps) => {
-    const createExpense = usePostExpense();
-    const updateExpense = usePutExpense();
+}: IncomeFormProps) => {
+    const createIncome = usePostIncome();
+    const updateIncome = usePutIncome();
     const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
     const [categoryQuery, setCategoryQuery] = useState("");
     const isEditing = Boolean(transactionId);
-    const isSaving = createExpense.isPending || updateExpense.isPending;
+    const isSaving = createIncome.isPending || updateIncome.isPending;
     const isDisabled = readOnly || isSaving;
 
-    const expenseCategories =
-        categoriesResponse?.data.filter((category) => category.type === "EXPENSE") ?? [];
+    const incomeCategories =
+        categoriesResponse?.data.filter((category) => category.type === "INCOME") ?? [];
 
     const {
         control,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<ExpenseFormValues>({
-        resolver: zodResolver(expenseSchema),
+    } = useForm<IncomeFormValues>({
+        resolver: zodResolver(incomeSchema),
         defaultValues: {
             ...defaultFormValues,
             ...initialValues,
@@ -110,18 +108,18 @@ export const ExpenseForm = ({
     const recurring = useWatch({ control, name: "recurring" });
     const categoryId = useWatch({ control, name: "categoryId" });
     const selectedCategory =
-        expenseCategories.find((category) => category.id === categoryId) ??
+        incomeCategories.find((category) => category.id === categoryId) ??
         (initialValues?.categoryId && initialValues.categoryName
             ? {
                   id: initialValues.categoryId,
                   name: initialValues.categoryName,
-                  type: "EXPENSE" as const,
+                  type: "INCOME" as const,
                   icon: "",
                   color: "",
               }
             : null);
 
-    const onSubmit = async (formData: ExpenseFormValues) => {
+    const onSubmit = async (formData: IncomeFormValues) => {
         const payload = {
             title: formData.title,
             description: formData.description,
@@ -132,23 +130,22 @@ export const ExpenseForm = ({
             recurring: formData.recurring,
             recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
             categoryId: formData.categoryId,
-            taxDeductible: formData.taxDeductible,
-            reimbursable: formData.reimbursable,
+            taxable: formData.taxable,
         };
 
         const promise = isEditing
-            ? updateExpense.mutateAsync({ id: transactionId!, data: payload })
-            : createExpense.mutateAsync(payload);
+            ? updateIncome.mutateAsync({ id: transactionId!, data: payload })
+            : createIncome.mutateAsync(payload);
 
         toast.promise(promise, {
-            loading: isEditing ? "Actualizando gasto..." : "Creando gasto...",
-            success: isEditing ? "Gasto actualizado" : "Gasto creado",
+            loading: isEditing ? "Actualizando ingreso..." : "Creando ingreso...",
+            success: isEditing ? "Ingreso actualizado" : "Ingreso creado",
             error: (err) =>
                 err instanceof Error
                     ? err.message
                     : isEditing
-                      ? "Error al actualizar el gasto"
-                      : "Error al crear el gasto",
+                      ? "Error al actualizar el ingreso"
+                      : "Error al crear el ingreso",
         });
 
         await promise;
@@ -178,7 +175,7 @@ export const ExpenseForm = ({
                     render={({ field }) => (
                         <Input
                             id="title"
-                            placeholder="Ej. Almuerzo"
+                            placeholder="Ej. Salario"
                             disabled={isDisabled}
                             {...field}
                         />
@@ -197,7 +194,7 @@ export const ExpenseForm = ({
                     render={({ field }) => (
                         <Textarea
                             id="description"
-                            placeholder="Detalle del gasto"
+                            placeholder="Detalle del ingreso"
                             rows={3}
                             disabled={isDisabled}
                             {...field}
@@ -276,7 +273,7 @@ export const ExpenseForm = ({
                             setSelectedItem={(category) => field.onChange(category.id)}
                             query={categoryQuery}
                             setQuery={setCategoryQuery}
-                            data={expenseCategories}
+                            data={incomeCategories}
                             getKey={(category) => category.id}
                             getLabel={(category) => category.name}
                             disabled={isDisabled || isCategoriesLoading}
@@ -294,7 +291,7 @@ export const ExpenseForm = ({
                     control={control}
                     render={({ field }) => (
                         <ToggleSwitch
-                            label="Gasto recurrente"
+                            label="Ingreso recurrente"
                             checked={field.value}
                             disabled={isDisabled}
                             onChange={field.onChange}
@@ -340,23 +337,11 @@ export const ExpenseForm = ({
                 )}
 
                 <Controller
-                    name="taxDeductible"
+                    name="taxable"
                     control={control}
                     render={({ field }) => (
                         <ToggleSwitch
-                            label="Deducible de impuestos"
-                            checked={field.value}
-                            disabled={isDisabled}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
-                <Controller
-                    name="reimbursable"
-                    control={control}
-                    render={({ field }) => (
-                        <ToggleSwitch
-                            label="Reembolsable"
+                            label="Gravable"
                             checked={field.value}
                             disabled={isDisabled}
                             onChange={field.onChange}
@@ -374,7 +359,7 @@ export const ExpenseForm = ({
                             ? "Guardando..."
                             : isEditing
                               ? "Guardar cambios"
-                              : "Crear gasto"
+                              : "Crear ingreso"
                     }
                     className="self-end"
                 />

@@ -1,7 +1,7 @@
 import type { Transaction } from "../../walletView/interfaces/Transaction";
-import type { CreateExpenseData } from "../../expenses/interfaces/Expense";
-import type { CreateIncomeData } from "../../incomes/interfaces/Income";
-import type { CreateTransferData } from "../../transfers/interfaces/Transfer";
+import type { CreateExpenseData } from "../../../components/newTransaction/interfaces/Expense";
+import type { CreateIncomeData } from "../../../components/newTransaction/interfaces/Income";
+import type { CreateTransferData } from "../../../components/newTransaction/interfaces/Transfer";
 
 export const toDateInputValue = (date: string) => date.slice(0, 10);
 

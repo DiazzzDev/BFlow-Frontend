@@ -4,15 +4,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "sonner";
 import { ArrowLeftRight, PanelRightClose, PanelRightOpen, Plus, Receipt, X } from "lucide-react";
 
-import { useDeleteExpense } from "../expenses/hooks/useMutateExpenses";
-import { useDeleteIncome } from "../incomes/hooks/useMutateIncomes";
+import { useDeleteExpense } from "../../components/newTransaction/hooks/useMutateExpenses";
+import { useDeleteIncome } from "../../components/newTransaction/hooks/useMutateIncomes";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
-import { NewTransactionModal } from "../../components/NewTransactionModal";
+import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
 
 import { useGetOverview } from "./hooks/useGetOverview";
 import { useGetTransactions } from "./hooks/useGetTransactions";
 import { useGetWallet } from "./hooks/useGetWallet";
 import { WalletViewSidebar } from "./components/WalletViewSidebar";
+import { ScheduleTransactionModal } from "./components/ScheduleTransactionModal";
 import {
     TransactionsTable,
     transactionColumnsClassName,
@@ -58,6 +59,7 @@ export const WalletViewPage = () => {
     const deleteExpense = useDeleteExpense();
     const deleteIncome = useDeleteIncome();
     const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
+    const [isScheduleOpen, setIsScheduleOpen] = useState(false);
     const [editTransaction, setEditTransaction] = useState<Transaction | null>(null);
     const [deleteTransaction, setDeleteTransaction] = useState<Transaction | null>(null);
     const [isInfoDrawerOpen, setIsInfoDrawerOpen] = useState(false);
@@ -139,6 +141,10 @@ export const WalletViewPage = () => {
         currency: wallet?.currency ?? "USD",
         upcoming: walletDetails?.upcoming ?? [],
         isLoading: isWalletDetailsLoading,
+        onSchedule: () => {
+            setIsInfoDrawerOpen(false);
+            setIsScheduleOpen(true);
+        },
     };
 
     const isDeleting = deleteExpense.isPending || deleteIncome.isPending;
@@ -362,6 +368,12 @@ export const WalletViewPage = () => {
                 setIsModalOpen={setIsNewTransactionOpen}
                 walletId={id}
                 initialType={transactionType}
+            />
+
+            <ScheduleTransactionModal
+                isModalOpen={isScheduleOpen}
+                setIsModalOpen={setIsScheduleOpen}
+                walletId={id}
             />
 
             <NewTransactionModal

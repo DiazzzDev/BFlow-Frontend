@@ -1,4 +1,4 @@
-import type { Wallet } from "../../wallets/interfaces/Wallets";
+import type { Wallet } from "../../../features/wallets/interfaces/Wallets";
 
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 

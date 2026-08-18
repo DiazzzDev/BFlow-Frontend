@@ -8,7 +8,7 @@ import {
 } from "recharts";
 
 import type { MonthlyStatistic } from "../interfaces/dashboard";
-import { dashboardCardClass } from "../utils/dashboardCard";
+import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 
 interface StatisticsCardProps {
     isLoading: boolean;
@@ -63,15 +63,15 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
         <div className={dashboardCardClass}>
             <div className="flex items-start justify-between gap-3">
                 <div>
-                    <p className="text-sm font-medium text-helper">Statistics</p>
+                    <p className={dashboardLabelClass}>Statistics</p>
 
                     <div className="mt-2 flex flex-wrap items-center gap-4">
                         <div className="flex items-center gap-1.5">
-                            <span className="h-2 w-2 rounded-full bg-info" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-info" />
                             <span className="text-xs text-helper">Total income</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                            <span className="h-2 w-2 rounded-full bg-primary" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                             <span className="text-xs text-helper">Total expenses</span>
                         </div>
                     </div>

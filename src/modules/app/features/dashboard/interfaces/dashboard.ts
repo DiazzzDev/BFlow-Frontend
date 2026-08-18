@@ -22,6 +22,14 @@ export interface DashboardSpending {
     topCategories: SpendingCategory[];
 }
 
+export interface DashboardActivityBreakdown {
+    totalTransactions: number;
+    incomePercentage: number;
+    expensePercentage: number;
+    transferPercentage: number;
+    activityChangePercentage: number;
+}
+
 export interface RecentActivityItem {
     type: string; // TODO: confirmar enum real (ej: "INCOME" | "EXPENSE")
     name: string;

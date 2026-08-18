@@ -18,8 +18,6 @@ const routes = [
             { text: "Detalle" },
         ],
     },
-    { path: "/app/incomes", crumbs: [{ text: "Ingresos" }] },
-    { path: "/app/expenses", crumbs: [{ text: "Gastos" }] },
     { path: "/app/budgets", crumbs: [{ text: "Presupuestos" }] },
     {
         path: "/app/budgets/:id",
@@ -28,7 +26,6 @@ const routes = [
             { text: "Detalle" },
         ],
     },
-    { path: "/app/transfers", crumbs: [{ text: "Transferencias" }] },
     { path: "/app/settings", crumbs: [{ text: "Ajustes" }] },
 ];
 

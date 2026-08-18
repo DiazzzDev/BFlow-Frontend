@@ -1,4 +1,4 @@
-import type { CreateExpenseData, Expense } from "./interfaces/Expense";
+import type { CreateExpenseData, Expense } from "../interfaces/Expense";
 
 import { apiRequest } from "@/utils/api";
 import { config } from "@/config/config";

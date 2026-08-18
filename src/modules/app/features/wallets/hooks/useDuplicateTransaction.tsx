@@ -1,8 +1,8 @@
 import { toast } from "sonner";
 
-import { usePostExpense } from "../../expenses/hooks/useMutateExpenses";
-import { usePostIncome } from "../../incomes/hooks/useMutateIncomes";
-import { useMutateTransfers } from "../../transfers/hooks/useMutateTransfers";
+import { usePostExpense } from "../../../components/newTransaction/hooks/useMutateExpenses";
+import { usePostIncome } from "../../../components/newTransaction/hooks/useMutateIncomes";
+import { useMutateTransfers } from "../../../components/newTransaction/hooks/useMutateTransfers";
 import type { Transaction } from "../../walletView/interfaces/Transaction";
 import {
     buildDuplicateExpensePayload,

@@ -8,9 +8,9 @@ import { ArrowRight } from "lucide-react";
 
 import { useMutateTransfers } from "../hooks/useMutateTransfers";
 import type { TransferDirection } from "../interfaces/Transfer";
-import { useGetWallets } from "../../wallets/hooks/useGetWallets";
-import type { Wallet } from "../../wallets/interfaces/Wallets";
-import { useGetWallet } from "../../walletView/hooks/useGetWallet";
+import { useGetWallets } from "../../../features/wallets/hooks/useGetWallets";
+import type { Wallet } from "../../../features/wallets/interfaces/Wallets";
+import { useGetWallet } from "../../../features/walletView/hooks/useGetWallet";
 
 import { WalletTransferCard } from "./WalletTransferCard";
 

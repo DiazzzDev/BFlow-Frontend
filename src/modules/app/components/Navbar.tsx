@@ -1,23 +1,19 @@
 import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router";
 import {
-    ArrowUpDown,
     ChartBarIcon,
     LayoutDashboard,
     Settings,
-    TrendingDown,
-    TrendingUp,
     Wallet,
     X,
 } from "lucide-react";
 
+import BflowLogo from ".././../../assets/BFlow logo.svg";
+
 const navItems = [
     { label: "Dashboard", to: "/app/dashboard", icon: <LayoutDashboard size={17} /> },
     { label: "Billeteras", to: "/app/wallets", icon: <Wallet size={17} /> },
-    { label: "Ingresos", to: "/app/incomes", icon: <TrendingUp size={17} /> },
-    { label: "Gastos", to: "/app/expenses", icon: <TrendingDown size={17} /> },
     { label: "Presupuestos", to: "/app/budgets", icon: <ChartBarIcon size={17} /> },
-    { label: "Transferencias", to: "/app/transfers", icon: <ArrowUpDown size={17} /> },
 ];
 
 interface NavbarProps {
@@ -35,7 +31,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
     }, [pathname]);
 
     useEffect(() => {
-        if (!isOpen) {return;}
+        if (!isOpen) { return; }
 
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
@@ -46,8 +42,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
     }, [isOpen]);
 
     const linkClassName = ({ isActive }: { isActive: boolean }) =>
-        `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-light transition-colors duration-150 ${
-            isActive ? "bg-secondary font-medium" : "font-normal hover:bg-light-5"
+        `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-light transition-colors duration-150 ${isActive ? "bg-secondary font-medium" : "font-normal hover:bg-light-5"
         }`;
 
     return (
@@ -56,22 +51,18 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                 type="button"
                 aria-label="Cerrar menú"
                 onClick={onClose}
-                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${
-                    isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
+                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                    }`}
             />
 
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:static lg:z-0 lg:w-50 lg:translate-x-0 ${
-                    isOpen ? "translate-x-0" : "-translate-x-full"
-                }`}
+                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:static lg:z-0 lg:w-50 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+                    }`}
             >
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">
                     <div>
-                        <p className="text-sm font-bold leading-none tracking-tight text-primary">
-                            BFlow
-                        </p>
-                        <p className="mt-0.5 text-xs text-helper">Finance tool</p>
+                        <img src={BflowLogo} alt="BFlow Studio" className="w-5 h-5" />
+                        <p className="mt-0.5 text-sm text-helper">Finance tool</p>
                     </div>
 
                     <button

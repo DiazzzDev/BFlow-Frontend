@@ -2,7 +2,7 @@ import { ChevronRight, CreditCard } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import type { BudgetHealth, BudgetHealthStatus } from "../interfaces/dashboard";
-import { dashboardCardClass } from "../utils/dashboardCard";
+import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 import { Button } from "@/components/controls/Button";
@@ -52,8 +52,8 @@ export const BudgetsHealthCard = ({
     };
 
     return (
-        <div className={`${dashboardCardClass} h-full`}>
-            <p className="text-sm font-medium text-helper">Budgets health</p>
+        <div className={dashboardCardClass}>
+            <p className={dashboardLabelClass}>Budgets health</p>
 
             <div className="mt-4 flex flex-1 flex-col gap-1">
                 {isLoading &&
@@ -89,7 +89,7 @@ export const BudgetsHealthCard = ({
                                 <p className="truncate text-sm font-medium text-light">
                                     {budget.displayName}
                                 </p>
-                                <p className="truncate text-xs text-helper">
+                                <p className="truncate text-[11px] text-helper">
                                     Updated {formatterDynamicDate(budget.updatedAt)}
                                 </p>
                             </div>
