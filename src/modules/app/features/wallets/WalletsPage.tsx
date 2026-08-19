@@ -129,14 +129,12 @@ export const WalletsPage = () => {
                                 Ver historial
                             </button>
 
-                            {walletType === "MINE" && (
-                                <Button
-                                    type="button"
-                                    onClick={() => setIsModalOpen(true)}
-                                    text="Crear billetera"
-                                    className="w-full @3xl:w-auto"
-                                />
-                            )}
+                            <Button
+                                type="button"
+                                onClick={() => setIsModalOpen(true)}
+                                text="Crear billetera"
+                                className="w-full @3xl:w-auto"
+                            />
                         </div>
                     </div>
                 </div>
@@ -166,14 +164,12 @@ export const WalletsPage = () => {
                 type="button"
                 aria-label="Cerrar historial"
                 onClick={() => setIsHistoryOpen(false)}
-                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity @3xl:hidden ${
-                    isHistoryOpen ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
+                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity @3xl:hidden ${isHistoryOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                    }`}
             />
             <aside
-                className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-light-10 bg-surface transition-transform duration-300 ease-out @3xl:hidden ${
-                    isHistoryOpen ? "translate-x-0" : "translate-x-full"
-                }`}
+                className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-light-10 bg-surface transition-transform duration-300 ease-out @3xl:hidden ${isHistoryOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
             >
                 <div className="flex items-center justify-between border-b border-light-10 px-4 py-4">
                     <h2 className="text-lg font-semibold text-light">History</h2>
@@ -223,12 +219,6 @@ export const WalletsPage = () => {
                     <h2 className="text-2xl font-semibold tracking-tight text-light">
                         History
                     </h2>
-                    <button
-                        type="button"
-                        className="cursor-pointer text-sm text-primary transition-colors hover:text-primary-dark"
-                    >
-                        View all
-                    </button>
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">
                     {renderHistory()}
