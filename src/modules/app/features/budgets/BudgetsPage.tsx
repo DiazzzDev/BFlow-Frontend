@@ -63,14 +63,14 @@ export const BudgetsPage = () => {
     const hasActiveFilters = Boolean(query.trim() || period || sort !== "amount,desc");
 
     return (
-        <div className="flex h-full min-h-0 flex-col px-4 py-5 sm:px-6 pb-10">
+        <div className="flex flex-col px-4 py-5 sm:px-6 pb-10">
             <BudgetOverview
                 totalBudgets={totalBudgets}
                 totalLimit={totalLimit}
                 isLoading={isLoading}
             />
 
-            <section className="flex h-fit @xl:min-h-0 @xl:flex-1 flex-col">
+            <section className="flex h-fit @xl:flex-1 flex-col">
                 <div className="mb-5 flex flex-col gap-3 @3xl:flex-row @xl:justify-between">
                     <SearchInput
                         id="txtSearchBudgets"
@@ -123,7 +123,7 @@ export const BudgetsPage = () => {
                     </Select>
                 </div>
 
-                <div className="@xl:min-h-0 h-fit @xl:flex-1">
+                <div className="h-fit @xl:flex-1">
                     {renderList()}
                 </div>
 

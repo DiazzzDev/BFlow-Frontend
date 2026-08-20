@@ -48,12 +48,13 @@ export const getOverview = async (
 ) => {
     const params = new URLSearchParams({
         page: String(page),
-        size: String(size),
+        size: String(size)
     });
 
     if (query?.trim()) {
         params.set("query", query.trim());
     }
+    console.log(walletId)
 
     return await apiRequest<PaginatedListResponse<Transaction>>(
         `${walletsUrl}/${walletId}/transactions?${params.toString()}`,

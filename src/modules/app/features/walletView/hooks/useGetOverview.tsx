@@ -12,7 +12,6 @@ export const useGetOverview = (
     size = 5,
 ) => {
     const user = useAuthStore((state) => state.user);
-
     return useQuery({
         queryKey: ["wallet-overview", walletId, query, page, size],
         queryFn: () => getOverview(walletId, { query, page, size }),

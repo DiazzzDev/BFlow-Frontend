@@ -394,7 +394,7 @@ export const BudgetSettingsPanel = ({
                 budgetName={budgetName}
                 isDeleting={removeBudget.isPending}
                 onClose={() => setIsDeleteOpen(false)}
-                onConfirm={() => handleConfirmDelete}
+                onConfirm={() => void handleConfirmDelete()}
             />
         </div>
     );

@@ -81,9 +81,6 @@ export const BudgetsHealthCard = ({
                             onClick={() => handleBudgetClick(budget.id)}
                             className="flex cursor-pointer items-center gap-3 rounded-xl px-1 py-1.5 text-left transition-colors hover:bg-light-5"
                         >
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-light-5 text-helper">
-                                <CreditCard className="h-4 w-4" />
-                            </div>
 
                             <div className="min-w-0 flex-1">
                                 <p className="truncate text-sm font-medium text-light">
