@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useLocation, matchPath, Link } from "react-router";
-import { toast } from "sonner";
-import { Bell, LogOut, Menu, User, X } from "lucide-react";
+import { Bell, Menu, User, X } from "lucide-react";
 
 import { useAuthStore } from "@/auth/authStore";
-import { useLogout } from "@/auth/hooks/useLogout";
 
 type Crumb = { text: string; path?: string };
 
@@ -48,17 +46,6 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
     const [notificationsOpen, setNotificationsOpen] = useState(false);
 
     const user = useAuthStore((state) => state.user);
-    const { mutateAsync: logout } = useLogout();
-
-    const handleLogout = async () => {
-        try {
-            await logout();
-            toast.success("Sesión cerrada correctamente");
-        } catch (error) {
-            toast.error("Error al cerrar sesión");
-            console.error("Error logout:", error);
-        }
-    };
 
     return (
         <header className="flex items-center justify-between gap-3 border-b border-light-10 bg-surface-hard px-4 py-4 text-light sm:px-6 lg:px-8 lg:py-5">
@@ -140,18 +127,6 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                         </aside>
                     </div>
                 )}
-
-                <button
-                    type="button"
-                    onClick={() => {
-                        void handleLogout();
-                    }}
-                    className="rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
-                    title="Cerrar sesión"
-                    aria-label="Cerrar sesión"
-                >
-                    <LogOut className="h-5 w-5" />
-                </button>
 
                 {user?.pictureUrl ? (
                     <img

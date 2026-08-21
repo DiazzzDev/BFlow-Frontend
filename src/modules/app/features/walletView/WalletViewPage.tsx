@@ -64,6 +64,7 @@ export const WalletViewPage = () => {
                         transactions={view.transactions}
                         isLoading={view.isLoadingList}
                         currency={view.wallet?.currency}
+                        showCategory={view.activeTab !== "transfers"}
                         totalTransactions={view.totalTransactions}
                         numberOfElements={view.numberOfElements}
                         totalPages={view.totalPages}

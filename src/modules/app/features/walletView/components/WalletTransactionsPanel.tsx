@@ -4,7 +4,7 @@ import type { Transaction } from "../interfaces/Transaction";
 
 import {
     TransactionsTable,
-    transactionColumnsClassName,
+    getTransactionColumnsClassName,
 } from "./TransactionsTable";
 
 import { Pagination } from "@/components/Pagination";
@@ -17,6 +17,7 @@ interface WalletTransactionsPanelProps {
     transactions: Transaction[];
     isLoading: boolean;
     currency?: string;
+    showCategory?: boolean;
     totalTransactions: number;
     numberOfElements: number;
     totalPages: number;
@@ -32,6 +33,7 @@ export const WalletTransactionsPanel = ({
     transactions,
     isLoading,
     currency,
+    showCategory = true,
     totalTransactions,
     numberOfElements,
     totalPages,
@@ -41,6 +43,8 @@ export const WalletTransactionsPanel = ({
     onDelete,
     onDuplicate,
 }: WalletTransactionsPanelProps) => {
+    const columnsClassName = getTransactionColumnsClassName(showCategory);
+
     return (
         <>
             <div className="mb-4 flex flex-col gap-3 px-4 sm:px-7 @xl:flex-row @xl:items-center justify-between">
@@ -60,10 +64,10 @@ export const WalletTransactionsPanel = ({
             </div>
 
             <div
-                className={`hidden border-y border-light-10 px-7 py-4 text-sm text-light @2xl:grid ${transactionColumnsClassName}`}
+                className={`hidden border-y border-light-10 px-7 py-4 text-sm text-light @2xl:grid ${columnsClassName}`}
             >
                 <span>Transaction</span>
-                <span>Category</span>
+                {showCategory ? <span>Category</span> : null}
                 <span>Date</span>
                 <span className="text-right">Amount</span>
                 <span className="sr-only">Actions</span>
@@ -75,6 +79,7 @@ export const WalletTransactionsPanel = ({
                     isLoading={isLoading}
                     query={query}
                     currency={currency}
+                    showCategory={showCategory}
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onDuplicate={onDuplicate}

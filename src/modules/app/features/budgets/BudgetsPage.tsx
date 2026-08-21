@@ -63,7 +63,7 @@ export const BudgetsPage = () => {
     const hasActiveFilters = Boolean(query.trim() || period || sort !== "amount,desc");
 
     return (
-        <div className="flex flex-col px-4 py-5 sm:px-6 pb-10">
+        <div className="flex flex-col px-4 py-5 sm:px-6 pb-10 min-h-full">
             <BudgetOverview
                 totalBudgets={totalBudgets}
                 totalLimit={totalLimit}

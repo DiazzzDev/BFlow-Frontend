@@ -5,6 +5,7 @@ import type { Transaction } from "../../walletView/interfaces/Transaction";
 
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
+import { CategoryIcon } from "@/components/icons/CategoryIcon";
 
 interface HistoryItemProps {
     transaction: Transaction;
@@ -30,19 +31,29 @@ export const HistoryItem = ({
     actionsDisabled = false,
 }: HistoryItemProps) => {
     return (
-        <li className="flex items-start justify-between gap-3 border-b border-light-10 p-3 py-4 last:border-b-0">
+        <li className="flex items-start justify-between gap-3 border-b border-light-10 pr-3 py-4 last:border-b-0">
             <div className="flex min-w-0 items-start gap-3">
-                <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-light">
-                        {transaction.title}
-                    </p>
-                    <p className="mt-0.5 truncate text-xs text-helper">
-                        {transaction.categoryName}
-                        {transaction.walletName ? ` · ${transaction.walletName}` : ""}
-                    </p>
-                    <p className="mt-1 text-xs text-label">
-                        {formatterDynamicDate(transaction.date) || "—"}
-                    </p>
+                <div className="min-w-0 flex items-center gap-3">
+                    <div>
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-light-10" style={{
+                            backgroundColor: `${transaction.categoryColor || "#64748B"}22`,
+                            color: transaction.categoryColor || "#64748B",
+                        }}>
+                            <CategoryIcon icon={transaction.categoryIcon} className="h-4 w-4" />
+                        </span>
+                    </div>
+                    <div>
+                        <p className="truncate text-sm font-medium text-light">
+                            {transaction.title}
+                        </p>
+                        <p className="mt-0.5 truncate text-xs text-helper">
+                            {transaction.categoryName}
+                            {transaction.walletName ? ` · ${transaction.walletName}` : ""}
+                        </p>
+                        <p className="mt-1 text-xs text-label">
+                            {formatterDynamicDate(transaction.date) || "—"}
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -75,9 +86,8 @@ export const HistoryItem = ({
                                 <button
                                     type="button"
                                     onClick={() => onViewDetails(transaction)}
-                                    className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${
-                                        focus ? "bg-light-5" : ""
-                                    }`}
+                                    className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${focus ? "bg-light-5" : ""
+                                        }`}
                                 >
                                     <Eye className="h-4 w-4 text-helper" />
                                     Ver detalles
@@ -89,9 +99,8 @@ export const HistoryItem = ({
                                 <button
                                     type="button"
                                     onClick={() => onDuplicate(transaction)}
-                                    className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${
-                                        focus ? "bg-light-5" : ""
-                                    }`}
+                                    className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${focus ? "bg-light-5" : ""
+                                        }`}
                                 >
                                     <Copy className="h-4 w-4 text-helper" />
                                     Duplicar
