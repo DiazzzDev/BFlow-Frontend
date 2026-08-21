@@ -9,6 +9,7 @@ import { Button } from "@/components/controls/Button";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { isSafeUrl } from "@/utils/validators";
 
 const profileSchema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
@@ -41,29 +42,35 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
     });
 
     useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
+        const f = () => {
+            if (!isOpen) {
+                return;
+            }
 
-        reset({
-            name: user?.name ?? "",
-            email: user?.email ?? "",
-        });
-        setPhotoFile(null);
-        setPhotoPreview(user?.pictureUrl ?? null);
+            reset({
+                name: user?.name ?? "",
+                email: user?.email ?? "",
+            });
+            setPhotoFile(null);
+            setPhotoPreview(user?.pictureUrl ?? null);
+        }
+        f();
     }, [isOpen, user, reset]);
 
     useEffect(() => {
-        if (!photoFile) {
-            return;
+        const f = () => {
+            if (!photoFile) {
+                return;
+            }
+
+            const objectUrl = URL.createObjectURL(photoFile);
+            setPhotoPreview(objectUrl);
+
+            return () => {
+                URL.revokeObjectURL(objectUrl);
+            };
         }
-
-        const objectUrl = URL.createObjectURL(photoFile);
-        setPhotoPreview(objectUrl);
-
-        return () => {
-            URL.revokeObjectURL(objectUrl);
-        };
+        f();
     }, [photoFile]);
 
     const handleClose = () => {
@@ -97,7 +104,7 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
                         className="group relative cursor-pointer"
                         aria-label="Cambiar foto de perfil"
                     >
-                        {photoPreview ? (
+                        {photoPreview && isSafeUrl(photoPreview) ? (
                             <img
                                 src={photoPreview}
                                 alt="Vista previa"

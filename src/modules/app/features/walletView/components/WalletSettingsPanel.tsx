@@ -292,7 +292,7 @@ export const WalletSettingsPanel = ({
                 walletName={wallet.name}
                 isDeleting={removeWallet.isPending}
                 onClose={() => setIsDeleteOpen(false)}
-                onConfirm={handleConfirmDelete}
+                onConfirm={() => void handleConfirmDelete()}
             />
         </div>
     );

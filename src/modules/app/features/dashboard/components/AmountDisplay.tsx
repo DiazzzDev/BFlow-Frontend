@@ -1,4 +1,4 @@
-import { formatCurrency } from "@/utils/formaters";
+import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 export const AmountDisplay = ({ amount, currency }: { amount: number; currency: string }) => {
     const formatted = formatCurrency(amount, currency);
