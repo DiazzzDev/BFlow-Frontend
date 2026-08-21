@@ -9,7 +9,6 @@ import { Button } from "@/components/controls/Button";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { CustomModal } from "@/components/custom/CustomModal";
-import { isSafeUrl } from "@/utils/validators";
 
 const profileSchema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
@@ -23,11 +22,25 @@ interface EditProfileModalProps {
     onClose: () => void;
 }
 
+// Helper to strictly validate image URLs for rendering
+const sanitizeImageUrl = (url: string | null | undefined): string | null => {
+    if (!url) { return null };
+    try {
+        const parsed = new URL(url, window.location.origin);
+        if (["http:", "https:", "blob:"].includes(parsed.protocol)) {
+            return parsed.href;
+        }
+    } catch {
+        // Invalid URL structure
+    }
+    return null;
+};
+
 export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
     const user = useAuthStore((state) => state.user);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [photoFile, setPhotoFile] = useState<File | null>(null);
-    const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const {
         control,
@@ -43,49 +56,52 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
 
     useEffect(() => {
         const f = () => {
-            if (!isOpen) {
-                return;
-            }
+            if (!isOpen) { return };
 
             reset({
                 name: user?.name ?? "",
                 email: user?.email ?? "",
             });
             setPhotoFile(null);
-            setPhotoPreview(user?.pictureUrl ?? null);
+            setPreviewUrl(sanitizeImageUrl(user?.pictureUrl));
         }
         f();
     }, [isOpen, user, reset]);
 
-    useEffect(() => {
-        const f = () => {
-            if (!photoFile) {
-                return;
-            }
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
 
-            const objectUrl = URL.createObjectURL(photoFile);
-            setPhotoPreview(objectUrl);
-
-            return () => {
-                URL.revokeObjectURL(objectUrl);
-            };
+        // Revoke previous blob URL if exists
+        if (previewUrl?.startsWith("blob:")) {
+            URL.revokeObjectURL(previewUrl);
         }
-        f();
-    }, [photoFile]);
+
+        if (file && file.type.startsWith("image/")) {
+            setPhotoFile(file);
+            const generatedUrl = URL.createObjectURL(file);
+            setPreviewUrl(sanitizeImageUrl(generatedUrl));
+        } else {
+            setPhotoFile(null);
+            setPreviewUrl(sanitizeImageUrl(user?.pictureUrl));
+        }
+    };
 
     const handleClose = () => {
+        if (previewUrl?.startsWith("blob:")) {
+            URL.revokeObjectURL(previewUrl);
+        }
         setPhotoFile(null);
-        setPhotoPreview(null);
+        setPreviewUrl(null);
         onClose();
     };
+
+    const validatedSrc = sanitizeImageUrl(previewUrl);
 
     return (
         <CustomModal
             isModalOpen={isOpen}
             setIsModalOpen={(open) => {
-                if (!open) {
-                    handleClose();
-                }
+                if (!open) { handleClose() };
             }}
             title="Editar perfil"
             maxWidth="max-w-md"
@@ -94,7 +110,6 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
                 className="flex flex-col gap-5"
                 onSubmit={(event) => {
                     event.preventDefault();
-                    // Endpoint de actualización pendiente.
                 }}
             >
                 <div className="flex flex-col items-center gap-3">
@@ -104,9 +119,9 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
                         className="group relative cursor-pointer"
                         aria-label="Cambiar foto de perfil"
                     >
-                        {photoPreview && isSafeUrl(photoPreview) ? (
+                        {validatedSrc ? (
                             <img
-                                src={photoPreview}
+                                src={validatedSrc}
                                 alt="Vista previa"
                                 className="h-24 w-24 rounded-full border-2 border-light-10 object-cover"
                                 referrerPolicy="no-referrer"
@@ -124,15 +139,9 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
                     <input
                         ref={fileInputRef}
                         type="file"
-                        accept="image/*"
+                        accept="image/png, image/jpeg, image/webp"
                         className="hidden"
-                        onChange={(event) => {
-                            const file = event.target.files?.[0] ?? null;
-                            setPhotoFile(file);
-                            if (!file) {
-                                setPhotoPreview(user?.pictureUrl ?? null);
-                            }
-                        }}
+                        onChange={handleFileChange}
                     />
 
                     <button

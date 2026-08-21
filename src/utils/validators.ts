@@ -13,13 +13,3 @@ export const isValidEmail = (email: string): boolean => {
     if (domainParts.some(part => part.startsWith('-') || part.endsWith('-'))) { return false; }
     return true;
 };
-
-export const isSafeUrl = (url: string | null): boolean => {
-    if (!url) { return false };
-    try {
-        const parsed = new URL(url, window.location.href);
-        return ["http:", "https:", "blob:", "data:"].includes(parsed.protocol);
-    } catch {
-        return false;
-    }
-};
