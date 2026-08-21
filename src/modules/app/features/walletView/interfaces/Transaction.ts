@@ -26,8 +26,12 @@ export interface WalletDetails {
     highestExpense: string;
     transactions: number;
     initialValue: number;
-    upcoming: Array<{
-        title: string;
-        nextExecutionDate: string;
-    }>;
+    upcoming: UpcomingTransaction[];
+}
+
+export interface UpcomingTransaction {
+    title: string;
+    amount: number;
+    type: "INCOME" | "EXPENSE";
+    nextExecutionDate: string;
 }

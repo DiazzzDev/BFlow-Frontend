@@ -1,4 +1,4 @@
-import type { Category } from "./interfaces/Category";
+import type { Category, CreateCategoryData } from "./interfaces/Category";
 
 import { apiRequest } from "@/utils/api";
 import { config } from "@/config/config";
@@ -22,5 +22,17 @@ export const getCategories = async () => {
         categoriesUrl,
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener las categorías",
+    );
+};
+
+export const postCategory = async (categoryData: CreateCategoryData) => {
+    return await apiRequest<ApiResponse<Category>>(
+        categoriesUrl,
+        {
+            ...defaultApiOptions,
+            method: "POST",
+            body: JSON.stringify(categoryData),
+        },
+        "Error al crear la categoría",
     );
 };

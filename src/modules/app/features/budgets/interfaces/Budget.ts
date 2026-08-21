@@ -39,3 +39,51 @@ export interface CreateBudgetData {
     walletId?: string | null;
     categoryId?: string | null;
 }
+
+export interface UpdateBudgetData {
+    amount: number;
+    period: BudgetPeriod;
+    startDate: string;
+    thresholdWarning: number;
+    thresholdCritical: number;
+}
+
+export interface BudgetSpendingTrendPoint {
+    dayIndex: number;
+    date: string;
+    cumulativeAmount: number;
+}
+
+export interface BudgetRecentActivityItem {
+    id: string;
+    description: string;
+    date: string;
+    amount: number;
+}
+
+export interface BudgetDetail {
+    id: string;
+    walletId: string | null;
+    walletName: string | null;
+    currency: string;
+    categoryId: string | null;
+    categoryName: string | null;
+    scope: BudgetScope;
+    period: BudgetPeriod;
+    status: string;
+    startDate: string;
+    endDate: string;
+    daysLeft: number;
+    daysElapsed: number;
+    budgetLimit: number;
+    spent: number;
+    remaining: number;
+    percentage: number;
+    thresholdWarning: number;
+    thresholdCritical: number;
+    transactionCount: number;
+    averageDailySpend: number;
+    projectedTotal: number;
+    spendingTrend: BudgetSpendingTrendPoint[];
+    recentActivity: BudgetRecentActivityItem[];
+}

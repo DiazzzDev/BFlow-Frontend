@@ -1,23 +1,37 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { Copy, MoreVertical, Pencil, Receipt, Trash2 } from "lucide-react";
+import {
+    ArrowLeftRight,
+    Copy,
+    MoreVertical,
+    Pencil,
+    Receipt,
+    Trash2,
+} from "lucide-react";
 
 import type { Transaction } from "../interfaces/Transaction";
 import { WalletItem } from "../../wallets/components/WalletItem";
 import { WalletItemSkeleton } from "../../wallets/components/WalletItemSkeleton";
 
+import { CategoryIcon } from "@/components/icons/CategoryIcon";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatMonthYear } from "@/utils/formatters/formatMonthYear";
 
-export const transactionColumnsClassName =
-    "grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto] gap-4 items-center";
+export const getTransactionColumnsClassName = (showCategory: boolean) =>
+    showCategory
+        ? "grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto] gap-4 items-center"
+        : "grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto] gap-4 items-center";
+
+/** @deprecated Prefer getTransactionColumnsClassName(showCategory) */
+export const transactionColumnsClassName = getTransactionColumnsClassName(true);
 
 interface TransactionsTableProps {
     transactions: Transaction[];
     isLoading: boolean;
     query: string;
     currency?: string;
+    showCategory?: boolean;
     onEdit?: (transaction: Transaction) => void;
     onDelete?: (transaction: Transaction) => void;
     onDuplicate?: (transaction: Transaction) => void;
@@ -39,11 +53,49 @@ const displayAmount = (tx: Transaction) => {
 const canEditOrDelete = (type: Transaction["type"]) =>
     type === "INCOME" || type === "EXPENSE";
 
+const hasCategory = (tx: Transaction) =>
+    tx.type === "INCOME" || tx.type === "EXPENSE";
+
+const TransactionCategoryCell = ({ transaction }: { transaction: Transaction }) => {
+    if (hasCategory(transaction)) {
+        const color = transaction.categoryColor || "#64748B";
+
+        return (
+            <div className="flex min-w-0 items-center gap-2.5">
+                <span
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-light-10"
+                    style={{
+                        backgroundColor: `${color}22`,
+                        color,
+                    }}
+                >
+                    <CategoryIcon icon={transaction.categoryIcon} className="h-3.5 w-3.5" />
+                </span>
+                <span className="truncate text-sm text-helper">
+                    {transaction.categoryName || "—"}
+                </span>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex min-w-0 items-center gap-2.5">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-light-10 bg-light-5 text-helper">
+                <ArrowLeftRight className="h-3.5 w-3.5" />
+            </span>
+            <span className="truncate text-sm text-helper">
+                {transaction.counterpartWalletName || "Transfer"}
+            </span>
+        </div>
+    );
+};
+
 export const TransactionsTable = ({
     transactions,
     isLoading,
     query,
     currency = "USD",
+    showCategory = true,
     onEdit,
     onDelete,
     onDuplicate,
@@ -54,13 +106,17 @@ export const TransactionsTable = ({
             <section className="flex flex-col">
                 {Array.from({ length: 6 }).map((_, index) => (
                     <WalletItemSkeleton key={index} className="px-4 sm:px-7">
-                        <div className="flex items-start justify-between gap-3 @2xl:grid @2xl:grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto] @2xl:items-center @2xl:gap-4">
+                        <div
+                            className={`flex items-start justify-between gap-3 @2xl:grid @2xl:items-center @2xl:gap-4 ${showCategory ? "@2xl:grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto]" : "@2xl:grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto]"}`}
+                        >
                             <div className="min-w-0 flex-1 space-y-2">
                                 <SkeletonText className="h-4 w-28 sm:w-36" />
                                 <SkeletonText className="h-3 w-24" />
                                 <SkeletonText className="h-3 w-32 @2xl:hidden" />
                             </div>
-                            <SkeletonText className="hidden h-4 w-20 @2xl:block" />
+                            {showCategory ? (
+                                <SkeletonText className="hidden h-4 w-20 @2xl:block" />
+                            ) : null}
                             <SkeletonText className="hidden h-4 w-24 @2xl:block" />
                             <div className="flex shrink-0 items-center gap-2">
                                 <SkeletonText className="h-4 w-16" />
@@ -95,27 +151,57 @@ export const TransactionsTable = ({
                 const amount = displayAmount(tx);
                 const isNegative = amount < 0;
                 const showManageActions = canEditOrDelete(tx.type);
+                const mobileMeta = showCategory
+                    ? hasCategory(tx)
+                        ? `${tx.categoryName || "—"} · ${formatMonthYear(tx.date)}`
+                        : `${tx.counterpartWalletName || "Transfer"} · ${formatMonthYear(tx.date)}`
+                    : formatMonthYear(tx.date);
 
                 return (
                     <WalletItem key={tx.id} className="px-4 sm:px-7">
-                        <div className="flex items-start justify-between gap-3 @2xl:grid @2xl:grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto] @2xl:items-center @2xl:gap-4">
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-semibold text-light">
-                                    {tx.title}
-                                </p>
-                                <p className="mt-0.5 truncate text-xs text-helper">
-                                    {tx.contributorName || tx.description || "—"}
-                                </p>
-                                <p className="mt-2 truncate text-xs text-label @2xl:hidden">
-                                    {tx.categoryName || "—"}
-                                    {" · "}
-                                    {formatMonthYear(tx.date)}
-                                </p>
+                        <div
+                            className={`flex items-start justify-between gap-3 @2xl:grid @2xl:items-center @2xl:gap-4 ${showCategory ? "@2xl:grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto]" : "@2xl:grid-cols-[minmax(0,2.4fr)_minmax(0,1fr)_minmax(0,0.9fr)_auto]"}`}
+                        >
+                            <div className="flex min-w-0 flex-1 items-start gap-3">
+                                {showCategory ? (
+                                    hasCategory(tx) ? (
+                                        <span
+                                            className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-light-10 @2xl:hidden"
+                                            style={{
+                                                backgroundColor: `${tx.categoryColor || "#64748B"}22`,
+                                                color: tx.categoryColor || "#64748B",
+                                            }}
+                                        >
+                                            <CategoryIcon
+                                                icon={tx.categoryIcon}
+                                                className="h-4 w-4"
+                                            />
+                                        </span>
+                                    ) : (
+                                        <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-light-10 bg-light-5 text-helper @2xl:hidden">
+                                            <ArrowLeftRight className="h-4 w-4" />
+                                        </span>
+                                    )
+                                ) : null}
+
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-semibold text-light">
+                                        {tx.title}
+                                    </p>
+                                    <p className="mt-0.5 truncate text-xs text-helper">
+                                        {tx.contributorName || tx.description || "—"}
+                                    </p>
+                                    <p className="mt-2 truncate text-xs text-label @2xl:hidden">
+                                        {mobileMeta}
+                                    </p>
+                                </div>
                             </div>
 
-                            <p className="hidden truncate text-sm text-helper @2xl:block">
-                                {tx.categoryName || "—"}
-                            </p>
+                            {showCategory ? (
+                                <div className="hidden min-w-0 @2xl:block">
+                                    <TransactionCategoryCell transaction={tx} />
+                                </div>
+                            ) : null}
 
                             <p className="hidden truncate text-sm text-helper @2xl:block">
                                 {formatMonthYear(tx.date)}

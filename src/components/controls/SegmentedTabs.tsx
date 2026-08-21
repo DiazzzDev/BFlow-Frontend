@@ -11,18 +11,27 @@ interface SegmentedTabsProps<T extends string> {
     className?: string;
 }
 
+const COLUMN_CLASSES: Record<number, string> = {
+    1: "grid-cols-1",
+    2: "grid-cols-2",
+    3: "grid-cols-3",
+    4: "grid-cols-4",
+};
+
 export const SegmentedTabs = <T extends string>({
     tabs,
     selected,
     onChange,
     ariaLabel = "Opciones",
-    className = "grid-cols-3",
+    className,
 }: SegmentedTabsProps<T>) => {
+    const columnsClass = className ?? COLUMN_CLASSES[tabs.length] ?? "grid-cols-3";
+
     return (
         <div
             role="tablist"
             aria-label={ariaLabel}
-            className={`grid gap-1 rounded-xl border border-light-10 bg-surface-hard/60 p-1 ${className}`}
+            className={`grid gap-1 rounded-xl border border-light-10 bg-surface-hard/60 p-1 ${columnsClass}`}
         >
             {tabs.map((tab) => {
                 const isActive = selected === tab.id;

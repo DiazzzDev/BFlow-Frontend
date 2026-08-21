@@ -1,14 +1,19 @@
+import { ArrowDownLeft, ArrowUpRight, CalendarClock } from "lucide-react";
+
+import type { UpcomingTransaction } from "../interfaces/Transaction";
+
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 
-interface WalletViewSidebarProps {
+export interface WalletViewSidebarProps {
     lastActivity: string;
     highestExpense: string;
     transactionsCount: number;
     initialValue: number;
     currency: string;
-    upcoming: Array<{ title: string; nextExecutionDate: string }>;
+    upcoming: UpcomingTransaction[];
     onSchedule?: () => void;
     isLoading?: boolean;
     className?: string;
@@ -72,16 +77,6 @@ export const WalletViewSidebar = ({
             <section className="flex flex-1 flex-col">
                 <div className="mb-5 flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-light">Upcoming</h2>
-                    {isLoading ? (
-                        <SkeletonText className="h-3.5 w-16" />
-                    ) : (
-                        <button
-                            type="button"
-                            className="cursor-pointer text-sm text-primary transition-colors hover:text-primary-dark"
-                        >
-                            See all →
-                        </button>
-                    )}
                 </div>
 
                 {isLoading ? (
@@ -96,18 +91,21 @@ export const WalletViewSidebar = ({
                             </li>
                         ))}
                     </ul>
+                ) : upcoming.length === 0 ? (
+                    <CustomEmptyState
+                        title="Sin programadas"
+                        description="No hay transacciones recurrentes próximas."
+                        Icon={CalendarClock}
+                        className="m-0! mb-6! p-4!"
+                    />
                 ) : (
-                    <ul className="mb-6 flex flex-col gap-4">
+                    <ul className="mb-6 flex flex-col">
                         {upcoming.map((item) => (
-                            <li
+                            <UpcomingRow
                                 key={`${item.title}-${item.nextExecutionDate}`}
-                                className="flex items-center justify-between gap-3 text-sm"
-                            >
-                                <span className="truncate text-light">{item.title}</span>
-                                <span className="shrink-0 text-helper">
-                                    {formatterDynamicDate(item.nextExecutionDate) || "—"}
-                                </span>
-                            </li>
+                                item={item}
+                                currency={currency}
+                            />
                         ))}
                     </ul>
                 )}
@@ -125,6 +123,48 @@ export const WalletViewSidebar = ({
                 )}
             </section>
         </aside>
+    );
+};
+
+const UpcomingRow = ({
+    item,
+    currency,
+}: {
+    item: UpcomingTransaction;
+    currency: string;
+}) => {
+    const isIncome = item.type === "INCOME";
+
+    return (
+        <li className="flex items-center gap-3 border-b border-light-10 py-3 last:border-b-0">
+            <div
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                    isIncome ? "bg-info-25 text-info" : "bg-danger-sweet text-danger"
+                }`}
+            >
+                {isIncome ? (
+                    <ArrowUpRight className="h-4 w-4" />
+                ) : (
+                    <ArrowDownLeft className="h-4 w-4" />
+                )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-light">{item.title}</p>
+                <p className="mt-0.5 truncate text-xs text-helper">
+                    {formatterDynamicDate(item.nextExecutionDate) || "—"}
+                </p>
+            </div>
+
+            <p
+                className={`shrink-0 text-sm font-semibold tabular-nums ${
+                    isIncome ? "text-info" : "text-danger"
+                }`}
+            >
+                {isIncome ? "+" : "-"}
+                {formatCurrency(Math.abs(item.amount), currency)}
+            </p>
+        </li>
     );
 };
 

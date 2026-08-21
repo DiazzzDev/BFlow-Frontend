@@ -1,98 +1,133 @@
+import { TrendingUp } from "lucide-react";
+import {
+    CartesianGrid,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
+
+import type { BudgetSpendingTrendPoint } from "../../budgets/interfaces/Budget";
+
+import { BudgetCardEmpty } from "./BudgetCardEmpty";
+
 interface BudgetSpendingTrendProps {
-    values: number[];
+    points: BudgetSpendingTrendPoint[];
+    isLoading?: boolean;
+    currency?: string;
+    yMax?: number;
 }
 
-export const BudgetSpendingTrend = ({ values }: BudgetSpendingTrendProps) => {
-    const width = 520;
-    const height = 220;
-    const paddingX = 28;
-    const paddingY = 20;
-    const series = values.length > 0 ? values : [0];
+const formatAxisMoney = (value: number, currency = "USD") =>
+    new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency,
+        notation: "compact",
+        maximumFractionDigits: 1,
+    }).format(value);
 
-    const maxValue = Math.max(...series, 1);
-    const minValue = Math.min(...series, 0);
-    const range = Math.max(maxValue - minValue, 1);
-
-    const points = series.map((value, index) => {
-        const x =
-            paddingX
-            + (index / Math.max(series.length - 1, 1)) * (width - paddingX * 2);
-        const y =
-            height
-            - paddingY
-            - ((value - minValue) / range) * (height - paddingY * 2);
-        return `${x},${y}`;
-    });
-
-    const yTicks = [60, 50, 40, 30, 20, 10];
-    const xTicks = [1, 5, 10, 15, 20];
+const CustomTooltip = ({
+    active,
+    payload,
+}: {
+    active?: boolean;
+    payload?: { value: number }[];
+}) => {
+    if (!active || !payload?.length) {
+        return null;
+    }
 
     return (
-        <article className="rounded-2xl border border-light-10 bg-surface px-5 py-4 h-full min-h-64 flex flex-col">
-            <p className="text-sm font-medium text-light mb-4">Spending Trend</p>
+        <div className="rounded-lg border border-light-10 bg-surface-hard px-2.5 py-1.5 shadow-custom">
+            <p className="text-sm font-semibold tabular-nums text-light">
+                $
+                {payload[0].value.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                })}
+            </p>
+        </div>
+    );
+};
 
-            <div className="flex-1 min-h-0">
-                <svg
-                    viewBox={`0 0 ${width} ${height}`}
-                    className="w-full h-full text-info"
-                    role="img"
-                    aria-label="Spending trend chart"
-                >
-                    {yTicks.map((tick) => {
-                        const y =
-                            height
-                            - paddingY
-                            - ((tick - minValue) / range) * (height - paddingY * 2);
-                        return (
-                            <g key={tick}>
-                                <line
-                                    x1={paddingX}
-                                    y1={y}
-                                    x2={width - paddingX}
-                                    y2={y}
-                                    className="stroke-light-10"
-                                    strokeWidth="1"
-                                />
-                                <text
-                                    x={paddingX - 8}
-                                    y={y + 4}
-                                    textAnchor="end"
-                                    className="fill-helper text-[10px]"
-                                >
-                                    {tick}
-                                </text>
-                            </g>
-                        );
-                    })}
+export const BudgetSpendingTrend = ({
+    points,
+    isLoading = false,
+    currency = "USD",
+    yMax = 0,
+}: BudgetSpendingTrendProps) => {
+    const data = points.map((point, index) => ({
+        day: point.dayIndex > 0 ? point.dayIndex : index + 1,
+        amount: point.cumulativeAmount,
+    }));
+    const isEmpty = data.length === 0 || data.every((point) => point.amount === 0);
+    const dataMax = Math.max(...data.map((point) => point.amount), 0);
+    const domainMax = Math.max(dataMax, yMax, 1);
 
-                    <polyline
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinejoin="round"
-                        strokeLinecap="round"
-                        points={points.join(" ")}
+    return (
+        <article className="flex h-full min-h-80 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
+            <p className="mb-4 text-base font-semibold text-light">Spending Trend</p>
+
+            <div className="flex min-h-0 flex-1 items-center">
+                {isLoading ? (
+                    <div className="h-full min-h-52 w-full animate-pulse rounded-xl bg-skeleton" />
+                ) : isEmpty ? (
+                    <BudgetCardEmpty
+                        Icon={TrendingUp}
+                        title="Sin tendencia"
+                        description="Todavía no hay gasto en este periodo."
                     />
-
-                    {xTicks.map((tick) => {
-                        const index = Math.min(tick - 1, series.length - 1);
-                        const x =
-                            paddingX
-                            + (index / Math.max(series.length - 1, 1))
-                                * (width - paddingX * 2);
-                        return (
-                            <text
-                                key={tick}
-                                x={x}
-                                y={height - 4}
-                                textAnchor="middle"
-                                className="fill-helper text-[10px]"
+                ) : (
+                    <div className="h-full min-h-64 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                                data={data}
+                                margin={{ top: 8, right: 12, left: 4, bottom: 0 }}
                             >
-                                {tick}
-                            </text>
-                        );
-                    })}
-                </svg>
+                                <CartesianGrid
+                                    stroke="var(--color-light-10)"
+                                    vertical={false}
+                                />
+                                <XAxis
+                                    dataKey="day"
+                                    stroke="var(--color-helper)"
+                                    fontSize={12}
+                                    tickLine={false}
+                                    axisLine={false}
+                                />
+                                <YAxis
+                                    domain={[0, domainMax]}
+                                    stroke="var(--color-helper)"
+                                    fontSize={12}
+                                    tickLine={false}
+                                    axisLine={false}
+                                    width={52}
+                                    tickFormatter={(value: number) =>
+                                        formatAxisMoney(value, currency)
+                                    }
+                                />
+                                <Tooltip
+                                    content={<CustomTooltip />}
+                                    cursor={{
+                                        stroke: "var(--color-helper)",
+                                        strokeDasharray: "4 4",
+                                        strokeWidth: 1,
+                                    }}
+                                />
+                                <Line
+                                    type="monotone"
+                                    dataKey="amount"
+                                    stroke="var(--color-info)"
+                                    strokeWidth={2.5}
+                                    dot={false}
+                                    activeDot={{ r: 5 }}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                )}
             </div>
         </article>
     );

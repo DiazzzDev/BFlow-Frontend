@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useLocation, matchPath, Link } from "react-router";
-import { toast } from "sonner";
-import { Bell, LogOut, Menu, User, X } from "lucide-react";
+import { Bell, Menu, User, X } from "lucide-react";
 
 import { useAuthStore } from "@/auth/authStore";
-import { useLogout } from "@/auth/hooks/useLogout";
 
 type Crumb = { text: string; path?: string };
 
@@ -18,8 +16,6 @@ const routes = [
             { text: "Detalle" },
         ],
     },
-    { path: "/app/incomes", crumbs: [{ text: "Ingresos" }] },
-    { path: "/app/expenses", crumbs: [{ text: "Gastos" }] },
     { path: "/app/budgets", crumbs: [{ text: "Presupuestos" }] },
     {
         path: "/app/budgets/:id",
@@ -28,7 +24,6 @@ const routes = [
             { text: "Detalle" },
         ],
     },
-    { path: "/app/transfers", crumbs: [{ text: "Transferencias" }] },
     { path: "/app/settings", crumbs: [{ text: "Ajustes" }] },
 ];
 
@@ -51,17 +46,6 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
     const [notificationsOpen, setNotificationsOpen] = useState(false);
 
     const user = useAuthStore((state) => state.user);
-    const { mutateAsync: logout } = useLogout();
-
-    const handleLogout = async () => {
-        try {
-            await logout();
-            toast.success("Sesión cerrada correctamente");
-        } catch (error) {
-            toast.error("Error al cerrar sesión");
-            console.error("Error logout:", error);
-        }
-    };
 
     return (
         <header className="flex items-center justify-between gap-3 border-b border-light-10 bg-surface-hard px-4 py-4 text-light sm:px-6 lg:px-8 lg:py-5">
@@ -106,11 +90,11 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
             </div>
 
             <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-                {user?.email && (
+                {user?.name || user?.email ? (
                     <span className="hidden max-w-48 truncate text-sm text-helper md:inline">
-                        {user.email}
+                        {user.name || user.email}
                     </span>
-                )}
+                ) : null}
 
                 <button
                     type="button"
@@ -144,21 +128,18 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                     </div>
                 )}
 
-                <button
-                    type="button"
-                    onClick={() => {
-                        void handleLogout();
-                    }}
-                    className="rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
-                    title="Cerrar sesión"
-                    aria-label="Cerrar sesión"
-                >
-                    <LogOut className="h-5 w-5" />
-                </button>
-
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
-                    <User className="h-5 w-5" />
-                </div>
+                {user?.pictureUrl ? (
+                    <img
+                        src={user.pictureUrl}
+                        alt={user.name || user.email || "Usuario"}
+                        className="h-9 w-9 rounded-full object-cover"
+                        referrerPolicy="no-referrer"
+                    />
+                ) : (
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary">
+                        <User className="h-5 w-5" />
+                    </div>
+                )}
             </div>
         </header>
     );

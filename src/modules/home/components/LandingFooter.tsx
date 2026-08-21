@@ -15,7 +15,7 @@ export const LandingFooter = () => {
 
     return (
         <footer className="border-t border-light-10 bg-surface-hard px-8 md:px-16 xl:px-24 pt-16 pb-10">
-            <div className="max-w-[1440px] mx-auto">
+            <div className="max-w-360 mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-10 mb-6 border-b border-light-10 pb-10">
                     <div className="flex flex-col items-start">
                         <div className="flex flex-col items-start gap-3 mb-3">

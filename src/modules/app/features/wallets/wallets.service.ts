@@ -1,6 +1,6 @@
 import type { Transaction } from "../walletView/interfaces/Transaction";
 
-import type { CreateWalletData, Wallet } from "./interfaces/Wallets";
+import type { CreateWalletData, UpdateWalletData, Wallet } from "./interfaces/Wallets";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";
@@ -59,5 +59,25 @@ export const postWallet = async (walletData: CreateWalletData) => {
             body: JSON.stringify(walletData),
         },
         "Error al crear la billetera",
+    );
+};
+
+export const patchWallet = async (id: string, walletData: UpdateWalletData) => {
+    return await apiRequest<Wallet>(
+        `${walletsUrl}/${id}`,
+        {
+            ...defaultApiOptions,
+            method: "PATCH",
+            body: JSON.stringify(walletData),
+        },
+        "Error al actualizar la billetera",
+    );
+};
+
+export const deleteWallet = async (id: string) => {
+    return await apiRequest<unknown>(
+        `${walletsUrl}/${id}`,
+        { method: "DELETE" },
+        "Error al eliminar la billetera",
     );
 };
