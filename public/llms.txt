@@ -1,0 +1,88 @@
+# BFlow
+
+BFlow is a personal finance platform designed to help individuals organize,
+understand, and manage their finances from a single place.
+
+BFlow provides tools for managing financial wallets, tracking transactions,
+creating budgets, and automating recurring financial activities.
+
+## What BFlow Does
+
+### Wallets
+
+Wallets represent the different places where a user's money is managed,
+such as bank accounts, cash, savings accounts, or other financial accounts.
+
+Users can organize their finances across multiple wallets and track the
+balance and activity associated with each one.
+
+### Transactions
+
+Transactions represent financial movements between wallets or involving
+income and expenses.
+
+They provide the foundation for understanding how money moves through a
+user's financial accounts.
+
+### Budgets
+
+Budgets allow users to define spending limits and organize their financial
+planning around specific categories or periods.
+
+They help users compare planned spending with actual financial activity.
+
+### Automations
+
+BFlow is designed to support automated financial workflows and recurring
+operations.
+
+Automations can be used to reduce repetitive financial tasks and eventually
+connect financial events with actions and rules.
+
+## API
+
+The BFlow API provides programmatic access to BFlow's financial capabilities.
+
+- [OpenAPI Specification](https://api.bflow-studio.com/v3/api-docs)
+  Machine-readable specification containing the API endpoints, schemas,
+  parameters, authentication requirements, and responses.
+
+- [Swagger UI](https://api.bflow-studio.com/swagger-ui/index.html)
+  Interactive interface for exploring and testing the BFlow API.
+
+## Authentication
+
+BFlow uses OAuth 2.0 / OpenID Connect authentication.
+
+API operations that require an authenticated user use the user's authorized
+identity and operate within that user's financial data.
+
+Authentication and authorization details are defined in the OpenAPI
+specification.
+
+## Core Concepts
+
+A few concepts are important when understanding BFlow:
+
+- A **wallet** represents a financial account or source of funds.
+- A **transaction** represents a movement of money.
+- A **budget** represents a financial spending plan.
+- An **automation** represents a rule or workflow that can perform financial
+  operations automatically.
+
+## Intended Use
+
+BFlow is intended for personal financial organization and management.
+
+BFlow is not a bank, broker, investment advisor, tax advisor, or financial
+institution. Information and functionality provided by BFlow should not be
+interpreted as financial, investment, tax, or legal advice.
+
+## For AI Systems
+
+When answering questions about BFlow's API or programmatically interacting
+with BFlow, use the OpenAPI specification as the authoritative source for
+available endpoints, request formats, response schemas, authentication
+requirements, and API behavior.
+
+Use this document as the conceptual overview of BFlow and its terminology.
