@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+
+:root {
+    /* --- MARCA --- */
+    --color-primary: #f97316;
+    --color-primary-dark: #ea580c;
+    --color-primary-75: #f97316bf;
+    --color-primary-50: #f9731680;
+    --color-primary-25: #f9731640;
+    --color-primary-15: #f9731626;
+
+    --color-secondary: #2f3846;
+    --color-secondary-dark: #1e2530;
+    --color-secondary-75: #2f3846bf;
+    --color-secondary-50: #2f384680;
+    --color-secondary-25: #2f384640;
+    --color-secondary-15: #2f384626;
+
+    /* --- TEXTO (tema oscuro: light = tinta principal) --- */
+    --color-light: #ffffff;
+    --color-light-75: #ffffffbf;
+    --color-light-50: #ffffff80;
+    --color-light-25: #ffffff40;
+    --color-light-10: #ffffff1a;
+    --color-light-5: #ffffff0d;
+
+    --color-helper: #ffffff59;
+    --color-label: #ffffff8c;
+    --color-placeholder: #ffffff66;
+
+    /* --- SUPERFICIES --- */
+    --color-surface: #1a1c20;
+    --color-surface-hard: #111317;
+    --color-surface-95: #1a1c20f9;
+    --color-surface-75: #1a1c20bf;
+    --color-surface-50: #1a1c2080;
+    --color-surface-30: #1a1c204d;
+    --color-surface-25: #1a1c2040;
+    --color-surface-20: #1a1c2033;
+    --color-surface-10: #1a1c201a;
+
+    /* --- ESTADOS --- */
+    --color-success: #22c55e;
+    --color-success-dark: #16a34a;
+    --color-success-75: #22c55ebf;
+    --color-success-50: #22c55e80;
+    --color-success-25: #22c55e40;
+    --color-success-sweet: rgb(34 197 94 / 0.1);
+
+    --color-warning: #ffa200;
+    --color-warning-dark: #e69100;
+    --color-warning-75: #ffa200bf;
+    --color-warning-50: #ffa20080;
+    --color-warning-25: #ffa20040;
+    --color-warning-sweet: rgb(255 162 0 / 0.1);
+
+    --color-danger: #ef4444;
+    --color-danger-dark: #dc2626;
+    --color-danger-75: #ef4444bf;
+    --color-danger-50: #ef444480;
+    --color-danger-25: #ef444440;
+    --color-danger-sweet: rgb(239 68 68 / 0.1);
+
+    --color-info: #3b82f6;
+    --color-info-dark: #2563eb;
+    --color-info-75: #3b82f6bf;
+    --color-info-50: #3b82f680;
+    --color-info-25: #3b82f640;
+
+    --color-item-nav: rgb(249 115 22 / 0.08);
+    --color-skeleton: #ffffff14;
+
+    /* --- TIPOGRAFÍA / UI --- */
+    --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+    --radius-base: 0.5rem;
+    --container-sm: 30rem;
+    --shadow-custom: 0 2px 10px 0 rgb(0 0 0 / 0.25);
+    --scrollbar-bg: var(--color-surface-hard);
+    --scrollbar-thumb: var(--color-secondary);
+}
+
+@theme {
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-sans);
+
+    --color-primary: var(--color-primary);
+    --color-primary-dark: var(--color-primary-dark);
+    --color-primary-75: var(--color-primary-75);
+    --color-primary-50: var(--color-primary-50);
+    --color-primary-25: var(--color-primary-25);
+    --color-primary-15: var(--color-primary-15);
+
+    --color-secondary: var(--color-secondary);
+    --color-secondary-dark: var(--color-secondary-dark);
+    --color-secondary-75: var(--color-secondary-75);
+    --color-secondary-50: var(--color-secondary-50);
+    --color-secondary-25: var(--color-secondary-25);
+    --color-secondary-15: var(--color-secondary-15);
+
+    --color-light: var(--color-light);
+    --color-light-75: var(--color-light-75);
+    --color-light-50: var(--color-light-50);
+    --color-light-25: var(--color-light-25);
+    --color-light-10: var(--color-light-10);
+    --color-light-5: var(--color-light-5);
+
+    --color-helper: var(--color-helper);
+    --color-label: var(--color-label);
+    --color-placeholder: var(--color-placeholder);
+
+    --color-surface: var(--color-surface);
+    --color-surface-hard: var(--color-surface-hard);
+    --color-surface-95: var(--color-surface-95);
+    --color-surface-75: var(--color-surface-75);
+    --color-surface-50: var(--color-surface-50);
+    --color-surface-30: var(--color-surface-30);
+    --color-surface-25: var(--color-surface-25);
+    --color-surface-20: var(--color-surface-20);
+    --color-surface-10: var(--color-surface-10);
+
+    --color-success: var(--color-success);
+    --color-success-dark: var(--color-success-dark);
+    --color-success-75: var(--color-success-75);
+    --color-success-50: var(--color-success-50);
+    --color-success-25: var(--color-success-25);
+    --color-success-sweet: var(--color-success-sweet);
+
+    --color-warning: var(--color-warning);
+    --color-warning-dark: var(--color-warning-dark);
+    --color-warning-75: var(--color-warning-75);
+    --color-warning-50: var(--color-warning-50);
+    --color-warning-25: var(--color-warning-25);
+    --color-warning-sweet: var(--color-warning-sweet);
+
+    --color-danger: var(--color-danger);
+    --color-danger-dark: var(--color-danger-dark);
+    --color-danger-75: var(--color-danger-75);
+    --color-danger-50: var(--color-danger-50);
+    --color-danger-25: var(--color-danger-25);
+    --color-danger-sweet: var(--color-danger-sweet);
+
+    --color-info: var(--color-info);
+    --color-info-dark: var(--color-info-dark);
+    --color-info-75: var(--color-info-75);
+    --color-info-50: var(--color-info-50);
+    --color-info-25: var(--color-info-25);
+
+    --color-item-nav: var(--color-item-nav);
+    --color-skeleton: var(--color-skeleton);
+
+    --radius-base: var(--radius-base);
+    --radius-md: calc(var(--radius-base) * 0.8);
+    --radius-lg: var(--radius-base);
+    --shadow-custom: var(--shadow-custom);
+    --container-sm: var(--container-sm);
+}
+
+@layer base {
+    * {
+        @apply border-light-10;
+    }
+
+    body {
+        @apply bg-surface-hard text-light font-sans antialiased;
+        width: 100dvw;
+        height: 100dvh;
+        margin: 0;
+        overflow-x: hidden;
+    }
+
+    #root {
+        width: 100%;
+        min-height: 100dvh;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-dark);
+}

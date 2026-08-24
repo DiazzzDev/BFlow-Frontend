@@ -20,44 +20,44 @@ export class APIError extends Error {
 }
 
 export interface PaginatedListResponse<T> {
-    success: boolean,
-    message: string,
+    success: boolean;
+    message: string;
     data: {
-        totalElements: bigint,
-        totalPages: number,
-        numberOfElements: number,
+        totalElements: number;
+        totalPages: number;
+        numberOfElements: number;
         pageable: {
-            unpaged: boolean,
-            pageNumber: number,
-            paged: boolean,
-            pageSize: number,
-            offset: bigint,
+            unpaged: boolean;
+            pageNumber: number;
+            paged: boolean;
+            pageSize: number;
+            offset: number;
             sort: {
-                unsorted: boolean,
-                sorted: boolean,
-                empty: boolean
-            }
-        },
-        size: number,
-        content: T[],
-        number: number,
+                unsorted: boolean;
+                sorted: boolean;
+                empty: boolean;
+            };
+        };
+        size: number;
+        content: T[];
+        number: number;
         sort: {
-            unsorted: boolean,
-            sorted: boolean,
-            empty: boolean
-        },
-        first: boolean,
-        last: boolean,
-        empty: boolean
-    },
-    timestamp: string,
-    path: string
+            unsorted: boolean;
+            sorted: boolean;
+            empty: boolean;
+        };
+        first: boolean;
+        last: boolean;
+        empty: boolean;
+    };
+    timestamp: string;
+    path: string;
 }
 
 async function getAmplifyToken(): Promise<string | undefined> {
     try {
         const session = await fetchAuthSession();
-        return session.tokens?.accessToken?.toString();
+        return session.tokens?.accessToken.toString();
     } catch {
         return undefined;
     }

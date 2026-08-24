@@ -1,20 +1,20 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router";
 
-import { useAuthStore } from "@/auth/store/authStore";
+import { AuthLoadingScreen } from "@/auth/components/AuthLoadingScreen";
+import { useAuthStore } from "@/auth/authStore";
 
+/**
+ * Rutas privadas de /app. Espera el bootstrap y exige sesión reconciliada.
+ */
 export const ProtectedRoute = () => {
+    const authStatus = useAuthStore((state) => state.authStatus);
 
-    const user = useAuthStore(
-        state => state.user
-    );
+    if (authStatus === "checking") {
+        return <AuthLoadingScreen />;
+    }
 
-    if (!user) {
-        return (
-            <Navigate
-                to="/auth/login"
-                replace
-            />
-        );
+    if (authStatus !== "authenticated") {
+        return <Navigate to="/auth/login" replace />;
     }
 
     return <Outlet />;

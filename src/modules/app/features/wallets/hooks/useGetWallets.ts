@@ -1,22 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getWallets } from "../wallet.services";
+import { getWallets } from "../wallets.service";
 
-import { useAuthStore } from "@/auth/store/authStore";
+import { useAuthStore } from "@/auth/authStore";
 
-export const useGetWallets = () => {
+export const useGetWallets = (
+    scope: "MINE" | "SHARED",
+    query = "",
+    page = 0,
+    size = 5,
+) => {
     const user = useAuthStore((state) => state.user);
 
     return useQuery({
-        queryKey: ['wallets'],
-        queryFn: () => getWallets(),
+        queryKey: ["wallets", scope, query, page, size],
+        queryFn: () => getWallets({ scope, query, page, size }),
         enabled: !!user,
-        select: (response) => {
-            const { content } = response.data;
-            return {
-                myWallets: content.filter(w => w.role === "OWNER"),
-                sharedWallets: content.filter(w => w.role !== "OWNER"),
-            };
-        },
     });
 };

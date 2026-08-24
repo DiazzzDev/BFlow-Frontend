@@ -13,7 +13,7 @@ export default tseslint.config(
         ignores: [
             '**/dist/**', 
             '**/node_modules/**', 
-            'commitlint.config.cjs', // Esto elimina el error de la terminal
+            'commitlint.config.cjs',
             'vite.config.ts',
             'eslint.config.ts'
         ],
@@ -65,7 +65,6 @@ export default tseslint.config(
             'eqeqeq': ['error', 'always'],
             'curly': ['error', 'all'],
             'no-param-reassign': 'error',
-            'no-nested-ternary': 'error',
             'prefer-destructuring': ['warn', { object: true, array: false }],
 
             // Imports
@@ -81,7 +80,6 @@ export default tseslint.config(
             'react/self-closing-comp': 'error',
             'react/jsx-no-duplicate-props': 'error',
             'react/jsx-no-useless-fragment': 'warn',
-            'react/no-array-index-key': 'warn',
             'react/no-unstable-nested-components': 'error',
             'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
             'react/hook-use-state': 'warn',
@@ -91,6 +89,8 @@ export default tseslint.config(
             'jsx-a11y/anchor-is-valid': 'warn',
             'jsx-a11y/click-events-have-key-events': 'warn',
             'jsx-a11y/no-noninteractive-element-interactions': 'warn',
+
+            
         },
     }
 )

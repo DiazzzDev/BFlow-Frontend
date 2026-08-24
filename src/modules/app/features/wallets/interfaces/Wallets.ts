@@ -1,4 +1,3 @@
-
 export interface CreateWalletData {
     name: string;
     description?: string;
@@ -6,10 +5,16 @@ export interface CreateWalletData {
     currency: string;
 }
 
+export interface UpdateWalletData {
+    name: string;
+    description: string;
+}
+
 export interface Wallet extends CreateWalletData {
-    id: string,
-    balance: number,
-    createdAt: string,
-    updatedAt: string,
-    role: string
+    id: string;
+    balance: number;
+    createdAt: string;
+    updatedAt: string;
+    role: string;
+    memberCount?: number;
 }

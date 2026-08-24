@@ -1,4 +1,4 @@
-import { LegalPage } from "../legal/components/LegalPage";
+import { LegalPage } from "../legal/LegalPage";
 
 export const CookiesPage = () => {
     return (

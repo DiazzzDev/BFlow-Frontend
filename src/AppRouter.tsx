@@ -1,30 +1,30 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router";
 
 // App
-import { DashboardPage } from "./modules/app/features/dashboard/pages/DashboardPage.tsx";
-import { WalletsPage } from "./modules/app/features/wallets/pages/WalletsPage.tsx";
-import { WalletDetailsPage } from "./modules/app/features/wallets/pages/WalletDetailsPage.tsx";
-import { IncomesPage } from "./modules/app/features/incomes/pages/IncomesPage.tsx";
-import { ExpensesPage } from "./modules/app/features/expenses/pages/ExpensesPage.tsx";
-import { SettingsPage } from "./modules/app/features/settings/pages/SettingsPage.tsx";
-import { BudgetsPage } from "./modules/app/features/budgets/pages/BudgetsPage.tsx";
-import { TransfersPage } from "./modules/app/features/transfers/pages/TransfersPage.tsx";
-import { LoginPage } from "./modules/auth/features/login/pages/LoginPage.tsx";
+import { DashboardPage } from "./modules/app/features/dashboard/DashboardPage.tsx";
+import { WalletsPage } from "./modules/app/features/wallets/WalletsPage.tsx";
+import { WalletViewPage } from "./modules/app/features/walletView/WalletViewPage.tsx";
+import { SettingsPage } from "./modules/app/features/settings/SettingsPage.tsx";
+import { BudgetsPage } from "./modules/app/features/budgets/BudgetsPage.tsx";
+import { BudgetViewPage } from "./modules/app/features/budgetView/BudgetViewPage.tsx";
+import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
+import { AppLayout } from "./modules/app/appLayout.tsx";
 // Auth
 import { AuthLayout } from "./modules/auth/AuthLayout.tsx";
+import { GuestRoute } from "./modules/auth/guestRoute.tsx";
+import { LoginPage } from "./modules/auth/features/login/LoginPage.tsx";
+import { OAuthCallbackPage } from "./modules/auth/features/oauthCallback/OAuthCallbackPage.tsx";
+import { RegisterPage } from "./modules/auth/features/register/RegisterPage.tsx";
+import { ForgotPasswordPage } from "./modules/auth/features/forgotPassword/ForgotPasswordPage.tsx";
+import { ResetPasswordPage } from "./modules/auth/features/resetPassword/ResetPasswordPage.tsx";
+import { VerifyAccountPage } from "./modules/auth/features/verifyAccount/VerifyAccountPage.tsx";
 // Landing
 import { LandingLayout } from "./modules/home/LandingLayout.tsx";
 import { LandingPage } from "./modules/home/features/landing/LandingPage.tsx";
 import { TermsPage } from "./modules/home/features/terms/TermsPage.tsx";
 import { PrivacyPage } from "./modules/home/features/privacy/PrivacyPage.tsx";
 import { CookiesPage } from "./modules/home/features/cookies/CookiesPage.tsx";
-import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
-import { AppLayout } from "./modules/app/appLayout.tsx";
-import { RegisterPage } from "./modules/auth/features/register/pages/RegisterPage.tsx";
-import { ForgotPasswordPage } from "./modules/auth/features/login/pages/ForgotPasswordPage.tsx";
-import { ResetPasswordPage } from "./modules/auth/features/login/pages/ResetPasswordPage.tsx";
-import { VerifyAccountPage } from "./modules/auth/features/verifyAccount/pages/VerifyAccountPage.tsx"
-import { OAuthCallbackPage } from "./modules/auth/features/login/pages/OAuthCallbackPage.tsx"
+import { NotFoundPage } from "./modules/404Page.tsx";
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -35,8 +35,8 @@ export const appRouter = createBrowserRouter([
             { index: true, element: <LandingPage /> },
             { path: "terms", element: <TermsPage /> },
             { path: "privacy", element: <PrivacyPage /> },
-            { path: "cookies", element: <CookiesPage /> }
-        ]
+            { path: "cookies", element: <CookiesPage /> },
+        ],
     },
     // App
     {
@@ -48,15 +48,13 @@ export const appRouter = createBrowserRouter([
                 children: [
                     { path: "dashboard", element: <DashboardPage /> },
                     { path: "wallets", element: <WalletsPage /> },
-                    { path: "wallets/:id", element: <WalletDetailsPage /> },
-                    { path: "incomes", element: <IncomesPage /> },
-                    { path: "expenses", element: <ExpensesPage /> },
+                    { path: "wallets/:id", element: <WalletViewPage /> },
                     { path: "settings", element: <SettingsPage /> },
                     { path: "budgets", element: <BudgetsPage /> },
-                    { path: "transfers", element: <TransfersPage /> },
-                ]
-            }
-        ]
+                    { path: "budgets/:id", element: <BudgetViewPage /> },
+                ],
+            },
+        ],
     },
 
     // Auth
@@ -64,12 +62,21 @@ export const appRouter = createBrowserRouter([
         path: "/auth",
         element: <AuthLayout />,
         children: [
-            { path: "login", element: <LoginPage /> },
+            {
+                element: <GuestRoute />,
+                children: [
+                    { path: "login", element: <LoginPage /> },
+                    { path: "register", element: <RegisterPage /> },
+                ],
+            },
             { path: "callback", element: <OAuthCallbackPage /> },
-            { path: "register", element: <RegisterPage /> },
             { path: "forgot-password", element: <ForgotPasswordPage /> },
             { path: "reset-password", element: <ResetPasswordPage /> },
             { path: "verify-account", element: <VerifyAccountPage /> },
-        ]
-    }
-]); 
+        ],
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />,
+    },
+]);

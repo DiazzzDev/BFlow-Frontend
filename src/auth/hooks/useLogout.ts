@@ -1,38 +1,22 @@
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 
 import { authService } from "@/auth/services/authService";
-import { useAuthStore } from "@/auth/store/authStore";
+import { useAuthStore } from "@/auth/authStore";
 
 export const useLogout = () => {
-
+    const clearSession = useAuthStore((state) => state.clearSession);
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const logout = async () => {
-
-        try {
-
+    return useMutation({
+        mutationFn: async () => {
             await authService.logout();
-
-        } finally {
-
-            useAuthStore
-                .getState()
-                .clearUser();
-
-            localStorage.removeItem(
-                "bflow-auth-storage"
-            );
-
-            await navigate(
-                "/auth/login",
-                {
-                    replace: true
-                }
-            );
-        }
-    };
-
-    return {
-        logout
-    };
+        },
+        onSettled: () => {
+            clearSession();
+            queryClient.clear();
+            void navigate("/auth/login", { replace: true });
+        },
+    });
 };

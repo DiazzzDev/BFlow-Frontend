@@ -1,4 +1,4 @@
-import { LegalPage } from "../legal/components/LegalPage.tsx";
+import { LegalPage } from "../legal/LegalPage.tsx";
 
 export const PrivacyPage = () => (
     <LegalPage
