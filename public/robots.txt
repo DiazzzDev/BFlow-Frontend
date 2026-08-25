@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /terms
+Allow: /privacy
+Allow: /cookies
+
+Disallow: /app/
+Disallow: /auth/
+
+Sitemap: https://www.bflow-studio.com/sitemap.xml
