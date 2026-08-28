@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { UserPlus } from "lucide-react";
 
-import { useMutateWallets } from "../../wallets/hooks/useMutateWallets";
-import type { Wallet } from "../../wallets/interfaces/Wallets";
-
-import { DeleteWalletModal } from "./DeleteWalletModal";
+import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
+import type { Wallet } from "../../../wallets/interfaces/Wallets";
+import { DeleteWalletModal } from "../modal/DeleteWalletModal";
+import { InviteWalletMemberModal } from "../modal/InviteWalletMemberModal";
 
 import { useAuthStore } from "@/auth/authStore";
 import { Input } from "@/components/controls/Input";
@@ -48,10 +47,10 @@ export const WalletSettingsPanel = ({
     isLoading,
     initialValue,
 }: WalletSettingsPanelProps) => {
-    const navigate = useNavigate();
     const user = useAuthStore((state) => state.user);
-    const { updateWallet, removeWallet } = useMutateWallets();
+    const { updateWallet } = useMutateWallets();
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [isInviteOpen, setIsInviteOpen] = useState(false);
 
     const {
         control,
@@ -102,25 +101,6 @@ export const WalletSettingsPanel = ({
         reset(formData);
     };
 
-    const handleConfirmDelete = async () => {
-        if (!wallet) {
-            return;
-        }
-
-        const promise = removeWallet.mutateAsync(wallet.id);
-
-        toast.promise(promise, {
-            loading: "Eliminando billetera...",
-            success: "Billetera eliminada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al eliminar la billetera",
-        });
-
-        await promise;
-        setIsDeleteOpen(false);
-        void navigate("/app/wallets", { replace: true });
-    };
-
     if (isLoading || !wallet) {
         return (
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden @2xl:flex-row">
@@ -139,14 +119,14 @@ export const WalletSettingsPanel = ({
         );
     }
 
-    const isSaving = updateWallet.isPending || removeWallet.isPending;
+    const isSaving = updateWallet.isPending;
     const ownerLabel = user?.name || user?.email || "Tú";
     const ownerInitials = getInitials(ownerLabel);
 
     return (
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden @2xl:flex-row">
-            <section className="flex min-h-0 min-w-0 flex-1 flex-col border-b border-light-10 @2xl:border-b-0 @2xl:border-r">
-                <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-7">
+        <div className="flex flex-1 flex-col @2xl:flex-row">
+            <section className="flex min-w-0 flex-1 flex-col border-b border-light-10 @2xl:border-b-0 @2xl:border-r">
+                <div className="flex-1 px-4 py-5 sm:px-7">
                     <div className="mb-6">
                         <h2 className="text-base font-semibold text-light">General</h2>
                         <p className="mt-1 text-sm text-helper">
@@ -204,7 +184,9 @@ export const WalletSettingsPanel = ({
                         <dl className="grid grid-cols-2 gap-4 border-t border-light-10 pt-4">
                             <div>
                                 <dt className="text-xs text-helper">Moneda</dt>
-                                <dd className="mt-1 text-sm font-medium text-light">{wallet.currency}</dd>
+                                <dd className="mt-1 text-sm font-medium text-light">
+                                    {wallet.currency}
+                                </dd>
                             </div>
                             <div>
                                 <dt className="text-xs text-helper">Valor inicial</dt>
@@ -251,9 +233,8 @@ export const WalletSettingsPanel = ({
                     </div>
                     <button
                         type="button"
-                        disabled
-                        title="Próximamente"
-                        className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-light-10 px-3 py-2 text-sm font-medium text-helper"
+                        onClick={() => setIsInviteOpen(true)}
+                        className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-light-10 px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5"
                     >
                         <UserPlus className="h-4 w-4" />
                         Invitar
@@ -276,12 +257,14 @@ export const WalletSettingsPanel = ({
                                 </div>
                             )}
                             <div className="min-w-0">
-                                <p className="truncate text-sm font-medium text-light">{ownerLabel}</p>
+                                <p className="truncate text-sm font-medium text-light">
+                                    {ownerLabel}
+                                </p>
                                 <p className="truncate text-xs text-helper">Tú</p>
                             </div>
                         </div>
                         <span className="shrink-0 rounded-full border border-light-10 px-2.5 py-1 text-xs text-helper">
-                            {wallet.role || "Owner"}
+                            {wallet.role || "Propietario"}
                         </span>
                     </li>
                 </ul>
@@ -289,10 +272,16 @@ export const WalletSettingsPanel = ({
 
             <DeleteWalletModal
                 isOpen={isDeleteOpen}
+                walletId={wallet.id}
                 walletName={wallet.name}
-                isDeleting={removeWallet.isPending}
                 onClose={() => setIsDeleteOpen(false)}
-                onConfirm={() => void handleConfirmDelete()}
+            />
+
+            <InviteWalletMemberModal
+                isOpen={isInviteOpen}
+                walletId={wallet.id}
+                walletName={wallet.name}
+                onClose={() => setIsInviteOpen(false)}
             />
         </div>
     );

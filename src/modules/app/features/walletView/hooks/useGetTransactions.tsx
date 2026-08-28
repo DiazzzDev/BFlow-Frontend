@@ -25,5 +25,6 @@ export const useGetTransactions = (
                 size,
             }),
         enabled: !!user && !!walletId && !!type,
+        staleTime: 1000 * 60 * 5,
     });
 };

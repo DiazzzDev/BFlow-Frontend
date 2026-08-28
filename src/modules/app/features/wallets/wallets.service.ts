@@ -1,12 +1,9 @@
-import type { Transaction } from "../walletView/interfaces/Transaction";
-
 import type { CreateWalletData, UpdateWalletData, Wallet } from "./interfaces/Wallets";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
 const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;
-const transactionsUrl = `${config.API_BASE_URL}/api/v1/transactions`;
 
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
@@ -39,14 +36,6 @@ export const getWallets = async ({
         `${walletsUrl}?${params.toString()}`,
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener las billeteras",
-    );
-};
-
-export const getHistory = async () => {
-    return await apiRequest<PaginatedListResponse<Transaction>>(
-        transactionsUrl,
-        { ...defaultApiOptions, method: "GET" },
-        "Error al obtener el historial",
     );
 };
 

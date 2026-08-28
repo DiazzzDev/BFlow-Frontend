@@ -34,13 +34,13 @@ export const RecentActivityCard = ({
     return (
         <div className={dashboardCardClass}>
             <div className="mb-3 flex items-center justify-between">
-                <p className={dashboardLabelClass}>Recent activity</p>
+                <p className={dashboardLabelClass}>Actividad reciente</p>
                 <button
                     type="button"
                     onClick={handleViewAll}
                     className="cursor-pointer text-sm font-medium text-primary transition-colors hover:text-primary-dark"
                 >
-                    View all
+                    Ver todo
                 </button>
             </div>
 

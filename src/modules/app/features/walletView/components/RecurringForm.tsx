@@ -249,7 +249,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                     : "Buscar categoría..."
                             }
                             selectedItem={selectedCategory}
-                            setSelectedItem={(category) => field.onChange(category.id)}
+                            setSelectedItem={(category) => field.onChange(category?.id ?? "")}
                             query={categoryQuery}
                             setQuery={setCategoryQuery}
                             data={categories}

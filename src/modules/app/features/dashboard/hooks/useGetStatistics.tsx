@@ -6,5 +6,6 @@ export const useGetStatistics = (year?: number) => {
     return useQuery({
         queryKey: ["dashboard-statistics", year],
         queryFn: () => getStatistics({ year }),
+        staleTime: 1000 * 60 * 5,
     });
 };

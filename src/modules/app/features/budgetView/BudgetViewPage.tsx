@@ -47,7 +47,7 @@ export const BudgetViewPage = () => {
         : "";
     const scopeTags = budget
         ? budget.scope === "WALLET_CATEGORY"
-            ? ["Wallet", "Category"]
+            ? ["Billetera", "Categoría"]
             : [budgetScopeLabels[budget.scope] ?? budget.scope]
         : [];
     const statusLabel = budget ? getBudgetStatusLabel(budget.status) : "";
@@ -106,21 +106,21 @@ export const BudgetViewPage = () => {
                 <div className="flex flex-1 flex-col gap-5 pb-5">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <BudgetMetricCard
-                            title="Remaining"
+                            title="Restante"
                             amount={budget?.remaining ?? 0}
                             currency={currency}
-                            subtitle={`${budget?.daysLeft ?? 0} days left`}
+                            subtitle={`${budget?.daysLeft ?? 0} ${(budget?.daysLeft ?? 0) === 1 ? "día restante" : "días restantes"}`}
                             isLoading={isLoading && !budget}
                         />
                         <BudgetMetricCard
-                            title="Spent"
+                            title="Gastado"
                             amount={budget?.spent ?? 0}
                             currency={currency}
                             subtitle={spentSubtitle}
                             isLoading={isLoading && !budget}
                         />
                         <BudgetMetricCard
-                            title="Budget"
+                            title="Presupuesto"
                             amount={budget?.budgetLimit ?? 0}
                             currency={currency}
                             isLoading={isLoading && !budget}

@@ -56,14 +56,14 @@ export const DashboardPage = () => {
                         {firstName ? `, ${firstName}` : ""}
                     </h1>
                     <p className="mt-1.5 text-sm text-helper">
-                        Here&apos;s what&apos;s happening with your money.
+                        Así está tu dinero en este momento.
                     </p>
                 </div>
 
                 <Button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    text="New transaction"
+                    text="Nueva transacción"
                     icon={<Plus className="h-4 w-4" />}
                     className="w-fit shrink-0"
                 />

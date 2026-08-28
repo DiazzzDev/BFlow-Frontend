@@ -15,9 +15,9 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 const STATUS_LABELS: Record<string, string> = {
-    OK: "Healthy",
-    WARNING: "Warning",
-    AT_RISK: "At risk",
+    OK: "Saludable",
+    WARNING: "Advertencia",
+    AT_RISK: "En riesgo",
 };
 
 const getStatusStyle = (status: BudgetHealthStatus) =>
@@ -53,7 +53,7 @@ export const BudgetsHealthCard = ({
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Budgets health</p>
+            <p className={dashboardLabelClass}>Salud de presupuestos</p>
 
             <div className="mt-4 flex flex-1 flex-col gap-1">
                 {isLoading &&
@@ -67,7 +67,7 @@ export const BudgetsHealthCard = ({
                 {!isLoading && budgets.length === 0 && (
                     <CustomEmptyState
                         title="Sin presupuestos"
-                        description="Creá un presupuesto para ver su salud acá."
+                        description="Crea un presupuesto para ver su salud aquí."
                         Icon={CreditCard}
                         className="m-0! py-2!"
                     />
@@ -87,7 +87,7 @@ export const BudgetsHealthCard = ({
                                     {budget.displayName}
                                 </p>
                                 <p className="truncate text-[11px] text-helper">
-                                    Updated {formatterDynamicDate(budget.updatedAt)}
+                                    Actualizado {formatterDynamicDate(budget.updatedAt)}
                                 </p>
                             </div>
 
@@ -105,7 +105,7 @@ export const BudgetsHealthCard = ({
             <Button
                 type="button"
                 onClick={handleReview}
-                text="Review budgets"
+                text="Revisar presupuestos"
                 className="mt-4 w-full"
             />
         </div>

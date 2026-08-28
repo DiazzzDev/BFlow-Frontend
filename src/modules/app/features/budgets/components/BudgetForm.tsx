@@ -22,9 +22,9 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
 
 const scopeTabs: Array<{ id: BudgetScope; label: string }> = [
-    { id: "WALLET", label: "Wallet" },
+    { id: "WALLET", label: "Billetera" },
     { id: "CATEGORY_GLOBAL", label: "Categoría" },
-    { id: "WALLET_CATEGORY", label: "Wallet + categoría" },
+    { id: "WALLET_CATEGORY", label: "Billetera + categoría" },
 ];
 
 const periodOptions: Array<{ value: BudgetPeriod; label: string }> = [
@@ -145,6 +145,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             amount: Number(formData.amount),
             period: formData.period,
             startDate: formData.startDate,
+            currency: 'USD', // Por el momento esta quemado
             scope,
             thresholdWarning: formData.thresholdWarning,
             thresholdCritical: formData.thresholdCritical,
@@ -195,7 +196,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                         : "Buscar billetera..."
                                 }
                                 selectedItem={selectedWallet}
-                                setSelectedItem={(wallet) => field.onChange(wallet.id)}
+                                setSelectedItem={(wallet) => field.onChange(wallet?.id ?? "")}
                                 query={walletQuery}
                                 setQuery={setWalletQuery}
                                 data={wallets}
@@ -223,7 +224,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                         : "Buscar categoría..."
                                 }
                                 selectedItem={selectedCategory}
-                                setSelectedItem={(category) => field.onChange(category.id)}
+                                setSelectedItem={(category) => field.onChange(category?.id ?? "")}
                                 query={categoryQuery}
                                 setQuery={setCategoryQuery}
                                 data={categories}

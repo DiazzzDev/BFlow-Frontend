@@ -1,4 +1,4 @@
-import { RecurringForm } from "./RecurringForm";
+import { RecurringForm } from "../RecurringForm";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 

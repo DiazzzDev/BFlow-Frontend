@@ -270,7 +270,7 @@ export const IncomeForm = ({
                                     : "Buscar categoría..."
                             }
                             selectedItem={selectedCategory}
-                            setSelectedItem={(category) => field.onChange(category.id)}
+                            setSelectedItem={(category) => field.onChange(category?.id ?? "")}
                             query={categoryQuery}
                             setQuery={setCategoryQuery}
                             data={incomeCategories}

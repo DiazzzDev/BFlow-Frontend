@@ -54,7 +54,6 @@ export const getOverview = async (
     if (query?.trim()) {
         params.set("query", query.trim());
     }
-    console.log(walletId)
 
     return await apiRequest<PaginatedListResponse<Transaction>>(
         `${walletsUrl}/${walletId}/transactions?${params.toString()}`,

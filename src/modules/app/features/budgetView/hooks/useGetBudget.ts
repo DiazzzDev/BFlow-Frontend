@@ -11,6 +11,7 @@ export const useGetBudget = (budgetId?: string) => {
         queryKey: ["budget-detail", budgetId],
         queryFn: () => getBudgetById(budgetId!),
         enabled: !!user && !!budgetId,
+        staleTime: 1000 * 60 * 5,
     });
 
     const budget = query.data?.data;

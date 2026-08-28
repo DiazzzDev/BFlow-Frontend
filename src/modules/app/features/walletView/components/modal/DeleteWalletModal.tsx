@@ -1,20 +1,42 @@
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
+
+import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
+
 import { CustomModal } from "@/components/custom/CustomModal";
 
 interface DeleteWalletModalProps {
     isOpen: boolean;
+    walletId: string;
     walletName: string;
-    isDeleting: boolean;
     onClose: () => void;
-    onConfirm: () => void;
 }
 
 export const DeleteWalletModal = ({
     isOpen,
+    walletId,
     walletName,
-    isDeleting,
     onClose,
-    onConfirm,
 }: DeleteWalletModalProps) => {
+    const navigate = useNavigate();
+    const { removeWallet } = useMutateWallets();
+    const isDeleting = removeWallet.isPending;
+
+    const handleConfirm = async () => {
+        const promise = removeWallet.mutateAsync(walletId);
+
+        toast.promise(promise, {
+            loading: "Eliminando billetera...",
+            success: "Billetera eliminada",
+            error: (err) =>
+                err instanceof Error ? err.message : "Error al eliminar la billetera",
+        });
+
+        await promise;
+        onClose();
+        void navigate("/app/wallets", { replace: true });
+    };
+
     return (
         <CustomModal
             isModalOpen={isOpen}
@@ -29,7 +51,9 @@ export const DeleteWalletModal = ({
             <div className="flex flex-col gap-6">
                 <p className="text-sm text-helper">
                     ¿Seguro que quieres eliminar{" "}
-                    <span className="font-medium text-light">{walletName || "esta billetera"}</span>
+                    <span className="font-medium text-light">
+                        {walletName || "esta billetera"}
+                    </span>
                     ? Se perderán sus transacciones y esta acción no se puede deshacer.
                 </p>
                 <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
@@ -45,7 +69,7 @@ export const DeleteWalletModal = ({
                         type="button"
                         disabled={isDeleting}
                         onClick={() => {
-                            void onConfirm();
+                            void handleConfirm();
                         }}
                         className="cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-danger-dark disabled:cursor-not-allowed disabled:opacity-50"
                     >

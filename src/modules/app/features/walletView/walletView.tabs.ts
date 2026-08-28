@@ -3,11 +3,11 @@ import type { TransactionType } from "./interfaces/Transaction";
 export type DetailTab = "overview" | "incomes" | "expenses" | "transfers" | "settings";
 
 export const WALLET_VIEW_TABS: Array<{ id: DetailTab; label: string }> = [
-    { id: "overview", label: "All transactions" },
-    { id: "incomes", label: "Incomes" },
-    { id: "expenses", label: "Expenses" },
-    { id: "transfers", label: "Transfers" },
-    { id: "settings", label: "Settings" },
+    { id: "overview", label: "Todas las transacciones" },
+    { id: "incomes", label: "Ingresos" },
+    { id: "expenses", label: "Gastos" },
+    { id: "transfers", label: "Transferencias" },
+    { id: "settings", label: "Ajustes" },
 ];
 
 export const TAB_TO_TYPE: Record<Exclude<DetailTab, "overview" | "settings">, TransactionType> = {

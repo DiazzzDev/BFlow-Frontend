@@ -6,5 +6,6 @@ export const useGetSpending = () => {
     return useQuery({
         queryKey: ["dashboard-spending"],
         queryFn: getSpending,
+        staleTime: 1000 * 60 * 5,
     });
 };

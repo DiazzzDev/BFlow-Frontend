@@ -2,24 +2,18 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { Receipt } from "lucide-react";
 
-import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
-
 import { useWalletViewPage } from "./hooks/useWalletViewPage";
-import { useWalletTransactionActions } from "./hooks/useWalletTransactionActions";
 import { WalletViewHeader } from "./components/WalletViewHeader";
 import { WalletViewTabs } from "./components/WalletViewTabs";
-import { WalletTransactionsPanel } from "./components/WalletTransactionsPanel";
-import { WalletSettingsPanel } from "./components/WalletSettingsPanel";
-import { WalletInfoPanel } from "./components/WalletInfoPanel";
-import { ScheduleTransactionModal } from "./components/ScheduleTransactionModal";
-import { DeleteTransactionModal } from "./components/DeleteTransactionModal";
+import { WalletTransactionsPanel } from "./components/panel/WalletTransactionsPanel";
+import { WalletSettingsPanel } from "./components/panel/WalletSettingsPanel";
+import { WalletInfoPanel } from "./components/panel/WalletInfoPanel";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 
 export const WalletViewPage = () => {
     const { id = "" } = useParams<{ id: string }>();
     const view = useWalletViewPage(id);
-    const actions = useWalletTransactionActions();
     const [isInfoDrawerOpen, setIsInfoDrawerOpen] = useState(false);
     const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(true);
 
@@ -60,67 +54,26 @@ export const WalletViewPage = () => {
                     />
                 ) : (
                     <WalletTransactionsPanel
+                        walletId={id}
                         query={view.query}
                         transactions={view.transactions}
                         isLoading={view.isLoadingList}
                         currency={view.wallet?.currency}
                         showCategory={view.activeTab !== "transfers"}
+                        initialType={view.transactionType}
                         totalTransactions={view.totalTransactions}
                         numberOfElements={view.numberOfElements}
                         totalPages={view.totalPages}
-                        actionsDisabled={actions.isDuplicating || actions.isDeleting}
-                        onNewTransaction={() => actions.setIsNewTransactionOpen(true)}
-                        onEdit={actions.setEditTransaction}
-                        onDelete={actions.setDeleteTransaction}
-                        onDuplicate={(transaction) => {
-                            void actions.duplicateTransaction(transaction);
-                        }}
                     />
                 )}
             </section>
 
             <WalletInfoPanel
+                walletId={id}
                 isDesktopOpen={isInfoPanelOpen}
                 isMobileOpen={isInfoDrawerOpen}
                 onCloseMobile={() => setIsInfoDrawerOpen(false)}
-                sidebarProps={{
-                    ...view.sidebar,
-                    onSchedule: () => {
-                        setIsInfoDrawerOpen(false);
-                        actions.setIsScheduleOpen(true);
-                    },
-                }}
-            />
-
-            <NewTransactionModal
-                isModalOpen={actions.isNewTransactionOpen}
-                setIsModalOpen={actions.setIsNewTransactionOpen}
-                walletId={id}
-                initialType={view.transactionType}
-            />
-
-            <ScheduleTransactionModal
-                isModalOpen={actions.isScheduleOpen}
-                setIsModalOpen={actions.setIsScheduleOpen}
-                walletId={id}
-            />
-
-            <NewTransactionModal
-                isModalOpen={Boolean(actions.editTransaction)}
-                setIsModalOpen={(open) => {
-                    if (!open) {
-                        actions.setEditTransaction(null);
-                    }
-                }}
-                mode="edit"
-                transaction={actions.editTransaction}
-            />
-
-            <DeleteTransactionModal
-                transaction={actions.deleteTransaction}
-                isDeleting={actions.isDeleting}
-                onClose={() => actions.setDeleteTransaction(null)}
-                onConfirm={() => actions.handleConfirmDelete}
+                sidebarProps={view.sidebar}
             />
         </div>
     );

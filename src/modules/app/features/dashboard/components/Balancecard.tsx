@@ -38,7 +38,7 @@ export const BalanceCard = ({
                         {changePercent}%
                     </span>
                     {" "}
-                    compared to last month
+                    frente al mes pasado
                 </p>
             )}
         </div>

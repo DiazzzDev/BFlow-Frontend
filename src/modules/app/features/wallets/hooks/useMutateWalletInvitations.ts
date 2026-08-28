@@ -1,0 +1,44 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import type { CreateWalletInvitationData } from "../interfaces/WalletInvitation";
+import {
+    acceptWalletInvitation,
+    declineWalletInvitation,
+    postWalletInvitation,
+} from "../walletInvitations.service";
+
+export const useMutateWalletInvitations = () => {
+    const queryClient = useQueryClient();
+
+    const invalidate = () => {
+        void queryClient.invalidateQueries({ queryKey: ["wallet-invitations"] });
+        void queryClient.invalidateQueries({ queryKey: ["wallets"] });
+    };
+
+    const inviteMember = useMutation({
+        mutationFn: ({
+            walletId,
+            data,
+        }: {
+            walletId: string;
+            data: CreateWalletInvitationData;
+        }) => postWalletInvitation(walletId, data),
+        onSuccess: invalidate,
+    });
+
+    const acceptInvitation = useMutation({
+        mutationFn: (invitationId: string) => acceptWalletInvitation(invitationId),
+        onSuccess: invalidate,
+    });
+
+    const declineInvitation = useMutation({
+        mutationFn: (invitationId: string) => declineWalletInvitation(invitationId),
+        onSuccess: invalidate,
+    });
+
+    return {
+        inviteMember,
+        acceptInvitation,
+        declineInvitation,
+    };
+};
