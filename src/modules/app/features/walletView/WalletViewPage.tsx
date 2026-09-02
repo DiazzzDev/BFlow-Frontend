@@ -6,8 +6,10 @@ import { useWalletViewPage } from "./hooks/useWalletViewPage";
 import { WalletViewHeader } from "./components/WalletViewHeader";
 import { WalletViewTabs } from "./components/WalletViewTabs";
 import { WalletTransactionsPanel } from "./components/panel/WalletTransactionsPanel";
+import { WalletMembersPanel } from "./components/panel/WalletMembersPanel";
 import { WalletSettingsPanel } from "./components/panel/WalletSettingsPanel";
 import { WalletInfoPanel } from "./components/panel/WalletInfoPanel";
+import { isManagementTab } from "./walletView.tabs";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 
@@ -43,14 +45,18 @@ export const WalletViewPage = () => {
                 <WalletViewTabs
                     activeTab={view.activeTab}
                     onChange={view.setTab}
-                    className={view.activeTab === "settings" ? "" : "mb-5"}
+                    className={isManagementTab(view.activeTab) ? "" : "mb-5"}
                 />
 
-                {view.activeTab === "settings" ? (
+                {view.activeTab === "members" ? (
+                    <WalletMembersPanel
+                        wallet={view.wallet}
+                        isLoading={view.isWalletLoading}
+                    />
+                ) : view.activeTab === "settings" ? (
                     <WalletSettingsPanel
                         wallet={view.wallet}
                         isLoading={view.isWalletLoading}
-                        initialValue={view.sidebar.initialValue}
                     />
                 ) : (
                     <WalletTransactionsPanel

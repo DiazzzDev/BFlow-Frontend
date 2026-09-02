@@ -2,6 +2,7 @@ import type {
     CreateWalletInvitationData,
     WalletInvitation,
 } from "./interfaces/WalletInvitation";
+import type { WalletSentInvitation } from "./interfaces/WalletSentInvitation";
 import type { WalletCollaborator } from "./interfaces/WalletCollaborator";
 
 import { APIError, apiRequest } from "@/utils/api";
@@ -99,5 +100,21 @@ export const declineWalletInvitation = async (invitationId: string) => {
         `${invitationsUrl}/id/${invitationId}/reject`,
         { ...defaultApiOptions, method: "POST" },
         "Error al rechazar la invitación",
+    );
+};
+
+export const getSentWalletInvitations = async (walletId: string) => {
+    return await apiRequest<ApiResponse<WalletSentInvitation[]>>(
+        `${walletsUrl}/${walletId}/invitations/sent`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener las invitaciones enviadas",
+    );
+};
+
+export const cancelWalletInvitation = async (invitationId: string) => {
+    return await apiRequest<ApiResponse<string>>(
+        `${invitationsUrl}/${invitationId}`,
+        { ...defaultApiOptions, method: "DELETE" },
+        "Error al cancelar la invitación",
     );
 };

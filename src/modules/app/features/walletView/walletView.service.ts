@@ -35,6 +35,14 @@ export const getWalletMembers = async (walletId: string) => {
     );
 };
 
+export const removeWalletMember = async (walletId: string, memberId: string) => {
+    return await apiRequest<ApiResponse<string>>(
+        `${walletsUrl}/${walletId}/members/${memberId}`,
+        { ...defaultApiOptions, method: "DELETE" },
+        "Error al eliminar el miembro",
+    );
+};
+
 export const getWalletDetails = async (walletId: string) => {
     return await apiRequest<ApiResponse<WalletDetails>>(
         `${walletsUrl}/${walletId}/info`,

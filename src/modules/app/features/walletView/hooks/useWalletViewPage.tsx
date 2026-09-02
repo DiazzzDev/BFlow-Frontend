@@ -1,4 +1,9 @@
-import { isDetailTab, TAB_TO_TYPE, type DetailTab } from "../walletView.tabs";
+import {
+    isDetailTab,
+    isManagementTab,
+    TAB_TO_TYPE,
+    type DetailTab,
+} from "../walletView.tabs";
 
 import { useGetOverview } from "./useGetOverview";
 import { useGetTransactions } from "./useGetTransactions";
@@ -17,8 +22,9 @@ export const useWalletViewPage = (walletId: string) => {
     const activeTab: DetailTab = isDetailTab(tabParam) ? tabParam : "overview";
     const { apiPage, limit } = usePaginationParams();
 
-    const transactionType =
-        activeTab === "overview" || activeTab === "settings" ? null : TAB_TO_TYPE[activeTab];
+    const transactionType = isManagementTab(activeTab) || activeTab === "overview"
+        ? null
+        : TAB_TO_TYPE[activeTab];
 
     const { data: walletDetailsResponse, isLoading: isWalletDetailsLoading } =
         useGetWalletDetails(walletId);
@@ -41,7 +47,7 @@ export const useWalletViewPage = (walletId: string) => {
     const activeList =
         activeTab === "overview"
             ? overviewQuery
-            : activeTab === "settings"
+            : isManagementTab(activeTab)
                 ? null
                 : transactionsQuery;
 
