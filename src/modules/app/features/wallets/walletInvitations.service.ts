@@ -2,6 +2,7 @@ import type {
     CreateWalletInvitationData,
     WalletInvitation,
 } from "./interfaces/WalletInvitation";
+import type { WalletCollaborator } from "./interfaces/WalletCollaborator";
 
 import { APIError, apiRequest } from "@/utils/api";
 import { config } from "@/config/config";
@@ -49,6 +50,27 @@ export const getWalletInvitations = async (): Promise<ApiResponse<WalletInvitati
     }
 };
 
+export const searchWalletCollaborators = async (
+    walletId: string,
+    query = "",
+) => {
+    const params = new URLSearchParams();
+
+    if (query.trim()) {
+        params.set("query", query.trim());
+    }
+
+    const queryString = params.toString();
+
+    return await apiRequest<ApiResponse<WalletCollaborator[]>>(
+        `${walletsUrl}/${walletId}/collaborators/search${
+            queryString ? `?${queryString}` : ""
+        }`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al buscar colaboradores",
+    );
+};
+
 export const postWalletInvitation = async (
     walletId: string,
     data: CreateWalletInvitationData,
@@ -66,7 +88,7 @@ export const postWalletInvitation = async (
 
 export const acceptWalletInvitation = async (invitationId: string) => {
     return await apiRequest<ApiResponse<WalletInvitation>>(
-        `${invitationsUrl}/${invitationId}/accept`,
+        `${invitationsUrl}/id/${invitationId}/accept`,
         { ...defaultApiOptions, method: "POST" },
         "Error al aceptar la invitación",
     );
@@ -74,7 +96,7 @@ export const acceptWalletInvitation = async (invitationId: string) => {
 
 export const declineWalletInvitation = async (invitationId: string) => {
     return await apiRequest<ApiResponse<WalletInvitation>>(
-        `${invitationsUrl}/${invitationId}/decline`,
+        `${invitationsUrl}/id/${invitationId}/reject`,
         { ...defaultApiOptions, method: "POST" },
         "Error al rechazar la invitación",
     );

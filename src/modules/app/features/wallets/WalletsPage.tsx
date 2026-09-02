@@ -12,7 +12,7 @@ import { HistoryItemSkeleton } from "./components/HistoryItemSkeleton";
 import { WalletForm } from "./components/WalletForm";
 import { WalletInvitationsBanner } from "./components/WalletInvitationsBanner";
 import { WalletInvitationsButton } from "./components/WalletInvitationsButton";
-import { WalletInvitationsModal } from "./components/WalletInvitationsModal";
+import { WalletInvitationsSidebar } from "./components/WalletInvitationsSidebar";
 import { useGetWallets } from "./hooks/useGetWallets";
 import { useGetHistory } from "./hooks/useGetHistory";
 import { useGetWalletInvitations } from "./hooks/useGetWalletInvitations";
@@ -69,10 +69,7 @@ export const WalletsPage = () => {
         limit,
     );
     const { isLoading: isLoadingHistory, data: historyData } = useGetHistory();
-    const {
-        data: invitationsResponse,
-        isLoading: isLoadingInvitations,
-    } = useGetWalletInvitations();
+    const { data: invitationsResponse } = useGetWalletInvitations();
     const { duplicateTransaction, isPending: isDuplicating } = useDuplicateTransaction();
     const user = useAuthStore((state) => state.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -232,11 +229,9 @@ export const WalletsPage = () => {
                 />
             </CustomModal>
 
-            <WalletInvitationsModal
+            <WalletInvitationsSidebar
                 isOpen={isInvitationsOpen}
                 onClose={() => setIsInvitationsOpen(false)}
-                invitations={invitations}
-                isLoading={isLoadingInvitations}
             />
 
             <NewTransactionModal

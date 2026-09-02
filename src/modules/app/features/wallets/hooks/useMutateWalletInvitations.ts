@@ -13,6 +13,7 @@ export const useMutateWalletInvitations = () => {
     const invalidate = () => {
         void queryClient.invalidateQueries({ queryKey: ["wallet-invitations"] });
         void queryClient.invalidateQueries({ queryKey: ["wallets"] });
+        void queryClient.invalidateQueries({ queryKey: ["wallet-members"] });
     };
 
     const inviteMember = useMutation({

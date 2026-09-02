@@ -7,10 +7,11 @@ import { UserPlus } from "lucide-react";
 
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
 import type { Wallet } from "../../../wallets/interfaces/Wallets";
+import { useGetWalletMembers } from "../../hooks/useGetWalletMembers";
+import { WalletMembersList } from "../WalletMembersList";
 import { DeleteWalletModal } from "../modal/DeleteWalletModal";
 import { InviteWalletMemberModal } from "../modal/InviteWalletMemberModal";
 
-import { useAuthStore } from "@/auth/authStore";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Textarea } from "@/components/controls/Textarea";
@@ -31,24 +32,15 @@ interface WalletSettingsPanelProps {
     initialValue?: number;
 }
 
-const getInitials = (value: string) => {
-    const parts = value.trim().split(/\s+/).filter(Boolean);
-    if (parts.length === 0) {
-        return "T";
-    }
-    if (parts.length === 1) {
-        return parts[0].slice(0, 2).toUpperCase();
-    }
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-};
-
 export const WalletSettingsPanel = ({
     wallet,
     isLoading,
     initialValue,
 }: WalletSettingsPanelProps) => {
-    const user = useAuthStore((state) => state.user);
     const { updateWallet } = useMutateWallets();
+    const { data: membersResponse, isLoading: isMembersLoading } = useGetWalletMembers(
+        wallet?.id ?? "",
+    );
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [isInviteOpen, setIsInviteOpen] = useState(false);
 
@@ -76,6 +68,7 @@ export const WalletSettingsPanel = ({
     }, [wallet, reset]);
 
     const resolvedInitialValue = wallet?.initialValue ?? initialValue ?? 0;
+    const members = membersResponse?.data ?? [];
 
     const onSubmit = async (formData: SettingsFormValues) => {
         if (!wallet) {
@@ -120,8 +113,6 @@ export const WalletSettingsPanel = ({
     }
 
     const isSaving = updateWallet.isPending;
-    const ownerLabel = user?.name || user?.email || "Tú";
-    const ownerInitials = getInitials(ownerLabel);
 
     return (
         <div className="flex flex-1 flex-col @2xl:flex-row">
@@ -241,33 +232,7 @@ export const WalletSettingsPanel = ({
                     </button>
                 </div>
 
-                <ul className="min-h-0 flex-1 overflow-y-auto px-4 sm:px-7">
-                    <li className="flex items-center justify-between gap-3 border-b border-light-10 py-4">
-                        <div className="flex min-w-0 items-center gap-3">
-                            {user?.pictureUrl ? (
-                                <img
-                                    src={user.pictureUrl}
-                                    alt={ownerLabel}
-                                    className="h-9 w-9 rounded-full object-cover"
-                                    referrerPolicy="no-referrer"
-                                />
-                            ) : (
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-medium text-light">
-                                    {ownerInitials}
-                                </div>
-                            )}
-                            <div className="min-w-0">
-                                <p className="truncate text-sm font-medium text-light">
-                                    {ownerLabel}
-                                </p>
-                                <p className="truncate text-xs text-helper">Tú</p>
-                            </div>
-                        </div>
-                        <span className="shrink-0 rounded-full border border-light-10 px-2.5 py-1 text-xs text-helper">
-                            {wallet.role || "Propietario"}
-                        </span>
-                    </li>
-                </ul>
+                <WalletMembersList members={members} isLoading={isMembersLoading} />
             </section>
 
             <DeleteWalletModal

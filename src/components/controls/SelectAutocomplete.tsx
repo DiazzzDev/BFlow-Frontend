@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import {
     Combobox,
     ComboboxButton,
@@ -16,23 +16,39 @@ interface SelectAutoCompleteProps<T> {
     query: string;
     setQuery: (query: string) => void;
     data: T[];
-    label: string;
+    label?: string;
     idSelect: string;
     getKey: (item: T) => string;
     getLabel: (item: T) => string;
     placeholder?: string;
     disabled?: boolean;
     allowCreate?: boolean;
+    showSearchIcon?: boolean;
+    /** When false, shows `data` as-is (useful for remote search). Default true. */
+    filterLocally?: boolean;
+    /**
+     * When true (default), the options list floats with absolute/portal positioning.
+     * When false, the list stays in document flow and takes up space.
+     */
+    portal?: boolean;
+    isOptionDisabled?: (item: T) => boolean;
+    renderOption?: (item: T) => ReactNode;
 }
 
-const inputClassName =
+const inputClassNameWithIcon =
     "h-11 w-full rounded-xl border border-light-10 bg-surface pl-10 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
 
-const optionsClassName =
+const inputClassNameWithoutIcon =
+    "h-11 w-full rounded-xl border border-light-10 bg-surface px-4 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
+
+const floatingOptionsClassName =
     "z-50 mt-2 max-h-60 w-[var(--input-width)] overflow-auto rounded-xl border border-light-10 bg-surface-hard p-1.5 text-sm shadow-xl empty:invisible";
 
+const inlineOptionsClassName =
+    "relative mt-2 max-h-60 w-full overflow-auto rounded-xl border border-light-10 bg-surface-hard p-1.5 text-sm empty:hidden";
+
 const optionClassName =
-    "group flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2.5 text-light transition-colors data-focus:bg-primary/15 data-selected:bg-primary/10 data-selected:font-medium";
+    "group flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2.5 text-light transition-colors data-focus:bg-primary/15 data-selected:bg-primary/10 data-selected:font-medium data-disabled:cursor-not-allowed data-disabled:opacity-50";
 
 export const SelectAutoComplete = <T,>({
     selectedItem,
@@ -47,6 +63,11 @@ export const SelectAutoComplete = <T,>({
     placeholder = "Buscar...",
     disabled = false,
     allowCreate = false,
+    showSearchIcon = true,
+    filterLocally = true,
+    portal = true,
+    isOptionDisabled,
+    renderOption,
 }: SelectAutoCompleteProps<T>) => {
     const selectedLabel = selectedItem ? getLabel(selectedItem) : "";
     const isEditingSelection = query.length > 0 && query !== selectedLabel;
@@ -54,7 +75,7 @@ export const SelectAutoComplete = <T,>({
     const inputDisplayValue = query || selectedLabel;
 
     const filteredData = useMemo(() => {
-        if (!query.trim()) {
+        if (!filterLocally || !query.trim()) {
             return data;
         }
 
@@ -62,7 +83,7 @@ export const SelectAutoComplete = <T,>({
         return data.filter((item) =>
             getLabel(item).toLowerCase().includes(normalizedQuery),
         );
-    }, [data, getLabel, query]);
+    }, [data, filterLocally, getLabel, query]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -90,16 +111,20 @@ export const SelectAutoComplete = <T,>({
             <Label htmlFor={idSelect}>{label}</Label>
 
             <div className="relative mt-2 [--anchor-gap:0px]">
-                <Search
-                    aria-hidden="true"
-                    className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-helper"
-                />
+                {showSearchIcon ? (
+                    <Search
+                        aria-hidden="true"
+                        className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-helper"
+                    />
+                ) : null}
 
                 <ComboboxInput
                     id={idSelect}
                     placeholder={placeholder}
                     displayValue={() => inputDisplayValue}
-                    className={inputClassName}
+                    className={
+                        showSearchIcon ? inputClassNameWithIcon : inputClassNameWithoutIcon
+                    }
                     onChange={handleInputChange}
                 />
 
@@ -108,9 +133,10 @@ export const SelectAutoComplete = <T,>({
                 </ComboboxButton>
 
                 <ComboboxOptions
-                    portal
-                    anchor="bottom start"
-                    className={optionsClassName}
+                    {...(portal
+                        ? { portal: true as const, anchor: "bottom start" as const }
+                        : { modal: false as const })}
+                    className={portal ? floatingOptionsClassName : inlineOptionsClassName}
                 >
                     {allowCreate && query.trim().length > 0 && (
                         <ComboboxOption
@@ -130,13 +156,18 @@ export const SelectAutoComplete = <T,>({
                             <ComboboxOption
                                 key={getKey(item)}
                                 value={item}
+                                disabled={isOptionDisabled?.(item)}
                                 className={optionClassName}
                             >
                                 <Check
                                     aria-hidden="true"
                                     className="size-4 shrink-0 text-primary opacity-0 group-data-selected:opacity-100"
                                 />
-                                <span className="truncate">{getLabel(item)}</span>
+                                {renderOption ? (
+                                    renderOption(item)
+                                ) : (
+                                    <span className="truncate">{getLabel(item)}</span>
+                                )}
                             </ComboboxOption>
                         ))
                     )}

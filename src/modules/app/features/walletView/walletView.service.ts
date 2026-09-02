@@ -1,6 +1,7 @@
 import type { Wallet } from "../wallets/interfaces/Wallets";
 
 import type { Transaction, TransactionType, WalletDetails } from "./interfaces/Transaction";
+import type { WalletMember } from "./interfaces/WalletMember";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";
@@ -23,6 +24,14 @@ export const getWalletById = async (walletId: string) => {
         `${walletsUrl}/${walletId}`,
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener la billetera",
+    );
+};
+
+export const getWalletMembers = async (walletId: string) => {
+    return await apiRequest<ApiResponse<WalletMember[]>>(
+        `${walletsUrl}/${walletId}/members`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener los miembros de la billetera",
     );
 };
 
