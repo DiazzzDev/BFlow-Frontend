@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router";
 import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
 import type { Transaction, TransactionType } from "../walletView/interfaces/Transaction";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
+
 import { HistoryFilters } from "./components/HistoryFilters";
 import { HistoryTimeline } from "./components/HistoryTimeline";
 import { useGetHistory } from "./hooks/useGetHistory";

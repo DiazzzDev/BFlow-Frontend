@@ -87,7 +87,7 @@ export const WalletSettingsPanel = ({
     const { data: walletDetailsResponse } = useGetWalletDetails(wallet?.id ?? "");
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const isOwner = isOwnerRole(wallet?.role);
-    const transactionsCount = walletDetailsResponse?.data?.transactions ?? 0;
+    const transactionsCount = walletDetailsResponse?.data.transactions ?? 0;
 
     const {
         control,

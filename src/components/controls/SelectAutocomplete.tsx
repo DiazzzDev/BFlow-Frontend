@@ -86,7 +86,7 @@ export const SelectAutoComplete = <T,>({
     }, [data, filterLocally, getLabel, query]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
+        const {value} = event.target;
         setQuery(value);
 
         if (selectedItem && value !== getLabel(selectedItem)) {

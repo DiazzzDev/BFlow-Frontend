@@ -3,8 +3,7 @@ import { Plus } from "lucide-react";
 
 import { NewTransactionModal } from "../../../../components/newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
-import type { Transaction } from "../../interfaces/Transaction";
-import type { TransactionType } from "../../interfaces/Transaction";
+import type { Transaction , TransactionType } from "../../interfaces/Transaction";
 import {
     TransactionsTable,
     getTransactionColumnsClassName,

@@ -2,6 +2,7 @@ import { Receipt } from "lucide-react";
 
 import type { Transaction } from "../../walletView/interfaces/Transaction";
 import { groupTransactionsByDay } from "../utils/groupTransactionsByDay";
+
 import { HistoryDayGroup } from "./HistoryDayGroup";
 import { HistoryTimelineSkeleton } from "./HistoryTimelineSkeleton";
 

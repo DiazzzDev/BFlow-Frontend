@@ -100,12 +100,15 @@ export const InviteWalletMemberModal = ({
     });
 
     useEffect(() => {
-        if (!isOpen) {
-            return;
+        const f = () => {
+            if (!isOpen) {
+                return;
+            }
+            reset({ invitedEmail: "" });
+            setCollaboratorQuery("");
+            setSelectedCollaborator(null);
         }
-        reset({ invitedEmail: "" });
-        setCollaboratorQuery("");
-        setSelectedCollaborator(null);
+        f()
     }, [isOpen, reset]);
 
     const onSubmit = async (formData: InviteFormValues) => {

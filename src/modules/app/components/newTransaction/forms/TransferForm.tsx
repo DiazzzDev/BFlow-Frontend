@@ -230,9 +230,9 @@ export const TransferForm = ({
                                     }
                                     selectedItem={selectedWallet}
                                     setSelectedItem={(wallet) => {
-                                        const walletId = wallet?.id ?? "";
-                                        field.onChange(walletId);
-                                        setValue("counterpartWalletId", walletId, {
+                                        const walletIdSelected = wallet?.id ?? "";
+                                        field.onChange(walletIdSelected);
+                                        setValue("counterpartWalletId", walletIdSelected, {
                                             shouldValidate: true,
                                         });
                                     }}
