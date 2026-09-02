@@ -1,15 +1,13 @@
-import { Wallet } from "lucide-react";
-
 import type { Transaction } from "../../walletView/interfaces/Transaction";
 import {
     formatHistoryDayLabel,
-    type HistoryDayGroup,
+    type HistoryDayGroup as HistoryDayGroupType,
 } from "../utils/groupTransactionsByDay";
 
 import { HistoryTransactionCard } from "./HistoryTransactionCard";
 
 interface HistoryDayGroupProps {
-    group: HistoryDayGroup;
+    group:  HistoryDayGroupType;
     isLast: boolean;
     onViewDetails: (transaction: Transaction) => void;
     onDuplicate: (transaction: Transaction) => void;
