@@ -1,10 +1,15 @@
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { isValidEmail } from "@/utils/validators";
+const forgotPasswordSchema = z.object({
+    email: z
+        .string()
+        .min(1, "El correo es requerido")
+        .email("Correo inválido"),
+});
 
-type FormData = {
-    email: string;
-};
+type FormData = z.infer<typeof forgotPasswordSchema>;
 
 const inputClass =
     "h-10 w-full rounded-lg border border-light-10 bg-surface px-3 text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
@@ -19,7 +24,10 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+    } = useForm<FormData>({
+        resolver: zodResolver(forgotPasswordSchema),
+        mode: "onSubmit",
+    });
 
     return (
         <form
@@ -38,10 +46,7 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
                 placeholder="Correo electrónico"
                 disabled={isLoading}
                 className={inputClass}
-                {...register("email", {
-                    required: "El correo es requerido",
-                    validate: (value) => isValidEmail(value) || "Correo inválido",
-                })}
+                {...register("email")}
             />
 
             {errors.email && (

@@ -12,34 +12,34 @@ import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 
 const statusStyles: Record<BudgetStatus, { label: string; className: string }> = {
     exceeded: {
-        label: "Exceeded",
+        label: "Excedido",
         className: "bg-danger-sweet text-danger",
     },
     healthy: {
-        label: "Healthy",
+        label: "Saludable",
         className: "bg-info/15 text-info",
     },
     critical: {
-        label: "Critical",
+        label: "Crítico",
         className: "bg-primary-15 text-primary",
     },
     warning: {
-        label: "Warning",
+        label: "Advertencia",
         className: "bg-warning-sweet text-warning",
     },
 };
 
 const periodLabels: Record<string, string> = {
-    DAILY: "Daily",
-    WEEKLY: "Weekly",
-    MONTHLY: "Monthly",
-    YEARLY: "Yearly",
+    DAILY: "Diario",
+    WEEKLY: "Semanal",
+    MONTHLY: "Mensual",
+    YEARLY: "Anual",
 };
 
 const scopeLabels: Record<string, string> = {
-    WALLET: "Wallet",
-    CATEGORY_GLOBAL: "Category",
-    WALLET_CATEGORY: "Wallet · Category",
+    WALLET: "Billetera",
+    CATEGORY_GLOBAL: "Categoría",
+    WALLET_CATEGORY: "Billetera · Categoría",
 };
 
 interface BudgetItemProps {
@@ -51,7 +51,7 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
     const status = statusStyles[resolveBudgetStatus(budget)];
     const name = getBudgetDisplayName(budget);
     const updatedLabel = budget.updatedAt
-        ? `Updated ${formatterDynamicDate(budget.updatedAt)}`
+        ? `Actualizado ${formatterDynamicDate(budget.updatedAt)}`
         : "Sin fecha de actualización";
 
     const tags = [
@@ -76,7 +76,7 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
                     {budget.spent !== null && (
                         <>
                             {" · "}
-                            Spent {formatCurrency(budget.spent)}
+                            Gastado {formatCurrency(budget.spent)}
                         </>
                     )}
                 </p>

@@ -84,7 +84,7 @@ const TransactionCategoryCell = ({ transaction }: { transaction: Transaction }) 
                 <ArrowLeftRight className="h-3.5 w-3.5" />
             </span>
             <span className="truncate text-sm text-helper">
-                {transaction.counterpartWalletName || "Transfer"}
+                {transaction.counterpartWalletName || "Transferencia"}
             </span>
         </div>
     );
@@ -154,7 +154,7 @@ export const TransactionsTable = ({
                 const mobileMeta = showCategory
                     ? hasCategory(tx)
                         ? `${tx.categoryName || "—"} · ${formatMonthYear(tx.date)}`
-                        : `${tx.counterpartWalletName || "Transfer"} · ${formatMonthYear(tx.date)}`
+                        : `${tx.counterpartWalletName || "Transferencia"} · ${formatMonthYear(tx.date)}`
                     : formatMonthYear(tx.date);
 
                 return (

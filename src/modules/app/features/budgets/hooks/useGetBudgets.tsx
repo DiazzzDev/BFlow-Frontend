@@ -12,5 +12,6 @@ export const useGetBudgets = (filters: GetBudgetsParams = {}) => {
         queryKey: ["budgets", filters],
         queryFn: () => getBudgets(filters),
         enabled: !!user,
+        staleTime: 1000 * 60 * 5,
     });
 };

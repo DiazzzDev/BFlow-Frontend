@@ -74,7 +74,7 @@ export const BudgetsPage = () => {
                 <div className="mb-5 flex flex-col gap-3 @3xl:flex-row @xl:justify-between">
                     <SearchInput
                         id="txtSearchBudgets"
-                        placeholder="Search budgets..."
+                        placeholder="Buscar presupuestos..."
                         className="w-full max-w-none min-w-0 @xl:max-w-xl"
                         syncToParams
                     />
@@ -100,7 +100,7 @@ export const BudgetsPage = () => {
 
                 <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <h2 className="text-base font-semibold text-light sm:text-lg">
-                        Active budgets {isLoading ? "" : `(${totalBudgets})`}
+                        Presupuestos activos {isLoading ? "" : `(${totalBudgets})`}
                     </h2>
 
                     <Select

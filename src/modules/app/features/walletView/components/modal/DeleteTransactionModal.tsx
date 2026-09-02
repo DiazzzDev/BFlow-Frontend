@@ -1,20 +1,51 @@
-import type { Transaction } from "../interfaces/Transaction";
+import { toast } from "sonner";
+
+import { useDeleteExpense } from "../../../../components/newTransaction/hooks/useMutateExpenses";
+import { useDeleteIncome } from "../../../../components/newTransaction/hooks/useMutateIncomes";
+import type { Transaction } from "../../interfaces/Transaction";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 
 interface DeleteTransactionModalProps {
     transaction: Transaction | null;
-    isDeleting: boolean;
     onClose: () => void;
-    onConfirm: () => void;
 }
 
 export const DeleteTransactionModal = ({
     transaction,
-    isDeleting,
     onClose,
-    onConfirm,
 }: DeleteTransactionModalProps) => {
+    const deleteExpense = useDeleteExpense();
+    const deleteIncome = useDeleteIncome();
+    const isDeleting = deleteExpense.isPending || deleteIncome.isPending;
+
+    const handleConfirm = async () => {
+        if (!transaction || (transaction.type !== "EXPENSE" && transaction.type !== "INCOME")) {
+            return;
+        }
+
+        const promise =
+            transaction.type === "EXPENSE"
+                ? deleteExpense.mutateAsync({
+                    id: transaction.id,
+                    walletId: transaction.walletId,
+                })
+                : deleteIncome.mutateAsync({
+                    id: transaction.id,
+                    walletId: transaction.walletId,
+                });
+
+        toast.promise(promise, {
+            loading: "Eliminando transacción...",
+            success: "Transacción eliminada",
+            error: (err) =>
+                err instanceof Error ? err.message : "Error al eliminar la transacción",
+        });
+
+        await promise;
+        onClose();
+    };
+
     return (
         <CustomModal
             isModalOpen={Boolean(transaction)}
@@ -47,7 +78,7 @@ export const DeleteTransactionModal = ({
                         type="button"
                         disabled={isDeleting}
                         onClick={() => {
-                            void onConfirm();
+                            void handleConfirm();
                         }}
                         className="cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-danger-dark disabled:cursor-not-allowed disabled:opacity-50"
                     >

@@ -351,7 +351,7 @@ export const BudgetSettingsPanel = ({
                 <div className="border-b border-light-10 py-5 @2xl:pl-7">
                     <h2 className="text-base font-semibold text-light">Alcance</h2>
                     <p className="mt-1 text-sm text-helper">
-                        Wallet y categoría no se pueden cambiar después de crear.
+                        Billetera y categoría no se pueden cambiar después de crear.
                     </p>
                 </div>
 

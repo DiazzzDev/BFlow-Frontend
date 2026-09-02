@@ -41,7 +41,7 @@ const AverageRow = ({
                         {changePercent}%
                     </span>
                     {" "}
-                    compared to last month
+                    frente al mes pasado
                 </p>
             )}
         </div>
@@ -69,7 +69,7 @@ export const AverageStatsCard = ({
         <div className={`${dashboardCardClass} gap-5`}>
             <AverageRow
                 isLoading={isLoading}
-                label="Average income"
+                label="Ingreso promedio"
                 amount={averageIncome}
                 currency={currency}
                 percentageChangeLastMonth={incomePercentageChangeLastMonth}
@@ -78,7 +78,7 @@ export const AverageStatsCard = ({
             <div className="border-t border-light-10" />
             <AverageRow
                 isLoading={isLoading}
-                label="Average expenses"
+                label="Gasto promedio"
                 amount={averageExpenses}
                 currency={currency}
                 percentageChangeLastMonth={expensesPercentageChangeLastMonth}

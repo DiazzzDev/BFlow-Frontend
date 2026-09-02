@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { Link } from "react-router"
 import { useState } from "react"
@@ -6,15 +8,18 @@ import { toast } from "sonner"
 
 import { useLogin } from "../hooks/useLogin"
 
-import { isValidEmail } from "@/utils/validators"
+const loginSchema = z.object({
+    email: z
+        .string()
+        .min(1, "El correo electrónico es requerido")
+        .email("El formato del correo no es válido"),
+    password: z.string().min(1, "La contraseña es requerida"),
+});
+
+type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const inputClass =
     "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
-
-interface LoginFormInputs {
-    email: string;
-    password: string;
-};
 
 export const LoginForm = () => {
     const { mutateAsync: onSubmitLogin, isPending: isLoading } = useLogin();
@@ -22,7 +27,10 @@ export const LoginForm = () => {
         register,
         handleSubmit,
         formState: { errors, isSubmitted },
-    } = useForm<LoginFormInputs>({ mode: 'onSubmit' });
+    } = useForm<LoginFormInputs>({
+        resolver: zodResolver(loginSchema),
+        mode: "onSubmit",
+    });
     const onInternalSubmit = (data: LoginFormInputs) => {
         toast.promise(onSubmitLogin(data), {
             loading: "Iniciando sesión...",
@@ -50,7 +58,7 @@ export const LoginForm = () => {
                         <input
                             id="txtEmail"
                             disabled={isLoading}
-                            {...register('email', { required: 'El correo electrónico es requerido', validate: (value) => isValidEmail(value) || "El formato del correo no es válido" })}
+                            {...register("email")}
                             placeholder="Correo electrónico"
                             className={`${inputClass} pl-11`}
                         />
@@ -85,7 +93,7 @@ export const LoginForm = () => {
                         <input
                             id="txtPassword"
                             disabled={isLoading}
-                            {...register('password', { required: 'La contraseña es requerida' })}
+                            {...register("password")}
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••••"
                             className={`${inputClass} px-11`}

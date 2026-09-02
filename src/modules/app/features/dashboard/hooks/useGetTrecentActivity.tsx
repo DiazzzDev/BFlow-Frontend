@@ -6,5 +6,6 @@ export const useGetRecentActivity = () => {
     return useQuery({
         queryKey: ["dashboard-recent-activity"],
         queryFn: getRecentActivity,
+        staleTime: 1000 * 60 * 5,
     });
 };

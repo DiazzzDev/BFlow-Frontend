@@ -16,5 +16,6 @@ export const useGetOverview = (
         queryKey: ["wallet-overview", walletId, query, page, size],
         queryFn: () => getOverview(walletId, { query, page, size }),
         enabled: !!user && !!walletId && enabled,
+        staleTime: 1000 * 60 * 5,
     });
 };

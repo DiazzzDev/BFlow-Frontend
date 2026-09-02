@@ -43,7 +43,7 @@ export const getSpending = async () => {
     return await apiRequest<ApiResponse<DashboardSpending>>(
         `${dashboardUrl}/spending`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener el spending",
+        "Error al obtener los gastos",
     );
 };
 

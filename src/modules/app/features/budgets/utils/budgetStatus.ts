@@ -27,27 +27,37 @@ export const resolveBudgetStatus = (budget: Budget): BudgetStatus => {
 };
 
 export const budgetPeriodLabels: Record<string, string> = {
-    DAILY: "Daily",
-    WEEKLY: "Weekly",
-    MONTHLY: "Monthly",
-    YEARLY: "Yearly",
+    DAILY: "Diario",
+    WEEKLY: "Semanal",
+    MONTHLY: "Mensual",
+    YEARLY: "Anual",
 };
 
 export const budgetScopeLabels: Record<string, string> = {
-    WALLET: "Wallet",
-    CATEGORY_GLOBAL: "Category",
-    WALLET_CATEGORY: "Wallet · Category",
+    WALLET: "Billetera",
+    CATEGORY_GLOBAL: "Categoría",
+    WALLET_CATEGORY: "Billetera · Categoría",
 };
 
 export const getBudgetStatusLabel = (status?: string | null) => {
     const normalized = status?.trim();
     if (!normalized) {
-        return "Active";
+        return "Activo";
     }
     if (normalized.toUpperCase() === "OK") {
-        return "Active";
+        return "Activo";
     }
-    return normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
+
+    const statusLabels: Record<string, string> = {
+        exceeded: "Excedido",
+        healthy: "Saludable",
+        critical: "Crítico",
+        warning: "Advertencia",
+        active: "Activo",
+    };
+
+    const key = normalized.toLowerCase();
+    return statusLabels[key] ?? normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
 };
 
 export const getBudgetDisplayName = (

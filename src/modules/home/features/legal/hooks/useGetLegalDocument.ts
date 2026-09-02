@@ -13,7 +13,7 @@ export const useGetLegalDocument = (documentType: LegalDocumentType) => {
     const query = useQuery({
         queryKey: ["legal", documentType, lang],
         queryFn: () => getLegalDocument(documentType, lang),
-        staleTime: 1000 * 60 * 10,
+        staleTime: 1000 * 60 * 5,
         retry: 2,
     });
 
