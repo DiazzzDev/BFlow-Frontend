@@ -9,7 +9,7 @@ import { WalletTransactionsPanel } from "./components/panel/WalletTransactionsPa
 import { WalletMembersPanel } from "./components/panel/WalletMembersPanel";
 import { WalletSettingsPanel } from "./components/panel/WalletSettingsPanel";
 import { WalletInfoPanel } from "./components/panel/WalletInfoPanel";
-import { isManagementTab } from "./walletView.tabs";
+import { isManagementTab } from "./utils/walletView.tabs";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 

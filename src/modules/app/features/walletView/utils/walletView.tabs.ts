@@ -1,4 +1,4 @@
-import type { TransactionType } from "./interfaces/Transaction";
+import type { TransactionType } from "../interfaces/Transaction";
 
 export type DetailTab =
     | "overview"

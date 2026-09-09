@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { usePostRecurring } from "../hooks/useMutateRecurring";
 import type { RecurringFrequency, RecurringType } from "../interfaces/Recurring";
-import { RECURRING_TYPE_TABS } from "../recurring.tabs";
+import { RECURRING_TYPE_TABS } from "../utils/recurring.tabs";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
 

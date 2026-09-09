@@ -3,7 +3,7 @@ import {
     isManagementTab,
     TAB_TO_TYPE,
     type DetailTab,
-} from "../walletView.tabs";
+} from "../utils/walletView.tabs";
 
 import { useGetOverview } from "./useGetOverview";
 import { useGetTransactions } from "./useGetTransactions";
