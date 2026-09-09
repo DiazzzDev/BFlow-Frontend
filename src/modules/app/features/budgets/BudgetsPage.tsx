@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { useNavigate } from "react-router";
 import { Plus, WalletCards } from "lucide-react";
 
 import { BudgetOverview } from "./components/BudgetOverview";
 import { BudgetItem } from "./components/BudgetItem";
 import { BudgetItemSkeleton } from "./components/BudgetItemSkeleton";
 import { BudgetForm } from "./components/BudgetForm";
-import { useGetBudgets } from "./hooks/useGetBudgets";
+import { BUDGET_PERIOD_TABS, budgetSortOptions } from "./utils/budgets.filters";
+import { useBudgetsPage } from "./hooks/useBudgetsPage";
 
 import { SearchInput } from "@/components/controls/SearchInput";
 import { Select } from "@/components/controls/Select";
@@ -16,51 +16,12 @@ import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { CustomModal } from "@/components/custom/CustomModal";
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
-import { useDebounce } from "@/hooks/useDebounce";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
-
-const sortOptions = [
-    { value: "amount,desc", label: "Mayor monto" },
-    { value: "amount,asc", label: "Menor monto" },
-    { value: "updatedAt,desc", label: "Más recientes" },
-    { value: "startDate,desc", label: "Inicio reciente" },
-];
-
-const periodOptions = [
-    { label: "Todos", value: "ALL" },
-    { label: "Mensual", value: "MONTHLY" },
-    { label: "Semanal", value: "WEEKLY" },
-    { label: "Anual", value: "YEARLY" },
-];
 
 export const BudgetsPage = () => {
     const navigate = useNavigate();
-    const [params] = useSearchParams();
     const { updateSearchParams } = useUpdateSearchParams();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const query = params.get("query") || "";
-    const debouncedQuery = useDebounce(query, 650);
-    const sort = params.get("sort") || "amount,desc";
-    const periodParam = params.get("period") || "ALL";
-    const period = periodParam === "ALL" ? undefined : periodParam;
-    const { apiPage, limit } = usePaginationParams();
-
-    const { data, isLoading } = useGetBudgets({
-        query: debouncedQuery,
-        sort,
-        period,
-        page: apiPage,
-        size: limit,
-    });
-
-    const budgets = data?.data.content ?? [];
-    const totalBudgets = data?.data.totalElements ?? budgets.length;
-    const totalPages = data?.data.totalPages ?? 0;
-    const numberOfElements = data?.data.numberOfElements ?? budgets.length;
-    const totalLimit = budgets.reduce((sum, budget) => sum + (budget.budgetLimit ?? 0), 0);
-    const hasActiveFilters = Boolean(query.trim() || period || sort !== "amount,desc");
+    const { budgets, isLoading, totalBudgets, totalPages, numberOfElements, totalLimit, hasActiveFilters, isModalOpen, setIsModalOpen, sort, periodParam } = useBudgetsPage();
 
     return (
         <div className="flex flex-col px-4 py-5 sm:px-6 pb-10 min-h-full">
@@ -81,7 +42,7 @@ export const BudgetsPage = () => {
 
                     <div className="flex min-w-0 flex-col gap-3 @lg:flex-row @md:items-center justify-between">
                         <TabFilter
-                            options={periodOptions}
+                            options={BUDGET_PERIOD_TABS}
                             selected={periodParam}
                             keyFilter="period"
                             layoutId="budgetPeriodTab"
@@ -115,7 +76,7 @@ export const BudgetsPage = () => {
                             )
                         }
                     >
-                        {sortOptions.map((option) => (
+                        {budgetSortOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>

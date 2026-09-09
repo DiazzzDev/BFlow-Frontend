@@ -6,7 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../../budgets/hooks/useMutateBudgets";
-import type { BudgetDetail, BudgetPeriod } from "../../budgets/interfaces/Budget";
+import type { BudgetDetail } from "../../budgets/interfaces/Budget";
+import { budgetPeriodFormOptions } from "../../budgets/utils/budgets.filters";
 import {
     budgetPeriodLabels,
     budgetScopeLabels,
@@ -26,13 +27,6 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
 const MAX_THRESHOLD = 100;
-
-const periodOptions: Array<{ value: BudgetPeriod; label: string }> = [
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "YEARLY", label: "Anual" },
-    { value: "DAILY", label: "Diario" },
-];
 
 const settingsSchema = z
     .object({
@@ -237,7 +231,7 @@ export const BudgetSettingsPanel = ({
                                             onChange={(event) => field.onChange(event.target.value)}
                                             onBlur={field.onBlur}
                                         >
-                                            {periodOptions.map((option) => (
+                                            {budgetPeriodFormOptions.map((option) => (
                                                 <option key={option.value} value={option.value}>
                                                     {option.label}
                                                 </option>

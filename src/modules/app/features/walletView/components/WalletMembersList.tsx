@@ -1,6 +1,8 @@
 import { UserMinus, Users } from "lucide-react";
 
 import type { WalletMember } from "../interfaces/WalletMember";
+import { getInitials } from "../utils/getInitials";
+import { roleLabel } from "../utils/walletRole";
 
 import { useAuthStore } from "@/auth/authStore";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
@@ -13,42 +15,6 @@ interface WalletMembersListProps {
     canManage?: boolean;
     onRemoveMember?: (member: WalletMember) => void;
 }
-
-const roleLabel = (role?: string | null) => {
-    const normalized = role?.trim().toUpperCase() ?? "";
-
-    if (normalized === "OWNER") {
-        return "Propietario";
-    }
-    if (normalized === "EDITOR" || normalized === "MEMBER") {
-        return "Miembro";
-    }
-    if (normalized === "VIEWER") {
-        return "Solo lectura";
-    }
-
-    return role?.trim() || "Miembro";
-};
-
-const getInitials = (value: string) => {
-    const trimmed = value.trim();
-
-    if (!trimmed) {
-        return "?";
-    }
-
-    if (trimmed.includes("@")) {
-        return trimmed.slice(0, 2).toUpperCase();
-    }
-
-    const parts = trimmed.split(/\s+/).filter(Boolean);
-
-    if (parts.length === 1) {
-        return parts[0].slice(0, 2).toUpperCase();
-    }
-
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-};
 
 export const WalletMembersList = ({
     members,

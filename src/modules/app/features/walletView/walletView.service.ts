@@ -2,22 +2,22 @@ import type { Wallet } from "../wallets/interfaces/Wallets";
 
 import type { Transaction, TransactionType, WalletDetails } from "./interfaces/Transaction";
 import type { WalletMember } from "./interfaces/WalletMember";
+import type { CreateRecurringData, Recurring } from "./interfaces/Recurring";
 
 import { apiRequest, PaginatedListResponse } from "@/utils/api";
+import type { ApiResponse } from "@/utils/api.interfaces";
 import { config } from "@/config/config";
+import { idempotentPost } from "@/utils/idempotentPost";
 
 const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;
 const transactionsUrl = `${config.API_BASE_URL}/api/v1/transactions`;
+const recurringUrl = `${config.API_BASE_URL}/api/v1/recurring`;
 
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
 };
 
-type ApiResponse<T> = {
-    success: boolean;
-    message: string;
-    data: T;
-};
+// --- /api/v1/wallets ---
 
 export const getWalletById = async (walletId: string) => {
     return await apiRequest<ApiResponse<Wallet>>(
@@ -65,7 +65,7 @@ export const getOverview = async (
 ) => {
     const params = new URLSearchParams({
         page: String(page),
-        size: String(size)
+        size: String(size),
     });
 
     if (query?.trim()) {
@@ -78,6 +78,8 @@ export const getOverview = async (
         "Error al obtener las transacciones",
     );
 };
+
+// --- /api/v1/transactions ---
 
 export const getTransactions = async ({
     type,
@@ -108,4 +110,12 @@ export const getTransactions = async ({
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener las transacciones",
     );
+};
+
+// --- /api/v1/recurring ---
+
+export const postRecurring = async (recurringData: CreateRecurringData) => {
+    return await idempotentPost<Recurring>(recurringUrl, recurringData, {
+        friendlyMessage: "Error al programar la transacción",
+    });
 };

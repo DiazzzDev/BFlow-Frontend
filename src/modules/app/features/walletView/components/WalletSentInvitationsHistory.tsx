@@ -7,6 +7,12 @@ import {
     getInvitationExpiryLabel,
     isInvitationExpired,
 } from "../../wallets/utils/invitationExpiry";
+import {
+    getSentInvitationDisplayName,
+    getSentInvitationStatusBadgeClass,
+    getSentInvitationStatusDotClass,
+    getSentInvitationStatusLabel,
+} from "../utils/sentInvitationStatus";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
@@ -17,63 +23,6 @@ interface WalletSentInvitationsHistoryProps {
     isLoading: boolean;
     canManage: boolean;
 }
-
-const statusLabel = (
-    status: WalletSentInvitation["status"],
-    expired: boolean,
-) => {
-    if (expired && status === "PENDING") {
-        return "Expirada";
-    }
-    if (status === "PENDING") {
-        return "Pendiente";
-    }
-    if (status === "ACCEPTED") {
-        return "Aceptada";
-    }
-    if (status === "DECLINED") {
-        return "Rechazada";
-    }
-    return status;
-};
-
-const statusDotClass = (
-    status: WalletSentInvitation["status"],
-    expired: boolean,
-) => {
-    if (expired && status === "PENDING") {
-        return "bg-helper";
-    }
-    if (status === "PENDING") {
-        return "bg-primary";
-    }
-    if (status === "ACCEPTED") {
-        return "bg-success";
-    }
-    if (status === "DECLINED") {
-        return "bg-danger";
-    }
-    return "bg-helper";
-};
-
-const statusBadgeClass = (
-    status: WalletSentInvitation["status"],
-    expired: boolean,
-) => {
-    if (expired && status === "PENDING") {
-        return "border-light-10 text-helper";
-    }
-    if (status === "PENDING") {
-        return "border-primary/30 bg-primary/10 text-primary";
-    }
-    if (status === "ACCEPTED") {
-        return "border-success-50 bg-success-sweet text-success";
-    }
-    if (status === "DECLINED") {
-        return "border-danger-50/50 bg-danger-sweet text-danger";
-    }
-    return "border-light-10 text-helper";
-};
 
 export const WalletSentInvitationsHistory = ({
     invitations,
@@ -151,7 +100,7 @@ export const WalletSentInvitationsHistory = ({
                     <li key={invitation.id} className="relative flex gap-4 pb-5 last:pb-0">
                         <div className="relative flex w-3 shrink-0 flex-col items-center">
                             <span
-                                className={`relative z-10 mt-5 h-2.5 w-2.5 rounded-full ring-4 ring-surface-hard ${statusDotClass(
+                                className={`relative z-10 mt-5 h-2.5 w-2.5 rounded-full ring-4 ring-surface-hard ${getSentInvitationStatusDotClass(
                                     invitation.status,
                                     expired,
                                 )}`}
@@ -168,7 +117,7 @@ export const WalletSentInvitationsHistory = ({
                             <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
                                     <p className="truncate text-sm font-medium text-light">
-                                        {invitation.invitedUserName?.trim() || ''}
+                                        {getSentInvitationDisplayName(invitation)}
                                     </p>
                                     <p className="mt-0.5 truncate text-xs text-helper">
                                         {invitation.invitedEmail}
@@ -176,12 +125,15 @@ export const WalletSentInvitationsHistory = ({
                                 </div>
 
                                 <span
-                                    className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${statusBadgeClass(
+                                    className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium ${getSentInvitationStatusBadgeClass(
                                         invitation.status,
                                         expired,
                                     )}`}
                                 >
-                                    {statusLabel(invitation.status, expired)}
+                                    {getSentInvitationStatusLabel(
+                                        invitation.status,
+                                        expired,
+                                    )}
                                 </span>
                             </div>
 

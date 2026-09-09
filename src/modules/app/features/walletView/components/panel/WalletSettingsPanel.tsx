@@ -21,6 +21,7 @@ import {
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
 import type { Wallet as WalletType } from "../../../wallets/interfaces/Wallets";
 import { useGetWalletDetails } from "../../hooks/useGetWalletDetails";
+import { isOwnerRole, roleLabel } from "../../utils/walletRole";
 import { DeleteWalletModal } from "../modal/DeleteWalletModal";
 
 import { Input } from "@/components/controls/Input";
@@ -41,25 +42,6 @@ interface WalletSettingsPanelProps {
     wallet?: WalletType;
     isLoading: boolean;
 }
-
-const isOwnerRole = (role?: string | null) =>
-    role?.trim().toUpperCase() === "OWNER";
-
-const roleLabel = (role?: string | null) => {
-    const normalized = role?.trim().toUpperCase() ?? "";
-
-    if (normalized === "OWNER") {
-        return "Propietario";
-    }
-    if (normalized === "EDITOR" || normalized === "MEMBER") {
-        return "Miembro";
-    }
-    if (normalized === "VIEWER") {
-        return "Solo lectura";
-    }
-
-    return role?.trim() || "—";
-};
 
 const InfoRow = ({
     icon,

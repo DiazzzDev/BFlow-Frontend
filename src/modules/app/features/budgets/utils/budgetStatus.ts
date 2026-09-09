@@ -26,6 +26,13 @@ export const resolveBudgetStatus = (budget: Budget): BudgetStatus => {
     return "healthy";
 };
 
+export const budgetStatusClassNames: Record<BudgetStatus, string> = {
+    exceeded: "bg-danger-sweet text-danger",
+    healthy: "bg-info/15 text-info",
+    critical: "bg-primary-15 text-primary",
+    warning: "bg-warning-sweet text-warning",
+};
+
 export const budgetPeriodLabels: Record<string, string> = {
     DAILY: "Diario",
     WEEKLY: "Semanal",

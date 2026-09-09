@@ -1,5 +1,7 @@
 import { fetchAuthSession } from "aws-amplify/auth";
 
+export type { ApiResponse, PaginatedListResponse } from "./api.interfaces";
+
 export class APIError extends Error {
     status: number;
     cause: unknown;
@@ -17,41 +19,6 @@ export class APIError extends Error {
         this.cause = cause;
         this.endpoint = endpoint;
     }
-}
-
-export interface PaginatedListResponse<T> {
-    success: boolean;
-    message: string;
-    data: {
-        totalElements: number;
-        totalPages: number;
-        numberOfElements: number;
-        pageable: {
-            unpaged: boolean;
-            pageNumber: number;
-            paged: boolean;
-            pageSize: number;
-            offset: number;
-            sort: {
-                unsorted: boolean;
-                sorted: boolean;
-                empty: boolean;
-            };
-        };
-        size: number;
-        content: T[];
-        number: number;
-        sort: {
-            unsorted: boolean;
-            sorted: boolean;
-            empty: boolean;
-        };
-        first: boolean;
-        last: boolean;
-        empty: boolean;
-    };
-    timestamp: string;
-    path: string;
 }
 
 async function getAmplifyToken(): Promise<string | undefined> {

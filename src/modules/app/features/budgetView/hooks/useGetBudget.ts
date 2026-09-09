@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getBudgetById } from "../budgetView.service";
+import { getBudgetById } from "../../budgets/budgets.service";
 
 import { useAuthStore } from "@/auth/authStore";
 

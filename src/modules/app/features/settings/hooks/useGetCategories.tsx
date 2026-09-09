@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getCategories } from "../categories.service";
+import { getCategories } from "../settings.service";
 
 import { useAuthStore } from "@/auth/authStore";
 

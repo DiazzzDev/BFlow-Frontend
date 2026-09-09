@@ -17,6 +17,8 @@ export interface Transaction {
     categoryColor: string;
     contributorId: string;
     contributorName: string;
+    contributorEmail: string | null;
+    contributorPictureUrl: string | null;
     status: string | null;
     source: string;
 }

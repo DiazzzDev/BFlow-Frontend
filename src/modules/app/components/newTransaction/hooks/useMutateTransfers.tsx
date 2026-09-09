@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postTransfer } from "../services/transfers.service";
+import { postTransfer } from "../newTransaction.service";
 import type { CreateTransferData } from "../interfaces/Transfer";
 
 export const useMutateTransfers = () => {

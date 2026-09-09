@@ -5,7 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../hooks/useMutateBudgets";
-import type { BudgetPeriod, BudgetScope } from "../interfaces/Budget";
+import type { BudgetScope } from "../interfaces/Budget";
+import {
+    BUDGET_SCOPE_TABS,
+    budgetPeriodFormOptions,
+} from "../utils/budgets.filters";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
@@ -20,19 +24,6 @@ import { Button } from "@/components/controls/Button";
 import { RangeSlider } from "@/components/controls/RangeSlider";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
-
-const scopeTabs: Array<{ id: BudgetScope; label: string }> = [
-    { id: "WALLET", label: "Billetera" },
-    { id: "CATEGORY_GLOBAL", label: "Categoría" },
-    { id: "WALLET_CATEGORY", label: "Billetera + categoría" },
-];
-
-const periodOptions: Array<{ value: BudgetPeriod; label: string }> = [
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "YEARLY", label: "Anual" },
-    { value: "DAILY", label: "Diario" },
-];
 
 const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
@@ -175,7 +166,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             }}
         >
             <SegmentedTabs
-                tabs={scopeTabs}
+                tabs={BUDGET_SCOPE_TABS}
                 selected={scope}
                 onChange={handleScopeChange}
                 ariaLabel="Alcance del presupuesto"
@@ -277,7 +268,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {periodOptions.map((option) => (
+                                {budgetPeriodFormOptions.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}
                                     </option>

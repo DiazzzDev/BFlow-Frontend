@@ -31,7 +31,7 @@ export const WalletViewPage = () => {
 
     return (
         <div className="flex h-full min-h-0 flex-col @3xl:flex-row">
-            <section className="flex min-h-0 min-w-0 flex-1 flex-col pt-5">
+            <section className="@container flex min-h-0 min-w-0 flex-1 flex-col pt-5">
                 <WalletViewHeader
                     name={view.wallet?.name}
                     balance={view.wallet?.balance}

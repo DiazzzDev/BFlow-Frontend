@@ -1,20 +1,13 @@
 import type { Notification } from "./interfaces/Notification";
 
 import { apiRequest } from "@/utils/api";
+import type { ApiResponse } from "@/utils/api.interfaces";
 import { config } from "@/config/config";
 
 const notificationsUrl = `${config.API_BASE_URL}/api/v1/notifications`;
 
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
-};
-
-type ApiResponse<T> = {
-    success: boolean;
-    message: string;
-    data: T;
-    timestamp?: string;
-    path?: string;
 };
 
 export const getNotifications = async () => {

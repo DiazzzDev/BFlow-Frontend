@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import type { WalletCollaborator } from "../../../wallets/interfaces/WalletCollaborator";
 import { useMutateWalletInvitations } from "../../../wallets/hooks/useMutateWalletInvitations";
 import { useSearchWalletCollaborators } from "../../../wallets/hooks/useSearchWalletCollaborators";
+import { collaboratorStatusLabel } from "../../utils/collaboratorStatus";
+import { getInitials } from "../../utils/getInitials";
 
 import { Button } from "@/components/controls/Button";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
@@ -30,42 +32,6 @@ interface InviteWalletMemberModalProps {
     walletName?: string;
     onClose: () => void;
 }
-
-const collaboratorStatusLabel = (status: string) => {
-    const normalized = status.trim().toUpperCase();
-
-    if (normalized === "ALREADY_MEMBER") {
-        return "Ya es miembro";
-    }
-    if (normalized === "PENDING") {
-        return "Invitación pendiente";
-    }
-    if (normalized === "INVITABLE") {
-        return "Disponible";
-    }
-
-    return status;
-};
-
-const getInitials = (value: string) => {
-    const trimmed = value.trim();
-
-    if (!trimmed) {
-        return "?";
-    }
-
-    if (trimmed.includes("@")) {
-        return trimmed.slice(0, 2).toUpperCase();
-    }
-
-    const parts = trimmed.split(/\s+/).filter(Boolean);
-
-    if (parts.length === 1) {
-        return parts[0].slice(0, 2).toUpperCase();
-    }
-
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-};
 
 export const InviteWalletMemberModal = ({
     isOpen,

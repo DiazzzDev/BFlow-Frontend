@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { usePostRecurring } from "../hooks/useMutateRecurring";
 import type { RecurringFrequency, RecurringType } from "../interfaces/Recurring";
+import { RECURRING_TYPE_TABS } from "../recurring.tabs";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
 
@@ -17,11 +18,6 @@ import { Textarea } from "@/components/controls/Textarea";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { Button } from "@/components/controls/Button";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
-
-const typeTabs: Array<{ id: RecurringType; label: string }> = [
-    { id: "INCOME", label: "Ingreso" },
-    { id: "EXPENSE", label: "Gasto" },
-];
 
 const frequencyOptions: Array<{ value: RecurringFrequency; label: string }> = [
     { value: "DAILY", label: "Diario" },
@@ -156,7 +152,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 control={control}
                 render={({ field }) => (
                     <SegmentedTabs
-                        tabs={typeTabs}
+                        tabs={RECURRING_TYPE_TABS}
                         selected={field.value}
                         onChange={(nextType) => {
                             field.onChange(nextType);

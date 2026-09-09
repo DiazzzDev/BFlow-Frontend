@@ -8,6 +8,7 @@ import { toDateInputValue } from "../../features/wallets/utils/transaction.servi
 import { ExpenseForm } from "./forms/ExpenseForm";
 import { IncomeForm } from "./forms/IncomeForm";
 import { TransferForm } from "./forms/TransferForm";
+import { TRANSACTION_TYPE_TABS } from "./newTransaction.tabs";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
@@ -27,12 +28,6 @@ interface NewTransactionModalProps {
     mode?: ModalMode;
     transaction?: Transaction | null;
 }
-
-const transactionTabs: Array<{ id: TransactionType; label: string }> = [
-    { id: "INCOME", label: "Ingreso" },
-    { id: "EXPENSE", label: "Gasto" },
-    { id: "TRANSFER", label: "Transferencia" },
-];
 
 const modalTitles: Record<ModalMode, Record<TransactionType, string>> = {
     create: {
@@ -88,7 +83,9 @@ export const NewTransactionModal = ({
     const needsWalletSelect =
         requireWalletSelect ?? (mode === "create" && !walletId);
     const visibleTypes = allowedTypes ?? ALL_TRANSACTION_TYPES;
-    const visibleTabs = transactionTabs.filter((tab) => visibleTypes.includes(tab.id));
+    const visibleTabs = TRANSACTION_TYPE_TABS.filter((tab) =>
+        visibleTypes.includes(tab.id),
+    );
 
     const [activeType, setActiveType] = useState<TransactionType>(
         resolveInitialType(mode, transaction, initialType, visibleTypes),

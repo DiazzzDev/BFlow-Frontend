@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { searchWalletCollaborators } from "../walletInvitations.service";
+import { searchWalletCollaborators } from "../wallets.service";
 
 import { useAuthStore } from "@/auth/authStore";
 

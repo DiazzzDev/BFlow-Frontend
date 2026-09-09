@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postRecurring } from "../recurring.service";
+import { postRecurring } from "../walletView.service";
 import type { CreateRecurringData } from "../interfaces/Recurring";
 
 export const usePostRecurring = () => {

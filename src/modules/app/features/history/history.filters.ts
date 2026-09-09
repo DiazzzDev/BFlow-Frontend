@@ -1,6 +1,6 @@
 import type { TransactionType } from "../walletView/interfaces/Transaction";
 
-export const historyTypeTabs: Array<{
+export const HISTORY_TYPE_TABS: Array<{
     label: string;
     value: TransactionType | "ALL";
 }> = [

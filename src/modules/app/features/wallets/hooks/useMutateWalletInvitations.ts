@@ -6,7 +6,7 @@ import {
     cancelWalletInvitation,
     declineWalletInvitation,
     postWalletInvitation,
-} from "../walletInvitations.service";
+} from "../wallets.service";
 
 export const useMutateWalletInvitations = () => {
     const queryClient = useQueryClient();

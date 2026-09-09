@@ -9,6 +9,7 @@ import { WalletMembersList } from "../WalletMembersList";
 import { WalletSentInvitationsHistory } from "../WalletSentInvitationsHistory";
 import { InviteWalletMemberModal } from "../modal/InviteWalletMemberModal";
 import { RemoveWalletMemberModal } from "../modal/RemoveWalletMemberModal";
+import { isOwnerRole } from "../../utils/walletRole";
 
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 
@@ -16,9 +17,6 @@ interface WalletMembersPanelProps {
     wallet?: Wallet;
     isLoading: boolean;
 }
-
-const isOwnerRole = (role?: string | null) =>
-    role?.trim().toUpperCase() === "OWNER";
 
 export const WalletMembersPanel = ({
     wallet,

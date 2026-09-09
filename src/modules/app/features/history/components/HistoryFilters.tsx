@@ -1,4 +1,4 @@
-import { historyTypeTabs } from "../history.filters";
+import { HISTORY_TYPE_TABS } from "../history.filters";
 
 import { SearchInput } from "@/components/controls/SearchInput";
 import { TabFilter } from "@/components/controls/TabFilter";
@@ -18,7 +18,7 @@ export const HistoryFilters = ({ selectedType }: HistoryFiltersProps) => {
             />
 
             <TabFilter
-                options={historyTypeTabs.map((tab) => ({
+                options={HISTORY_TYPE_TABS.map((tab) => ({
                     label: tab.label,
                     value: tab.value,
                 }))}

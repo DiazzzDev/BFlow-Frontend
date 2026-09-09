@@ -4,11 +4,9 @@ import { Plus } from "lucide-react";
 import { NewTransactionModal } from "../../../../components/newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
 import type { Transaction , TransactionType } from "../../interfaces/Transaction";
-import {
-    TransactionsTable,
-    getTransactionColumnsClassName,
-} from "../TransactionsTable";
+import { TransactionsTable } from "../TransactionsTable";
 import { DeleteTransactionModal } from "../modal/DeleteTransactionModal";
+import { getTransactionColumnsClassName } from "../../utils/transactionDisplay";
 
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
@@ -67,9 +65,10 @@ export const WalletTransactionsPanel = ({
             </div>
 
             <div
-                className={`hidden border-y border-light-10 px-7 py-4 text-sm text-light @2xl:grid ${columnsClassName}`}
+                className={`hidden border-y border-light-10 px-7 py-4 text-sm text-light @5xl:grid ${columnsClassName}`}
             >
                 <span>Transacción</span>
+                <span>Registrado por</span>
                 {showCategory ? <span>Categoría</span> : null}
                 <span>Fecha</span>
                 <span className="text-right">Monto</span>
