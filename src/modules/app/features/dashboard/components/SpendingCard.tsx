@@ -29,7 +29,7 @@ export const SpendingCard = ({
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Spending this month</p>
+            <p className={dashboardLabelClass}>Gastos de este mes</p>
 
             <div className="mt-3 flex items-end gap-3">
                 {isLoading ? (
@@ -39,10 +39,10 @@ export const SpendingCard = ({
                 )}
 
                 <div className="min-w-0 pb-1">
-                    <p className="text-xs leading-tight text-helper">Total activity</p>
+                    <p className="text-xs leading-tight text-helper">Actividad total</p>
                     {!isLoading && (
                         <p className="mt-0.5 text-xs leading-snug text-helper">
-                            {spendingPercent}% of your money movement was spending
+                            El {spendingPercent}% de tu movimiento de dinero fueron gastos
                         </p>
                     )}
                 </div>
@@ -53,7 +53,7 @@ export const SpendingCard = ({
             ) : topCategories.length === 0 ? (
                 <CustomEmptyState
                     title="Sin gastos"
-                    description="Cuando registres gastos, vas a ver las categorías acá."
+                    description="Cuando registres gastos, verás las categorías aquí."
                     Icon={PieChart}
                     className="m-0! mt-4!"
                 />

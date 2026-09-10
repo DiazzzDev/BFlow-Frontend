@@ -1,13 +1,10 @@
 import { RegisterHero } from "./components/RegisterHero";
 import { RegisterForm } from "./components/RegisterForm";
-import { useRegister } from "./hooks/useRegister";
 
 import { LeftPart } from "@/modules/auth/components/LeftPart";
 import { RightPart } from "@/modules/auth/components/RightPart";
 
 export const RegisterPage = () => {
-    const { mutateAsync: onRegisterUser, isPending: isLoading } = useRegister();
-
     return (
         <main className="w-full h-screen flex gap-4">
             <LeftPart
@@ -17,15 +14,8 @@ export const RegisterPage = () => {
                 subtitle="Crea tu cuenta en segundos y toma el control de tus finanzas desde el primer día. Sin tarjeta de crédito requerida."
             />
             <RightPart
-                Body={
-                    <RegisterForm
-                        onRegisterUser={(email, password, fullName) =>
-                            void onRegisterUser({ email, password, fullName })
-                        }
-                        isLoading={isLoading}
-                    />
-                }
-                isLoading={isLoading}
+                Body={<RegisterForm />}
+                isLoading={false}
                 separatorText="O completa el formulario"
                 title="Crear cuenta"
                 subtitle="Completa tus datos para empezar"

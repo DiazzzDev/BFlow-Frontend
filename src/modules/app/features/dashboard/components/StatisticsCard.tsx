@@ -66,16 +66,16 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
         <div className={dashboardCardClass}>
             <div className="flex items-start justify-between gap-3">
                 <div>
-                    <p className={dashboardLabelClass}>Statistics</p>
+                    <p className={dashboardLabelClass}>Estadísticas</p>
 
                     <div className="mt-2 flex flex-wrap items-center gap-4">
                         <div className="flex items-center gap-1.5">
                             <span className="h-1.5 w-1.5 rounded-full bg-info" />
-                            <span className="text-xs text-helper">Total income</span>
+                            <span className="text-xs text-helper">Ingresos totales</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                            <span className="text-xs text-helper">Total expenses</span>
+                            <span className="text-xs text-helper">Gastos totales</span>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                 ) : months.length === 0 ? (
                     <CustomEmptyState
                         title="Sin estadísticas"
-                        description="Cuando tengas movimientos, verás ingresos y gastos acá."
+                        description="Cuando tengas movimientos, verás ingresos y gastos aquí."
                         Icon={TrendingUp}
                         className="m-0!"
                     />
@@ -126,7 +126,7 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                             <Line
                                 type="monotone"
                                 dataKey="income"
-                                name="Total income"
+                                name="Ingresos totales"
                                 stroke="var(--color-info)"
                                 strokeWidth={2.5}
                                 dot={false}
@@ -135,7 +135,7 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                             <Line
                                 type="monotone"
                                 dataKey="expense"
-                                name="Total expenses"
+                                name="Gastos totales"
                                 stroke="var(--color-primary)"
                                 strokeWidth={2.5}
                                 dot={false}

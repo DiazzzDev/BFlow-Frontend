@@ -1,21 +1,11 @@
 import { Pencil, User } from "lucide-react";
 
 import { useAuthStore } from "@/auth/authStore";
+import { getInitials } from "@/utils/getInitials";
 
 interface SettingsProfileSectionProps {
     onEdit: () => void;
 }
-
-const getInitials = (value: string) => {
-    const parts = value.trim().split(/\s+/).filter(Boolean);
-    if (parts.length === 0) {
-        return "?";
-    }
-    if (parts.length === 1) {
-        return parts[0].slice(0, 2).toUpperCase();
-    }
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-};
 
 export const SettingsProfileSection = ({ onEdit }: SettingsProfileSectionProps) => {
     const user = useAuthStore((state) => state.user);

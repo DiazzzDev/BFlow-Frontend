@@ -1,11 +1,12 @@
 import { ArrowDownLeft, ArrowUpRight, CalendarClock } from "lucide-react";
 
-import type { UpcomingTransaction } from "../interfaces/Transaction";
+import type { UpcomingTransaction } from "../interfaces/WalletDetails";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
+import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";
 
 export interface WalletViewSidebarProps {
     lastActivity: string;
@@ -48,7 +49,7 @@ export const WalletViewSidebar = ({
             className={`flex flex-col gap-8 px-6 py-5 ${className}`}
         >
             <section>
-                <h2 className="mb-5 text-xl font-semibold text-light">Information</h2>
+                <h2 className="mb-5 text-xl font-semibold text-light">Información</h2>
                 {isLoading ? (
                     <div className="flex flex-col gap-4">
                         {infoSkeletonRows.map((row) => (
@@ -63,11 +64,11 @@ export const WalletViewSidebar = ({
                     </div>
                 ) : (
                     <dl className="flex flex-col gap-4">
-                        <InfoRow label="Last activity" value={formatterDynamicDate(lastActivity) || "—"} />
-                        <InfoRow label="Highest expense" value={highestExpense} />
-                        <InfoRow label="Transactions" value={String(transactionsCount)} />
+                        <InfoRow label="Última actividad" value={formatterDynamicDate(lastActivity) || "—"} />
+                        <InfoRow label="Gasto más alto" value={highestExpense} />
+                        <InfoRow label="Transacciones" value={String(transactionsCount)} />
                         <InfoRow
-                            label="Initial value"
+                            label="Valor inicial"
                             value={formatCurrency(initialValue, currency)}
                         />
                     </dl>
@@ -76,7 +77,7 @@ export const WalletViewSidebar = ({
 
             <section className="flex flex-1 flex-col">
                 <div className="mb-5 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-light">Upcoming</h2>
+                    <h2 className="text-xl font-semibold text-light">Próximas</h2>
                 </div>
 
                 {isLoading ? (
@@ -118,7 +119,7 @@ export const WalletViewSidebar = ({
                         onClick={() => onSchedule?.()}
                         className="mt-auto h-11 w-full cursor-pointer rounded-lg border border-light-10 bg-transparent text-sm font-medium text-light transition-colors hover:bg-secondary"
                     >
-                        Schedule a transaction
+                        Programar transacción
                     </button>
                 )}
             </section>
@@ -157,9 +158,10 @@ const UpcomingRow = ({
             </div>
 
             <p
-                className={`shrink-0 text-sm font-semibold tabular-nums ${
-                    isIncome ? "text-info" : "text-danger"
-                }`}
+                className={`shrink-0 text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
+                    item.type,
+                    item.amount,
+                )}`}
             >
                 {isIncome ? "+" : "-"}
                 {formatCurrency(Math.abs(item.amount), currency)}

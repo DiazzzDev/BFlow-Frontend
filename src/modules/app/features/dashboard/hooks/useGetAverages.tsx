@@ -6,5 +6,6 @@ export const useGetAverages = () => {
     return useQuery({
         queryKey: ["dashboard-averages"],
         queryFn: getAverages,
+        staleTime: 1000 * 60 * 5,
     });
 };

@@ -6,5 +6,6 @@ export const useGetActivityBreakdown = () => {
     return useQuery({
         queryKey: ["dashboard-activity-breakdown"],
         queryFn: getActivityBreakdown,
+        staleTime: 1000 * 60 * 5,
     });
 };

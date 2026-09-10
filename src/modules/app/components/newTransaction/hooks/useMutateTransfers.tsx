@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { postTransfer } from "../services/transfers.service";
+import { postTransfer } from "../newTransaction.service";
 import type { CreateTransferData } from "../interfaces/Transfer";
 
 export const useMutateTransfers = () => {
@@ -19,7 +19,6 @@ export const useMutateTransfers = () => {
             void queryClient.invalidateQueries({ queryKey: ["walletDetails", variables.toWalletId] });
             void queryClient.invalidateQueries({ queryKey: ["wallets"] });
             void queryClient.invalidateQueries({ queryKey: ["history"] });
-            void queryClient.invalidateQueries({ queryKey: ["transactions-history"] });
         },
     });
 

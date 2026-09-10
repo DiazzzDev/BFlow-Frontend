@@ -26,28 +26,45 @@ export const resolveBudgetStatus = (budget: Budget): BudgetStatus => {
     return "healthy";
 };
 
-export const budgetPeriodLabels: Record<string, string> = {
-    DAILY: "Daily",
-    WEEKLY: "Weekly",
-    MONTHLY: "Monthly",
-    YEARLY: "Yearly",
+export const BUDGET_STATUS_CLASS_NAMES: Record<BudgetStatus, string> = {
+    exceeded: "bg-danger-sweet text-danger",
+    healthy: "bg-info/15 text-info",
+    critical: "bg-primary-15 text-primary",
+    warning: "bg-warning-sweet text-warning",
 };
 
-export const budgetScopeLabels: Record<string, string> = {
-    WALLET: "Wallet",
-    CATEGORY_GLOBAL: "Category",
-    WALLET_CATEGORY: "Wallet · Category",
+export const BUDGET_PERIOD_LABELS: Record<string, string> = {
+    DAILY: "Diario",
+    WEEKLY: "Semanal",
+    MONTHLY: "Mensual",
+    YEARLY: "Anual",
+};
+
+export const BUDGET_SCOPE_LABELS: Record<string, string> = {
+    WALLET: "Billetera",
+    CATEGORY_GLOBAL: "Categoría",
+    WALLET_CATEGORY: "Billetera · Categoría",
 };
 
 export const getBudgetStatusLabel = (status?: string | null) => {
     const normalized = status?.trim();
     if (!normalized) {
-        return "Active";
+        return "Activo";
     }
     if (normalized.toUpperCase() === "OK") {
-        return "Active";
+        return "Activo";
     }
-    return normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
+
+    const statusLabels: Record<string, string> = {
+        exceeded: "Excedido",
+        healthy: "Saludable",
+        critical: "Crítico",
+        warning: "Advertencia",
+        active: "Activo",
+    };
+
+    const key = normalized.toLowerCase();
+    return statusLabels[key] ?? normalized.charAt(0).toUpperCase() + normalized.slice(1).toLowerCase();
 };
 
 export const getBudgetDisplayName = (

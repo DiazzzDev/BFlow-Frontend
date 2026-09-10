@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { Link } from "react-router";
 import { ChevronRight, Receipt, Users, Wallet, X } from "lucide-react";
 
 import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
-import type { Transaction } from "../walletView/interfaces/Transaction";
 
 import { WalletItem } from "./components/WalletItem";
 import { WalletItemSkeleton } from "./components/WalletItemSkeleton";
 import { HistoryItem } from "./components/HistoryItem";
 import { HistoryItemSkeleton } from "./components/HistoryItemSkeleton";
 import { WalletForm } from "./components/WalletForm";
-import { useGetWallets } from "./hooks/useGetWallets";
-import { useGetHistory } from "./hooks/useGetHistory";
-import { useDuplicateTransaction } from "./hooks/useDuplicateTransaction";
+import { WalletInvitationsButton } from "./components/WalletInvitationsButton";
+import { WalletInvitationsSidebar } from "./components/WalletInvitationsSidebar";
+import {
+    useWalletsPage,
+} from "./hooks/useWalletsPage";
+import { getEmptyDescription, getEmptyTitle } from "./utils/walletsEmptyState";
+import { WALLETS_TYPE_TABS } from "./utils/filters";
 
-import { useAuthStore } from "@/auth/authStore";
 import { CustomModal } from "@/components/custom/CustomModal";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { Pagination } from "@/components/Pagination";
@@ -24,114 +25,47 @@ import { Button } from "@/components/controls/Button";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatMonthYear } from "@/utils/formatters/formatMonthYear";
 import { TabFilter } from "@/components/controls/TabFilter";
-import { useDebounce } from "@/hooks/useDebounce";
-import { usePaginationParams } from "@/hooks/usePaginationParams";
-
-
-const getEmptyTitle = (search: string, walletType: "MINE" | "SHARED") => {
-    if (search.trim()) {
-        return "Sin resultados";
-    }
-    if (walletType === "MINE") {
-        return "No tienes billeteras aún";
-    }
-    return "No tienes billeteras compartidas";
-};
-
-const getEmptyDescription = (
-    search: string,
-    walletType: "MINE" | "SHARED",
-) => {
-    if (search.trim()) {
-        return "Prueba con otro término de búsqueda";
-    }
-    if (walletType === "MINE") {
-        return "Crea tu primera billetera para empezar a gestionar tus finanzas";
-    }
-    return "Cuando alguien te invite a una billetera, aparecerá aquí";
-};
 
 export const WalletsPage = () => {
-    const [params] = useSearchParams();
-    const query = params.get("query") || "";
-    const debouncedQuery = useDebounce(query, 500);
-    /* eslint-disable */
-    const walletType = (params.get("walletType") as "MINE" | "SHARED") ?? "MINE";
-    const { apiPage, limit } = usePaginationParams();
-
-    const { isLoading: isLoadingWallets, data: walletData } = useGetWallets(
-        walletType,
-        debouncedQuery,
-        apiPage,
-        limit,
-    );
-    const { isLoading: isLoadingHistory, data: historyData } = useGetHistory();
-    const { duplicateTransaction, isPending: isDuplicating } = useDuplicateTransaction();
-    const user = useAuthStore((state) => state.user);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-    const [viewTransaction, setViewTransaction] = useState<Transaction | null>(null);
-
-    const wallets = walletData?.data.content || [];
-    const totalWallets = walletData?.data.totalElements ?? 0;
-    const totalPages = walletData?.data.totalPages ?? 0;
-    const numberOfElements = walletData?.data.numberOfElements ?? wallets.length;
-    const history = historyData?.data.content || [];
-    const ownerLabel = user?.email || "—";
-    const showCreateButton = walletType === "MINE" && !query.trim();
-
-    const handleViewDetails = (transaction: Transaction) => {
-        setViewTransaction(transaction);
-    };
-
-    const handleDuplicate = (transaction: Transaction) => {
-        void duplicateTransaction(transaction);
-    };
-
-    useEffect(() => {
-        if (!isHistoryOpen) { return };
-
-        const previousOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-
-        return () => {
-            document.body.style.overflow = previousOverflow;
-        };
-    }, [isHistoryOpen]);
+    const page = useWalletsPage();
 
     return (
         <div className="flex h-full min-h-0 flex-col @3xl:flex-row">
             <section className="flex min-h-0 flex-1 flex-col px-4 py-5 sm:px-6">
-                <div className="mb-5 flex flex-col @6xl:flex-row justify-between gap-3">
-                    <SearchInput
-                        id="txtSearch"
-                        placeholder="Buscar billetera..."
-                        syncToParams
-                    />
-
-                    <div className="flex flex-col gap-3 @md:flex-row @md:flex-wrap @md:items-center">
+                <div className="mb-5 flex flex-col justify-between gap-3 @6xl:flex-row">
+                    <div className="flex flex-1 flex-wrap items-center gap-5">
+                        <SearchInput
+                            id="txtSearch"
+                            placeholder="Buscar billetera..."
+                            syncToParams
+                        />
                         <TabFilter
-                            options={[
-                                { label: "Mis wallets", value: "MINE" },
-                                { label: "Compartidas", value: "SHARED" },
-                            ]}
-                            selected={walletType}
+                            options={WALLETS_TYPE_TABS}
+                            selected={page.walletType}
                             keyFilter="walletType"
                             responsive="stretch"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-3 @md:flex-row @md:flex-wrap @md:items-center">
+                        <WalletInvitationsButton
+                            count={page.pendingInvitationsCount}
+                            onClick={page.openInvitations}
+                            className="w-full @md:w-auto"
                         />
 
                         <div className="grid w-full grid-cols-1 gap-2 @[22rem]:grid-cols-2 @3xl:flex @3xl:w-auto">
                             <button
                                 type="button"
-                                onClick={() => setIsHistoryOpen(true)}
-                                className="w-full rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 cursor-pointer @3xl:hidden"
+                                onClick={page.openHistory}
+                                className="w-full cursor-pointer rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 @3xl:hidden"
                             >
                                 Ver historial
                             </button>
 
                             <Button
                                 type="button"
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={page.openCreateModal}
                                 text="Crear billetera"
                                 className="w-full @3xl:w-auto"
                             />
@@ -143,44 +77,54 @@ export const WalletsPage = () => {
                     {renderWalletList()}
                 </div>
 
-                {!isLoadingWallets && totalWallets > 0 && (
+                {!page.isLoadingWallets && page.totalWallets > 0 && (
                     <div className="mt-4 flex flex-col items-center gap-3 border-t border-light-10 pt-4 sm:flex-row sm:items-center sm:justify-between">
                         <PaginationSelect
-                            totalItems={totalWallets}
-                            numberOfElements={numberOfElements}
+                            totalItems={page.totalWallets}
+                            numberOfElements={page.numberOfElements}
                         />
-                        <Pagination totalPages={totalPages} />
+                        <Pagination totalPages={page.totalPages} />
                     </div>
                 )}
             </section>
 
-            {/* History fijo cuando el contenedor del Outlet es ancho */}
             <aside className="hidden min-h-0 w-80 shrink-0 flex-col border-l border-light-10 @3xl:flex @5xl:w-96">
                 {renderHistoryPanel()}
             </aside>
 
-            {/* Drawer cuando el contenedor es angosto */}
             <button
                 type="button"
                 aria-label="Cerrar historial"
-                onClick={() => setIsHistoryOpen(false)}
-                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity @3xl:hidden ${isHistoryOpen ? "opacity-100" : "pointer-events-none opacity-0"
-                    }`}
+                onClick={page.closeHistory}
+                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity @3xl:hidden ${
+                    page.isHistoryOpen
+                        ? "opacity-100"
+                        : "pointer-events-none opacity-0"
+                }`}
             />
             <aside
-                className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-light-10 bg-surface transition-transform duration-300 ease-out @3xl:hidden ${isHistoryOpen ? "translate-x-0" : "translate-x-full"
-                    }`}
+                className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-light-10 bg-surface transition-transform duration-300 ease-out @3xl:hidden ${
+                    page.isHistoryOpen ? "translate-x-0" : "translate-x-full"
+                }`}
             >
                 <div className="flex items-center justify-between border-b border-light-10 px-4 py-4">
-                    <h2 className="text-lg font-semibold text-light">History</h2>
-                    <button
-                        type="button"
-                        onClick={() => setIsHistoryOpen(false)}
-                        aria-label="Cerrar historial"
-                        className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
-                    >
-                        <X className="h-5 w-5" />
-                    </button>
+                    <h2 className="text-lg font-semibold text-light">Historial</h2>
+                    <div className="flex items-center gap-2">
+                        <Link
+                            to="/app/history"
+                            className="text-sm font-medium text-primary transition-colors hover:opacity-80"
+                        >
+                            Ver más
+                        </Link>
+                        <button
+                            type="button"
+                            onClick={page.closeHistory}
+                            aria-label="Cerrar historial"
+                            className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light"
+                        >
+                            <X className="h-5 w-5" />
+                        </button>
+                    </div>
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
                     {renderHistory()}
@@ -188,26 +132,31 @@ export const WalletsPage = () => {
             </aside>
 
             <CustomModal
-                isModalOpen={isModalOpen}
-                setIsModalOpen={setIsModalOpen}
+                isModalOpen={page.isModalOpen}
+                setIsModalOpen={page.setIsModalOpen}
                 title="Nueva billetera"
                 maxWidth="max-w-md"
             >
                 <WalletForm
-                    key={isModalOpen ? "open" : "closed"}
-                    onSuccess={() => setIsModalOpen(false)}
+                    key={page.isModalOpen ? "open" : "closed"}
+                    onSuccess={page.closeCreateModal}
                 />
             </CustomModal>
 
+            <WalletInvitationsSidebar
+                isOpen={page.isInvitationsOpen}
+                onClose={page.closeInvitations}
+            />
+
             <NewTransactionModal
-                isModalOpen={Boolean(viewTransaction)}
+                isModalOpen={Boolean(page.viewTransaction)}
                 setIsModalOpen={(open) => {
                     if (!open) {
-                        setViewTransaction(null);
+                        page.closeViewTransaction();
                     }
                 }}
                 mode="view"
-                transaction={viewTransaction}
+                transaction={page.viewTransaction}
             />
         </div>
     );
@@ -215,10 +164,16 @@ export const WalletsPage = () => {
     function renderHistoryPanel() {
         return (
             <>
-                <div className="mb-6 flex items-center justify-between px-5 pt-6">
+                <div className="mb-6 flex items-center justify-between gap-3 px-5 pt-6">
                     <h2 className="text-2xl font-semibold tracking-tight text-light">
-                        History
+                        Historial
                     </h2>
+                    <Link
+                        to="/app/history"
+                        className="text-sm font-medium text-primary transition-colors hover:opacity-80"
+                    >
+                        Ver más
+                    </Link>
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">
                     {renderHistory()}
@@ -228,7 +183,7 @@ export const WalletsPage = () => {
     }
 
     function renderHistory() {
-        if (isLoadingHistory) {
+        if (page.isLoadingHistory) {
             return (
                 <ul className="flex flex-col">
                     {Array.from({ length: 6 }).map((_, index) => (
@@ -238,16 +193,16 @@ export const WalletsPage = () => {
             );
         }
 
-        if (history.length > 0) {
+        if (page.history.length > 0) {
             return (
                 <ul className="flex flex-col">
-                    {history.map((transaction) => (
+                    {page.history.map((transaction) => (
                         <HistoryItem
                             key={transaction.id}
                             transaction={transaction}
-                            onViewDetails={handleViewDetails}
-                            onDuplicate={handleDuplicate}
-                            actionsDisabled={isDuplicating}
+                            onViewDetails={page.handleViewDetails}
+                            onDuplicate={page.handleDuplicate}
+                            actionsDisabled={page.isDuplicating}
                         />
                     ))}
                 </ul>
@@ -265,7 +220,7 @@ export const WalletsPage = () => {
     }
 
     function renderWalletList() {
-        if (isLoadingWallets) {
+        if (page.isLoadingWallets) {
             return (
                 <section className="flex flex-col gap-3 overflow-x-hidden">
                     {Array.from({ length: 6 }).map((_, index) => (
@@ -275,10 +230,10 @@ export const WalletsPage = () => {
             );
         }
 
-        if (wallets.length > 0) {
+        if (page.wallets.length > 0) {
             return (
                 <section className="flex flex-col gap-3">
-                    {wallets.map((wallet) => (
+                    {page.wallets.map((wallet) => (
                         <WalletItem key={wallet.id} to={`/app/wallets/${wallet.id}`}>
                             <div className="flex items-start justify-between gap-3 sm:items-center sm:gap-4">
                                 <div className="min-w-0 flex-1 sm:flex-[1.6]">
@@ -286,7 +241,7 @@ export const WalletsPage = () => {
                                         {wallet.name}
                                     </p>
                                     <p className="mt-0.5 truncate text-xs text-helper">
-                                        {wallet.description || ownerLabel}
+                                        {wallet.description || page.ownerLabel}
                                     </p>
                                     <p className="mt-2 truncate text-xs text-label sm:hidden">
                                         {wallet.currency}
@@ -318,11 +273,13 @@ export const WalletsPage = () => {
 
         return (
             <CustomEmptyState
-                title={getEmptyTitle(query, walletType)}
-                description={getEmptyDescription(query, walletType)}
-                Icon={walletType === "MINE" ? Wallet : Users}
-                buttonText={showCreateButton ? "Crear billetera" : undefined}
-                onButtonClick={showCreateButton ? () => setIsModalOpen(true) : undefined}
+                title={getEmptyTitle(page.query, page.walletType)}
+                description={getEmptyDescription(page.query, page.walletType)}
+                Icon={page.walletType === "MINE" ? Wallet : Users}
+                buttonText={page.showCreateButton ? "Crear billetera" : undefined}
+                onButtonClick={
+                    page.showCreateButton ? page.openCreateModal : undefined
+                }
             />
         );
     }

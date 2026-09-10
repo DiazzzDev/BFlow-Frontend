@@ -2,45 +2,16 @@ import { ChevronRight } from "lucide-react";
 
 import type { Budget } from "../interfaces/Budget";
 import {
+    BUDGET_PERIOD_LABELS,
+    BUDGET_SCOPE_LABELS,
+    BUDGET_STATUS_CLASS_NAMES,
     getBudgetDisplayName,
+    getBudgetStatusLabel,
     resolveBudgetStatus,
-    type BudgetStatus,
 } from "../utils/budgetStatus";
 
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
-
-const statusStyles: Record<BudgetStatus, { label: string; className: string }> = {
-    exceeded: {
-        label: "Exceeded",
-        className: "bg-danger-sweet text-danger",
-    },
-    healthy: {
-        label: "Healthy",
-        className: "bg-info/15 text-info",
-    },
-    critical: {
-        label: "Critical",
-        className: "bg-primary-15 text-primary",
-    },
-    warning: {
-        label: "Warning",
-        className: "bg-warning-sweet text-warning",
-    },
-};
-
-const periodLabels: Record<string, string> = {
-    DAILY: "Daily",
-    WEEKLY: "Weekly",
-    MONTHLY: "Monthly",
-    YEARLY: "Yearly",
-};
-
-const scopeLabels: Record<string, string> = {
-    WALLET: "Wallet",
-    CATEGORY_GLOBAL: "Category",
-    WALLET_CATEGORY: "Wallet · Category",
-};
 
 interface BudgetItemProps {
     budget: Budget;
@@ -48,15 +19,16 @@ interface BudgetItemProps {
 }
 
 export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
-    const status = statusStyles[resolveBudgetStatus(budget)];
+    const status = resolveBudgetStatus(budget);
     const name = getBudgetDisplayName(budget);
+    
     const updatedLabel = budget.updatedAt
-        ? `Updated ${formatterDynamicDate(budget.updatedAt)}`
+        ? `Actualizado ${formatterDynamicDate(budget.updatedAt)}`
         : "Sin fecha de actualización";
 
     const tags = [
-        periodLabels[budget.period] ?? budget.period,
-        scopeLabels[budget.scope] ?? budget.scope,
+        BUDGET_PERIOD_LABELS[budget.period] ?? budget.period,
+        BUDGET_SCOPE_LABELS[budget.scope] ?? budget.scope,
         budget.walletName,
         budget.categoryName,
     ].filter(Boolean) as string[];
@@ -76,7 +48,7 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
                     {budget.spent !== null && (
                         <>
                             {" · "}
-                            Spent {formatCurrency(budget.spent)}
+                            Gastado {formatCurrency(budget.spent)}
                         </>
                     )}
                 </p>
@@ -94,9 +66,9 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
 
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                 <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium sm:px-3 ${status.className}`}
+                    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium sm:px-3 ${BUDGET_STATUS_CLASS_NAMES[status]}`}
                 >
-                    {status.label}
+                    {getBudgetStatusLabel(status)}
                 </span>
                 <ChevronRight className="hidden h-5 w-5 text-helper sm:block" />
             </div>

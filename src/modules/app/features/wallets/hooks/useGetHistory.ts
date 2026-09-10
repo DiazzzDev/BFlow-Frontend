@@ -1,15 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
+import { useGetHistory as useGetHistoryQuery } from "../../history/hooks/useGetHistory";
 
-import { getHistory } from "../wallets.service";
-
-import { useAuthStore } from "@/auth/authStore";
-
-export const useGetHistory = () => {
-    const user = useAuthStore((state) => state.user);
-
-    return useQuery({
-        queryKey: ["transactions-history"],
-        queryFn: () => getHistory(),
-        enabled: !!user,
-    });
-};
+export const useGetHistory = () => useGetHistoryQuery({ preview: true });

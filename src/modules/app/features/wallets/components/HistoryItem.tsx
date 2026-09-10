@@ -1,11 +1,11 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Copy, Eye, MoreVertical } from "lucide-react";
 
-import type { Transaction } from "../../walletView/interfaces/Transaction";
-
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
+import { CategoryIcon } from "@/components/icons/CategoryIcon";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
-import { CategoryIcon } from "@/components/icons/CategoryIcon";
+import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";
 
 interface HistoryItemProps {
     transaction: Transaction;
@@ -13,16 +13,6 @@ interface HistoryItemProps {
     onDuplicate: (transaction: Transaction) => void;
     actionsDisabled?: boolean;
 }
-
-const amountClassName = (type: Transaction["type"], amount: number) => {
-    if (type === "EXPENSE" || amount < 0) {
-        return "text-danger";
-    }
-    if (type === "INCOME" || amount > 0) {
-        return "text-info";
-    }
-    return "text-light";
-};
 
 export const HistoryItem = ({
     transaction,
@@ -59,7 +49,7 @@ export const HistoryItem = ({
 
             <div className="flex shrink-0 items-start gap-1">
                 <p
-                    className={`pt-0.5 text-sm font-semibold tabular-nums ${amountClassName(
+                    className={`pt-0.5 text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
                         transaction.type,
                         transaction.amount,
                     )}`}

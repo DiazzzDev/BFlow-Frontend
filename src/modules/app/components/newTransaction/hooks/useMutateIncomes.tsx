@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { deleteIncome, postIncome, putIncome } from "../services/incomes.service";
+import { deleteIncome, postIncome, putIncome } from "../newTransaction.service";
 import type { CreateIncomeData } from "../interfaces/Income";
 
 const invalidateIncomeQueries = (
@@ -13,7 +13,6 @@ const invalidateIncomeQueries = (
     void queryClient.invalidateQueries({ queryKey: ["walletDetails", walletId] });
     void queryClient.invalidateQueries({ queryKey: ["wallets"] });
     void queryClient.invalidateQueries({ queryKey: ["history"] });
-    void queryClient.invalidateQueries({ queryKey: ["transactions-history"] });
 };
 
 export const usePostIncome = () => {

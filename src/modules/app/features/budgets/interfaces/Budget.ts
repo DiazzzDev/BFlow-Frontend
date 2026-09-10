@@ -34,6 +34,7 @@ export interface CreateBudgetData {
     period: BudgetPeriod;
     startDate: string;
     scope: BudgetScope;
+    currency: string;
     thresholdWarning: number;
     thresholdCritical: number;
     walletId?: string | null;

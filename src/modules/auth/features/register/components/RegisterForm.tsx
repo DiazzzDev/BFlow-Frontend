@@ -1,35 +1,59 @@
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router";
 import { useState } from "react";
+import { toast } from "sonner";
 
-import { isValidEmail } from "@/utils/validators";
+import { useRegister } from "../hooks/useRegister";
+
+const registerSchema = z.object({
+    email: z
+        .string()
+        .min(1, "El correo electrónico es requerido")
+        .email("El formato del correo no es válido"),
+    password: z
+        .string()
+        .min(1, "La contraseña es requerida")
+        .min(8, "La contraseña debe tener al menos 8 caracteres"),
+    fullName: z.string().min(1, "El nombre completo es requerido"),
+});
+
+type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const inputClass =
     "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
 
-type RegisterFormInputs = {
-    email: string;
-    password: string;
-    fullName: string;
-};
-
-interface RegisterFormProps {
-    onRegisterUser: (email: string, password: string, fullName: string) => void;
-    isLoading: boolean;
-}
-
-export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) => {
-    const { register, handleSubmit, formState: { errors, isSubmitted } } = useForm<RegisterFormInputs>({ mode: 'onSubmit' });
+export const RegisterForm = () => {
+    const { mutateAsync: onRegisterUser, isPending: isLoading } = useRegister();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitted },
+    } = useForm<RegisterFormInputs>({
+        resolver: zodResolver(registerSchema),
+        mode: "onSubmit",
+    });
 
     const onInternalSubmit = (data: RegisterFormInputs) => {
-        onRegisterUser(data.email, data.password, data.fullName);
-    }
+        toast.promise(onRegisterUser(data), {
+            loading: "Creando cuenta...",
+            success: "Cuenta creada correctamente",
+            error: (err) =>
+                err instanceof Error ? err.message : "Error al crear la cuenta",
+        });
+    };
+
     const [showPassword, setShowPassword] = useState(false);
+
     return (
-        <form action="" onSubmit={(e) => {
+        <form
+            action=""
+            onSubmit={(e) => {
                 void handleSubmit(onInternalSubmit)(e);
-            }}>
+            }}
+        >
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-label" htmlFor="txtFullName">
@@ -43,7 +67,7 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
                         />
                         <input
                             disabled={isLoading}
-                            {...register('fullName', { required: 'El nombre completo es requerido' })}
+                            {...register("fullName")}
                             id="txtFullName"
                             placeholder="Tu nombre completo"
                             className={`${inputClass} pl-11`}
@@ -69,7 +93,7 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
                         <input
                             id="txtEmail"
                             disabled={isLoading}
-                            {...register('email', { required: 'El correo electrónico es requerido', validate: (value) => isValidEmail(value) || "El formato del correo no es válido" })}
+                            {...register("email")}
                             placeholder="tu@correo.com"
                             className={`${inputClass} pl-11`}
                         />
@@ -94,16 +118,19 @@ export const RegisterForm = ({ onRegisterUser, isLoading }: RegisterFormProps) =
 
                         <input
                             disabled={isLoading}
-                            {...register('password', { required: 'La contraseña es requerida', minLength: { value: 8, message: 'La contraseña debe tener al menos 8 caracteres' } })}
+                            {...register("password")}
                             id="txtPassword"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Minimo 8 caracteres"
+                            placeholder="Mínimo 8 caracteres"
                             className={`${inputClass} px-11`}
                         />
 
-                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <EyeOff size={18} /> :
-                            <Eye size={18} />}
+                        <button
+                            type="button"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
                     {isSubmitted && errors.password && (

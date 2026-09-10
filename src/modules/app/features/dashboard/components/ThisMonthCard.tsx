@@ -17,9 +17,9 @@ const ACTIVITY_SEGMENTS: Array<{
     label: string;
     colorClass: string;
 }> = [
-    { key: "incomePercentage", label: "Income", colorClass: "bg-info" },
-    { key: "expensePercentage", label: "Expenses", colorClass: "bg-primary" },
-    { key: "transferPercentage", label: "Transfers", colorClass: "bg-success" },
+    { key: "incomePercentage", label: "Ingresos", colorClass: "bg-info" },
+    { key: "expensePercentage", label: "Gastos", colorClass: "bg-primary" },
+    { key: "transferPercentage", label: "Transferencias", colorClass: "bg-success" },
 ];
 
 export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
@@ -32,7 +32,7 @@ export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>This month</p>
+            <p className={dashboardLabelClass}>Este mes</p>
 
             <div className="mt-3 flex items-center gap-2.5">
                 {isLoading ? (
@@ -41,7 +41,7 @@ export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
                     <p className={dashboardHeroClass}>{activityPercent}%</p>
                 )}
                 <span className="max-w-16 text-xs leading-tight text-helper">
-                    Total activity
+                    Actividad total
                 </span>
             </div>
 
