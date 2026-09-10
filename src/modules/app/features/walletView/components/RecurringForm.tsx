@@ -5,7 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { usePostRecurring } from "../hooks/useMutateRecurring";
-import type { RecurringFrequency, RecurringType } from "../interfaces/Recurring";
+import {
+    RECURRING_FREQUENCY_OPTIONS,
+    RECURRING_INTERVAL_UNIT_LABELS,
+    RECURRING_TYPE_TABS,
+} from "../utils/tabs/recurringTabs";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
 
@@ -17,25 +21,6 @@ import { Textarea } from "@/components/controls/Textarea";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { Button } from "@/components/controls/Button";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
-
-const typeTabs: Array<{ id: RecurringType; label: string }> = [
-    { id: "INCOME", label: "Ingreso" },
-    { id: "EXPENSE", label: "Gasto" },
-];
-
-const frequencyOptions: Array<{ value: RecurringFrequency; label: string }> = [
-    { value: "DAILY", label: "Diario" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "YEARLY", label: "Anual" },
-];
-
-const intervalUnitLabels: Record<RecurringFrequency, string> = {
-    DAILY: "días",
-    WEEKLY: "semanas",
-    MONTHLY: "meses",
-    YEARLY: "años",
-};
 
 const recurringSchema = z
     .object({
@@ -156,7 +141,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 control={control}
                 render={({ field }) => (
                     <SegmentedTabs
-                        tabs={typeTabs}
+                        tabs={RECURRING_TYPE_TABS}
                         selected={field.value}
                         onChange={(nextType) => {
                             field.onChange(nextType);
@@ -249,7 +234,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                     : "Buscar categoría..."
                             }
                             selectedItem={selectedCategory}
-                            setSelectedItem={(category) => field.onChange(category.id)}
+                            setSelectedItem={(category) => field.onChange(category?.id ?? "")}
                             query={categoryQuery}
                             setQuery={setCategoryQuery}
                             data={categories}
@@ -278,7 +263,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {frequencyOptions.map(({ value, label }) => (
+                                {RECURRING_FREQUENCY_OPTIONS.map(({ value, label }) => (
                                     <option key={value} value={value}>
                                         {label}
                                     </option>
@@ -318,7 +303,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                         </span>
                     )}
                     <span className="text-xs text-helper">
-                        Se repetirá cada {intervalValue || "1"} {intervalUnitLabels[frequency]}
+                        Se repetirá cada {intervalValue || "1"} {RECURRING_INTERVAL_UNIT_LABELS[frequency]}
                     </span>
                 </div>
             </div>

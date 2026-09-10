@@ -68,7 +68,7 @@ export const BudgetSpendingTrend = ({
 
     return (
         <article className="flex h-full min-h-80 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
-            <p className="mb-4 text-base font-semibold text-light">Spending Trend</p>
+            <p className="mb-4 text-base font-semibold text-light">Tendencia de gasto</p>
 
             <div className="flex min-h-0 flex-1 items-center">
                 {isLoading ? (

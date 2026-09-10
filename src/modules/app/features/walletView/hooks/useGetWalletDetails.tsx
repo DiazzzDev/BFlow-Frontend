@@ -11,5 +11,6 @@ export const useGetWalletDetails = (walletId: string) => {
         queryKey: ["walletDetails", walletId],
         queryFn: () => getWalletDetails(walletId),
         enabled: !!user && !!walletId,
+        staleTime: 1000 * 60 * 5,
     });
 };

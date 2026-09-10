@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 
 import { Header } from "./components/Header.tsx";
 import { Navbar } from "./components/Navbar.tsx";
+import { NotificationsPrefetch } from "./components/NotificationsPrefetch.tsx";
 
 export const AppLayout = () => {
     const [isNavOpen, setIsNavOpen] = useState(false);
@@ -11,6 +12,7 @@ export const AppLayout = () => {
     return (
         <>
             <Toaster />
+            <NotificationsPrefetch />
             <div className="flex h-dvh overflow-hidden">
                 <Navbar isOpen={isNavOpen} onClose={() => setIsNavOpen(false)} />
                 <section className="flex min-w-0 flex-1 flex-col">

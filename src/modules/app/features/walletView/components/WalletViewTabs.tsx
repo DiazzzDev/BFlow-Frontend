@@ -1,4 +1,4 @@
-import { WALLET_VIEW_TABS, type DetailTab } from "../walletView.tabs";
+import { WALLET_VIEW_TABS, type DetailTab } from "../utils/tabs/walletViewTabs";
 
 interface WalletViewTabsProps {
     activeTab: DetailTab;

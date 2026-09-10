@@ -1,14 +1,16 @@
 import { toast } from "sonner";
 
-import { usePostExpense } from "../../../components/newTransaction/hooks/useMutateExpenses";
-import { usePostIncome } from "../../../components/newTransaction/hooks/useMutateIncomes";
-import { useMutateTransfers } from "../../../components/newTransaction/hooks/useMutateTransfers";
-import type { Transaction } from "../../walletView/interfaces/Transaction";
 import {
     buildDuplicateExpensePayload,
     buildDuplicateIncomePayload,
     buildDuplicateTransferPayload,
-} from "../utils/transaction.service";
+} from "../utils/duplicateTransaction";
+import { usePostExpense } from "../../../components/newTransaction/hooks/useMutateExpenses";
+import { usePostIncome } from "../../../components/newTransaction/hooks/useMutateIncomes";
+import { useMutateTransfers } from "../../../components/newTransaction/hooks/useMutateTransfers";
+
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
+
 
 export const useDuplicateTransaction = () => {
     const createExpense = usePostExpense();

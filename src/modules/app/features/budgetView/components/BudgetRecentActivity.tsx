@@ -15,7 +15,7 @@ interface BudgetRecentActivityProps {
 }
 
 export const BudgetRecentActivity = ({
-    title = "Recent Activity",
+    title = "Actividad reciente",
     items = [],
     currency = "USD",
     isLoading = false,

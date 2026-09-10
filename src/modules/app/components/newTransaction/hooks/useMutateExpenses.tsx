@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { deleteExpense, postExpense, putExpense } from "../services/expenses.service";
+import { deleteExpense, postExpense, putExpense } from "../newTransaction.service";
 import type { CreateExpenseData } from "../interfaces/Expense";
 
 const invalidateExpenseQueries = (
@@ -13,7 +13,6 @@ const invalidateExpenseQueries = (
     void queryClient.invalidateQueries({ queryKey: ["walletDetails", walletId] });
     void queryClient.invalidateQueries({ queryKey: ["wallets"] });
     void queryClient.invalidateQueries({ queryKey: ["history"] });
-    void queryClient.invalidateQueries({ queryKey: ["transactions-history"] });
 };
 
 export const usePostExpense = () => {

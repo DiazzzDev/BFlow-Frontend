@@ -6,5 +6,6 @@ export const useGetBalance = () => {
     return useQuery({
         queryKey: ["dashboard-balance"],
         queryFn: getBalance,
+        staleTime: 1000 * 60 * 5,
     });
 };

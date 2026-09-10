@@ -5,7 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../hooks/useMutateBudgets";
-import type { BudgetPeriod, BudgetScope } from "../interfaces/Budget";
+import type { BudgetScope } from "../interfaces/Budget";
+import {
+    BUDGET_SCOPE_TABS,
+    BUDGET_PERIOD_FORM_OPTIONS,
+} from "../utils/filters";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
@@ -20,19 +24,6 @@ import { Button } from "@/components/controls/Button";
 import { RangeSlider } from "@/components/controls/RangeSlider";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
-
-const scopeTabs: Array<{ id: BudgetScope; label: string }> = [
-    { id: "WALLET", label: "Wallet" },
-    { id: "CATEGORY_GLOBAL", label: "Categoría" },
-    { id: "WALLET_CATEGORY", label: "Wallet + categoría" },
-];
-
-const periodOptions: Array<{ value: BudgetPeriod; label: string }> = [
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "YEARLY", label: "Anual" },
-    { value: "DAILY", label: "Diario" },
-];
 
 const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
@@ -145,6 +136,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             amount: Number(formData.amount),
             period: formData.period,
             startDate: formData.startDate,
+            currency: 'USD', // Por el momento esta quemado
             scope,
             thresholdWarning: formData.thresholdWarning,
             thresholdCritical: formData.thresholdCritical,
@@ -174,7 +166,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             }}
         >
             <SegmentedTabs
-                tabs={scopeTabs}
+                tabs={BUDGET_SCOPE_TABS}
                 selected={scope}
                 onChange={handleScopeChange}
                 ariaLabel="Alcance del presupuesto"
@@ -195,7 +187,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                         : "Buscar billetera..."
                                 }
                                 selectedItem={selectedWallet}
-                                setSelectedItem={(wallet) => field.onChange(wallet.id)}
+                                setSelectedItem={(wallet) => field.onChange(wallet?.id ?? "")}
                                 query={walletQuery}
                                 setQuery={setWalletQuery}
                                 data={wallets}
@@ -223,7 +215,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                         : "Buscar categoría..."
                                 }
                                 selectedItem={selectedCategory}
-                                setSelectedItem={(category) => field.onChange(category.id)}
+                                setSelectedItem={(category) => field.onChange(category?.id ?? "")}
                                 query={categoryQuery}
                                 setQuery={setCategoryQuery}
                                 data={categories}
@@ -276,7 +268,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {periodOptions.map((option) => (
+                                {BUDGET_PERIOD_FORM_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}
                                     </option>

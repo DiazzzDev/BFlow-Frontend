@@ -8,19 +8,13 @@ import type {
     RecentActivityItem,
 } from "./interfaces/dashboard";
 
-import { apiRequest } from "@/utils/api";
+import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
 const dashboardUrl = `${config.API_BASE_URL}/api/v1/dashboard`;
 
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
-};
-
-type ApiResponse<T> = {
-    success: boolean;
-    message: string;
-    data: T;
 };
 
 export const getBalance = async () => {
@@ -43,7 +37,7 @@ export const getSpending = async () => {
     return await apiRequest<ApiResponse<DashboardSpending>>(
         `${dashboardUrl}/spending`,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener el spending",
+        "Error al obtener los gastos",
     );
 };
 

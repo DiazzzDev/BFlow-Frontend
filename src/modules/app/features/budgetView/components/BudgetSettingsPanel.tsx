@@ -6,10 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../../budgets/hooks/useMutateBudgets";
-import type { BudgetDetail, BudgetPeriod } from "../../budgets/interfaces/Budget";
+import type { BudgetDetail } from "../../budgets/interfaces/Budget";
+import { BUDGET_PERIOD_FORM_OPTIONS } from "../../budgets/utils/filters";
 import {
-    budgetPeriodLabels,
-    budgetScopeLabels,
+    BUDGET_PERIOD_LABELS,
+    BUDGET_SCOPE_LABELS,
     getBudgetDisplayName,
 } from "../../budgets/utils/budgetStatus";
 
@@ -26,13 +27,6 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
 const MAX_THRESHOLD = 100;
-
-const periodOptions: Array<{ value: BudgetPeriod; label: string }> = [
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "YEARLY", label: "Anual" },
-    { value: "DAILY", label: "Diario" },
-];
 
 const settingsSchema = z
     .object({
@@ -237,7 +231,7 @@ export const BudgetSettingsPanel = ({
                                             onChange={(event) => field.onChange(event.target.value)}
                                             onBlur={field.onBlur}
                                         >
-                                            {periodOptions.map((option) => (
+                                            {BUDGET_PERIOD_FORM_OPTIONS.map((option) => (
                                                 <option key={option.value} value={option.value}>
                                                     {option.label}
                                                 </option>
@@ -351,7 +345,7 @@ export const BudgetSettingsPanel = ({
                 <div className="border-b border-light-10 py-5 @2xl:pl-7">
                     <h2 className="text-base font-semibold text-light">Alcance</h2>
                     <p className="mt-1 text-sm text-helper">
-                        Wallet y categoría no se pueden cambiar después de crear.
+                        Billetera y categoría no se pueden cambiar después de crear.
                     </p>
                 </div>
 
@@ -359,7 +353,7 @@ export const BudgetSettingsPanel = ({
                     <div>
                         <dt className="text-xs text-helper">Tipo</dt>
                         <dd className="mt-1 text-sm font-medium text-light">
-                            {budgetScopeLabels[budget.scope] ?? budget.scope}
+                            {BUDGET_SCOPE_LABELS[budget.scope] ?? budget.scope}
                         </dd>
                     </div>
                     {budget.walletName ? (
@@ -377,7 +371,7 @@ export const BudgetSettingsPanel = ({
                     <div>
                         <dt className="text-xs text-helper">Periodo</dt>
                         <dd className="mt-1 text-sm font-medium text-light">
-                            {budgetPeriodLabels[budget.period] ?? budget.period}
+                            {BUDGET_PERIOD_LABELS[budget.period] ?? budget.period}
                         </dd>
                     </div>
                     <div>

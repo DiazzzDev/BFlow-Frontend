@@ -36,10 +36,10 @@ export const WalletViewHeader = ({
                 ) : (
                     <>
                         <h1 className="truncate text-2xl font-semibold tracking-tight text-light sm:text-3xl">
-                            {name ?? "Wallet"}
+                            {name ?? "Billetera"}
                         </h1>
                         <p className="mt-1 text-sm text-helper">
-                            {formatCurrency(balance, currency)} current balance
+                            {formatCurrency(balance, currency)} saldo actual
                         </p>
                     </>
                 )}

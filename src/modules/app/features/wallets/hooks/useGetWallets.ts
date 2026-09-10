@@ -16,5 +16,6 @@ export const useGetWallets = (
         queryKey: ["wallets", scope, query, page, size],
         queryFn: () => getWallets({ scope, query, page, size }),
         enabled: !!user,
+        staleTime: 1000 * 60 * 5,
     });
 };

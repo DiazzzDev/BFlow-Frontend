@@ -1,6 +1,12 @@
-import type { Budget, CreateBudgetData, GetBudgetsParams, UpdateBudgetData } from "./interfaces/Budget";
+import type {
+    Budget,
+    BudgetDetail,
+    CreateBudgetData,
+    GetBudgetsParams,
+    UpdateBudgetData,
+} from "./interfaces/Budget";
 
-import { apiRequest, PaginatedListResponse } from "@/utils/api";
+import { apiRequest, type PaginatedListResponse, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
 const budgetsUrl = `${config.API_BASE_URL}/api/v1/budgets`;
@@ -8,6 +14,8 @@ const budgetsUrl = `${config.API_BASE_URL}/api/v1/budgets`;
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
 };
+
+// --- /api/v1/budgets ---
 
 export const getBudgets = async (filters: GetBudgetsParams = {}) => {
     const params = new URLSearchParams({
@@ -61,5 +69,13 @@ export const deleteBudget = async (id: string) => {
         `${budgetsUrl}/${id}`,
         { method: "DELETE" },
         "Error al eliminar el presupuesto",
+    );
+};
+
+export const getBudgetById = async (budgetId: string) => {
+    return await apiRequest<ApiResponse<BudgetDetail>>(
+        `${budgetsUrl}/${budgetId}/detail`,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al obtener el presupuesto",
     );
 };

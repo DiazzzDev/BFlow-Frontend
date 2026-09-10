@@ -6,5 +6,6 @@ export const useGetBudgetsHealth = () => {
     return useQuery({
         queryKey: ["dashboard-budgets-health"],
         queryFn: getBudgetsHealth,
+        staleTime: 1000 * 60 * 5,
     });
 };
