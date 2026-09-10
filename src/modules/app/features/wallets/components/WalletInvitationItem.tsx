@@ -8,33 +8,15 @@ import {
     isInvitationExpired,
 } from "../utils/invitationExpiry";
 
+import { getInitials } from "@/utils/getInitials";
+
 interface WalletInvitationItemProps {
     invitation: WalletInvitation;
 }
 
-const getInitials = (value: string) => {
-    const trimmed = value.trim();
-
-    if (!trimmed) {
-        return "?";
-    }
-
-    if (trimmed.includes("@")) {
-        return trimmed.slice(0, 2).toUpperCase();
-    }
-
-    const parts = trimmed.split(/\s+/).filter(Boolean);
-
-    if (parts.length === 1) {
-        return parts[0].slice(0, 2).toUpperCase();
-    }
-
-    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-};
-
 export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) => {
     const { acceptInvitation, declineInvitation } = useMutateWalletInvitations();
-    const inviterName = invitation.invitedByName?.trim() || invitation.invitedByEmail || "Alguien";
+    const inviterName = invitation.invitedByName.trim() || invitation.invitedByEmail || "Alguien";
     const expired = isInvitationExpired(invitation.expiresAt);
     const expiryLabel = getInvitationExpiryLabel(invitation.expiresAt);
     const isActing =
@@ -85,11 +67,10 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
 
     return (
         <article
-            className={`overflow-hidden rounded-2xl border ${
-                expired
+            className={`overflow-hidden rounded-2xl border ${expired
                     ? "border-light-10 bg-surface/40"
                     : "border-primary/20 bg-primary/5"
-            }`}
+                }`}
         >
             <div className="flex items-center gap-3 border-b border-light-10/80 px-4 py-3">
                 {invitation.invitedByPictureUrl ? (
@@ -136,9 +117,8 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
 
                 {expiryLabel ? (
                     <p
-                        className={`mt-3 inline-flex items-center gap-1.5 text-xs ${
-                            expired ? "text-danger" : "text-helper"
-                        }`}
+                        className={`mt-3 inline-flex items-center gap-1.5 text-xs ${expired ? "text-danger" : "text-helper"
+                            }`}
                     >
                         <Clock className="h-3.5 w-3.5" />
                         {expiryLabel}

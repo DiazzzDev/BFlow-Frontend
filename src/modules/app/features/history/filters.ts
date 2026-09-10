@@ -1,4 +1,4 @@
-import type { TransactionType } from "../walletView/interfaces/Transaction";
+import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 
 export const HISTORY_TYPE_TABS: Array<{
     label: string;

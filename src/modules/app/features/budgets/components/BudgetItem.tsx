@@ -2,9 +2,9 @@ import { ChevronRight } from "lucide-react";
 
 import type { Budget } from "../interfaces/Budget";
 import {
-    budgetPeriodLabels,
-    budgetScopeLabels,
-    budgetStatusClassNames,
+    BUDGET_PERIOD_LABELS,
+    BUDGET_SCOPE_LABELS,
+    BUDGET_STATUS_CLASS_NAMES,
     getBudgetDisplayName,
     getBudgetStatusLabel,
     resolveBudgetStatus,
@@ -27,8 +27,8 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
         : "Sin fecha de actualización";
 
     const tags = [
-        budgetPeriodLabels[budget.period] ?? budget.period,
-        budgetScopeLabels[budget.scope] ?? budget.scope,
+        BUDGET_PERIOD_LABELS[budget.period] ?? budget.period,
+        BUDGET_SCOPE_LABELS[budget.scope] ?? budget.scope,
         budget.walletName,
         budget.categoryName,
     ].filter(Boolean) as string[];
@@ -66,7 +66,7 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
 
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                 <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium sm:px-3 ${budgetStatusClassNames[status]}`}
+                    className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium sm:px-3 ${BUDGET_STATUS_CLASS_NAMES[status]}`}
                 >
                     {getBudgetStatusLabel(status)}
                 </span>

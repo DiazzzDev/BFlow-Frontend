@@ -5,7 +5,7 @@ import { BudgetOverview } from "./components/BudgetOverview";
 import { BudgetItem } from "./components/BudgetItem";
 import { BudgetItemSkeleton } from "./components/BudgetItemSkeleton";
 import { BudgetForm } from "./components/BudgetForm";
-import { BUDGET_PERIOD_TABS, budgetSortOptions } from "./utils/budgets.filters";
+import { BUDGET_PERIOD_TABS, BUDGET_SORT_OPTIONS } from "./utils/filters";
 import { useBudgetsPage } from "./hooks/useBudgetsPage";
 
 import { SearchInput } from "@/components/controls/SearchInput";
@@ -76,7 +76,7 @@ export const BudgetsPage = () => {
                             )
                         }
                     >
-                        {budgetSortOptions.map((option) => (
+                        {BUDGET_SORT_OPTIONS.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>

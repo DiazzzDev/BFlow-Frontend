@@ -1,4 +1,4 @@
-import { apiRequest, APIError } from "@/utils/api";
+import { apiRequest, APIError } from "./api";
 
 type IdempotentPostOptions = {
     maxRetries?: number;
@@ -6,10 +6,18 @@ type IdempotentPostOptions = {
 };
 
 const isRetryableError = (error: unknown) => {
-    if (!(error instanceof APIError)) { return true };
-    if (error.status === 409) { return false };
-    if (error.status === 0) { return true };
-    if (error.status >= 500) { return true };
+    if (!(error instanceof APIError)) {
+        return true;
+    }
+    if (error.status === 409) {
+        return false;
+    }
+    if (error.status === 0) {
+        return true;
+    }
+    if (error.status >= 500) {
+        return true;
+    }
     return false;
 };
 

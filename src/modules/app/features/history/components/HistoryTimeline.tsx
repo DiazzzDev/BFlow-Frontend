@@ -1,6 +1,6 @@
 import { Receipt } from "lucide-react";
 
-import type { Transaction } from "../../walletView/interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { groupTransactionsByDay } from "../utils/groupTransactionsByDay";
 
 import { HistoryDayGroup } from "./HistoryDayGroup";

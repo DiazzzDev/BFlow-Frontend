@@ -1,14 +1,14 @@
 import type { CategoryType } from "../interfaces/Category";
 
-export const categoryTypeLabels: Record<CategoryType, string> = {
+export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
     INCOME: "Ingreso",
     EXPENSE: "Gasto",
 };
 
-export const categoryTypeFormOptions: Array<{
+export const CATEGORY_TYPE_FORM_OPTIONS: Array<{
     value: CategoryType;
     label: string;
 }> = [
-    { value: "EXPENSE", label: categoryTypeLabels.EXPENSE },
-    { value: "INCOME", label: categoryTypeLabels.INCOME },
+    { value: "EXPENSE", label: CATEGORY_TYPE_LABELS.EXPENSE },
+    { value: "INCOME", label: CATEGORY_TYPE_LABELS.INCOME },
 ];

@@ -2,8 +2,8 @@ import { toast } from "sonner";
 
 import { useDeleteExpense } from "../../../../components/newTransaction/hooks/useMutateExpenses";
 import { useDeleteIncome } from "../../../../components/newTransaction/hooks/useMutateIncomes";
-import type { Transaction } from "../../interfaces/Transaction";
 
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CustomModal } from "@/components/custom/CustomModal";
 
 interface DeleteTransactionModalProps {

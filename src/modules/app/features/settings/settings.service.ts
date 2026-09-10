@@ -1,7 +1,6 @@
 import type { Category, CreateCategoryData } from "./interfaces/Category";
 
-import { apiRequest } from "@/utils/api";
-import type { ApiResponse } from "@/utils/api.interfaces";
+import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 import { UserProfile } from "@/auth/InternalUser";
 

@@ -1,4 +1,4 @@
-import type { Transaction } from "../../walletView/interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import {
     formatHistoryDayLabel,
     type HistoryDayGroup as HistoryDayGroupType,

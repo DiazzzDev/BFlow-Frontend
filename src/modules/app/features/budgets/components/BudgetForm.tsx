@@ -8,8 +8,8 @@ import { useMutateBudgets } from "../hooks/useMutateBudgets";
 import type { BudgetScope } from "../interfaces/Budget";
 import {
     BUDGET_SCOPE_TABS,
-    budgetPeriodFormOptions,
-} from "../utils/budgets.filters";
+    BUDGET_PERIOD_FORM_OPTIONS,
+} from "../utils/filters";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import type { Category } from "../../settings/interfaces/Category";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
@@ -268,7 +268,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {budgetPeriodFormOptions.map((option) => (
+                                {BUDGET_PERIOD_FORM_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}
                                     </option>

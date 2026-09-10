@@ -3,11 +3,11 @@ import { Plus } from "lucide-react";
 
 import { NewTransactionModal } from "../../../../components/newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
-import type { Transaction , TransactionType } from "../../interfaces/Transaction";
 import { TransactionsTable } from "../TransactionsTable";
 import { DeleteTransactionModal } from "../modal/DeleteTransactionModal";
 import { getTransactionColumnsClassName } from "../../utils/transactionDisplay";
 
+import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
 import { SearchInput } from "@/components/controls/SearchInput";

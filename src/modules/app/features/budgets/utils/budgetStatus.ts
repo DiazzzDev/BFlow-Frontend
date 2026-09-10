@@ -26,21 +26,21 @@ export const resolveBudgetStatus = (budget: Budget): BudgetStatus => {
     return "healthy";
 };
 
-export const budgetStatusClassNames: Record<BudgetStatus, string> = {
+export const BUDGET_STATUS_CLASS_NAMES: Record<BudgetStatus, string> = {
     exceeded: "bg-danger-sweet text-danger",
     healthy: "bg-info/15 text-info",
     critical: "bg-primary-15 text-primary",
     warning: "bg-warning-sweet text-warning",
 };
 
-export const budgetPeriodLabels: Record<string, string> = {
+export const BUDGET_PERIOD_LABELS: Record<string, string> = {
     DAILY: "Diario",
     WEEKLY: "Semanal",
     MONTHLY: "Mensual",
     YEARLY: "Anual",
 };
 
-export const budgetScopeLabels: Record<string, string> = {
+export const BUDGET_SCOPE_LABELS: Record<string, string> = {
     WALLET: "Billetera",
     CATEGORY_GLOBAL: "Categoría",
     WALLET_CATEGORY: "Billetera · Categoría",

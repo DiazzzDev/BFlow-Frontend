@@ -8,8 +8,7 @@ import type {
     RecentActivityItem,
 } from "./interfaces/dashboard";
 
-import { apiRequest } from "@/utils/api";
-import type { ApiResponse } from "@/utils/api.interfaces";
+import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
 const dashboardUrl = `${config.API_BASE_URL}/api/v1/dashboard`;

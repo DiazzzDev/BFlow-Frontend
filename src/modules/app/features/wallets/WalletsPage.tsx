@@ -14,7 +14,7 @@ import {
     useWalletsPage,
 } from "./hooks/useWalletsPage";
 import { getEmptyDescription, getEmptyTitle } from "./utils/walletsEmptyState";
-import { WALLETS_TYPE_TABS } from "./utils/wallets.filters";
+import { WALLETS_TYPE_TABS } from "./utils/filters";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";

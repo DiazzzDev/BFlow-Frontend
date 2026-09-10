@@ -1,4 +1,4 @@
-import { HISTORY_TYPE_TABS } from "../history.filters";
+import { HISTORY_TYPE_TABS } from "../filters";
 
 import { SearchInput } from "@/components/controls/SearchInput";
 import { TabFilter } from "@/components/controls/TabFilter";

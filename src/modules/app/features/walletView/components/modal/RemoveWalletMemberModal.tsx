@@ -20,7 +20,7 @@ export const RemoveWalletMemberModal = ({
 }: RemoveWalletMemberModalProps) => {
     const { removeMember } = useMutateWalletMembers();
     const isRemoving = removeMember.isPending;
-    const displayName = member?.name?.trim() || member?.email || "este miembro";
+    const displayName = member?.name.trim() || member?.email || "este miembro";
 
     const handleConfirm = async () => {
         if (!member) {

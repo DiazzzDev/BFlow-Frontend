@@ -1,13 +1,17 @@
 import type { Wallet } from "../wallets/interfaces/Wallets";
 
-import type { Transaction, TransactionType, WalletDetails } from "./interfaces/Transaction";
+import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
+import type { WalletDetails } from "./interfaces/WalletDetails";
 import type { WalletMember } from "./interfaces/WalletMember";
 import type { CreateRecurringData, Recurring } from "./interfaces/Recurring";
 
-import { apiRequest, PaginatedListResponse } from "@/utils/api";
-import type { ApiResponse } from "@/utils/api.interfaces";
+import {
+    apiRequest,
+    idempotentPost,
+    type ApiResponse,
+    type PaginatedListResponse,
+} from "@/utils/api";
 import { config } from "@/config/config";
-import { idempotentPost } from "@/utils/idempotentPost";
 
 const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;
 const transactionsUrl = `${config.API_BASE_URL}/api/v1/transactions`;

@@ -1,4 +1,4 @@
-import { BUDGET_VIEW_TABS, type BudgetViewTab } from "../budgetView.tabs";
+import { BUDGET_VIEW_TABS, type BudgetViewTab } from "../utils/tabs/budgetViewTabs";
 
 interface BudgetViewTabsProps {
     activeTab: BudgetViewTab;

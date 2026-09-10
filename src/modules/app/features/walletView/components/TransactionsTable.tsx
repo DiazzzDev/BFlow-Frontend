@@ -9,21 +9,22 @@ import {
     User,
 } from "lucide-react";
 
-import type { Transaction } from "../interfaces/Transaction";
 import { WalletItem } from "../../wallets/components/WalletItem";
-import { WalletItemSkeleton } from "../../wallets/components/WalletItemSkeleton";
-import { getInitials } from "../utils/getInitials";
 import {
     canEditOrDelete,
     displayAmount,
     getContributorDisplayName,
     hasCategory,
 } from "../utils/transactionDisplay";
+import { WalletItemSkeleton } from "../../wallets/components/WalletItemSkeleton";
 
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
+import { getInitials } from "@/utils/getInitials";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatMonthYear } from "@/utils/formatters/formatMonthYear";
+import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";
 
 interface TransactionsTableProps {
     transactions: Transaction[];
@@ -189,7 +190,6 @@ export const TransactionsTable = ({
         <section className="flex flex-col">
             {transactions.map((tx) => {
                 const amount = displayAmount(tx);
-                const isNegative = amount < 0;
                 const showManageActions = canEditOrDelete(tx.type);
                 const contributorName = getContributorDisplayName(tx);
                 const categoryLabel = hasCategory(tx)
@@ -261,9 +261,10 @@ export const TransactionsTable = ({
 
                             <div className="flex shrink-0 items-start gap-1 @5xl:contents">
                                 <p
-                                    className={`pt-0.5 text-right text-sm font-semibold tabular-nums @5xl:pt-0 ${
-                                        isNegative ? "text-danger" : "text-info"
-                                    }`}
+                                    className={`pt-0.5 text-right text-sm font-semibold tabular-nums @5xl:pt-0 ${getTransactionAmountClassName(
+                                        tx.type,
+                                        amount,
+                                    )}`}
                                 >
                                     {formatCurrency(amount, currency)}
                                 </p>
@@ -288,9 +289,8 @@ export const TransactionsTable = ({
                                                     <button
                                                         type="button"
                                                         onClick={() => onEdit(tx)}
-                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${
-                                                            focus ? "bg-light-5" : ""
-                                                        }`}
+                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${focus ? "bg-light-5" : ""
+                                                            }`}
                                                     >
                                                         <Pencil className="h-4 w-4 text-helper" />
                                                         Actualizar
@@ -305,9 +305,8 @@ export const TransactionsTable = ({
                                                     <button
                                                         type="button"
                                                         onClick={() => onDuplicate(tx)}
-                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${
-                                                            focus ? "bg-light-5" : ""
-                                                        }`}
+                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${focus ? "bg-light-5" : ""
+                                                            }`}
                                                     >
                                                         <Copy className="h-4 w-4 text-helper" />
                                                         Duplicar
@@ -322,9 +321,8 @@ export const TransactionsTable = ({
                                                     <button
                                                         type="button"
                                                         onClick={() => onDelete(tx)}
-                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-danger ${
-                                                            focus ? "bg-danger-sweet" : ""
-                                                        }`}
+                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-danger ${focus ? "bg-danger-sweet" : ""
+                                                            }`}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                         Eliminar

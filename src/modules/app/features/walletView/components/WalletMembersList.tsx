@@ -1,9 +1,9 @@
 import { UserMinus, Users } from "lucide-react";
 
 import type { WalletMember } from "../interfaces/WalletMember";
-import { getInitials } from "../utils/getInitials";
 import { roleLabel } from "../utils/walletRole";
 
+import { getInitials } from "@/utils/getInitials";
 import { useAuthStore } from "@/auth/authStore";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
@@ -65,10 +65,10 @@ export const WalletMembersList = ({
                 const isCurrentUser =
                     !!user?.email &&
                     user.email.toLowerCase() === member.email.toLowerCase();
-                const isOwner = member.role?.trim().toUpperCase() === "OWNER";
+                const isOwner = member.role.trim().toUpperCase() === "OWNER";
                 const canRemove =
                     canManage && !isOwner && !isCurrentUser && !!onRemoveMember;
-                const displayName = member.name?.trim() || member.email;
+                const displayName = member.name.trim() || member.email;
                 const subtitle = isCurrentUser ? "Tú" : member.email;
 
                 return (

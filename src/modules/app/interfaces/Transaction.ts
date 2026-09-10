@@ -22,18 +22,3 @@ export interface Transaction {
     status: string | null;
     source: string;
 }
-
-export interface WalletDetails {
-    lastActivity: string;
-    highestExpense: string;
-    transactions: number;
-    initialValue: number;
-    upcoming: UpcomingTransaction[];
-}
-
-export interface UpcomingTransaction {
-    title: string;
-    amount: number;
-    type: "INCOME" | "EXPENSE";
-    nextExecutionDate: string;
-}

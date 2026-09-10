@@ -13,14 +13,14 @@ export const BUDGET_SCOPE_TABS: Array<{ id: BudgetScope; label: string }> = [
     { id: "WALLET_CATEGORY", label: "Billetera + categoría" },
 ];
 
-export const budgetSortOptions: Array<{ label: string; value: string }> = [
+export const BUDGET_SORT_OPTIONS: Array<{ label: string; value: string }> = [
     { value: "amount,desc", label: "Mayor monto" },
     { value: "amount,asc", label: "Menor monto" },
     { value: "updatedAt,desc", label: "Más recientes" },
     { value: "startDate,desc", label: "Inicio reciente" },
 ];
 
-export const budgetPeriodFormOptions: Array<{
+export const BUDGET_PERIOD_FORM_OPTIONS: Array<{
     value: BudgetPeriod;
     label: string;
 }> = [

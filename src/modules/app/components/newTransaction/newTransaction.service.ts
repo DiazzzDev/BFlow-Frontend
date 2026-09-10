@@ -2,9 +2,8 @@ import type { CreateExpenseData, Expense } from "./interfaces/Expense";
 import type { CreateIncomeData, Income } from "./interfaces/Income";
 import type { CreateTransferData, Transfer } from "./interfaces/Transfer";
 
-import { apiRequest } from "@/utils/api";
+import { apiRequest, idempotentPost } from "@/utils/api";
 import { config } from "@/config/config";
-import { idempotentPost } from "@/utils/idempotentPost";
 
 const expensesUrl = `${config.API_BASE_URL}/api/v1/expenses`;
 const incomesUrl = `${config.API_BASE_URL}/api/v1/incomes`;

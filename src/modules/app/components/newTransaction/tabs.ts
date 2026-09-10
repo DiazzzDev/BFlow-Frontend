@@ -1,4 +1,4 @@
-import type { TransactionType } from "../../features/walletView/interfaces/Transaction";
+import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 
 export const TRANSACTION_TYPE_TABS: Array<{
     id: TransactionType;

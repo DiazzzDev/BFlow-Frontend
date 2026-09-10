@@ -1,6 +1,6 @@
-import type { Transaction, TransactionType } from "../walletView/interfaces/Transaction";
+import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 
-import { apiRequest, PaginatedListResponse } from "@/utils/api";
+import { apiRequest, type PaginatedListResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
 const transactionsUrl = `${config.API_BASE_URL}/api/v1/transactions`;

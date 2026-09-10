@@ -1,7 +1,7 @@
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale/es";
 
-import type { Transaction } from "../../walletView/interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
 export interface HistoryDayGroup {
     dayKey: string;

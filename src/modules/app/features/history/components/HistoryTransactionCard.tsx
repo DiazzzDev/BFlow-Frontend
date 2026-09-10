@@ -1,17 +1,16 @@
 import {
-    ArrowDownLeft,
-    ArrowLeftRight,
-    ArrowUpRight,
     Copy,
     Eye,
     Wallet,
 } from "lucide-react";
 
-import type { Transaction } from "../../walletView/interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { formatTransactionSource } from "../utils/formatHistoryTransaction";
+import { HISTORY_TRANSACTION_TYPE_CONFIG } from "../utils/transactionTypeConfig";
 
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
+import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";
 
 interface HistoryTransactionCardProps {
     transaction: Transaction;
@@ -19,37 +18,6 @@ interface HistoryTransactionCardProps {
     onDuplicate: (transaction: Transaction) => void;
     actionsDisabled?: boolean;
 }
-
-const typeConfig: Record<
-    Transaction["type"],
-    { label: string; icon: typeof ArrowUpRight; className: string }
-> = {
-    INCOME: {
-        label: "Ingreso",
-        icon: ArrowDownLeft,
-        className: "text-info bg-info/10 border-info/20",
-    },
-    EXPENSE: {
-        label: "Gasto",
-        icon: ArrowUpRight,
-        className: "text-danger bg-danger/10 border-danger/20",
-    },
-    TRANSFER: {
-        label: "Transferencia",
-        icon: ArrowLeftRight,
-        className: "text-primary bg-primary/10 border-primary/20",
-    },
-};
-
-const amountClassName = (type: Transaction["type"], amount: number) => {
-    if (type === "EXPENSE" || amount < 0) {
-        return "text-danger";
-    }
-    if (type === "INCOME" || amount > 0) {
-        return "text-info";
-    }
-    return "text-light";
-};
 
 const formatHistoryAmount = (
     type: Transaction["type"],
@@ -77,7 +45,7 @@ export const HistoryTransactionCard = ({
 }: HistoryTransactionCardProps) => {
     const accentColor = transaction.categoryColor || "#64748B";
     const sourceLabel = formatTransactionSource(transaction.source);
-    const typeStyle = typeConfig[transaction.type];
+    const typeStyle = HISTORY_TRANSACTION_TYPE_CONFIG[transaction.type];
     const TypeIcon = typeStyle.icon;
 
     return (
@@ -126,7 +94,7 @@ export const HistoryTransactionCard = ({
                         </div>
 
                         <p
-                            className={`shrink-0 text-sm font-semibold tabular-nums ${amountClassName(
+                            className={`shrink-0 text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
                                 transaction.type,
                                 transaction.amount,
                             )}`}

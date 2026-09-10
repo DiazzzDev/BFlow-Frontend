@@ -1,4 +1,4 @@
-import type { Transaction } from "../interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
 export const getTransactionColumnsClassName = (showCategory: boolean) =>
     showCategory

@@ -1,6 +1,6 @@
-// services/storage.service.ts
-import { apiRequest } from "@/utils/api";
 import { config } from "@/config/config";
+
+import { apiRequest } from "./api";
 
 const storageUrl = `${config.API_BASE_URL}/api/v1/files`;
 
@@ -10,7 +10,6 @@ export interface PresignedUploadRequest {
     sizeBytes: number;
 }
 
-// 1. Pedir Presigned URL
 export const getPresignedUploadUrl = async (payload: PresignedUploadRequest) => {
     return await apiRequest(
         `${storageUrl}/presigned-upload`,
@@ -19,12 +18,15 @@ export const getPresignedUploadUrl = async (payload: PresignedUploadRequest) => 
             body: JSON.stringify(payload),
             headers: { "Content-Type": "application/json" },
         },
-        "Error al solicitar URL de subida"
+        "Error al solicitar URL de subida",
     );
 };
 
-// 2. Subir directamente a S3 (PUT)
-export const uploadFileToS3 = async (uploadUrl: string, file: File, requiredHeaders?: Record<string, string>) => {
+export const uploadFileToS3 = async (
+    uploadUrl: string,
+    file: File,
+    requiredHeaders?: Record<string, string>,
+) => {
     const response = await fetch(uploadUrl, {
         method: "PUT",
         headers: {
@@ -39,11 +41,10 @@ export const uploadFileToS3 = async (uploadUrl: string, file: File, requiredHead
     }
 };
 
-// 3. Confirmar subida completa en Backend
 export const completeFileUpload = async (fileId: string) => {
     return await apiRequest(
         `${storageUrl}/${fileId}/complete`,
         { method: "POST" },
-        "Error al confirmar la subida del archivo"
+        "Error al confirmar la subida del archivo",
     );
 };

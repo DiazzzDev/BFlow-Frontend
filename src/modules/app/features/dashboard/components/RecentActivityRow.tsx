@@ -4,16 +4,15 @@ import type { RecentActivityItem } from "../interfaces/dashboard";
 
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
+import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";
 
 interface RecentActivityRowProps {
     activity: RecentActivityItem;
     currency: string;
 }
 
-const isIncomeType = (type: string) => type.toUpperCase() === "INCOME";
-
 export const RecentActivityRow = ({ activity, currency }: RecentActivityRowProps) => {
-    const isIncome = isIncomeType(activity.type);
+    const isIncome = activity.type.toUpperCase() === "INCOME";
 
     return (
         <li className="flex items-center gap-3 border-b border-light-10 py-3.5 last:border-b-0">
@@ -37,9 +36,10 @@ export const RecentActivityRow = ({ activity, currency }: RecentActivityRowProps
             </div>
 
             <p
-                className={`shrink-0 text-sm font-semibold tabular-nums ${
-                    isIncome ? "text-info" : "text-danger"
-                }`}
+                className={`shrink-0 text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
+                    activity.type,
+                    activity.amount,
+                )}`}
             >
                 {isIncome ? "" : "-"}
                 {formatCurrency(Math.abs(activity.amount), currency)}

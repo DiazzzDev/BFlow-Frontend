@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 
 import { patchProfileData, patchProfilePhoto } from "../settings.service";
-//import { completeFileUpload, getPresignedUploadUrl, uploadFileToS3 } from "@/utils/storage.service";
+//import { completeFileUpload, getPresignedUploadUrl, uploadFileToS3 } from "@/utils/api";
 
 export const usePatchProfilePhoto = () => {
 

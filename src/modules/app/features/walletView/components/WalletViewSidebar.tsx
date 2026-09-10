@@ -1,11 +1,12 @@
 import { ArrowDownLeft, ArrowUpRight, CalendarClock } from "lucide-react";
 
-import type { UpcomingTransaction } from "../interfaces/Transaction";
+import type { UpcomingTransaction } from "../interfaces/WalletDetails";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
+import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";
 
 export interface WalletViewSidebarProps {
     lastActivity: string;
@@ -157,9 +158,10 @@ const UpcomingRow = ({
             </div>
 
             <p
-                className={`shrink-0 text-sm font-semibold tabular-nums ${
-                    isIncome ? "text-info" : "text-danger"
-                }`}
+                className={`shrink-0 text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
+                    item.type,
+                    item.amount,
+                )}`}
             >
                 {isIncome ? "+" : "-"}
                 {formatCurrency(Math.abs(item.amount), currency)}

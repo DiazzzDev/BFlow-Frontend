@@ -6,8 +6,7 @@ import type {
 import type { WalletSentInvitation } from "./interfaces/WalletSentInvitation";
 import type { WalletCollaborator } from "./interfaces/WalletCollaborator";
 
-import { APIError, apiRequest, PaginatedListResponse } from "@/utils/api";
-import type { ApiResponse } from "@/utils/api.interfaces";
+import { APIError, apiRequest, type PaginatedListResponse, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
 const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;

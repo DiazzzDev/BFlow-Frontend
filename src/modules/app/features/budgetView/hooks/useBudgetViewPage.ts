@@ -1,10 +1,10 @@
 import {
-    budgetPeriodLabels,
-    budgetScopeLabels,
+    BUDGET_PERIOD_LABELS,
+    BUDGET_SCOPE_LABELS,
     getBudgetDisplayName,
     getBudgetStatusLabel,
 } from "../../budgets/utils/budgetStatus";
-import { isBudgetViewTab, type BudgetViewTab } from "../budgetView.tabs";
+import { isBudgetViewTab, type BudgetViewTab } from "../utils/tabs/budgetViewTabs";
 
 import { useGetBudget } from "./useGetBudget";
 
@@ -16,7 +16,7 @@ const getScopeTags = (scope: string) => {
         return ["Billetera", "Categoría"];
     }
 
-    return [budgetScopeLabels[scope] ?? scope];
+    return [BUDGET_SCOPE_LABELS[scope] ?? scope];
 };
 
 export const useBudgetViewPage = (budgetId?: string) => {
@@ -31,7 +31,7 @@ export const useBudgetViewPage = (budgetId?: string) => {
     const usedPercent = budget?.percentage ?? 0;
     const title = budget ? getBudgetDisplayName(budget) : "Presupuesto";
     const periodLabel = budget
-        ? (budgetPeriodLabels[budget.period] ?? budget.period)
+        ? (BUDGET_PERIOD_LABELS[budget.period] ?? budget.period)
         : "";
     const scopeTags = budget ? getScopeTags(budget.scope) : [];
     const statusLabel = budget ? getBudgetStatusLabel(budget.status) : "";

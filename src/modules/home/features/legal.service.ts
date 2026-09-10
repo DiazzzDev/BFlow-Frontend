@@ -1,5 +1,5 @@
 import { config } from "../../../config/config.ts";
-import { apiRequest } from "../../../utils/api.ts";
+import { apiRequest } from "@/utils/api";
 
 export type LegalDocumentType = "privacy" | "terms" | "cookies";
 export type LegalLang = "es" | "en";

@@ -3,7 +3,7 @@ export type CurrencyOption = {
     name: string;
 };
 
-export const currencies: CurrencyOption[] = [
+export const CURRENCIES: CurrencyOption[] = [
     { code: "USD", name: "Dólar estadounidense" },
     { code: "EUR", name: "Euro" },
     { code: "CRC", name: "Colón costarricense" },

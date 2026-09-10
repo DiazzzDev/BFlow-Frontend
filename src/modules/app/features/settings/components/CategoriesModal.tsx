@@ -11,10 +11,10 @@ import { useMutateCategories } from "../hooks/useMutateCategories";
 import {
     CATEGORY_TYPE_TABS,
     type CategoryTypeFilter,
-} from "../utils/settings.filters";
+} from "../utils/filters";
 import {
-    categoryTypeFormOptions,
-    categoryTypeLabels,
+    CATEGORY_TYPE_FORM_OPTIONS,
+    CATEGORY_TYPE_LABELS,
 } from "../utils/categoryType";
 
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
@@ -192,7 +192,7 @@ const CategoriesModalContent = () => {
                             control={control}
                             render={({ field }) => (
                                 <Select {...field} id="categoryType">
-                                    {categoryTypeFormOptions.map((option) => (
+                                    {CATEGORY_TYPE_FORM_OPTIONS.map((option) => (
                                         <option
                                             key={option.value}
                                             value={option.value}
@@ -338,8 +338,8 @@ const CategoriesModalContent = () => {
                                             {category.name}
                                         </p>
                                         <p className="mt-0.5 text-xs text-helper">
-                                            {categoryTypeLabels[category.type] ??
-                                                category.type}
+                                            {CATEGORY_TYPE_LABELS[category.type] ??
+                                                    category.type}
                                         </p>
                                     </div>
                                     <div className="flex shrink-0 items-center gap-1">

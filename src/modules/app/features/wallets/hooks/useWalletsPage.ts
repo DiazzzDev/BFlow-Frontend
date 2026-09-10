@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
-import type { Transaction } from "../../walletView/interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
 import { useDuplicateTransaction } from "./useDuplicateTransaction";
 import { useGetHistory } from "./useGetHistory";
