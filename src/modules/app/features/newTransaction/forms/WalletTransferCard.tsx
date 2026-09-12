@@ -1,5 +1,4 @@
-import type { Wallet } from "../../../features/wallets/interfaces/Wallets";
-
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 interface WalletTransferCardProps {
@@ -15,11 +14,10 @@ export const WalletTransferCard = ({
 }: WalletTransferCardProps) => {
     return (
         <div
-            className={`flex min-h-36 w-full flex-col justify-between rounded-2xl border p-4 ${
-                highlight
+            className={`flex min-h-36 w-full flex-col justify-between rounded-2xl border p-4 ${highlight
                     ? "border-primary-25 bg-primary-15/30"
                     : "border-light-10 bg-surface-hard/50"
-            }`}
+                }`}
         >
             <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-helper">

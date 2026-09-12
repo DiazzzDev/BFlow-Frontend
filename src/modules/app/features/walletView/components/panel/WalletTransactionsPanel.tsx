@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { NewTransactionModal } from "../../../../components/newTransaction/NewTransactionModal";
+import { NewTransactionModal } from "../../../newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
 import { TransactionsTable } from "../TransactionsTable";
 import { DeleteTransactionModal } from "../modal/DeleteTransactionModal";

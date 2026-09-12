@@ -1,6 +1,6 @@
 import { Receipt } from "lucide-react";
 
-import type { BudgetRecentActivityItem } from "../../budgets/interfaces/Budget";
+import type { BudgetRecentActivityItem } from "@/modules/app/interfaces/Budget";
 
 import { BudgetCardEmpty } from "./BudgetCardEmpty";
 

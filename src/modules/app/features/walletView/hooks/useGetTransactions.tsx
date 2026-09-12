@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { getTransactions } from "../walletView.service";
-import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 
+import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 import { useAuthStore } from "@/auth/authStore";
 
 export const useGetTransactions = (

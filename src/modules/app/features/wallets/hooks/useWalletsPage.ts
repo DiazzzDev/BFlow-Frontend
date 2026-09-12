@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
-import type { Transaction } from "@/modules/app/interfaces/Transaction";
+
+import {
+    isWalletTypeFilter,
+    type WalletTypeFilter,
+} from "../utils/filters";
 
 import { useDuplicateTransaction } from "./useDuplicateTransaction";
 import { useGetHistory } from "./useGetHistory";
@@ -9,13 +13,10 @@ import { useGetWalletInvitations } from "./useGetWalletInvitations";
 import { useGetWallets } from "./useGetWallets";
 
 import { useAuthStore } from "@/auth/authStore";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 
-export type WalletTypeFilter = "MINE" | "SHARED";
-
-const isWalletTypeFilter = (value: string | null): value is WalletTypeFilter =>
-    value === "MINE" || value === "SHARED";
 
 export const useWalletsPage = () => {
     const [params] = useSearchParams();

@@ -8,12 +8,12 @@ import { ArrowRight } from "lucide-react";
 
 import { useMutateTransfers } from "../hooks/useMutateTransfers";
 import type { TransferDirection } from "../interfaces/Transfer";
-import { useGetWallets } from "../../../features/wallets/hooks/useGetWallets";
-import type { Wallet } from "../../../features/wallets/interfaces/Wallets";
-import { useGetWallet } from "../../../features/walletView/hooks/useGetWallet";
+import { useGetWallets } from "../../wallets/hooks/useGetWallets";
+import { useGetWallet } from "../../walletView/hooks/useGetWallet";
 
 import { WalletTransferCard } from "./WalletTransferCard";
 
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Textarea } from "@/components/controls/Textarea";
@@ -176,8 +176,8 @@ export const TransferForm = ({
                         disabled={readOnly}
                         whileTap={readOnly ? undefined : { scale: 0.92 }}
                         className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors ${readOnly
-                                ? "cursor-default opacity-70"
-                                : "cursor-pointer hover:border-primary-25 hover:bg-primary-15"
+                            ? "cursor-default opacity-70"
+                            : "cursor-pointer hover:border-primary-25 hover:bg-primary-15"
                             }`}
                     >
                         <motion.span

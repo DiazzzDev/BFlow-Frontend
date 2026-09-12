@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { deleteWallet, patchWallet, postWallet } from "../wallets.service";
-import type { CreateWalletData, UpdateWalletData } from "../interfaces/Wallets";
+import type { CreateWalletData, UpdateWalletData } from "@/modules/app/interfaces/Wallet";
 
 const invalidateWalletQueries = (
     queryClient: ReturnType<typeof useQueryClient>,

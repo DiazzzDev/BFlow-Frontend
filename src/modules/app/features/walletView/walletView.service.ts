@@ -1,4 +1,4 @@
-import type { Wallet } from "../wallets/interfaces/Wallets";
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
 
 import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import type { WalletDetails } from "./interfaces/WalletDetails";

@@ -1,4 +1,6 @@
-export type CategoryType = "INCOME" | "EXPENSE";
+export const CATEGORY_TYPE_VALUES = ["INCOME", "EXPENSE"] as const;
+
+export type CategoryType = (typeof CATEGORY_TYPE_VALUES)[number];
 
 export interface Category {
     id: string;

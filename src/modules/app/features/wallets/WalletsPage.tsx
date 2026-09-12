@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { ChevronRight, Receipt, Users, Wallet, X } from "lucide-react";
 
-import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
+import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
 
 import { WalletItem } from "./components/WalletItem";
 import { WalletItemSkeleton } from "./components/WalletItemSkeleton";

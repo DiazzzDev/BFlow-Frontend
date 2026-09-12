@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
 
-import { useAuth } from "../../../auth/hooks/useAuth.ts";
-import { useLandingHome } from "../hooks/custom/useLandingHome.tsx";
+import { useAuth } from "@/auth/hooks/useAuth";
+import { useLandingNav } from "../hooks/useLandingNav";
 
 export const LandingNavbar = () => {
-    const { navLinks, handleNavClick } = useLandingHome();
+    const { navLinks, handleNavClick } = useLandingNav();
     const { isAuthenticated, isChecking } = useAuth();
     const [mobileOpen, setMobileOpen] = useState(false);
 

@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
-import type { Wallet as WalletType } from "../../../wallets/interfaces/Wallets";
+import type { Wallet as WalletType } from "@/modules/app/interfaces/Wallet";
 import { useGetWalletDetails } from "../../hooks/useGetWalletDetails";
 import { isOwnerRole, roleLabel } from "../../utils/walletRole";
 import { DeleteWalletModal } from "../modal/DeleteWalletModal";

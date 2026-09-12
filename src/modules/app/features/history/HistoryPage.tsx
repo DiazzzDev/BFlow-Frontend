@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
-import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
+import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
 import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
 

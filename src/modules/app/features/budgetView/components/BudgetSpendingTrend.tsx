@@ -9,7 +9,7 @@ import {
     YAxis,
 } from "recharts";
 
-import type { BudgetSpendingTrendPoint } from "../../budgets/interfaces/Budget";
+import type { BudgetSpendingTrendPoint } from "@/modules/app/interfaces/Budget";
 
 import { BudgetCardEmpty } from "./BudgetCardEmpty";
 

@@ -5,15 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../hooks/useMutateBudgets";
-import type { BudgetScope } from "../interfaces/Budget";
-import {
-    BUDGET_SCOPE_TABS,
-    BUDGET_PERIOD_FORM_OPTIONS,
-} from "../utils/filters";
+import { BUDGET_SCOPE_TABS } from "../utils/filters";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
-import type { Category } from "../../settings/interfaces/Category";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
-import type { Wallet } from "../../wallets/interfaces/Wallets";
 
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { Input } from "@/components/controls/Input";
@@ -22,6 +16,14 @@ import { Select } from "@/components/controls/Select";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Button } from "@/components/controls/Button";
 import { RangeSlider } from "@/components/controls/RangeSlider";
+import type { BudgetScope } from "@/modules/app/interfaces/Budget";
+import type { Category } from "@/modules/app/interfaces/Category";
+import {
+    PERIODICITY_FORM_OPTIONS,
+    PERIODICITY_VALUES,
+} from "@/modules/app/interfaces/Periodicity";
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
+import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -35,7 +37,7 @@ const budgetSchema = z
             .string()
             .min(1, "El monto es obligatorio")
             .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
-        period: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
+        period: z.enum(PERIODICITY_VALUES),
         startDate: z.string().min(1, "La fecha es obligatoria"),
         thresholdWarning: z
             .number()
@@ -60,12 +62,10 @@ const budgetSchema = z
 
 type BudgetFormValues = z.infer<typeof budgetSchema>;
 
-const today = () => new Date().toISOString().slice(0, 10);
-
 const defaultFormValues: BudgetFormValues = {
     amount: "",
     period: "MONTHLY",
-    startDate: today(),
+    startDate: formatTodayDateInputValue(),
     thresholdWarning: 60,
     thresholdCritical: 90,
     walletId: "",
@@ -152,7 +152,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
         });
 
         await promise;
-        reset({ ...defaultFormValues, startDate: today() });
+        reset({ ...defaultFormValues, startDate: formatTodayDateInputValue() });
         setWalletQuery("");
         setCategoryQuery("");
         onSuccess?.();
@@ -268,7 +268,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {BUDGET_PERIOD_FORM_OPTIONS.map((option) => (
+                                {PERIODICITY_FORM_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}
                                     </option>

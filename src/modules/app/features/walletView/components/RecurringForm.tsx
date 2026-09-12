@@ -6,12 +6,10 @@ import { toast } from "sonner";
 
 import { usePostRecurring } from "../hooks/useMutateRecurring";
 import {
-    RECURRING_FREQUENCY_OPTIONS,
     RECURRING_INTERVAL_UNIT_LABELS,
     RECURRING_TYPE_TABS,
 } from "../utils/tabs/recurringTabs";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
-import type { Category } from "../../settings/interfaces/Category";
 
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
@@ -20,11 +18,18 @@ import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Textarea } from "@/components/controls/Textarea";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { Button } from "@/components/controls/Button";
+import type { Category } from "@/modules/app/interfaces/Category";
+import { CATEGORY_TYPE_VALUES } from "@/modules/app/interfaces/Category";
+import {
+    PERIODICITY_FORM_OPTIONS,
+    PERIODICITY_VALUES,
+} from "@/modules/app/interfaces/Periodicity";
+import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 
 const recurringSchema = z
     .object({
-        type: z.enum(["INCOME", "EXPENSE"]),
+        type: z.enum(CATEGORY_TYPE_VALUES),
         title: z.string().min(1, "El título es obligatorio"),
         description: z.string().min(1, "La descripción es obligatoria"),
         amount: z
@@ -32,7 +37,7 @@ const recurringSchema = z
             .min(1, "El monto es obligatorio")
             .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
         categoryId: z.string().uuid("Selecciona una categoría"),
-        frequency: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
+        frequency: z.enum(PERIODICITY_VALUES),
         intervalValue: z
             .string()
             .min(1, "El intervalo es obligatorio")
@@ -55,8 +60,6 @@ const recurringSchema = z
 
 type RecurringFormValues = z.infer<typeof recurringSchema>;
 
-const today = () => new Date().toISOString().slice(0, 10);
-
 const defaultFormValues: RecurringFormValues = {
     type: "EXPENSE",
     title: "",
@@ -65,7 +68,7 @@ const defaultFormValues: RecurringFormValues = {
     categoryId: "",
     frequency: "MONTHLY",
     intervalValue: "1",
-    startDate: today(),
+    startDate: formatTodayDateInputValue(),
     endDate: "",
 };
 
@@ -89,7 +92,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
         resolver: zodResolver(recurringSchema),
         defaultValues: {
             ...defaultFormValues,
-            startDate: today(),
+            startDate: formatTodayDateInputValue(),
         },
     });
 
@@ -124,7 +127,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
         });
 
         await promise;
-        reset({ ...defaultFormValues, startDate: today() });
+        reset({ ...defaultFormValues, startDate: formatTodayDateInputValue() });
         setCategoryQuery("");
         onSuccess?.();
     };
@@ -263,7 +266,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {RECURRING_FREQUENCY_OPTIONS.map(({ value, label }) => (
+                                {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => (
                                     <option key={value} value={value}>
                                         {label}
                                     </option>

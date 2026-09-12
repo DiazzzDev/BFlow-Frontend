@@ -1,5 +1,4 @@
 import {
-    BUDGET_PERIOD_LABELS,
     BUDGET_SCOPE_LABELS,
     getBudgetDisplayName,
     getBudgetStatusLabel,
@@ -8,6 +7,7 @@ import { isBudgetViewTab, type BudgetViewTab } from "../utils/tabs/budgetViewTab
 
 import { useGetBudget } from "./useGetBudget";
 
+import { PERIODICITY_LABELS } from "@/modules/app/interfaces/Periodicity";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
@@ -31,7 +31,7 @@ export const useBudgetViewPage = (budgetId?: string) => {
     const usedPercent = budget?.percentage ?? 0;
     const title = budget ? getBudgetDisplayName(budget) : "Presupuesto";
     const periodLabel = budget
-        ? (BUDGET_PERIOD_LABELS[budget.period] ?? budget.period)
+        ? (PERIODICITY_LABELS[budget.period] ?? budget.period)
         : "";
     const scopeTags = budget ? getScopeTags(budget.scope) : [];
     const statusLabel = budget ? getBudgetStatusLabel(budget.status) : "";

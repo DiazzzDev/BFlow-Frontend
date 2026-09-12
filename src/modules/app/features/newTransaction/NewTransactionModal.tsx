@@ -1,24 +1,35 @@
 import { useState } from "react";
 
-import type {
-    Transaction,
-    TransactionType,
-} from "@/modules/app/interfaces/Transaction";
-import { useGetWallets } from "../../features/wallets/hooks/useGetWallets";
-import type { Wallet } from "../../features/wallets/interfaces/Wallets";
-import { toDateInputValue } from "../../features/wallets/utils/duplicateTransaction";
+import { useGetWallets } from "../wallets/hooks/useGetWallets";
 
 import { ExpenseForm } from "./forms/ExpenseForm";
 import { IncomeForm } from "./forms/IncomeForm";
 import { TransferForm } from "./forms/TransferForm";
-import { TRANSACTION_TYPE_TABS } from "./tabs";
+import {
+    getTransactionModalContentKey,
+    getTransactionModalMaxWidth,
+    resolveInitialTransactionType,
+} from "./utils/transactionModal";
+import { getVisibleTransactionTypeTabs } from "./utils/tabs/transactionTypeTabs";
+import {
+    getTransactionFormInitialValues,
+    getTransferFormInitialValues,
+} from "./utils/transactionFormInitialValues";
+import {
+    getTransactionModalTitle,
+    type TransactionModalMode,
+} from "./utils/transactionModalTitles";
 
+import type {
+    Transaction,
+    TransactionType,
+} from "@/modules/app/interfaces/Transaction";
+import { TRANSACTION_TYPE_VALUES } from "@/modules/app/interfaces/Transaction";
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import { CustomModal } from "@/components/custom/CustomModal";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { useDebounce } from "@/hooks/useDebounce";
-
-type ModalMode = "create" | "view" | "edit";
 
 interface NewTransactionModalProps {
     isModalOpen: boolean;
@@ -28,54 +39,9 @@ interface NewTransactionModalProps {
     requireWalletSelect?: boolean;
     initialType?: TransactionType | null;
     allowedTypes?: readonly TransactionType[];
-    mode?: ModalMode;
+    mode?: TransactionModalMode;
     transaction?: Transaction | null;
 }
-
-const TRANSACTION_MODAL_TITLES: Record<
-    ModalMode,
-    Record<TransactionType, string>
-> = {
-    create: {
-        INCOME: "Nueva transacción",
-        EXPENSE: "Nueva transacción",
-        TRANSFER: "Nueva transacción",
-    },
-    view: {
-        INCOME: "Detalle de ingreso",
-        EXPENSE: "Detalle de gasto",
-        TRANSFER: "Detalle de transferencia",
-    },
-    edit: {
-        INCOME: "Editar ingreso",
-        EXPENSE: "Editar gasto",
-        TRANSFER: "Editar transferencia",
-    },
-};
-
-const ALL_TRANSACTION_TYPES: readonly TransactionType[] = [
-    "INCOME",
-    "EXPENSE",
-    "TRANSFER",
-];
-
-const resolveInitialType = (
-    mode: ModalMode,
-    transaction?: Transaction | null,
-    initialType?: TransactionType | null,
-    allowedTypes: readonly TransactionType[] = ALL_TRANSACTION_TYPES,
-): TransactionType => {
-    if ((mode === "view" || mode === "edit") && transaction) {
-        return transaction.type;
-    }
-
-    const preferred = initialType ?? "INCOME";
-    if (allowedTypes.includes(preferred)) {
-        return preferred;
-    }
-
-    return allowedTypes[0] ?? "INCOME";
-};
 
 export const NewTransactionModal = ({
     isModalOpen,
@@ -87,34 +53,28 @@ export const NewTransactionModal = ({
     mode = "create",
     transaction = null,
 }: NewTransactionModalProps) => {
-    const visibleTypes = allowedTypes ?? ALL_TRANSACTION_TYPES;
-    const headingType = resolveInitialType(
+    const visibleTypes = allowedTypes ?? TRANSACTION_TYPE_VALUES;
+    const headingType = resolveInitialTransactionType(
         mode,
         transaction,
         initialType,
         visibleTypes,
     );
-    const contentKey = isModalOpen
-        ? `${mode}-${transaction?.id ?? "new"}-${initialType ?? "default"}`
-        : "closed";
 
     return (
         <CustomModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            title={
-                mode === "create"
-                    ? "Nueva transacción"
-                    : TRANSACTION_MODAL_TITLES[mode][headingType]
-            }
-            maxWidth={
-                visibleTypes.includes("TRANSFER") || headingType === "TRANSFER"
-                    ? "max-w-3xl"
-                    : "max-w-lg"
-            }
+            title={getTransactionModalTitle(mode, headingType)}
+            maxWidth={getTransactionModalMaxWidth(visibleTypes, headingType)}
         >
             <NewTransactionModalContent
-                key={contentKey}
+                key={getTransactionModalContentKey(
+                    isModalOpen,
+                    mode,
+                    transaction?.id,
+                    initialType,
+                )}
                 walletId={walletId}
                 requireWalletSelect={requireWalletSelect}
                 initialType={initialType}
@@ -132,7 +92,7 @@ interface NewTransactionModalContentProps {
     requireWalletSelect?: boolean;
     initialType?: TransactionType | null;
     allowedTypes?: readonly TransactionType[];
-    mode: ModalMode;
+    mode: TransactionModalMode;
     transaction?: Transaction | null;
     onClose: () => void;
 }
@@ -151,13 +111,16 @@ const NewTransactionModalContent = ({
     const lockType = isViewMode || isEditMode;
     const needsWalletSelect =
         requireWalletSelect ?? (mode === "create" && !walletId);
-    const visibleTypes = allowedTypes ?? ALL_TRANSACTION_TYPES;
-    const visibleTabs = TRANSACTION_TYPE_TABS.filter((tab) =>
-        visibleTypes.includes(tab.id),
-    );
+    const visibleTypes = allowedTypes ?? TRANSACTION_TYPE_VALUES;
+    const visibleTabs = getVisibleTransactionTypeTabs(visibleTypes);
 
     const [activeType, setActiveType] = useState<TransactionType>(() =>
-        resolveInitialType(mode, transaction, initialType, visibleTypes),
+        resolveInitialTransactionType(
+            mode,
+            transaction,
+            initialType,
+            visibleTypes,
+        ),
     );
     const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
     const [walletQuery, setWalletQuery] = useState("");
@@ -176,22 +139,13 @@ const NewTransactionModalContent = ({
         lockType && transaction
             ? transaction.walletId
             : needsWalletSelect
-              ? (selectedWallet?.id ?? "")
-              : walletId;
+                ? (selectedWallet?.id ?? "")
+                : walletId;
 
     const canShowForms = Boolean(resolvedWalletId);
-    const amountValue = transaction ? String(Math.abs(transaction.amount)) : "";
-    const dateValue = transaction ? toDateInputValue(transaction.date) : "";
     const sharedInitialValues =
         lockType && transaction
-            ? {
-                  title: transaction.title,
-                  description: transaction.description,
-                  amount: amountValue,
-                  date: dateValue,
-                  categoryId: transaction.categoryId,
-                  categoryName: transaction.categoryName,
-              }
+            ? getTransactionFormInitialValues(transaction)
             : undefined;
 
     return (
@@ -276,19 +230,7 @@ const NewTransactionModalContent = ({
                         readOnly={isViewMode}
                         initialValues={
                             isViewMode && transaction
-                                ? {
-                                      counterpartWalletId:
-                                          transaction.counterpartWalletId ?? "",
-                                      counterpartWalletName:
-                                          transaction.counterpartWalletName ??
-                                          undefined,
-                                      amount: amountValue,
-                                      description: transaction.description,
-                                      direction:
-                                          transaction.amount < 0
-                                              ? "outgoing"
-                                              : "incoming",
-                                  }
+                                ? getTransferFormInitialValues(transaction)
                                 : undefined
                         }
                         onSuccess={onClose}

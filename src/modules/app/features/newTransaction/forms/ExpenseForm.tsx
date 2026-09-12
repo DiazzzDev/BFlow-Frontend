@@ -5,9 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { usePostExpense, usePutExpense } from "../hooks/useMutateExpenses";
-import type { RecurrencePattern } from "../interfaces/Expense";
-import { useGetCategories } from "../../../features/settings/hooks/useGetCategories";
-import type { Category } from "../../../features/settings/interfaces/Category";
+import { useGetCategories } from "../../settings/hooks/useGetCategories";
 
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
@@ -16,14 +14,14 @@ import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Textarea } from "@/components/controls/Textarea";
 import { ToggleSwitch } from "@/components/controls/ToggleSwitch";
 import { Button } from "@/components/controls/Button";
+import type { Category } from "@/modules/app/interfaces/Category";
+import {
+    PERIODICITY_FORM_OPTIONS,
+    PERIODICITY_VALUES,
+    type Periodicity,
+} from "@/modules/app/interfaces/Periodicity";
+import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
-
-const recurrencePatterns: Array<{ value: RecurrencePattern; label: string }> = [
-    { value: "DAILY", label: "Diario" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "YEARLY", label: "Anual" },
-];
 
 const expenseSchema = z
     .object({
@@ -35,7 +33,7 @@ const expenseSchema = z
             .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
         date: z.string().min(1, "La fecha es obligatoria"),
         recurring: z.boolean(),
-        recurrencePattern: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]).nullable(),
+        recurrencePattern: z.enum(PERIODICITY_VALUES).nullable(),
         categoryId: z.string().uuid("Selecciona una categoría"),
         taxDeductible: z.boolean(),
         reimbursable: z.boolean(),
@@ -52,13 +50,11 @@ const expenseSchema = z
 
 type ExpenseFormValues = z.infer<typeof expenseSchema>;
 
-const today = () => new Date().toISOString().slice(0, 10);
-
 const defaultFormValues: ExpenseFormValues = {
     title: "",
     description: "",
     amount: "",
-    date: today(),
+    date: formatTodayDateInputValue(),
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
@@ -153,7 +149,7 @@ export const ExpenseForm = ({
 
         await promise;
         if (!isEditing) {
-            reset({ ...defaultFormValues, date: today() });
+            reset({ ...defaultFormValues, date: formatTodayDateInputValue() });
             setCategoryQuery("");
         }
         onSuccess?.();
@@ -316,14 +312,14 @@ export const ExpenseForm = ({
                                     onChange={(event) =>
                                         field.onChange(
                                             event.target.value
-                                                ? (event.target.value as RecurrencePattern)
+                                                ? (event.target.value as Periodicity)
                                                 : null,
                                         )
                                     }
                                     onBlur={field.onBlur}
                                 >
                                     <option value="">Selecciona un patrón</option>
-                                    {recurrencePatterns.map(({ value, label }) => (
+                                    {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => (
                                         <option key={value} value={value}>
                                             {label}
                                         </option>

@@ -1,12 +1,9 @@
-import type { CreateExpenseData } from "../../../components/newTransaction/interfaces/Expense";
-import type { CreateIncomeData } from "../../../components/newTransaction/interfaces/Income";
-import type { CreateTransferData } from "../../../components/newTransaction/interfaces/Transfer";
+import type { CreateExpenseData } from "../../newTransaction/interfaces/Expense";
+import type { CreateIncomeData } from "../../newTransaction/interfaces/Income";
+import type { CreateTransferData } from "../../newTransaction/interfaces/Transfer";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
-
-export const toDateInputValue = (date: string) => date.slice(0, 10);
-
-export const todayDateInputValue = () => new Date().toISOString().slice(0, 10);
+import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 
 export const withDuplicatedDescription = (description: string) => {
     const base = description.trim();
@@ -19,7 +16,7 @@ export const buildDuplicateExpensePayload = (
     title: transaction.title,
     description: withDuplicatedDescription(transaction.description),
     amount: Math.abs(transaction.amount),
-    date: todayDateInputValue(),
+    date: formatTodayDateInputValue(),
     walletId: transaction.walletId,
     source: transaction.source || "manual",
     recurring: false,
@@ -35,7 +32,7 @@ export const buildDuplicateIncomePayload = (
     title: transaction.title,
     description: withDuplicatedDescription(transaction.description),
     amount: Math.abs(transaction.amount),
-    date: todayDateInputValue(),
+    date: formatTodayDateInputValue(),
     walletId: transaction.walletId,
     source: transaction.source || "manual",
     recurring: false,

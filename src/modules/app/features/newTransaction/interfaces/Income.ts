@@ -1,4 +1,4 @@
-export type RecurrencePattern = "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+import type { Periodicity } from "@/modules/app/interfaces/Periodicity";
 
 export interface CreateIncomeData {
     title: string;
@@ -8,7 +8,7 @@ export interface CreateIncomeData {
     walletId: string;
     source: string;
     recurring: boolean;
-    recurrencePattern: RecurrencePattern | null;
+    recurrencePattern: Periodicity | null;
     categoryId: string;
     taxable: boolean;
 }

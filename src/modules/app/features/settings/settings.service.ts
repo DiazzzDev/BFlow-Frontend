@@ -1,4 +1,4 @@
-import type { Category, CreateCategoryData } from "./interfaces/Category";
+import type { Category, CreateCategoryData } from "@/modules/app/interfaces/Category";
 
 import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";

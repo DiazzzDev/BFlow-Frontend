@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
 
-import type { Wallet } from "../../../wallets/interfaces/Wallets";
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import { useGetWalletMembers } from "../../hooks/useGetWalletMembers";
 import { useGetWalletSentInvitations } from "../../hooks/useGetWalletSentInvitations";
 import type { WalletMember } from "../../interfaces/WalletMember";

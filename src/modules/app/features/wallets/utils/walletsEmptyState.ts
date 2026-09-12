@@ -1,4 +1,4 @@
-import { WalletTypeFilter } from "../hooks/useWalletsPage";
+import type { WalletTypeFilter } from "./filters";
 
 export const getEmptyTitle = (search: string, walletType: WalletTypeFilter) => {
     if (search.trim()) {

@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import type { Category } from "../interfaces/Category";
+import type { Category } from "@/modules/app/interfaces/Category";
+import { CATEGORY_TYPE_VALUES } from "@/modules/app/interfaces/Category";
 import { useGetCategories } from "../hooks/useGetCategories";
 import { useMutateCategories } from "../hooks/useMutateCategories";
 import {
@@ -34,7 +35,7 @@ import {
 
 const categorySchema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
-    type: z.enum(["INCOME", "EXPENSE"]),
+    type: z.enum(CATEGORY_TYPE_VALUES),
     color: z.string().min(1, "El color es obligatorio"),
     icon: z.enum(categoryIconKeys as [typeof categoryIconKeys[number], ...typeof categoryIconKeys[number][]]),
 });

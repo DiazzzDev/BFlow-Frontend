@@ -6,10 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../../budgets/hooks/useMutateBudgets";
-import type { BudgetDetail } from "../../budgets/interfaces/Budget";
-import { BUDGET_PERIOD_FORM_OPTIONS } from "../../budgets/utils/filters";
 import {
-    BUDGET_PERIOD_LABELS,
     BUDGET_SCOPE_LABELS,
     getBudgetDisplayName,
 } from "../../budgets/utils/budgetStatus";
@@ -22,6 +19,13 @@ import { Select } from "@/components/controls/Select";
 import { RangeSlider } from "@/components/controls/RangeSlider";
 import { Button } from "@/components/controls/Button";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
+import type { BudgetDetail } from "@/modules/app/interfaces/Budget";
+import {
+    PERIODICITY_FORM_OPTIONS,
+    PERIODICITY_LABELS,
+    PERIODICITY_VALUES,
+} from "@/modules/app/interfaces/Periodicity";
+import { formatDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 
 const MIN_WARNING = 1;
@@ -34,7 +38,7 @@ const settingsSchema = z
             .string()
             .min(1, "El monto es obligatorio")
             .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
-        period: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
+        period: z.enum(PERIODICITY_VALUES),
         startDate: z.string().min(1, "La fecha es obligatoria"),
         thresholdWarning: z
             .number()
@@ -56,8 +60,6 @@ const settingsSchema = z
     });
 
 type SettingsFormValues = z.infer<typeof settingsSchema>;
-
-const toDateInputValue = (date: string) => date.slice(0, 10);
 
 interface BudgetSettingsPanelProps {
     budget?: BudgetDetail;
@@ -96,7 +98,7 @@ export const BudgetSettingsPanel = ({
         reset({
             amount: String(budget.budgetLimit),
             period: budget.period,
-            startDate: toDateInputValue(budget.startDate),
+            startDate: formatDateInputValue(budget.startDate),
             thresholdWarning: budget.thresholdWarning,
             thresholdCritical: budget.thresholdCritical,
         });
@@ -231,7 +233,7 @@ export const BudgetSettingsPanel = ({
                                             onChange={(event) => field.onChange(event.target.value)}
                                             onBlur={field.onBlur}
                                         >
-                                            {BUDGET_PERIOD_FORM_OPTIONS.map((option) => (
+                                            {PERIODICITY_FORM_OPTIONS.map((option) => (
                                                 <option key={option.value} value={option.value}>
                                                     {option.label}
                                                 </option>
@@ -371,13 +373,13 @@ export const BudgetSettingsPanel = ({
                     <div>
                         <dt className="text-xs text-helper">Periodo</dt>
                         <dd className="mt-1 text-sm font-medium text-light">
-                            {BUDGET_PERIOD_LABELS[budget.period] ?? budget.period}
+                            {PERIODICITY_LABELS[budget.period] ?? budget.period}
                         </dd>
                     </div>
                     <div>
                         <dt className="text-xs text-helper">Fin</dt>
                         <dd className="mt-1 text-sm font-medium text-light">
-                            {toDateInputValue(budget.endDate)}
+                            {formatDateInputValue(budget.endDate)}
                         </dd>
                     </div>
                 </dl>

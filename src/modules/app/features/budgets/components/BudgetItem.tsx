@@ -1,8 +1,8 @@
 import { ChevronRight } from "lucide-react";
 
-import type { Budget } from "../interfaces/Budget";
+import type { Budget } from "@/modules/app/interfaces/Budget";
+import { PERIODICITY_LABELS } from "@/modules/app/interfaces/Periodicity";
 import {
-    BUDGET_PERIOD_LABELS,
     BUDGET_SCOPE_LABELS,
     BUDGET_STATUS_CLASS_NAMES,
     getBudgetDisplayName,
@@ -27,7 +27,7 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
         : "Sin fecha de actualización";
 
     const tags = [
-        BUDGET_PERIOD_LABELS[budget.period] ?? budget.period,
+        PERIODICITY_LABELS[budget.period] ?? budget.period,
         BUDGET_SCOPE_LABELS[budget.scope] ?? budget.scope,
         budget.walletName,
         budget.categoryName,

@@ -1,10 +1,12 @@
-export type BudgetPeriod = "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+import type { Periodicity } from "./Periodicity";
+
+export type BudgetPeriod = Periodicity;
 export type BudgetScope = "WALLET" | "CATEGORY_GLOBAL" | "WALLET_CATEGORY";
 
 export interface Budget {
     id: string;
     budgetLimit: number;
-    period: BudgetPeriod ;
+    period: BudgetPeriod;
     scope: BudgetScope;
     startDate: string;
     thresholdCritical: number;

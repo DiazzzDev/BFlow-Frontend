@@ -4,7 +4,7 @@ import type {
     CreateBudgetData,
     GetBudgetsParams,
     UpdateBudgetData,
-} from "./interfaces/Budget";
+} from "@/modules/app/interfaces/Budget";
 
 import { apiRequest, type PaginatedListResponse, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
