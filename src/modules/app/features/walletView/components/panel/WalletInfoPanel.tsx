@@ -23,8 +23,10 @@ export const WalletInfoPanel = ({
     onCloseMobile,
     sidebarProps,
 }: WalletInfoPanelProps) => {
+    // Schedule-transaction modal (opened from the sidebar CTA)
     const [isScheduleOpen, setIsScheduleOpen] = useState(false);
 
+    // Lock body scroll while the mobile info drawer is open
     useEffect(() => {
         if (!isMobileOpen) {
             return;
@@ -38,6 +40,7 @@ export const WalletInfoPanel = ({
         };
     }, [isMobileOpen]);
 
+    // Close the mobile drawer first so it does not sit over the schedule modal
     const handleSchedule = () => {
         onCloseMobile();
         setIsScheduleOpen(true);

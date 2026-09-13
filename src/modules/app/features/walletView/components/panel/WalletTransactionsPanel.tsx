@@ -38,13 +38,17 @@ export const WalletTransactionsPanel = ({
     numberOfElements,
     totalPages,
 }: WalletTransactionsPanelProps) => {
+    // Duplicate action (shared with wallets history)
     const { duplicateTransaction, isPending: isDuplicating } = useDuplicateTransaction();
+    const actionsDisabled = isDuplicating;
+
+    // Create / edit / delete transaction modals
     const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
     const [editTransaction, setEditTransaction] = useState<Transaction | null>(null);
     const [deleteTransaction, setDeleteTransaction] = useState<Transaction | null>(null);
 
+    // Table header grid columns (category column is optional)
     const columnsClassName = getTransactionColumnsClassName(showCategory);
-    const actionsDisabled = isDuplicating;
 
     return (
         <>

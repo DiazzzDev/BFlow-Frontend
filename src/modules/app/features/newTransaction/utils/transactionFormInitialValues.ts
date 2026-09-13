@@ -12,10 +12,8 @@ export const getTransactionFormInitialValues = (transaction: Transaction) => ({
 
 export const getTransferFormInitialValues = (transaction: Transaction) => ({
     counterpartWalletId: transaction.counterpartWalletId ?? "",
-    counterpartWalletName: transaction.counterpartWalletName ?? undefined,
+    counterpartWalletName: transaction.counterpartWalletName ?? "",
     amount: String(Math.abs(transaction.amount)),
     description: transaction.description,
-    direction: (transaction.amount < 0 ? "outgoing" : "incoming") as
-        | "outgoing"
-        | "incoming",
+    direction: transaction.amount < 0 ? ("outgoing" as const) : ("incoming" as const)
 });

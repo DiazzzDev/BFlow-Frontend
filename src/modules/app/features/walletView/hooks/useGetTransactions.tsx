@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getTransactions } from "../walletView.service";
+import { getWalletTransactions } from "../walletView.service";
 
 import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 import { useAuthStore } from "@/auth/authStore";
@@ -17,9 +17,8 @@ export const useGetTransactions = (
     return useQuery({
         queryKey: ["wallet-transactions", walletId, type, query, page, size],
         queryFn: () =>
-            getTransactions({
+            getWalletTransactions(walletId, {
                 type: type!,
-                walletId,
                 query,
                 page,
                 size,

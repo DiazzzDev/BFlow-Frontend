@@ -15,14 +15,19 @@ interface WalletInvitationItemProps {
 }
 
 export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) => {
+    // Accept / decline mutations
     const { acceptInvitation, declineInvitation } = useMutateWalletInvitations();
-    const inviterName = invitation.invitedByName.trim() || invitation.invitedByEmail || "Alguien";
+
+    // Display labels + pending state for this invitation only
+    const inviterName =
+        invitation.invitedByName.trim() || invitation.invitedByEmail || "Alguien";
     const expired = isInvitationExpired(invitation.expiresAt);
     const expiryLabel = getInvitationExpiryLabel(invitation.expiresAt);
     const isActing =
         (acceptInvitation.isPending && acceptInvitation.variables === invitation.id) ||
         (declineInvitation.isPending && declineInvitation.variables === invitation.id);
 
+    // Accept join (no-op if expired or another action is in flight)
     const handleAccept = async () => {
         if (expired || isActing) {
             return;
@@ -44,6 +49,7 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
         }
     };
 
+    // Decline invitation (no-op while an action is in flight)
     const handleDecline = async () => {
         if (isActing) {
             return;

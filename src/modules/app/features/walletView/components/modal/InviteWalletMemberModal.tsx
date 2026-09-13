@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import type { WalletCollaborator } from "../../../wallets/interfaces/WalletCollaborator";
 import { useMutateWalletInvitations } from "../../../wallets/hooks/useMutateWalletInvitations";
-import { useSearchWalletCollaborators } from "../../../wallets/hooks/useSearchWalletCollaborators";
+import { useSearchWalletCollaborators } from "../../hooks/useSearchWalletCollaborators";
 import { collaboratorStatusLabel } from "../../utils/collaboratorStatus";
 
 import { Button } from "@/components/controls/Button";
@@ -50,6 +50,7 @@ export const InviteWalletMemberModal = ({
             title="Invitar a la billetera"
             maxWidth="max-w-md"
         >
+            {/* Remount form/search state whenever the modal opens */}
             <InviteWalletMemberModalContent
                 key={isOpen ? "open" : "closed"}
                 walletId={walletId}
@@ -71,17 +72,19 @@ const InviteWalletMemberModalContent = ({
     walletName,
     onClose,
 }: InviteWalletMemberModalContentProps) => {
+    // Invite mutation
     const { inviteMember } = useMutateWalletInvitations();
+
+    // Collaborator search (remote; needs at least 2 chars)
     const [collaboratorQuery, setCollaboratorQuery] = useState("");
     const [selectedCollaborator, setSelectedCollaborator] =
         useState<WalletCollaborator | null>(null);
     const debouncedCollaboratorQuery = useDebounce(collaboratorQuery, 400);
-
     const { data: collaboratorsResponse, isFetching: isCollaboratorsLoading } =
         useSearchWalletCollaborators(walletId, debouncedCollaboratorQuery);
-
     const collaborators = collaboratorsResponse?.data ?? [];
 
+    // RHF form — invitedEmail is the value that actually gets submitted
     const {
         control,
         handleSubmit,
@@ -94,6 +97,7 @@ const InviteWalletMemberModalContent = ({
         },
     });
 
+    // Send invite by email then close the modal
     const onSubmit = async (formData: InviteFormValues) => {
         const promise = inviteMember.mutateAsync({
             walletId,
@@ -225,7 +229,7 @@ const InviteWalletMemberModalContent = ({
                     </span>
                 ) : null}
                 {collaboratorQuery.trim().length > 0 &&
-                collaboratorQuery.trim().length < 2 ? (
+                    collaboratorQuery.trim().length < 2 ? (
                     <span className="text-xs text-helper">
                         Escribe al menos 2 caracteres para buscar.
                     </span>

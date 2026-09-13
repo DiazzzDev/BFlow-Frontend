@@ -1,4 +1,13 @@
-export const LeftPart = ({ Body, title, focusTitle, subtitle }: { Body: React.ReactElement; title: string; subtitle: string; focusTitle: string }) => {
+import type { ReactElement } from "react";
+
+interface LeftPartProps {
+    Body: ReactElement;
+    title: string;
+    focusTitle: string;
+    subtitle: string;
+}
+
+export const LeftPart = ({ Body, title, focusTitle, subtitle }: LeftPartProps) => {
     return (
         <section className="relative hidden min-h-screen overflow-hidden border-r border-light-10 bg-surface-hard lg:flex lg:w-1/2">
 
@@ -20,7 +29,7 @@ export const LeftPart = ({ Body, title, focusTitle, subtitle }: { Body: React.Re
 
                         <div className="max-w-xl space-y-6">
                             <h1 className="font-heading text-3xl font-semibold leading-tight xl:text-5xl">
-                                {title} {" "}
+                                {title}{" "}
                                 <br />
                                 <span className="text-primary">{focusTitle}</span>
                             </h1>
@@ -40,5 +49,5 @@ export const LeftPart = ({ Body, title, focusTitle, subtitle }: { Body: React.Re
                 </div>
             </div>
         </section>
-    )
-} 
+    );
+};

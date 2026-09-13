@@ -1,5 +1,7 @@
+// Auto-advance interval for the how-it-works step carousel
 export const LANDING_STEP_INTERVAL_MS = 4000;
 
+// Hero-adjacent how-it-works steps + preview images
 export const LANDING_STEPS = [
     {
         number: "01",
@@ -24,6 +26,7 @@ export const LANDING_STEPS = [
     },
 ];
 
+// Pricing cards (USD copy; CTA routes to register by default)
 export const LANDING_PLANS: Array<{
     name: string;
     price: string;
@@ -83,6 +86,7 @@ export const LANDING_PLANS: Array<{
     },
 ];
 
+// FAQ accordion copy
 export const LANDING_FAQS = [
     {
         question: "¿Por qué usar BFlow?",

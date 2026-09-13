@@ -1,11 +1,11 @@
-import { Check } from "lucide-react"
+import { Check } from "lucide-react";
 
 const benefits = [
     "Hasta 2 billeteras en el plan gratuito",
     "Gastos e ingresos ilimitados",
     "Categorización automática con IA",
     "Puedes mejorar tu plan cuando quieras",
-]
+];
 
 export const RegisterHero = () => {
     return (
@@ -15,11 +15,9 @@ export const RegisterHero = () => {
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-green-500/20">
                         <Check size={15} />
                     </div>
-                    <span className="text-helper">
-                        {benefit}
-                    </span>
+                    <span className="text-helper">{benefit}</span>
                 </div>
             ))}
         </div>
-    )
-}
+    );
+};

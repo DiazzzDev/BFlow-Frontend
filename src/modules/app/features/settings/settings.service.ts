@@ -1,5 +1,4 @@
 import type { Category, CreateCategoryData } from "@/modules/app/interfaces/Category";
-
 import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 import { UserProfile } from "@/auth/InternalUser";
@@ -22,7 +21,7 @@ export const getCategories = async () => {
 };
 
 export const postCategory = async (categoryData: CreateCategoryData) => {
-    return await apiRequest<ApiResponse<Category>>(
+    return await apiRequest(
         categoriesUrl,
         {
             ...defaultApiOptions,

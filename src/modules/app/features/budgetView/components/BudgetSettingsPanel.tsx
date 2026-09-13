@@ -71,9 +71,14 @@ export const BudgetSettingsPanel = ({
     isLoading,
 }: BudgetSettingsPanelProps) => {
     const navigate = useNavigate();
+
+    // Update / delete mutations
     const { updateBudget, removeBudget } = useMutateBudgets();
+
+    // Delete confirmation modal
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+    // RHF form + watched thresholds for linked sliders
     const {
         control,
         handleSubmit,
@@ -90,7 +95,10 @@ export const BudgetSettingsPanel = ({
             thresholdCritical: 90,
         },
     });
+    const thresholdWarning = useWatch({ control, name: "thresholdWarning" });
+    const thresholdCritical = useWatch({ control, name: "thresholdCritical" });
 
+    // Seed form when budget detail arrives / changes
     useEffect(() => {
         if (!budget) {
             return;
@@ -104,9 +112,7 @@ export const BudgetSettingsPanel = ({
         });
     }, [budget, reset]);
 
-    const thresholdWarning = useWatch({ control, name: "thresholdWarning" });
-    const thresholdCritical = useWatch({ control, name: "thresholdCritical" });
-
+    // Persist editable settings and clear dirty state
     const onSubmit = async (formData: SettingsFormValues) => {
         if (!budget) {
             return;
@@ -134,6 +140,7 @@ export const BudgetSettingsPanel = ({
         reset(formData);
     };
 
+    // Delete budget then return to the list
     const handleConfirmDelete = async (): Promise<void> => {
         if (!budget) {
             return;
@@ -373,7 +380,7 @@ export const BudgetSettingsPanel = ({
                     <div>
                         <dt className="text-xs text-helper">Periodo</dt>
                         <dd className="mt-1 text-sm font-medium text-light">
-                            {PERIODICITY_LABELS[budget.period] ?? budget.period}
+                            {PERIODICITY_LABELS[budget.period]}
                         </dd>
                     </div>
                     <div>

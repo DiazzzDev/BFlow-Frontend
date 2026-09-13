@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 
 import { useMutateTransfers } from "../hooks/useMutateTransfers";
 import type { TransferDirection } from "../interfaces/Transfer";
+import { getWallet } from "../utils/getWallet";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
 import { useGetWallet } from "../../walletView/hooks/useGetWallet";
 
@@ -21,6 +22,7 @@ import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Button } from "@/components/controls/Button";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useAutoSelect } from "@/hooks/useAutoSelect";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 
 const transferSchema = z.object({
@@ -56,31 +58,32 @@ export const TransferForm = ({
     readOnly = false,
     initialValues,
 }: TransferFormProps) => {
+    // Create mutation
     const { createTransfer } = useMutateTransfers();
-    const { data: currentWalletResponse, isLoading: isCurrentWalletLoading } =
-        useGetWallet(walletId);
 
+    // Form mode and disabled state
+    const isDisabled = readOnly || createTransfer.isPending;
+
+    // Transfer direction (outgoing = current wallet sends)
     const [direction, setDirection] = useState<TransferDirection>(
         initialValues?.direction ?? "outgoing",
     );
+    const isOutgoing = direction === "outgoing";
+
+    // Current wallet card + counterpart search (excludes this wallet)
+    const { data: currentWalletResponse, isLoading: isCurrentWalletLoading } = useGetWallet(walletId);
+    const currentWallet = currentWalletResponse?.data;
     const [walletQuery, setWalletQuery] = useState("");
     const debouncedWalletQuery = useDebounce(walletQuery, 400);
-    const { data: walletsResponse, isLoading: isWalletsLoading } = useGetWallets(
-        "MINE",
-        debouncedWalletQuery,
-    );
+    const { data: walletsResponse, isFetching: isWalletsFetching } = useGetWallets("MINE", debouncedWalletQuery,);
+    const availableWallets = walletsResponse?.data.content.filter((wallet) => wallet.id !== walletId);
 
-    const currentWallet = currentWalletResponse?.data;
-    const availableWallets =
-        walletsResponse?.data.content.filter((wallet) => wallet.id !== walletId) ?? [];
-    const isDisabled = readOnly || createTransfer.isPending;
-
+    // RHF form
     const {
         control,
         handleSubmit,
         reset,
         setValue,
-        watch,
         formState: { errors },
     } = useForm<TransferFormValues>({
         resolver: zodResolver(transferSchema),
@@ -90,23 +93,30 @@ export const TransferForm = ({
         },
     });
 
-    const counterpartWalletId = watch("counterpartWalletId");
-    const selectedWallet =
-        availableWallets.find((wallet) => wallet.id === counterpartWalletId) ?? null;
+    // UI selection: "auto" = first item; manual pick leaves auto mode
+    const { selectedItem: selectedWallet, setSelection: setSelectedWallet, selection, } = useAutoSelect(availableWallets ?? []);
 
-    const counterpartCardWallet =
-        selectedWallet ??
-        (initialValues?.counterpartWalletId
-            ? {
-                name: initialValues.counterpartWalletName || "Billetera",
-                balance: 0,
-                currency: currentWallet?.currency || "USD",
-                description: "",
-                role: "",
+    // Seed counterpartWalletId: readOnly uses initialValues once; create uses auto default
+    useEffect(() => {
+        if (readOnly && selection === "auto" && initialValues?.counterpartWalletId) {
+            const wallet = getWallet(availableWallets ?? [], initialValues.counterpartWalletId);
+            if (wallet) {
+                setSelectedWallet(wallet);
+                setValue("counterpartWalletId", wallet.id);
             }
-            : null);
+        } else if (!readOnly && selection === "auto" && selectedWallet) {
+            setValue("counterpartWalletId", selectedWallet.id);
+        }
+    }, [readOnly, selection, initialValues, availableWallets, selectedWallet, setSelectedWallet, setValue]);
 
-    const isOutgoing = direction === "outgoing";
+    // Card for the counterpart side (list item, or initialValues fallback while loading)
+    const counterpartCardWallet = selectedWallet ?? (initialValues?.counterpartWalletId ? {
+        name: initialValues.counterpartWalletName || "Billetera",
+        balance: 0,
+        currency: currentWallet?.currency || "USD",
+        description: "",
+        role: "",
+    } : null);
 
     const toggleDirection = () => {
         if (readOnly) {
@@ -115,6 +125,7 @@ export const TransferForm = ({
         setDirection(isOutgoing ? "incoming" : "outgoing");
     };
 
+    // Build from/to by direction, create transfer, then reset
     const onSubmit = async (formData: TransferFormValues) => {
         const fromWalletId = isOutgoing ? walletId : formData.counterpartWalletId;
         const toWalletId = isOutgoing ? formData.counterpartWalletId : walletId;
@@ -135,6 +146,7 @@ export const TransferForm = ({
 
         await promise;
         reset(defaultFormValues);
+        setSelectedWallet("auto");
         setWalletQuery("");
         onSuccess?.();
     };
@@ -224,24 +236,21 @@ export const TransferForm = ({
                                             : "Billetera origen"
                                     }
                                     placeholder={
-                                        isWalletsLoading
-                                            ? "Cargando billeteras..."
+                                        isWalletsFetching
+                                            ? "Buscando billeteras..."
                                             : "Buscar billetera..."
                                     }
                                     selectedItem={selectedWallet}
                                     setSelectedItem={(wallet) => {
-                                        const walletIdSelected = wallet?.id ?? "";
-                                        field.onChange(walletIdSelected);
-                                        setValue("counterpartWalletId", walletIdSelected, {
-                                            shouldValidate: true,
-                                        });
+                                        setSelectedWallet(wallet);
+                                        field.onChange(wallet?.id ?? "");
                                     }}
                                     query={walletQuery}
                                     setQuery={setWalletQuery}
-                                    data={availableWallets}
+                                    data={availableWallets ?? []}
                                     getKey={(wallet) => wallet.id}
                                     getLabel={(wallet) => wallet.name}
-                                    disabled={isDisabled || isWalletsLoading}
+                                    disabled={isDisabled}
                                 />
                             )}
                         />
@@ -315,7 +324,9 @@ export const TransferForm = ({
                 <Button
                     type="submit"
                     disabled={createTransfer.isPending}
-                    text={createTransfer.isPending ? "Guardando..." : "Crear transferencia"}
+                    text={
+                        createTransfer.isPending ? "Guardando..." : "Crear transferencia"
+                    }
                     className="self-end"
                 />
             )}

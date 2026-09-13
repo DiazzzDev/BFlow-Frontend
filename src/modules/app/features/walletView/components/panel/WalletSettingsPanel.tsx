@@ -19,11 +19,11 @@ import {
 } from "lucide-react";
 
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
-import type { Wallet as WalletType } from "@/modules/app/interfaces/Wallet";
 import { useGetWalletDetails } from "../../hooks/useGetWalletDetails";
 import { isOwnerRole, roleLabel } from "../../utils/walletRole";
 import { DeleteWalletModal } from "../modal/DeleteWalletModal";
 
+import type { Wallet as WalletType } from "@/modules/app/interfaces/Wallet";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Textarea } from "@/components/controls/Textarea";
@@ -65,12 +65,18 @@ export const WalletSettingsPanel = ({
     wallet,
     isLoading,
 }: WalletSettingsPanelProps) => {
+    // Update mutation + wallet info stats (transaction count, etc.)
     const { updateWallet } = useMutateWallets();
     const { data: walletDetailsResponse } = useGetWalletDetails(wallet?.id ?? "");
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-    const isOwner = isOwnerRole(wallet?.role);
     const transactionsCount = walletDetailsResponse?.data.transactions ?? 0;
 
+    // Delete confirmation modal (owners only)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    // Owner can edit; members see a read-only form
+    const isOwner = isOwnerRole(wallet?.role);
+
+    // RHF form for name/description
     const {
         control,
         handleSubmit,
@@ -84,6 +90,7 @@ export const WalletSettingsPanel = ({
         },
     });
 
+    // Seed form when wallet detail arrives / changes
     useEffect(() => {
         if (!wallet) {
             return;
@@ -94,6 +101,7 @@ export const WalletSettingsPanel = ({
         });
     }, [wallet, reset]);
 
+    // Persist editable fields and clear dirty state
     const onSubmit = async (formData: SettingsFormValues) => {
         if (!wallet || !isOwner) {
             return;
@@ -238,8 +246,8 @@ export const WalletSettingsPanel = ({
                                             {isSaving
                                                 ? "Guardando..."
                                                 : isDirty
-                                                  ? "Hay cambios sin guardar"
-                                                  : "Todo guardado"}
+                                                    ? "Hay cambios sin guardar"
+                                                    : "Todo guardado"}
                                         </p>
                                         <button
                                             type="submit"
@@ -310,7 +318,7 @@ export const WalletSettingsPanel = ({
                                         icon={<Building2 className="h-4 w-4" />}
                                         label="Valor inicial"
                                         value={formatCurrency(
-                                            wallet.initialValue ?? 0,
+                                            wallet.initialValue,
                                             wallet.currency,
                                         )}
                                     />
@@ -318,7 +326,7 @@ export const WalletSettingsPanel = ({
                                         icon={<Wallet className="h-4 w-4" />}
                                         label="Saldo actual"
                                         value={formatCurrency(
-                                            wallet.balance ?? 0,
+                                            wallet.balance,
                                             wallet.currency,
                                         )}
                                     />

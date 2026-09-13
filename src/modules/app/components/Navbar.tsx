@@ -10,9 +10,13 @@ import {
     X,
 } from "lucide-react";
 
-import BflowLogo from ".././../../assets/BFlow logo.svg";
 
-const walletChildren = [{ label: "Historial", to: "/app/history" }];
+import BflowLogo from "../../../assets/BFlow logo.svg";
+import {
+    isWalletParentPath,
+    isWalletsSectionPath,
+    WALLET_NAV_CHILDREN,
+} from "../utils/navItems";
 
 interface NavbarProps {
     isOpen: boolean;
@@ -21,13 +25,12 @@ interface NavbarProps {
 
 export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
     const { pathname } = useLocation();
-    const isWalletsSectionActive =
-        pathname.startsWith("/app/wallets") || pathname.startsWith("/app/history");
+    const isWalletsSectionActive = isWalletsSectionPath(pathname);
     const [walletsExpanded, setWalletsExpanded] = useState(isWalletsSectionActive);
 
     useEffect(() => {
         onClose();
-        // Solo cerrar al cambiar de ruta; onClose del padre es inline.
+        // Close drawer on route change only; parent onClose is an inline callback
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
 
@@ -51,12 +54,10 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
     }, [isOpen]);
 
     const linkClassName = ({ isActive }: { isActive: boolean }) =>
-        `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-light transition-colors duration-150 ${
-            isActive ? "bg-secondary font-medium" : "font-normal hover:bg-light-5"
+        `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-light transition-colors duration-150 ${isActive ? "bg-secondary font-medium" : "font-normal hover:bg-light-5"
         }`;
 
-    const isWalletParentActive =
-        pathname === "/app/wallets" || /^\/app\/wallets\/[^/]+$/.test(pathname);
+    const isWalletParentActive = isWalletParentPath(pathname);
 
     return (
         <>
@@ -64,15 +65,13 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                 type="button"
                 aria-label="Cerrar menú"
                 onClick={onClose}
-                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${
-                    isOpen ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
+                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                    }`}
             />
 
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:static lg:z-0 lg:w-50 lg:translate-x-0 ${
-                    isOpen ? "translate-x-0" : "-translate-x-full"
-                }`}
+                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:static lg:z-0 lg:w-50 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+                    }`}
             >
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">
                     <div>
@@ -103,10 +102,9 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                             <NavLink
                                 to="/app/wallets"
                                 className={() =>
-                                    `flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-150 ${
-                                        isWalletParentActive
-                                            ? "bg-secondary font-medium text-light"
-                                            : "font-normal text-light hover:bg-light-5"
+                                    `flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-150 ${isWalletParentActive
+                                        ? "bg-secondary font-medium text-light"
+                                        : "font-normal text-light hover:bg-light-5"
                                     }`
                                 }
                             >
@@ -151,9 +149,9 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                     className="overflow-hidden"
                                 >
                                     <div className="relative ml-6 mt-2">
-                                        {walletChildren.map(({ label, to }, index) => {
+                                        {WALLET_NAV_CHILDREN.map(({ label, to }, index) => {
                                             const isLast =
-                                                index === walletChildren.length - 1;
+                                                index === WALLET_NAV_CHILDREN.length - 1;
 
                                             return (
                                                 <div
@@ -162,11 +160,10 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                                 >
                                                     <span
                                                         aria-hidden="true"
-                                                        className={`absolute left-0 w-px bg-light-25 ${
-                                                            isLast
-                                                                ? "top-0 h-1/2"
-                                                                : "top-0 bottom-0"
-                                                        }`}
+                                                        className={`absolute left-0 w-px bg-light-25 ${isLast
+                                                            ? "top-0 h-1/2"
+                                                            : "top-0 bottom-0"
+                                                            }`}
                                                     />
                                                     <span
                                                         aria-hidden="true"
@@ -176,10 +173,9 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                                     <NavLink
                                                         to={to}
                                                         className={({ isActive }) =>
-                                                            `block text-sm transition-colors duration-150 ${
-                                                                isActive
-                                                                    ? "font-medium text-light"
-                                                                    : "text-helper hover:text-light"
+                                                            `block text-sm transition-colors duration-150 ${isActive
+                                                                ? "font-medium text-light"
+                                                                : "text-helper hover:text-light"
                                                             }`
                                                         }
                                                     >

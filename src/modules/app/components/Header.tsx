@@ -1,50 +1,12 @@
 import { useState } from "react";
-import { useLocation, matchPath, Link } from "react-router";
+import { useLocation, Link } from "react-router";
 import { Bell, Menu, User } from "lucide-react";
 
 import { NotificationsSidebar } from "../features/notifications/components/NotificationsSidebar";
 import { useGetUnreadNotificationsCount } from "../features/notifications/hooks/useGetUnreadNotificationsCount";
+import { getBreadcrumbs } from "../utils/breadcrumbs";
 
 import { useAuthStore } from "@/auth/authStore";
-
-type Crumb = { text: string; path?: string };
-
-const routes = [
-    { path: "/app/dashboard", crumbs: [{ text: "Dashboard" }] },
-    { path: "/app/wallets", crumbs: [{ text: "Billeteras" }] },
-    {
-        path: "/app/wallets/:id",
-        crumbs: [
-            { text: "Billeteras", path: "/app/wallets" },
-            { text: "Detalle" },
-        ],
-    },
-    {
-        path: "/app/history",
-        crumbs: [
-            { text: "Billeteras", path: "/app/wallets" },
-            { text: "Historial" },
-        ],
-    },
-    { path: "/app/budgets", crumbs: [{ text: "Presupuestos" }] },
-    {
-        path: "/app/budgets/:id",
-        crumbs: [
-            { text: "Presupuestos", path: "/app/budgets" },
-            { text: "Detalle" },
-        ],
-    },
-    { path: "/app/settings", crumbs: [{ text: "Ajustes" }] },
-];
-
-const getBreadcrumbs = (pathname: string): Crumb[] => {
-    for (const route of routes) {
-        if (matchPath(route.path, pathname)) {
-            return route.crumbs;
-        }
-    }
-    return [{ text: "..." }];
-};
 
 interface HeaderProps {
     onOpenNav: () => void;

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
 
-import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import { useGetWalletMembers } from "../../hooks/useGetWalletMembers";
 import { useGetWalletSentInvitations } from "../../hooks/useGetWalletSentInvitations";
 import type { WalletMember } from "../../interfaces/WalletMember";
@@ -12,6 +11,7 @@ import { RemoveWalletMemberModal } from "../modal/RemoveWalletMemberModal";
 import { isOwnerRole } from "../../utils/walletRole";
 
 import { SkeletonText } from "@/components/loaders/SkeletonText";
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
 
 interface WalletMembersPanelProps {
     wallet?: Wallet;
@@ -58,11 +58,10 @@ export const WalletMembersPanel = ({
     return (
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden @2xl:flex-row">
             <section
-                className={`flex min-h-0 min-w-0 flex-1 flex-col ${
-                    isOwner
+                className={`flex min-h-0 min-w-0 flex-1 flex-col ${isOwner
                         ? "border-b border-light-10 @2xl:border-b-0 @2xl:border-r"
                         : ""
-                }`}
+                    }`}
             >
                 <div className="flex items-start justify-between gap-3 border-b border-light-10 px-4 py-5 sm:px-7">
                     <div className="min-w-0">
@@ -107,8 +106,8 @@ export const WalletMembersPanel = ({
                             {pendingCount > 0
                                 ? `${pendingCount} pendiente${pendingCount === 1 ? "" : "s"} de respuesta.`
                                 : sentInvitations.length > 0
-                                  ? "Historial de invitaciones de esta billetera."
-                                  : "Todavía no enviaste invitaciones."}
+                                    ? "Historial de invitaciones de esta billetera."
+                                    : "Todavía no enviaste invitaciones."}
                         </p>
                     </div>
 

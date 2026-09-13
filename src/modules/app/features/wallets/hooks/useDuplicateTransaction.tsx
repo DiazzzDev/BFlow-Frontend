@@ -11,14 +11,15 @@ import { useMutateTransfers } from "../../newTransaction/hooks/useMutateTransfer
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
-
 export const useDuplicateTransaction = () => {
+    // Create mutations reused from newTransaction
     const createExpense = usePostExpense();
     const createIncome = usePostIncome();
     const { createTransfer } = useMutateTransfers();
 
     const isPending = createExpense.isPending || createIncome.isPending || createTransfer.isPending;
 
+    // Pick the right create endpoint from the transaction type
     const duplicateTransaction = async (transaction: Transaction) => {
         let promise: Promise<unknown>;
 

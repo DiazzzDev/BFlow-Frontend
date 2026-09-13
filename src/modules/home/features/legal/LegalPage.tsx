@@ -72,8 +72,7 @@ export const LegalPage = ({
                                     </span>
                                     <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Globe className="w-3.5 h-3.5" />
-                                        {LEGAL_LANG_LABELS[data.language] ??
-                                            data.language}
+                                        {LEGAL_LANG_LABELS[data.language]}
                                     </span>
                                 </div>
                             )}

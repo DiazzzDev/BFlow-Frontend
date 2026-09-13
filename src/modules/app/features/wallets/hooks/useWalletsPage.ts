@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
-
-import {
-    isWalletTypeFilter,
-    type WalletTypeFilter,
-} from "../utils/filters";
+import { isWalletTypeFilter, type WalletTypeFilter } from "../utils/filters";
 
 import { useDuplicateTransaction } from "./useDuplicateTransaction";
 import { useGetHistory } from "./useGetHistory";
@@ -17,8 +13,8 @@ import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
 
-
 export const useWalletsPage = () => {
+    // URL filters + pagination (query is debounced before hitting the API)
     const [params] = useSearchParams();
     const query = params.get("query") || "";
     const debouncedQuery = useDebounce(query, 500);
@@ -28,6 +24,7 @@ export const useWalletsPage = () => {
         : "MINE";
     const { apiPage, limit } = usePaginationParams();
 
+    // Wallets list, recent history, invitations, and duplicate action
     const { isLoading: isLoadingWallets, data: walletData } = useGetWallets(
         walletType,
         debouncedQuery,
@@ -40,6 +37,7 @@ export const useWalletsPage = () => {
         useDuplicateTransaction();
     const user = useAuthStore((state) => state.user);
 
+    // UI panels: create modal, history drawer, invitations sidebar, view transaction
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     const [isInvitationsOpen, setIsInvitationsOpen] = useState(false);
@@ -47,6 +45,7 @@ export const useWalletsPage = () => {
         null,
     );
 
+    // Derived list stats for the page UI
     const wallets = walletData?.data.content ?? [];
     const totalWallets = walletData?.data.totalElements ?? 0;
     const totalPages = walletData?.data.totalPages ?? 0;
@@ -60,6 +59,7 @@ export const useWalletsPage = () => {
     const ownerLabel = user?.email || "—";
     const showCreateButton = walletType === "MINE" && !query.trim();
 
+    // History row actions
     const handleViewDetails = (transaction: Transaction) => {
         setViewTransaction(transaction);
     };
@@ -68,6 +68,7 @@ export const useWalletsPage = () => {
         void duplicateTransaction(transaction);
     };
 
+    // Panel open/close helpers
     const openCreateModal = () => setIsModalOpen(true);
     const closeCreateModal = () => setIsModalOpen(false);
     const openHistory = () => setIsHistoryOpen(true);
@@ -76,6 +77,7 @@ export const useWalletsPage = () => {
     const closeInvitations = () => setIsInvitationsOpen(false);
     const closeViewTransaction = () => setViewTransaction(null);
 
+    // Lock body scroll while the mobile history drawer is open
     useEffect(() => {
         if (!isHistoryOpen) {
             return;

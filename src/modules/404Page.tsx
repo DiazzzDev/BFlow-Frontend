@@ -13,7 +13,7 @@ export const NotFoundPage = () => {
         <div className="flex min-h-screen flex-col bg-surface-hard text-light">
             <LandingNavbar />
 
-            <main className="mx-auto flex w-full max-w-[1440px] flex-1 items-center px-6 py-16 md:px-12 lg:px-20">
+            <main className="mx-auto flex w-full max-w-360 flex-1 items-center px-6 py-16 md:px-12 lg:px-20">
                 <section className="max-w-xl">
                     <p className="mb-3 text-sm font-semibold text-primary">404</p>
                     <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { usePostIncome, usePutIncome } from "../hooks/useMutateIncomes";
+import { getCategory } from "../utils/getCategory";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
 
 import { Input } from "@/components/controls/Input";
@@ -22,6 +23,7 @@ import {
 } from "@/modules/app/interfaces/Periodicity";
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
+import { useAutoSelect } from "@/hooks/useAutoSelect";
 
 const incomeSchema = z
     .object({
@@ -77,21 +79,26 @@ export const IncomeForm = ({
     source = "manual",
     initialValues,
 }: IncomeFormProps) => {
+    // Create / update mutations
     const createIncome = usePostIncome();
     const updateIncome = usePutIncome();
-    const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
-    const [categoryQuery, setCategoryQuery] = useState("");
+
+    // Form mode and disabled state
     const isEditing = Boolean(transactionId);
     const isSaving = createIncome.isPending || updateIncome.isPending;
     const isDisabled = readOnly || isSaving;
 
-    const incomeCategories =
-        categoriesResponse?.data.filter((category) => category.type === "INCOME") ?? [];
+    // Category search and income category list
+    const [categoryQuery, setCategoryQuery] = useState("");
+    const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
+    const incomeCategories = categoriesResponse?.data.filter((category) => category.type === "INCOME");
 
+    // RHF form + watched fields
     const {
         control,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors },
     } = useForm<IncomeFormValues>({
         resolver: zodResolver(incomeSchema),
@@ -100,21 +107,25 @@ export const IncomeForm = ({
             ...initialValues,
         },
     });
-
     const recurring = useWatch({ control, name: "recurring" });
-    const categoryId = useWatch({ control, name: "categoryId" });
-    const selectedCategory =
-        incomeCategories.find((category) => category.id === categoryId) ??
-        (initialValues?.categoryId && initialValues.categoryName
-            ? {
-                id: initialValues.categoryId,
-                name: initialValues.categoryName,
-                type: "INCOME" as const,
-                icon: "",
-                color: "",
-            }
-            : null);
 
+    // UI selection: "auto" = first item; manual pick leaves auto mode
+    const { selectedItem: selectedCategory, setSelection: setSelectedCategory, selection } = useAutoSelect(incomeCategories ?? [])
+
+    // Seed categoryId: edit uses initialValues once; create uses auto default
+    useEffect(() => {
+        if (isEditing && selection === "auto" && initialValues?.categoryId) {
+            const category = getCategory(incomeCategories ?? [], initialValues.categoryId);
+            if (category) {
+                setSelectedCategory(category);
+                setValue("categoryId", category.id);
+            }
+        } else if (!isEditing && selection === "auto" && selectedCategory) {
+            setValue("categoryId", selectedCategory.id);
+        }
+    }, [selectedCategory, setValue, setSelectedCategory, initialValues, isEditing, incomeCategories, selection]);
+
+    // Build payload, create or update, then reset only on create
     const onSubmit = async (formData: IncomeFormValues) => {
         const payload = {
             title: formData.title,
@@ -147,6 +158,7 @@ export const IncomeForm = ({
         await promise;
         if (!isEditing) {
             reset({ ...defaultFormValues, date: formatTodayDateInputValue() });
+            setSelectedCategory("auto");
             setCategoryQuery("");
         }
         onSuccess?.();
@@ -266,10 +278,13 @@ export const IncomeForm = ({
                                     : "Buscar categoría..."
                             }
                             selectedItem={selectedCategory}
-                            setSelectedItem={(category) => field.onChange(category?.id ?? "")}
+                            setSelectedItem={(category) => {
+                                setSelectedCategory(category);
+                                field.onChange(category?.id ?? "");
+                            }}
                             query={categoryQuery}
                             setQuery={setCategoryQuery}
-                            data={incomeCategories}
+                            data={incomeCategories ?? []}
                             getKey={(category) => category.id}
                             getLabel={(category) => category.name}
                             disabled={isDisabled || isCategoriesLoading}
@@ -331,19 +346,21 @@ export const IncomeForm = ({
                         )}
                     </div>
                 )}
-
-                <Controller
-                    name="taxable"
-                    control={control}
-                    render={({ field }) => (
-                        <ToggleSwitch
-                            label="Gravable"
-                            checked={field.value}
-                            disabled={isDisabled}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
+                {/* Campo oculto por el momento */}
+                <div className="hidden">
+                    <Controller
+                        name="taxable"
+                        control={control}
+                        render={({ field }) => (
+                            <ToggleSwitch
+                                label="Gravable"
+                                checked={field.value}
+                                disabled={isDisabled}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                </div>
             </div>
 
             {!readOnly && (

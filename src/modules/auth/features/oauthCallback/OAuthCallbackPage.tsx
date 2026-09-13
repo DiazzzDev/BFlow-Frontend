@@ -1,6 +1,7 @@
 import { useOAuthCallback } from "./hooks/useOAuthCallback";
 
 export const OAuthCallbackPage = () => {
+    // Kick off OAuth session sync on mount
     useOAuthCallback();
 
     return (

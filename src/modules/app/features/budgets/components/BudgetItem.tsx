@@ -1,7 +1,5 @@
 import { ChevronRight } from "lucide-react";
 
-import type { Budget } from "@/modules/app/interfaces/Budget";
-import { PERIODICITY_LABELS } from "@/modules/app/interfaces/Periodicity";
 import {
     BUDGET_SCOPE_LABELS,
     BUDGET_STATUS_CLASS_NAMES,
@@ -11,6 +9,8 @@ import {
 } from "../utils/budgetStatus";
 
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
+import type { Budget } from "@/modules/app/interfaces/Budget";
+import { PERIODICITY_LABELS } from "@/modules/app/interfaces/Periodicity";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 
 interface BudgetItemProps {
@@ -21,17 +21,10 @@ interface BudgetItemProps {
 export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
     const status = resolveBudgetStatus(budget);
     const name = getBudgetDisplayName(budget);
-    
-    const updatedLabel = budget.updatedAt
-        ? `Actualizado ${formatterDynamicDate(budget.updatedAt)}`
-        : "Sin fecha de actualización";
 
-    const tags = [
-        PERIODICITY_LABELS[budget.period] ?? budget.period,
-        BUDGET_SCOPE_LABELS[budget.scope] ?? budget.scope,
-        budget.walletName,
-        budget.categoryName,
-    ].filter(Boolean) as string[];
+    const updatedLabel = budget.updatedAt ? `Actualizado ${formatterDynamicDate(budget.updatedAt)}` : "Sin fecha de actualización";
+
+    const tags = [PERIODICITY_LABELS[budget.period], BUDGET_SCOPE_LABELS[budget.scope] ?? budget.scope, budget.walletName, budget.categoryName].filter(Boolean) as string[];
 
     return (
         <button

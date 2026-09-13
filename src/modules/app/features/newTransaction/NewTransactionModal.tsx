@@ -30,6 +30,9 @@ import { CustomModal } from "@/components/custom/CustomModal";
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useAutoSelect } from "@/hooks/useAutoSelect";
+
+const EMPTY_WALLETS: Wallet[] = [];
 
 interface NewTransactionModalProps {
     isModalOpen: boolean;
@@ -43,6 +46,7 @@ interface NewTransactionModalProps {
     transaction?: Transaction | null;
 }
 
+// Shell: title/size + remount content when the modal opens or the target transaction changes
 export const NewTransactionModal = ({
     isModalOpen,
     setIsModalOpen,
@@ -106,14 +110,15 @@ const NewTransactionModalContent = ({
     transaction = null,
     onClose,
 }: NewTransactionModalContentProps) => {
+    // Mode flags: view/edit lock type + wallet; create may need a wallet picker
     const isViewMode = mode === "view";
     const isEditMode = mode === "edit";
     const lockType = isViewMode || isEditMode;
-    const needsWalletSelect =
-        requireWalletSelect ?? (mode === "create" && !walletId);
+    const needsWalletSelect = requireWalletSelect ?? (mode === "create" && !walletId);
+
+    // Visible transaction type tabs
     const visibleTypes = allowedTypes ?? TRANSACTION_TYPE_VALUES;
     const visibleTabs = getVisibleTransactionTypeTabs(visibleTypes);
-
     const [activeType, setActiveType] = useState<TransactionType>(() =>
         resolveInitialTransactionType(
             mode,
@@ -122,31 +127,21 @@ const NewTransactionModalContent = ({
             visibleTypes,
         ),
     );
-    const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
+
+    // Wallet search (debounced) for the optional picker
     const [walletQuery, setWalletQuery] = useState("");
     const debouncedWalletQuery = useDebounce(walletQuery, 400);
+    const { data: walletsResponse, isFetching: isWalletsFetching } = useGetWallets("MINE", debouncedWalletQuery, 0, 20,);
+    const wallets = walletsResponse?.data.content ?? EMPTY_WALLETS;
 
-    const { data: walletsResponse, isLoading: isWalletsLoading } = useGetWallets(
-        "MINE",
-        debouncedWalletQuery,
-        0,
-        20,
-    );
+    // UI selection: "auto" = first wallet; manual pick leaves auto mode
+    const { selectedItem: selectedWallet, setSelection: setSelectedWallet, } = useAutoSelect(wallets, needsWalletSelect);
 
-    const wallets = walletsResponse?.data.content ?? [];
-
-    const resolvedWalletId =
-        lockType && transaction
-            ? transaction.walletId
-            : needsWalletSelect
-                ? (selectedWallet?.id ?? "")
-                : walletId;
+    // Resolve which walletId the forms receive
+    const resolvedWalletId = lockType && transaction ? transaction.walletId : needsWalletSelect ? (selectedWallet?.id ?? "") : walletId;
 
     const canShowForms = Boolean(resolvedWalletId);
-    const sharedInitialValues =
-        lockType && transaction
-            ? getTransactionFormInitialValues(transaction)
-            : undefined;
+    const sharedInitialValues = lockType && transaction ? getTransactionFormInitialValues(transaction) : undefined;
 
     return (
         <div className="flex flex-col gap-6">
@@ -155,8 +150,8 @@ const NewTransactionModalContent = ({
                     idSelect="transactionWalletId"
                     label="Cartera"
                     placeholder={
-                        isWalletsLoading
-                            ? "Cargando carteras..."
+                        isWalletsFetching
+                            ? "Buscando carteras..."
                             : "Seleccionar cartera..."
                     }
                     selectedItem={selectedWallet}
@@ -166,7 +161,6 @@ const NewTransactionModalContent = ({
                     data={wallets}
                     getKey={(wallet) => wallet.id}
                     getLabel={(wallet) => wallet.name}
-                    disabled={isWalletsLoading}
                 />
             )}
 

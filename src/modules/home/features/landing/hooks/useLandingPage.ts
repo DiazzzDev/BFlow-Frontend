@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
     LANDING_STEP_INTERVAL_MS,
@@ -8,10 +8,16 @@ import {
 import { useAuth } from "@/auth/hooks/useAuth";
 
 export const useLandingPage = () => {
+    // Auth gate for hero CTAs
+    const { isAuthenticated, isChecking } = useAuth();
+
+    // FAQ accordion (one open at a time)
     const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+    // Step carousel: auto-advance unless hovered / manually selected
     const [activeStep, setActiveStep] = useState(0);
     const [paused, setPaused] = useState(false);
-    const { isAuthenticated, isChecking } = useAuth();
+    const resumeTimeoutRef = useRef<number | null>(null);
 
     useEffect(() => {
         if (paused) {
@@ -25,10 +31,27 @@ export const useLandingPage = () => {
         return () => window.clearInterval(id);
     }, [paused]);
 
+    useEffect(() => {
+        return () => {
+            if (resumeTimeoutRef.current !== null) {
+                window.clearTimeout(resumeTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    // Manual step pick: pause briefly so the user can read, then resume
     const selectStep = (index: number) => {
         setActiveStep(index);
         setPaused(true);
-        window.setTimeout(() => setPaused(false), LANDING_STEP_INTERVAL_MS);
+
+        if (resumeTimeoutRef.current !== null) {
+            window.clearTimeout(resumeTimeoutRef.current);
+        }
+
+        resumeTimeoutRef.current = window.setTimeout(() => {
+            setPaused(false);
+            resumeTimeoutRef.current = null;
+        }, LANDING_STEP_INTERVAL_MS);
     };
 
     const toggleFaq = (index: number) => {
@@ -38,7 +61,6 @@ export const useLandingPage = () => {
     return {
         openFaq,
         activeStep,
-        paused,
         setPaused,
         isAuthenticated,
         isChecking,

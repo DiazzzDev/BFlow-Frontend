@@ -1,9 +1,8 @@
 import { Receipt } from "lucide-react";
 
-import type { BudgetRecentActivityItem } from "@/modules/app/interfaces/Budget";
-
 import { BudgetCardEmpty } from "./BudgetCardEmpty";
 
+import type { BudgetRecentActivityItem } from "@/modules/app/interfaces/Budget";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 

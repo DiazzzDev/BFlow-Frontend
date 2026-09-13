@@ -1,6 +1,7 @@
 import { waitForSessionTokens, syncAuthUser } from "@/auth/services/session.service";
 import type { InternalUser } from "@/auth/InternalUser";
 
+// Wait for Cognito tokens after redirect, then sync user with the API
 export const completeOAuthLogin = async (): Promise<InternalUser> => {
     const tokens = await waitForSessionTokens();
 

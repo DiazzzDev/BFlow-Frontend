@@ -12,7 +12,7 @@ export const useMutateWalletMembers = () => {
         void queryClient.invalidateQueries({ queryKey: ["wallets"] });
     };
 
-    const removeMember = useMutation({
+    return useMutation({
         mutationFn: ({
             walletId,
             memberId,
@@ -24,8 +24,4 @@ export const useMutateWalletMembers = () => {
             invalidate(variables.walletId);
         },
     });
-
-    return {
-        removeMember,
-    };
 };

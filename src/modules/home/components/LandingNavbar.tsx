@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
 
-import { useAuth } from "@/auth/hooks/useAuth";
 import { useLandingNav } from "../hooks/useLandingNav";
+
+import { useAuth } from "@/auth/hooks/useAuth";
 
 export const LandingNavbar = () => {
     const { navLinks, handleNavClick } = useLandingNav();
@@ -17,7 +18,7 @@ export const LandingNavbar = () => {
 
     return (
         <header className="sticky top-0 z-50 border-b border-light-10 bg-surface-hard/95 backdrop-blur-md">
-            <nav className="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+            <nav className="mx-auto flex h-16 max-w-360 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-8">
                     <Link
                         to="/"

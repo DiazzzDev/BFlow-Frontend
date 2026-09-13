@@ -15,10 +15,12 @@ export const DeleteTransactionModal = ({
     transaction,
     onClose,
 }: DeleteTransactionModalProps) => {
+    // Delete mutations (expense vs income)
     const deleteExpense = useDeleteExpense();
     const deleteIncome = useDeleteIncome();
     const isDeleting = deleteExpense.isPending || deleteIncome.isPending;
 
+    // Delete by type, then close the modal
     const handleConfirm = async () => {
         if (!transaction || (transaction.type !== "EXPENSE" && transaction.type !== "INCOME")) {
             return;

@@ -9,9 +9,11 @@ import {
     YAxis,
 } from "recharts";
 
-import type { BudgetSpendingTrendPoint } from "@/modules/app/interfaces/Budget";
+import { formatAxisMoney } from "../utils/formatAxisMoney";
 
 import { BudgetCardEmpty } from "./BudgetCardEmpty";
+
+import type { BudgetSpendingTrendPoint } from "@/modules/app/interfaces/Budget";
 
 interface BudgetSpendingTrendProps {
     points: BudgetSpendingTrendPoint[];
@@ -19,14 +21,6 @@ interface BudgetSpendingTrendProps {
     currency?: string;
     yMax?: number;
 }
-
-const formatAxisMoney = (value: number, currency = "USD") =>
-    new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency,
-        notation: "compact",
-        maximumFractionDigits: 1,
-    }).format(value);
 
 const CustomTooltip = ({
     active,

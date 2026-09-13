@@ -1,3 +1,4 @@
+// In-page section anchors used by navbar / footer
 export const LANDING_NAV_LINKS = [
     { label: "Características", id: "how" },
     { label: "Precios", id: "pricing" },

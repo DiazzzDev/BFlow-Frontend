@@ -1,10 +1,9 @@
-import type { Wallet } from "@/modules/app/interfaces/Wallet";
-
-import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import type { WalletDetails } from "./interfaces/WalletDetails";
 import type { WalletMember } from "./interfaces/WalletMember";
 import type { CreateRecurringData, Recurring } from "./interfaces/Recurring";
 
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
+import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import {
     apiRequest,
     idempotentPost,
@@ -14,7 +13,6 @@ import {
 import { config } from "@/config/config";
 
 const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;
-const transactionsUrl = `${config.API_BASE_URL}/api/v1/transactions`;
 const recurringUrl = `${config.API_BASE_URL}/api/v1/recurring`;
 
 const defaultApiOptions: RequestInit = {
@@ -55,13 +53,16 @@ export const getWalletDetails = async (walletId: string) => {
     );
 };
 
-export const getOverview = async (
+// Paginated wallet transactions; pass `type` to filter INCOME/EXPENSE
+export const getWalletTransactions = async (
     walletId: string,
     {
+        type,
         query,
         page = 0,
         size = 5,
     }: {
+        type?: TransactionType;
         query?: string;
         page?: number;
         size?: number;
@@ -72,45 +73,16 @@ export const getOverview = async (
         size: String(size),
     });
 
+    if (type) {
+        params.set("type", type);
+    }
+
     if (query?.trim()) {
         params.set("query", query.trim());
     }
 
     return await apiRequest<PaginatedListResponse<Transaction>>(
         `${walletsUrl}/${walletId}/transactions?${params.toString()}`,
-        { ...defaultApiOptions, method: "GET" },
-        "Error al obtener las transacciones",
-    );
-};
-
-// --- /api/v1/transactions ---
-
-export const getTransactions = async ({
-    type,
-    walletId,
-    query,
-    page = 0,
-    size = 5,
-}: {
-    type: TransactionType;
-    walletId: string;
-    query?: string;
-    page?: number;
-    size?: number;
-}) => {
-    const params = new URLSearchParams({
-        type,
-        walletId,
-        page: String(page),
-        size: String(size),
-    });
-
-    if (query?.trim()) {
-        params.set("query", query.trim());
-    }
-
-    return await apiRequest<PaginatedListResponse<Transaction>>(
-        `${transactionsUrl}?${params.toString()}`,
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener las transacciones",
     );

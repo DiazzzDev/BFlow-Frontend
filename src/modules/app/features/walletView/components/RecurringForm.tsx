@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +26,7 @@ import {
 } from "@/modules/app/interfaces/Periodicity";
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
+import { useAutoSelect } from "@/hooks/useAutoSelect";
 
 const recurringSchema = z
     .object({
@@ -78,10 +79,15 @@ interface RecurringFormProps {
 }
 
 export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
+    // Create mutation
     const createRecurring = usePostRecurring();
-    const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
-    const [categoryQuery, setCategoryQuery] = useState("");
 
+    // Category search + list filtered by EXPENSE/INCOME type
+    const [categoryQuery, setCategoryQuery] = useState("");
+    const { data: categoriesResponse, isLoading: isCategoriesLoading } =
+        useGetCategories();
+
+    // RHF form + watched fields for frequency helper / type filter
     const {
         control,
         handleSubmit,
@@ -95,16 +101,27 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             startDate: formatTodayDateInputValue(),
         },
     });
-
     const type = useWatch({ control, name: "type" });
     const frequency = useWatch({ control, name: "frequency" });
     const intervalValue = useWatch({ control, name: "intervalValue" });
-    const categoryId = useWatch({ control, name: "categoryId" });
 
-    const categories =
-        categoriesResponse?.data.filter((category) => category.type === type) ?? [];
-    const selectedCategory = categories.find((category) => category.id === categoryId) ?? null;
+    const categories = categoriesResponse?.data.filter((category) => category.type === type) ?? [];
 
+    // UI selection: "auto" = first item; manual pick leaves auto mode
+    const {
+        selectedItem: selectedCategory,
+        setSelection: setSelectedCategory,
+        selection,
+    } = useAutoSelect(categories);
+
+    // Seed categoryId while in "auto" (and after type changes back to auto)
+    useEffect(() => {
+        if (selection === "auto" && selectedCategory) {
+            setValue("categoryId", selectedCategory.id);
+        }
+    }, [selection, selectedCategory, setValue]);
+
+    // Create recurring then reset form + category auto-select
     const onSubmit = async (formData: RecurringFormValues) => {
         const promise = createRecurring.mutateAsync({
             title: formData.title,
@@ -128,6 +145,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
 
         await promise;
         reset({ ...defaultFormValues, startDate: formatTodayDateInputValue() });
+        setSelectedCategory("auto");
         setCategoryQuery("");
         onSuccess?.();
     };
@@ -148,7 +166,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                         selected={field.value}
                         onChange={(nextType) => {
                             field.onChange(nextType);
+                            // New type → new category list; return to auto default
                             setValue("categoryId", "");
+                            setSelectedCategory("auto");
                             setCategoryQuery("");
                         }}
                         ariaLabel="Tipo de transacción"
@@ -191,7 +211,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     )}
                 />
                 {errors.description && (
-                    <span className="text-xs text-danger">{errors.description.message}</span>
+                    <span className="text-xs text-danger">
+                        {errors.description.message}
+                    </span>
                 )}
             </div>
 
@@ -237,7 +259,10 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                     : "Buscar categoría..."
                             }
                             selectedItem={selectedCategory}
-                            setSelectedItem={(category) => field.onChange(category?.id ?? "")}
+                            setSelectedItem={(category) => {
+                                setSelectedCategory(category);
+                                field.onChange(category?.id ?? "");
+                            }}
                             query={categoryQuery}
                             setQuery={setCategoryQuery}
                             data={categories}
@@ -248,7 +273,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     )}
                 />
                 {errors.categoryId && (
-                    <span className="text-xs text-danger">{errors.categoryId.message}</span>
+                    <span className="text-xs text-danger">
+                        {errors.categoryId.message}
+                    </span>
                 )}
             </div>
 
@@ -275,7 +302,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                         )}
                     />
                     {errors.frequency && (
-                        <span className="text-xs text-danger">{errors.frequency.message}</span>
+                        <span className="text-xs text-danger">
+                            {errors.frequency.message}
+                        </span>
                     )}
                 </div>
 
@@ -306,7 +335,8 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                         </span>
                     )}
                     <span className="text-xs text-helper">
-                        Se repetirá cada {intervalValue || "1"} {RECURRING_INTERVAL_UNIT_LABELS[frequency]}
+                        Se repetirá cada {intervalValue || "1"}{" "}
+                        {RECURRING_INTERVAL_UNIT_LABELS[frequency]}
                     </span>
                 </div>
             </div>
@@ -328,7 +358,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                         )}
                     />
                     {errors.startDate && (
-                        <span className="text-xs text-danger">{errors.startDate.message}</span>
+                        <span className="text-xs text-danger">
+                            {errors.startDate.message}
+                        </span>
                     )}
                 </div>
 
@@ -348,7 +380,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                         )}
                     />
                     {errors.endDate && (
-                        <span className="text-xs text-danger">{errors.endDate.message}</span>
+                        <span className="text-xs text-danger">
+                            {errors.endDate.message}
+                        </span>
                     )}
                 </div>
             </div>
@@ -356,7 +390,11 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             <Button
                 type="submit"
                 disabled={createRecurring.isPending}
-                text={createRecurring.isPending ? "Programando..." : "Programar transacción"}
+                text={
+                    createRecurring.isPending
+                        ? "Programando..."
+                        : "Programar transacción"
+                }
                 className="self-end"
             />
         </form>
