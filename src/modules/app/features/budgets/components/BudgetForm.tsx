@@ -1,19 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { useMutateBudgets } from "../hooks/useMutateBudgets";
-import type { BudgetScope } from "../interfaces/Budget";
-import {
-    BUDGET_SCOPE_TABS,
-    BUDGET_PERIOD_FORM_OPTIONS,
-} from "../utils/filters";
+import { BUDGET_SCOPE_TABS } from "../utils/filters";
 import { useGetCategories } from "../../settings/hooks/useGetCategories";
-import type { Category } from "../../settings/interfaces/Category";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
-import type { Wallet } from "../../wallets/interfaces/Wallets";
 
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { Input } from "@/components/controls/Input";
@@ -22,8 +16,17 @@ import { Select } from "@/components/controls/Select";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Button } from "@/components/controls/Button";
 import { RangeSlider } from "@/components/controls/RangeSlider";
+import type { BudgetScope } from "@/modules/app/interfaces/Budget";
+import type { Category } from "@/modules/app/interfaces/Category";
+import {
+    PERIODICITY_FORM_OPTIONS,
+    PERIODICITY_VALUES,
+} from "@/modules/app/interfaces/Periodicity";
+import type { Wallet } from "@/modules/app/interfaces/Wallet";
+import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useAutoSelect } from "@/hooks/useAutoSelect";
 
 const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
@@ -35,7 +38,7 @@ const budgetSchema = z
             .string()
             .min(1, "El monto es obligatorio")
             .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
-        period: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
+        period: z.enum(PERIODICITY_VALUES),
         startDate: z.string().min(1, "La fecha es obligatoria"),
         thresholdWarning: z
             .number()
@@ -60,12 +63,10 @@ const budgetSchema = z
 
 type BudgetFormValues = z.infer<typeof budgetSchema>;
 
-const today = () => new Date().toISOString().slice(0, 10);
-
 const defaultFormValues: BudgetFormValues = {
     amount: "",
     period: "MONTHLY",
-    startDate: today(),
+    startDate: formatTodayDateInputValue(),
     thresholdWarning: 60,
     thresholdCritical: 90,
     walletId: "",
@@ -78,57 +79,78 @@ interface BudgetFormProps {
 
 export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
     const { createBudget } = useMutateBudgets();
+
+    // Budget scope and which fields apply
     const [scope, setScope] = useState<BudgetScope>("WALLET");
+    const needsWallet = scope === "WALLET" || scope === "WALLET_CATEGORY";
+    const needsCategory = scope === "CATEGORY_GLOBAL" || scope === "WALLET_CATEGORY";
+
+    // Wallet search (debounced) and list loading
     const [walletQuery, setWalletQuery] = useState("");
     const [categoryQuery, setCategoryQuery] = useState("");
     const debouncedWalletQuery = useDebounce(walletQuery, 400);
-
-    const { data: walletsResponse, isLoading: isWalletsLoading } = useGetWallets(
-        "MINE",
-        debouncedWalletQuery,
-    );
+    const { data: walletsResponse, isLoading: isWalletsLoading } = useGetWallets("MINE", debouncedWalletQuery,);
     const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
-
     const wallets = walletsResponse?.data.content ?? [];
-    const categories =
-        categoriesResponse?.data.filter((category) => category.type === "EXPENSE") ?? [];
+    const categories = categoriesResponse?.data.filter((category) => category.type === "EXPENSE") ?? [];
 
+    // UI selection: "auto" = first item; manual pick leaves auto mode
+    const { selectedItem: selectedWallet, setSelection: setSelectedWallet, selection: walletSelection } = useAutoSelect(wallets);
+    const { selectedItem: selectedCategory, setSelection: setSelectedCategory, selection: categorySelection } = useAutoSelect(categories);
+
+    // RHF form + watched thresholds for the slider
     const {
         control,
         handleSubmit,
         reset,
         setValue,
+        setError,
         formState: { errors },
     } = useForm<BudgetFormValues>({
         resolver: zodResolver(budgetSchema),
         defaultValues: defaultFormValues,
     });
-
-    const walletId = useWatch({ control, name: "walletId" });
-    const categoryId = useWatch({ control, name: "categoryId" });
     const thresholdWarning = useWatch({ control, name: "thresholdWarning" });
     const thresholdCritical = useWatch({ control, name: "thresholdCritical" });
-    const selectedWallet = wallets.find((wallet) => wallet.id === walletId) ?? null;
-    const selectedCategory = categories.find((category) => category.id === categoryId) ?? null;
 
-    const needsWallet = scope === "WALLET" || scope === "WALLET_CATEGORY";
-    const needsCategory = scope === "CATEGORY_GLOBAL" || scope === "WALLET_CATEGORY";
+    // Sync form ids: clear if field does not apply; seed default only while in "auto"
+    useEffect(() => {
+        if (!needsWallet) {
+            setValue("walletId", "");
+        } else if (walletSelection === "auto" && selectedWallet) {
+            setValue("walletId", selectedWallet.id);
+        }
 
+        if (!needsCategory) {
+            setValue("categoryId", "");
+        } else if (categorySelection === "auto" && selectedCategory) {
+            setValue("categoryId", selectedCategory.id);
+        }
+    }, [selectedCategory, selectedWallet, setValue, needsCategory, needsWallet, walletSelection, categorySelection]);
+
+    // On tab change: clear form, queries, and return to auto mode
     const handleScopeChange = (nextScope: BudgetScope) => {
         setScope(nextScope);
         setValue("walletId", "");
         setValue("categoryId", "");
+        setSelectedWallet("auto");
+        setSelectedCategory("auto");
         setWalletQuery("");
         setCategoryQuery("");
     };
 
+    // Validate ids by scope, create budget, then reset the form
     const onSubmit = async (formData: BudgetFormValues) => {
         if (needsWallet && !formData.walletId) {
-            toast.error("Selecciona una billetera");
+            setError("walletId", {
+                message: "Debes seleccionar una cartera",
+            });
             return;
         }
         if (needsCategory && !formData.categoryId) {
-            toast.error("Selecciona una categoría");
+            setError("categoryId", {
+                message: "Debes seleccionar una categoria",
+            });
             return;
         }
 
@@ -136,7 +158,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             amount: Number(formData.amount),
             period: formData.period,
             startDate: formData.startDate,
-            currency: 'USD', // Por el momento esta quemado
+            currency: "USD", // Por el momento esta quemado
             scope,
             thresholdWarning: formData.thresholdWarning,
             thresholdCritical: formData.thresholdCritical,
@@ -152,7 +174,9 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
         });
 
         await promise;
-        reset({ ...defaultFormValues, startDate: today() });
+        reset({ ...defaultFormValues, startDate: formatTodayDateInputValue() });
+        setSelectedWallet("auto");
+        setSelectedCategory("auto");
         setWalletQuery("");
         setCategoryQuery("");
         onSuccess?.();
@@ -187,16 +211,22 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                         : "Buscar billetera..."
                                 }
                                 selectedItem={selectedWallet}
-                                setSelectedItem={(wallet) => field.onChange(wallet?.id ?? "")}
+                                setSelectedItem={(wallet) => {
+                                    setSelectedWallet(wallet);
+                                    field.onChange(wallet?.id ?? "");
+                                }}
                                 query={walletQuery}
                                 setQuery={setWalletQuery}
                                 data={wallets}
                                 getKey={(wallet) => wallet.id}
                                 getLabel={(wallet) => wallet.name}
-                                disabled={createBudget.isPending || isWalletsLoading}
+                                disabled={createBudget.isPending}
                             />
                         )}
                     />
+                    {errors.walletId && (
+                        <span className="text-xs text-danger">{errors.walletId.message}</span>
+                    )}
                 </div>
             )}
 
@@ -215,16 +245,22 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                         : "Buscar categoría..."
                                 }
                                 selectedItem={selectedCategory}
-                                setSelectedItem={(category) => field.onChange(category?.id ?? "")}
+                                setSelectedItem={(category) => {
+                                    setSelectedCategory(category);
+                                    field.onChange(category?.id ?? "");
+                                }}
                                 query={categoryQuery}
                                 setQuery={setCategoryQuery}
                                 data={categories}
                                 getKey={(category) => category.id}
                                 getLabel={(category) => category.name}
-                                disabled={createBudget.isPending || isCategoriesLoading}
+                                disabled={createBudget.isPending}
                             />
                         )}
                     />
+                    {errors.categoryId && (
+                        <span className="text-xs text-danger">{errors.categoryId.message}</span>
+                    )}
                 </div>
             )}
 
@@ -268,7 +304,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 onChange={(event) => field.onChange(event.target.value)}
                                 onBlur={field.onBlur}
                             >
-                                {BUDGET_PERIOD_FORM_OPTIONS.map((option) => (
+                                {PERIODICITY_FORM_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
                                         {option.label}
                                     </option>

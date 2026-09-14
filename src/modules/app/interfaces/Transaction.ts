@@ -1,4 +1,10 @@
-export type TransactionType = "INCOME" | "EXPENSE" | "TRANSFER";
+export const TRANSACTION_TYPE_VALUES = [
+    "INCOME",
+    "EXPENSE",
+    "TRANSFER",
+] as const;
+
+export type TransactionType = (typeof TRANSACTION_TYPE_VALUES)[number];
 
 export interface Transaction {
     id: string;

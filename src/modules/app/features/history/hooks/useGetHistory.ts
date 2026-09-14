@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 import { getHistory } from "../history.service";
 
+import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 import { useAuthStore } from "@/auth/authStore";
 
 interface UseGetHistoryParams {
@@ -23,9 +23,7 @@ export const useGetHistory = ({
     const user = useAuthStore((state) => state.user);
 
     return useQuery({
-        queryKey: preview
-            ? ["history", "preview"]
-            : ["history", query, type, page, size],
+        queryKey: preview ? ["history", "preview"] : ["history", query, type, page, size],
         queryFn: () =>
             getHistory({
                 query,

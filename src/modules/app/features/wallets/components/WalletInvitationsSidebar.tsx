@@ -19,12 +19,14 @@ export const WalletInvitationsSidebar = ({
     isOpen,
     onClose,
 }: WalletInvitationsSidebarProps) => {
+    // Invitations fetch + pending-only list for the panel
     const { data: invitationsResponse, isLoading } = useGetWalletInvitations();
     const invitations = invitationsResponse?.data ?? [];
     const pendingInvitations = invitations.filter(
         (invitation) => invitation.status === "PENDING",
     );
 
+    // Lock body scroll while the sidebar overlay is open
     useEffect(() => {
         if (!isOpen) {
             return;

@@ -1,13 +1,15 @@
 import { Search } from "lucide-react";
+import type { ChangeEvent, InputHTMLAttributes } from "react";
 
 import { Input } from "./Input";
 
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
-interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
     id: string;
     placeholder: string;
     paramKey?: string;
+    /** When true, value/onChange are owned by the URL search param (`paramKey`). */
     syncToParams?: boolean;
 }
 
@@ -24,7 +26,7 @@ export const SearchInput = ({
     const { params, updateSearchParams } = useUpdateSearchParams();
     const paramValue = params.get(paramKey) ?? "";
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (!syncToParams) {
             onChange?.(event);
             return;

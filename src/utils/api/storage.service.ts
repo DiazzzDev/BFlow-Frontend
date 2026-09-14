@@ -1,6 +1,7 @@
+import { apiRequest } from "./api";
+
 import { config } from "@/config/config";
 
-import { apiRequest } from "./api";
 
 const storageUrl = `${config.API_BASE_URL}/api/v1/files`;
 

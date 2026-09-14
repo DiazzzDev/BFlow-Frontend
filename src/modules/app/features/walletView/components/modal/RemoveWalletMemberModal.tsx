@@ -18,10 +18,14 @@ export const RemoveWalletMemberModal = ({
     member,
     onClose,
 }: RemoveWalletMemberModalProps) => {
-    const { removeMember } = useMutateWalletMembers();
+    // Remove-member mutation
+    const removeMember = useMutateWalletMembers();
     const isRemoving = removeMember.isPending;
+
+    // Label used in the copy and toast
     const displayName = member?.name.trim() || member?.email || "este miembro";
 
+    // Remove the member then close; keep the modal open on error
     const handleConfirm = async () => {
         if (!member) {
             return;

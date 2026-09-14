@@ -10,6 +10,7 @@ import { Check, ChevronDown, Search } from "lucide-react";
 
 import { Label } from "./Label";
 
+// Headless UI Combobox wrapper — domain props only; not a native <select>/<input> passthrough
 interface SelectAutoCompleteProps<T> {
     selectedItem: T | null;
     setSelectedItem: (item: T | null) => void;
@@ -86,10 +87,11 @@ export const SelectAutoComplete = <T,>({
     }, [data, filterLocally, getLabel, query]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const {value} = event.target;
+        const { value } = event.target;
         setQuery(value);
 
         if (selectedItem && value !== getLabel(selectedItem)) {
+
             setSelectedItem(null);
         }
     };

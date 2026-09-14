@@ -9,6 +9,7 @@ type option = {
 
 type TabFilterResponsive = "stretch" | "scroll";
 
+// Composite URL-synced tab control — not a single native element, so no HTML prop passthrough
 interface TabFilterProps {
     options: option[];
     selected: string;
@@ -31,7 +32,7 @@ export const TabFilter = ({
     const { params, updateSearchParams } = useUpdateSearchParams();
 
     const urlValue = keyFilter ? params.get(keyFilter) : null;
-    const selectedOption = urlValue ?? selected ?? options[0]?.value;
+    const selectedOption = urlValue ?? selected;
     const mode: TabFilterResponsive | undefined =
         responsive ?? (fullWidthMobile ? "stretch" : undefined);
 
@@ -49,13 +50,11 @@ export const TabFilter = ({
             <button
                 key={option.value}
                 type="button"
-                className={`relative z-10 whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition-colors duration-300 sm:px-4 sm:text-sm ${
-                    mode === "stretch" ? "flex-1 sm:flex-none" : ""
-                } ${
-                    isActive
+                className={`relative z-10 whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition-colors duration-300 sm:px-4 sm:text-sm ${mode === "stretch" ? "flex-1 sm:flex-none" : ""
+                    } ${isActive
                         ? "text-dark"
                         : "text-dark opacity-text-custom hover:opacity-100"
-                }`}
+                    }`}
                 onClick={() => handelSearch(option.value)}
             >
                 {option.label}
@@ -86,9 +85,8 @@ export const TabFilter = ({
 
     return (
         <div
-            className={`relative flex items-center gap-1 rounded-full border border-light-25/50 p-0.5 ${
-                mode === "stretch" ? "w-full sm:w-max" : "w-max"
-            }`}
+            className={`relative flex items-center gap-1 rounded-full border border-light-25/50 p-0.5 ${mode === "stretch" ? "w-full sm:w-max" : "w-max"
+                }`}
         >
             {tabs}
         </div>

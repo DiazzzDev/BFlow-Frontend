@@ -1,10 +1,11 @@
-import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import {
     formatHistoryDayLabel,
     type HistoryDayGroup as HistoryDayGroupType,
 } from "../utils/groupTransactionsByDay";
 
 import { HistoryTransactionCard } from "./HistoryTransactionCard";
+
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
 interface HistoryDayGroupProps {
     group:  HistoryDayGroupType;

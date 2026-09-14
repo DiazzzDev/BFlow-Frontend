@@ -1,29 +1,22 @@
 import { Link } from "react-router";
-import { ChevronRight, Receipt, Users, Wallet, X } from "lucide-react";
+import { X } from "lucide-react";
 
-import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
+import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
 
-import { WalletItem } from "./components/WalletItem";
-import { WalletItemSkeleton } from "./components/WalletItemSkeleton";
-import { HistoryItem } from "./components/HistoryItem";
-import { HistoryItemSkeleton } from "./components/HistoryItemSkeleton";
 import { WalletForm } from "./components/WalletForm";
 import { WalletInvitationsButton } from "./components/WalletInvitationsButton";
 import { WalletInvitationsSidebar } from "./components/WalletInvitationsSidebar";
-import {
-    useWalletsPage,
-} from "./hooks/useWalletsPage";
-import { getEmptyDescription, getEmptyTitle } from "./utils/walletsEmptyState";
+import { WalletList } from "./components/WalletList";
+import { WalletsHistoryList } from "./components/WalletsHistoryList";
+import { WalletsHistoryPanel } from "./components/WalletsHistoryPanel";
+import { useWalletsPage } from "./hooks/useWalletsPage";
 import { WALLETS_TYPE_TABS } from "./utils/filters";
 
 import { CustomModal } from "@/components/custom/CustomModal";
-import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
 import { SearchInput } from "@/components/controls/SearchInput";
 import { Button } from "@/components/controls/Button";
-import { formatCurrency } from "@/utils/formatters/formatCurrency";
-import { formatMonthYear } from "@/utils/formatters/formatMonthYear";
 import { TabFilter } from "@/components/controls/TabFilter";
 
 export const WalletsPage = () => {
@@ -74,7 +67,15 @@ export const WalletsPage = () => {
                 </div>
 
                 <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-                    {renderWalletList()}
+                    <WalletList
+                        wallets={page.wallets}
+                        isLoading={page.isLoadingWallets}
+                        query={page.query}
+                        walletType={page.walletType}
+                        ownerLabel={page.ownerLabel}
+                        showCreateButton={page.showCreateButton}
+                        onCreate={page.openCreateModal}
+                    />
                 </div>
 
                 {!page.isLoadingWallets && page.totalWallets > 0 && (
@@ -89,7 +90,13 @@ export const WalletsPage = () => {
             </section>
 
             <aside className="hidden min-h-0 w-80 shrink-0 flex-col border-l border-light-10 @3xl:flex @5xl:w-96">
-                {renderHistoryPanel()}
+                <WalletsHistoryPanel
+                    history={page.history}
+                    isLoading={page.isLoadingHistory}
+                    actionsDisabled={page.isDuplicating}
+                    onViewDetails={page.handleViewDetails}
+                    onDuplicate={page.handleDuplicate}
+                />
             </aside>
 
             <button
@@ -127,7 +134,13 @@ export const WalletsPage = () => {
                     </div>
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-                    {renderHistory()}
+                    <WalletsHistoryList
+                        history={page.history}
+                        isLoading={page.isLoadingHistory}
+                        actionsDisabled={page.isDuplicating}
+                        onViewDetails={page.handleViewDetails}
+                        onDuplicate={page.handleDuplicate}
+                    />
                 </div>
             </aside>
 
@@ -160,127 +173,4 @@ export const WalletsPage = () => {
             />
         </div>
     );
-
-    function renderHistoryPanel() {
-        return (
-            <>
-                <div className="mb-6 flex items-center justify-between gap-3 px-5 pt-6">
-                    <h2 className="text-2xl font-semibold tracking-tight text-light">
-                        Historial
-                    </h2>
-                    <Link
-                        to="/app/history"
-                        className="text-sm font-medium text-primary transition-colors hover:opacity-80"
-                    >
-                        Ver más
-                    </Link>
-                </div>
-                <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">
-                    {renderHistory()}
-                </div>
-            </>
-        );
-    }
-
-    function renderHistory() {
-        if (page.isLoadingHistory) {
-            return (
-                <ul className="flex flex-col">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <HistoryItemSkeleton key={index} />
-                    ))}
-                </ul>
-            );
-        }
-
-        if (page.history.length > 0) {
-            return (
-                <ul className="flex flex-col">
-                    {page.history.map((transaction) => (
-                        <HistoryItem
-                            key={transaction.id}
-                            transaction={transaction}
-                            onViewDetails={page.handleViewDetails}
-                            onDuplicate={page.handleDuplicate}
-                            actionsDisabled={page.isDuplicating}
-                        />
-                    ))}
-                </ul>
-            );
-        }
-
-        return (
-            <CustomEmptyState
-                title="Sin historial"
-                description="Cuando registres movimientos, aparecerán aquí."
-                Icon={Receipt}
-                className="m-0!"
-            />
-        );
-    }
-
-    function renderWalletList() {
-        if (page.isLoadingWallets) {
-            return (
-                <section className="flex flex-col gap-3 overflow-x-hidden">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <WalletItemSkeleton key={index} />
-                    ))}
-                </section>
-            );
-        }
-
-        if (page.wallets.length > 0) {
-            return (
-                <section className="flex flex-col gap-3">
-                    {page.wallets.map((wallet) => (
-                        <WalletItem key={wallet.id} to={`/app/wallets/${wallet.id}`}>
-                            <div className="flex items-start justify-between gap-3 sm:items-center sm:gap-4">
-                                <div className="min-w-0 flex-1 sm:flex-[1.6]">
-                                    <p className="truncate text-sm font-semibold text-light">
-                                        {wallet.name}
-                                    </p>
-                                    <p className="mt-0.5 truncate text-xs text-helper">
-                                        {wallet.description || page.ownerLabel}
-                                    </p>
-                                    <p className="mt-2 truncate text-xs text-label sm:hidden">
-                                        {wallet.currency}
-                                        {" · "}
-                                        {formatMonthYear(wallet.createdAt)}
-                                    </p>
-                                </div>
-
-                                <p className="hidden flex-1 truncate text-center text-sm text-helper sm:block">
-                                    {wallet.currency}
-                                </p>
-
-                                <p className="hidden flex-1 truncate text-center text-sm text-helper sm:block">
-                                    {formatMonthYear(wallet.createdAt)}
-                                </p>
-
-                                <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-                                    <p className="text-right text-sm font-semibold tabular-nums text-info">
-                                        {formatCurrency(wallet.balance, wallet.currency)}
-                                    </p>
-                                    <ChevronRight className="h-5 w-5 text-helper sm:h-7 sm:w-7 sm:text-light" />
-                                </div>
-                            </div>
-                        </WalletItem>
-                    ))}
-                </section>
-            );
-        }
-
-        return (
-            <CustomEmptyState
-                title={getEmptyTitle(page.query, page.walletType)}
-                description={getEmptyDescription(page.query, page.walletType)}
-                Icon={page.walletType === "MINE" ? Wallet : Users}
-                buttonText={page.showCreateButton ? "Crear billetera" : undefined}
-                onButtonClick={
-                    page.showCreateButton ? page.openCreateModal : undefined
-                }
-            />
-        );
-    }
 };

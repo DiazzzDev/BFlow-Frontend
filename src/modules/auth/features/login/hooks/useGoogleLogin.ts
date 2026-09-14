@@ -13,7 +13,7 @@ export const useGoogleLogin = () => {
     return useMutation({
         mutationFn: () => loginWithGoogle(),
         onSuccess: (user: InternalUser | void) => {
-            // Si ya había sesión Cognito, no hubo redirect: entramos directo.
+            // Existing Cognito session: no redirect happened — enter the app directly.
             if (!user) {
                 return;
             }

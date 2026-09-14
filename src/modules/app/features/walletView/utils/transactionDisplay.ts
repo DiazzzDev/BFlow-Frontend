@@ -27,6 +27,6 @@ export const hasCategory = (tx: Transaction) =>
     tx.type === "INCOME" || tx.type === "EXPENSE";
 
 export const getContributorDisplayName = (transaction: Transaction) =>
-    transaction.contributorName?.trim() ||
+    transaction.contributorName.trim() ||
     transaction.contributorEmail?.trim() ||
     "—";

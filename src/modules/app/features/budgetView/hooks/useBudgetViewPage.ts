@@ -1,5 +1,4 @@
 import {
-    BUDGET_PERIOD_LABELS,
     BUDGET_SCOPE_LABELS,
     getBudgetDisplayName,
     getBudgetStatusLabel,
@@ -8,6 +7,7 @@ import { isBudgetViewTab, type BudgetViewTab } from "../utils/tabs/budgetViewTab
 
 import { useGetBudget } from "./useGetBudget";
 
+import { PERIODICITY_LABELS } from "@/modules/app/interfaces/Periodicity";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
@@ -20,19 +20,23 @@ const getScopeTags = (scope: string) => {
 };
 
 export const useBudgetViewPage = (budgetId?: string) => {
+    // Budget detail fetch
     const { budget, isLoading, isNotFound } = useGetBudget(budgetId);
+
+    // Active tab from the URL (`overview` is the default / omitted param)
     const { params, updateSearchParams } = useUpdateSearchParams();
     const tabParam = params.get("tab");
-    const activeTab: BudgetViewTab = isBudgetViewTab(tabParam)
-        ? tabParam
-        : "overview";
+    const activeTab: BudgetViewTab = isBudgetViewTab(tabParam) ? tabParam : "overview";
 
+    const setTab = (tab: BudgetViewTab) => {
+        updateSearchParams({ tab: tab === "overview" ? null : tab });
+    };
+
+    // Header / overview labels derived from the budget
     const currency = budget?.currency;
     const usedPercent = budget?.percentage ?? 0;
     const title = budget ? getBudgetDisplayName(budget) : "Presupuesto";
-    const periodLabel = budget
-        ? (BUDGET_PERIOD_LABELS[budget.period] ?? budget.period)
-        : "";
+    const periodLabel = budget ? PERIODICITY_LABELS[budget.period] : "";
     const scopeTags = budget ? getScopeTags(budget.scope) : [];
     const statusLabel = budget ? getBudgetStatusLabel(budget.status) : "";
     const transactionCount = budget?.transactionCount ?? 0;
@@ -40,16 +44,11 @@ export const useBudgetViewPage = (budgetId?: string) => {
         ? `${transactionCount} ${transactionCount === 1 ? "transacción" : "transacciones"} · ${formatCurrency(budget.averageDailySpend, currency)}/día`
         : "";
 
-    const setTab = (tab: BudgetViewTab) => {
-        updateSearchParams({ tab: tab === "overview" ? null : tab });
-    };
-
     return {
         budget,
         isLoading,
         isNotFound,
         activeTab,
-        setTab,
         currency,
         usedPercent,
         title,
@@ -57,5 +56,6 @@ export const useBudgetViewPage = (budgetId?: string) => {
         scopeTags,
         statusLabel,
         spentSubtitle,
+        setTab,
     };
 };

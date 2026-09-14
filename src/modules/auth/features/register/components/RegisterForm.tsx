@@ -1,4 +1,4 @@
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,7 +6,11 @@ import { Link } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { useRegister } from "../hooks/useRegister";
+interface RegisterCredentials {
+    email: string;
+    password: string;
+    fullName: string;
+}
 
 const registerSchema = z.object({
     email: z
@@ -23,10 +27,18 @@ const registerSchema = z.object({
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const inputClass =
-    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
 
-export const RegisterForm = () => {
-    const { mutateAsync: onRegisterUser, isPending: isLoading } = useRegister();
+interface RegisterFormProps {
+    onRegisterUser: (data: RegisterCredentials) => Promise<unknown>;
+    isLoading: boolean;
+}
+
+export const RegisterForm = ({
+    onRegisterUser,
+    isLoading,
+}: RegisterFormProps) => {
+    // RHF form (validate on submit only)
     const {
         register,
         handleSubmit,
@@ -36,6 +48,10 @@ export const RegisterForm = () => {
         mode: "onSubmit",
     });
 
+    // Password visibility toggle
+    const [showPassword, setShowPassword] = useState(false);
+
+    // Submit signup via toast.promise
     const onInternalSubmit = (data: RegisterFormInputs) => {
         toast.promise(onRegisterUser(data), {
             loading: "Creando cuenta...",
@@ -44,8 +60,6 @@ export const RegisterForm = () => {
                 err instanceof Error ? err.message : "Error al crear la cuenta",
         });
     };
-
-    const [showPassword, setShowPassword] = useState(false);
 
     return (
         <form
@@ -56,7 +70,10 @@ export const RegisterForm = () => {
         >
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-label" htmlFor="txtFullName">
+                    <label
+                        className="text-sm font-medium text-label"
+                        htmlFor="txtFullName"
+                    >
                         Nombre completo
                     </label>
 
@@ -81,7 +98,10 @@ export const RegisterForm = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-label" htmlFor="txtEmail">
+                    <label
+                        className="text-sm font-medium text-label"
+                        htmlFor="txtEmail"
+                    >
                         Correo electrónico
                     </label>
 
@@ -106,7 +126,10 @@ export const RegisterForm = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-label" htmlFor="txtPassword">
+                    <label
+                        className="text-sm font-medium text-label"
+                        htmlFor="txtPassword"
+                    >
                         Contraseña
                     </label>
 
@@ -130,7 +153,11 @@ export const RegisterForm = () => {
                             className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            {showPassword ? (
+                                <EyeOff size={18} />
+                            ) : (
+                                <Eye size={18} />
+                            )}
                         </button>
                     </div>
                     {isSubmitted && errors.password && (
@@ -163,5 +190,5 @@ export const RegisterForm = () => {
                 </Link>
             </p>
         </form>
-    )
-}
+    );
+};

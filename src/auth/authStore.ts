@@ -38,8 +38,8 @@ export const useAuthStore = create<AuthState>()(
         }),
         {
             name: "bflow-auth-storage",
-            // Solo cacheamos el perfil. authStatus siempre arranca en "checking"
-            // y lo resuelve el bootstrap contra Cognito.
+            // Cache profile only. authStatus always starts as "checking"
+            // and bootstrap resolves it against Cognito.
             partialize: (state) => ({ user: state.user }),
         },
     ),

@@ -1,7 +1,9 @@
-interface ToggleSwitchProps {
+import type { InputHTMLAttributes } from "react";
+
+// Custom onChange(boolean) instead of the native event — omit type/onChange from input attrs
+export interface ToggleSwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
     checked: boolean;
     onChange: (checked: boolean) => void;
-    disabled?: boolean;
     label?: string;
 }
 
@@ -10,20 +12,25 @@ export const ToggleSwitch = ({
     onChange,
     disabled = false,
     label = "",
+    className,
+    ...props
 }: ToggleSwitchProps) => {
     return (
         <label
             className={`inline-flex items-center gap-3 select-none ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-                }`}
+                } ${className ?? ""}`}
         >
             <input
                 type="checkbox"
                 checked={checked}
                 onChange={(e) => {
-                    if (!disabled) { onChange(e.target.checked) };
+                    if (!disabled) {
+                        onChange(e.target.checked);
+                    }
                 }}
                 disabled={disabled}
                 className="peer sr-only"
+                {...props}
             />
 
             <span
@@ -41,11 +48,7 @@ export const ToggleSwitch = ({
                 />
             </span>
 
-            {label && (
-                <span className="text-sm font-medium text-light">
-                    {label}
-                </span>
-            )}
+            {label && <span className="text-sm font-medium text-light">{label}</span>}
         </label>
     );
 };

@@ -1,12 +1,15 @@
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Eye, EyeOff, Lock, Mail } from "lucide-react"
-import { Link } from "react-router"
-import { useState } from "react"
-import { toast } from "sonner"
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Link } from "react-router";
+import { useState } from "react";
+import { toast } from "sonner";
 
-import { useLogin } from "../hooks/useLogin"
+interface LoginCredentials {
+    email: string;
+    password: string;
+}
 
 const loginSchema = z.object({
     email: z
@@ -19,10 +22,15 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const inputClass =
-    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
 
-export const LoginForm = () => {
-    const { mutateAsync: onSubmitLogin, isPending: isLoading } = useLogin();
+interface LoginFormProps {
+    onSubmitLogin: (data: LoginCredentials) => Promise<unknown>;
+    isLoading: boolean;
+}
+
+export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
+    // RHF form (validate on submit only)
     const {
         register,
         handleSubmit,
@@ -31,6 +39,11 @@ export const LoginForm = () => {
         resolver: zodResolver(loginSchema),
         mode: "onSubmit",
     });
+
+    // Password visibility toggle
+    const [showPassword, setShowPassword] = useState(false);
+
+    // Submit credentials via toast.promise
     const onInternalSubmit = (data: LoginFormInputs) => {
         toast.promise(onSubmitLogin(data), {
             loading: "Iniciando sesión...",
@@ -39,11 +52,14 @@ export const LoginForm = () => {
                 err instanceof Error ? err.message : "Error al iniciar sesión",
         });
     };
-    const [showPassword, setShowPassword] = useState(false);
+
     return (
-        <form action="" onSubmit={(e) => {
-            void handleSubmit(onInternalSubmit)(e);
-        }}>
+        <form
+            action=""
+            onSubmit={(e) => {
+                void handleSubmit(onInternalSubmit)(e);
+            }}
+        >
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-label" htmlFor="txtEmail">
@@ -72,7 +88,10 @@ export const LoginForm = () => {
 
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <label className="text-sm font-medium text-label" htmlFor="txtPassword">
+                        <label
+                            className="text-sm font-medium text-label"
+                            htmlFor="txtPassword"
+                        >
                             Contraseña
                         </label>
 
@@ -99,7 +118,11 @@ export const LoginForm = () => {
                             className={`${inputClass} px-11`}
                         />
 
-                        <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light" onClick={() => setShowPassword(!showPassword)}>
+                        <button
+                            type="button"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
                             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
@@ -123,14 +146,15 @@ export const LoginForm = () => {
                 ¿No tienes cuenta?{" "}
                 <Link
                     to="/auth/register"
-                    className={`font-medium hover:opacity-80 ${isLoading
-                        ? "pointer-events-none text-helper"
-                        : "text-primary"
-                        }`}
+                    className={`font-medium hover:opacity-80 ${
+                        isLoading
+                            ? "pointer-events-none text-helper"
+                            : "text-primary"
+                    }`}
                 >
                     Crea una gratis
                 </Link>
             </p>
         </form>
-    )
-}
+    );
+};

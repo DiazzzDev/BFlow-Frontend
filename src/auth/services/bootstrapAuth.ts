@@ -15,8 +15,8 @@ const isOAuthCallbackRoute = () =>
     window.location.pathname.startsWith("/auth/callback");
 
 /**
- * Reconcilia Cognito (sesión real) con el store (perfil de app).
- * En `/auth/callback` no corre: ese flujo lo posee OAuthCallbackPage.
+ * Reconciles Cognito (real session) with the store (app profile).
+ * Skips `/auth/callback` — that flow is owned by OAuthCallbackPage.
  */
 export const bootstrapAuth = async (
     options: BootstrapOptions = {},
@@ -25,7 +25,7 @@ export const bootstrapAuth = async (
     const { setChecking, setSession, clearSession } = useAuthStore.getState();
 
     if (isOAuthCallbackRoute()) {
-        // Dejamos authStatus en "checking" para que el callback termine el flujo.
+        // Keep authStatus as "checking" so the callback can finish the flow.
         setChecking();
         return;
     }
@@ -57,8 +57,8 @@ export const bootstrapAuth = async (
                 return;
             }
 
-            // Hay Cognito pero el backend no sincronizó: soltamos Cognito
-            // para no dejar al usuario atrapado en AlreadyAuthenticated.
+            // Cognito session exists but backend sync failed: sign out Cognito
+            // so the user is not stuck on AlreadyAuthenticated.
             try {
                 await authService.logout();
             } catch {

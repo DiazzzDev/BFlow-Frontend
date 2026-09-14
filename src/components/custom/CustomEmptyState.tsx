@@ -4,7 +4,6 @@ import { LucideIcon } from 'lucide-react';
 import { Button } from "../controls/Button";
 
 
-
 interface CustomEmptyStateProps {
     title: string,
     description: string,
@@ -35,7 +34,7 @@ export const CustomEmptyState = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
         >
-            {/* Icono */}
+            {/* Icon */}
             {Icon && (
                 <div className="relative flex items-center justify-center w-28 h-28">
                     <motion.div
@@ -58,7 +57,7 @@ export const CustomEmptyState = ({
                 </div>
             )}
 
-            {/* Steps opcionales */}
+            {/* optional steps */}
             {steps && (
                 <motion.div
                     className="flex items-center gap-2 text-xs text-light-50"
@@ -82,7 +81,7 @@ export const CustomEmptyState = ({
                 </motion.div>
             )}
 
-            {/* Textos */}
+            {/* Texts */}
             <motion.div
                 className="flex flex-col gap-1 max-w-sm"
                 initial={{ opacity: 0, y: 6 }}
@@ -93,7 +92,7 @@ export const CustomEmptyState = ({
                 {description && <p className="text-light-75 text-sm">{description}</p>}
             </motion.div>
 
-            {/* Botones */}
+            {/* Buttons */}
             {(buttonText || secondaryButtonText) && (
                 <motion.div
                     className="flex items-center gap-3 mt-2"

@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router";
 
 type ParamUpdates = Record<string, string | null | undefined>;
 
+// Patches URL search params; optional resetPage jumps back to page 1
 export const useUpdateSearchParams = () => {
     const [params, setParams] = useSearchParams();
 

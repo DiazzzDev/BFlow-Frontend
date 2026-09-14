@@ -1,8 +1,8 @@
 import { useAuthStore } from "@/auth/authStore";
 
 /**
- * Estado de auth ya reconciliado por AuthProvider (Cognito + perfil).
- * Preferir esto sobre consultar Amplify ad-hoc en la UI.
+ * Auth state already reconciled by AuthProvider (Cognito + profile).
+ * Prefer this over ad-hoc Amplify calls in the UI.
  */
 export const useAuth = () => {
     const authStatus = useAuthStore((state) => state.authStatus);

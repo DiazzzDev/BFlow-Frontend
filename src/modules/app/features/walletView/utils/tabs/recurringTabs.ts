@@ -1,24 +1,12 @@
-import type { RecurringFrequency, RecurringType } from "../../interfaces/Recurring";
+import type { CategoryType } from "@/modules/app/interfaces/Category";
+import type { Periodicity } from "@/modules/app/interfaces/Periodicity";
 
-export const RECURRING_TYPE_TABS: Array<{ id: RecurringType; label: string }> = [
+export const RECURRING_TYPE_TABS: Array<{ id: CategoryType; label: string }> = [
     { id: "INCOME", label: "Ingreso" },
     { id: "EXPENSE", label: "Gasto" },
 ];
 
-export const RECURRING_FREQUENCY_OPTIONS: Array<{
-    value: RecurringFrequency;
-    label: string;
-}> = [
-    { value: "DAILY", label: "Diario" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "YEARLY", label: "Anual" },
-];
-
-export const RECURRING_INTERVAL_UNIT_LABELS: Record<
-    RecurringFrequency,
-    string
-> = {
+export const RECURRING_INTERVAL_UNIT_LABELS: Record<Periodicity, string> = {
     DAILY: "días",
     WEEKLY: "semanas",
     MONTHLY: "meses",

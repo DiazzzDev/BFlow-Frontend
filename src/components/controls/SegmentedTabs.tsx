@@ -3,6 +3,7 @@ interface SegmentedTab<T extends string> {
     label: string;
 }
 
+// Composite tablist — custom API on purpose; not a single native element to extend
 interface SegmentedTabsProps<T extends string> {
     tabs: Array<SegmentedTab<T>>;
     selected: T;
@@ -25,7 +26,7 @@ export const SegmentedTabs = <T extends string>({
     ariaLabel = "Opciones",
     className,
 }: SegmentedTabsProps<T>) => {
-    const columnsClass = className ?? COLUMN_CLASSES[tabs.length] ?? "grid-cols-3";
+    const columnsClass = className ?? COLUMN_CLASSES[tabs.length];
 
     return (
         <div
@@ -43,11 +44,10 @@ export const SegmentedTabs = <T extends string>({
                         role="tab"
                         aria-selected={isActive}
                         onClick={() => onChange(tab.id)}
-                        className={`cursor-pointer rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                            isActive
+                        className={`cursor-pointer rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isActive
                                 ? "border border-light-10 bg-surface text-light shadow-sm"
                                 : "border border-transparent text-helper hover:bg-light-5 hover:text-light"
-                        }`}
+                            }`}
                     >
                         {tab.label}
                     </button>

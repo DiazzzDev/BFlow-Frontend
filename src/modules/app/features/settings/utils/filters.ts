@@ -1,4 +1,4 @@
-import type { CategoryType } from "../interfaces/Category";
+import type { CategoryType } from "@/modules/app/interfaces/Category";
 
 export type CategoryTypeFilter = "ALL" | CategoryType;
 

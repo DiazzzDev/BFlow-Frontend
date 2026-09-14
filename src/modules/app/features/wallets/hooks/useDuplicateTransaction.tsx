@@ -5,20 +5,21 @@ import {
     buildDuplicateIncomePayload,
     buildDuplicateTransferPayload,
 } from "../utils/duplicateTransaction";
-import { usePostExpense } from "../../../components/newTransaction/hooks/useMutateExpenses";
-import { usePostIncome } from "../../../components/newTransaction/hooks/useMutateIncomes";
-import { useMutateTransfers } from "../../../components/newTransaction/hooks/useMutateTransfers";
+import { usePostExpense } from "../../newTransaction/hooks/useMutateExpenses";
+import { usePostIncome } from "../../newTransaction/hooks/useMutateIncomes";
+import { useMutateTransfers } from "../../newTransaction/hooks/useMutateTransfers";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
-
 export const useDuplicateTransaction = () => {
+    // Create mutations reused from newTransaction
     const createExpense = usePostExpense();
     const createIncome = usePostIncome();
     const { createTransfer } = useMutateTransfers();
 
     const isPending = createExpense.isPending || createIncome.isPending || createTransfer.isPending;
 
+    // Pick the right create endpoint from the transaction type
     const duplicateTransaction = async (transaction: Transaction) => {
         let promise: Promise<unknown>;
 

@@ -28,7 +28,7 @@ type SyncAuthResponse = {
 const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => ({
     id: response.id,
     email: response.email,
-    roles: response.roles ?? [],
+    roles: response.roles,
     isNewUser: response.isNewUser,
     name: response.profile?.name ?? null,
     pictureUrl: response.profile?.pictureUrl ?? null,
@@ -72,8 +72,8 @@ export const getSessionTokens = async (): Promise<CognitoSessionTokens | null> =
 };
 
 /**
- * Tras el redirect de Google, Amplify puede tardar un instante en
- * intercambiar el code por tokens. Reintenta antes de fallar.
+ * After the Google redirect, Amplify may need a moment to exchange the
+ * code for tokens. Retries before failing.
  */
 export const waitForSessionTokens = async (
     attempts = 15,
@@ -97,8 +97,8 @@ export const waitForSessionTokens = async (
 };
 
 /**
- * Fuente de verdad: Cognito. Si hay tokens válidos, sincroniza el perfil
- * interno con el backend. Si no hay sesión Cognito, retorna null.
+ * Source of truth: Cognito. With valid tokens, syncs the internal profile
+ * with the backend. With no Cognito session, returns null.
  */
 export const resolveSession = async (): Promise<InternalUser | null> => {
     const tokens = await getSessionTokens();
