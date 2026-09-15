@@ -6,8 +6,12 @@ import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTran
 import { TransactionsTable } from "../TransactionsTable";
 import { DeleteTransactionModal } from "../modal/DeleteTransactionModal";
 import { getTransactionColumnsClassName } from "../../utils/transactionDisplay";
+import { getWalletAllowedTransactionTypes } from "../../utils/tabs/walletViewTabs";
 
-import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
+import type {
+    Transaction,
+    TransactionType,
+} from "@/modules/app/interfaces/Transaction";
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
 import { SearchInput } from "@/components/controls/SearchInput";
@@ -24,6 +28,7 @@ interface WalletTransactionsPanelProps {
     totalTransactions: number;
     numberOfElements: number;
     totalPages: number;
+    members: number;
 }
 
 export const WalletTransactionsPanel = ({
@@ -37,18 +42,24 @@ export const WalletTransactionsPanel = ({
     totalTransactions,
     numberOfElements,
     totalPages,
+    members,
 }: WalletTransactionsPanelProps) => {
     // Duplicate action (shared with wallets history)
-    const { duplicateTransaction, isPending: isDuplicating } = useDuplicateTransaction();
+    const { duplicateTransaction, isPending: isDuplicating } =
+        useDuplicateTransaction();
     const actionsDisabled = isDuplicating;
 
     // Create / edit / delete transaction modals
     const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
-    const [editTransaction, setEditTransaction] = useState<Transaction | null>(null);
-    const [deleteTransaction, setDeleteTransaction] = useState<Transaction | null>(null);
+    const [editTransaction, setEditTransaction] = useState<Transaction | null>(
+        null,
+    );
+    const [deleteTransaction, setDeleteTransaction] =
+        useState<Transaction | null>(null);
 
     // Table header grid columns (category column is optional)
     const columnsClassName = getTransactionColumnsClassName(showCategory);
+    const allowedTypes = getWalletAllowedTransactionTypes(members);
 
     return (
         <>
@@ -110,6 +121,7 @@ export const WalletTransactionsPanel = ({
                 setIsModalOpen={setIsNewTransactionOpen}
                 walletId={walletId}
                 initialType={initialType}
+                allowedTypes={allowedTypes}
             />
 
             <NewTransactionModal

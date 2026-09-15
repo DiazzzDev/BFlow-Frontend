@@ -1,8 +1,12 @@
+import { useEffect } from "react";
+
 import {
     isDetailTab,
     isManagementTab,
+    resolveWalletViewTab,
     TAB_TO_TYPE,
     type DetailTab,
+    walletAllowsTransfers,
 } from "../utils/tabs/walletViewTabs";
 
 import { useGetOverview } from "./useGetOverview";
@@ -20,20 +24,48 @@ export const useWalletViewPage = (walletId: string) => {
     const query = params.get("query") || "";
     const debouncedQuery = useDebounce(query, 500);
     const tabParam = params.get("tab");
-    const activeTab: DetailTab = isDetailTab(tabParam) ? tabParam : "overview";
+    const requestedTab: DetailTab = isDetailTab(tabParam) ? tabParam : "overview";
     const { apiPage, limit } = usePaginationParams();
-
-    // Transaction list type for income/expense tabs; null on overview/management
-    const transactionType =
-        isManagementTab(activeTab) || activeTab === "overview"
-            ? null
-            : TAB_TO_TYPE[activeTab];
 
     // Wallet entity + sidebar stats (/info)
     const { data: walletDetailsResponse, isLoading: isWalletDetailsLoading } =
         useGetWalletDetails(walletId);
     const { data: walletResponse, isLoading: isWalletLoading } =
         useGetWallet(walletId);
+
+    const wallet = walletResponse?.data;
+    const memberCount = wallet?.memberCount ?? 1;
+
+    // Drop ?tab=transfers from the URL when the wallet is shared
+    useEffect(() => {
+        if (isWalletLoading) {
+            return;
+        }
+        if (requestedTab !== "transfers") {
+            return;
+        }
+        if (walletAllowsTransfers(memberCount)) {
+            return;
+        }
+        updateSearchParams({ tab: null }, { resetPage: true });
+    }, [
+        isWalletLoading,
+        requestedTab,
+        memberCount,
+        updateSearchParams,
+    ]);
+
+    // While the wallet is loading, do not honor transfers (avoids a shared-wallet flash)
+    const activeTab =
+        requestedTab === "transfers" && isWalletLoading
+            ? "overview"
+            : resolveWalletViewTab(requestedTab, memberCount);
+
+    // Transaction list type for income/expense/transfer tabs; null on overview/management
+    const transactionType =
+        isManagementTab(activeTab) || activeTab === "overview"
+            ? null
+            : TAB_TO_TYPE[activeTab];
 
     // Overview list (all types) vs filtered list by tab type
     const overviewQuery = useGetOverview(
@@ -56,11 +88,10 @@ export const useWalletViewPage = (walletId: string) => {
         activeTab === "overview"
             ? overviewQuery
             : isManagementTab(activeTab)
-              ? null
-              : transactionsQuery;
+                ? null
+                : transactionsQuery;
 
     // Derived page / sidebar data
-    const wallet = walletResponse?.data;
     const walletDetails = walletDetailsResponse?.data;
     const transactions = activeList?.data?.data.content ?? [];
     const totalTransactions = activeList?.data?.data.totalElements ?? 0;
@@ -86,6 +117,7 @@ export const useWalletViewPage = (walletId: string) => {
         transactionType,
         setTab,
         wallet,
+        memberCount,
         isWalletLoading,
         isNotFound,
         transactions,

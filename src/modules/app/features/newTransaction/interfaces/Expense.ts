@@ -10,8 +10,6 @@ export interface CreateExpenseData {
     recurring: boolean;
     recurrencePattern: Periodicity | null;
     categoryId: string;
-    taxDeductible: boolean;
-    reimbursable: boolean;
 }
 
 export interface Expense extends CreateExpenseData {

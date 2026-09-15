@@ -37,7 +37,6 @@ const incomeSchema = z
         recurring: z.boolean(),
         recurrencePattern: z.enum(PERIODICITY_VALUES).nullable(),
         categoryId: z.string().uuid("Selecciona una categoría"),
-        taxable: z.boolean(),
     })
     .superRefine((values, ctx) => {
         if (values.recurring && !values.recurrencePattern) {
@@ -59,7 +58,6 @@ const defaultFormValues: IncomeFormValues = {
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
-    taxable: false,
 };
 
 interface IncomeFormProps {
@@ -137,7 +135,6 @@ export const IncomeForm = ({
             recurring: formData.recurring,
             recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
             categoryId: formData.categoryId,
-            taxable: formData.taxable,
         };
 
         const promise = isEditing
@@ -346,21 +343,6 @@ export const IncomeForm = ({
                         )}
                     </div>
                 )}
-                {/* Campo oculto por el momento */}
-                <div className="hidden">
-                    <Controller
-                        name="taxable"
-                        control={control}
-                        render={({ field }) => (
-                            <ToggleSwitch
-                                label="Gravable"
-                                checked={field.value}
-                                disabled={isDisabled}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                </div>
             </div>
 
             {!readOnly && (
