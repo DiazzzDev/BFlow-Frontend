@@ -6,6 +6,7 @@ import { CategoriesModal } from "./components/CategoriesModal";
 import { EditProfileModal } from "./components/EditProfileModal";
 import { SettingsProfileSection } from "./components/SettingsProfileSection";
 import { SettingsSectionCard } from "./components/SettingsSectionCard";
+import { SettingsSubscriptionSection } from "./components/SettingsSubscriptionSection";
 
 import { useLogout } from "@/auth/hooks/useLogout";
 import { Button } from "@/components/controls/Button";
@@ -30,6 +31,8 @@ export const SettingsPage = () => {
 
             <div className="flex flex-col gap-4 pb-6 ">
                 <SettingsProfileSection onEdit={() => setIsProfileModalOpen(true)} />
+
+                <SettingsSubscriptionSection />
 
                 <SettingsSectionCard
                     title="Categorías"
