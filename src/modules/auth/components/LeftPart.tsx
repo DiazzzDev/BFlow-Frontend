@@ -44,7 +44,7 @@ export const LeftPart = ({ Body, title, focusTitle, subtitle }: LeftPartProps) =
 
                 <div>
                     <div className="flex items-center gap-6 text-sm text-helper mt-10">
-                        <span>© 2026 BFlow studio</span>
+                        <span>© 2026 BFlow Studio</span>
                     </div>
                 </div>
             </div>

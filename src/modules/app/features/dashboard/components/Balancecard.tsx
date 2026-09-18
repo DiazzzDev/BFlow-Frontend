@@ -1,5 +1,6 @@
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
+import { useTranslation } from "react-i18next";
 
 import { AmountDisplay } from "./AmountDisplay";
 
@@ -16,12 +17,13 @@ export const BalanceCard = ({
     currency,
     percentageChangeLastMonth,
 }: BalanceCardProps) => {
+    const { t } = useTranslation();
     const changePercent = formatPercentValue(percentageChangeLastMonth);
     const isPositive = percentageChangeLastMonth >= 0;
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Balance total</p>
+            <p className={dashboardLabelClass}>{t("dashboard.totalBalance")}</p>
 
             {isLoading ? (
                 <div className="mt-3 h-10 w-44 animate-pulse rounded-lg bg-skeleton" />
@@ -38,7 +40,7 @@ export const BalanceCard = ({
                         {changePercent}%
                     </span>
                     {" "}
-                    frente al mes pasado
+                    {t("dashboard.vsLastMonth")}
                 </p>
             )}
         </div>

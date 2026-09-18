@@ -3,6 +3,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { useMutateBudgets } from "../hooks/useMutateBudgets";
 import { BUDGET_SCOPE_TABS } from "../utils/filters";
@@ -27,6 +28,7 @@ import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputVal
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
@@ -78,6 +80,7 @@ interface BudgetFormProps {
 }
 
 export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
+    const { t } = useTranslation();
     const { createBudget } = useMutateBudgets();
 
     // Budget scope and which fields apply
@@ -167,10 +170,9 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
         });
 
         toast.promise(promise, {
-            loading: "Creando presupuesto...",
-            success: "Presupuesto creado",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al crear el presupuesto",
+            loading: t("budgets.createLoading"),
+            success: (response) => getApiMessage(response, t("budgets.createFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -193,7 +195,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                 tabs={BUDGET_SCOPE_TABS}
                 selected={scope}
                 onChange={handleScopeChange}
-                ariaLabel="Alcance del presupuesto"
+                ariaLabel={t("budgets.scopeLabel")}
             />
 
             {needsWallet && (
@@ -204,11 +206,11 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                         render={({ field }) => (
                             <SelectAutoComplete<Wallet>
                                 idSelect="budgetWalletId"
-                                label="Billetera"
+                                label={t("budgets.wallet")}
                                 placeholder={
                                     isWalletsLoading
-                                        ? "Cargando billeteras..."
-                                        : "Buscar billetera..."
+                                        ? t("budgets.loadingWallets")
+                                        : t("budgets.searchWallet")
                                 }
                                 selectedItem={selectedWallet}
                                 setSelectedItem={(wallet) => {
@@ -238,11 +240,11 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                         render={({ field }) => (
                             <SelectAutoComplete<Category>
                                 idSelect="budgetCategoryId"
-                                label="Categoría"
+                                label={t("budgets.category")}
                                 placeholder={
                                     isCategoriesLoading
-                                        ? "Cargando categorías..."
-                                        : "Buscar categoría..."
+                                        ? t("budgets.loadingCategories")
+                                        : t("budgets.searchCategory")
                                 }
                                 selectedItem={selectedCategory}
                                 setSelectedItem={(category) => {
@@ -266,7 +268,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="amount">Monto</Label>
+                    <Label htmlFor="amount">{t("budgets.amount")}</Label>
                     <Controller
                         name="amount"
                         control={control}
@@ -292,7 +294,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="period">Periodo</Label>
+                    <Label htmlFor="period">{t("budgets.period")}</Label>
                     <Controller
                         name="period"
                         control={control}
@@ -306,7 +308,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                             >
                                 {PERIODICITY_FORM_OPTIONS.map((option) => (
                                     <option key={option.value} value={option.value}>
-                                        {option.label}
+                                        {t(`budgets.periods.${option.value.toLowerCase()}`, { defaultValue: option.label })}
                                     </option>
                                 ))}
                             </Select>
@@ -316,7 +318,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="startDate">Fecha de inicio</Label>
+                <Label htmlFor="startDate">{t("budgets.startDate")}</Label>
                 <Controller
                     name="startDate"
                     control={control}
@@ -342,7 +344,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                     render={({ field }) => (
                         <RangeSlider
                             id="thresholdWarning"
-                            label="Alerta"
+                            label={t("budgets.alert")}
                             tone="warning"
                             min={MIN_WARNING}
                             max={MAX_THRESHOLD - 1}
@@ -372,7 +374,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                     render={({ field }) => (
                         <RangeSlider
                             id="thresholdCritical"
-                            label="Crítico"
+                            label={t("budgets.critical")}
                             tone="danger"
                             min={Math.max(MIN_CRITICAL, thresholdWarning + 1)}
                             max={MAX_THRESHOLD}
@@ -392,7 +394,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
             <Button
                 type="submit"
                 disabled={createBudget.isPending}
-                text={createBudget.isPending ? "Guardando..." : "Crear presupuesto"}
+                text={createBudget.isPending ? t("budgets.saving") : t("budgets.create")}
                 className="self-end"
             />
         </form>

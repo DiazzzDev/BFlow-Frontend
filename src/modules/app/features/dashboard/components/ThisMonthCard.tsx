@@ -1,4 +1,5 @@
 import type { DashboardActivityBreakdown } from "../interfaces/dashboard";
+import { useTranslation } from "react-i18next";
 import { dashboardCardClass, dashboardHeroClass, dashboardLabelClass } from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
 
@@ -14,25 +15,26 @@ const ACTIVITY_SEGMENTS: Array<{
         DashboardActivityBreakdown,
         "incomePercentage" | "expensePercentage" | "transferPercentage"
     >;
-    label: string;
+    keyLabel: "income" | "expenses" | "transfers";
     colorClass: string;
 }> = [
-    { key: "incomePercentage", label: "Ingresos", colorClass: "bg-info" },
-    { key: "expensePercentage", label: "Gastos", colorClass: "bg-primary" },
-    { key: "transferPercentage", label: "Transferencias", colorClass: "bg-success" },
+    { key: "incomePercentage", keyLabel: "income", colorClass: "bg-info" },
+    { key: "expensePercentage", keyLabel: "expenses", colorClass: "bg-primary" },
+    { key: "transferPercentage", keyLabel: "transfers", colorClass: "bg-success" },
 ];
 
 export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
+    const { t } = useTranslation();
     const activityPercent = formatPercentValue(breakdown?.activityChangePercentage ?? 0);
     const segments = ACTIVITY_SEGMENTS.map((segment) => ({
-        label: segment.label,
+        label: t(`dashboard.${segment.keyLabel}`),
         percent: breakdown?.[segment.key] ?? 0,
         colorClass: segment.colorClass,
     }));
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Este mes</p>
+            <p className={dashboardLabelClass}>{t("dashboard.thisMonth")}</p>
 
             <div className="mt-3 flex items-center gap-2.5">
                 {isLoading ? (
@@ -41,7 +43,7 @@ export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
                     <p className={dashboardHeroClass}>{activityPercent}%</p>
                 )}
                 <span className="max-w-16 text-xs leading-tight text-helper">
-                    Actividad total
+                    {t("dashboard.totalActivity")}
                 </span>
             </div>
 

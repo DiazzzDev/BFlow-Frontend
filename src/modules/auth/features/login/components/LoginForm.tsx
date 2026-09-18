@@ -5,21 +5,16 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Link } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface LoginCredentials {
     email: string;
     password: string;
 }
 
-const loginSchema = z.object({
-    email: z
-        .string()
-        .min(1, "El correo electrónico es requerido")
-        .email("El formato del correo no es válido"),
-    password: z.string().min(1, "La contraseña es requerida"),
-});
-
-type LoginFormInputs = z.infer<typeof loginSchema>;
+type LoginFormInputs = LoginCredentials;
 
 const inputClass =
     "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
@@ -30,6 +25,11 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
+    const { t } = useTranslation();
+    const loginSchema = z.object({
+        email: z.string().min(1, t("auth.validationEmailRequired")).email(t("auth.validationEmailInvalid")),
+        password: z.string().min(1, t("auth.validationPasswordRequired")),
+    });
     // RHF form (validate on submit only)
     const {
         register,
@@ -46,10 +46,9 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
     // Submit credentials via toast.promise
     const onInternalSubmit = (data: LoginFormInputs) => {
         toast.promise(onSubmitLogin(data), {
-            loading: "Iniciando sesión...",
-            success: "Bienvenido",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al iniciar sesión",
+            loading: t("auth.loginLoading"),
+            success: (response) => getApiMessage(response, t("auth.welcome")),
+            error: (error) => getApiErrorMessage(error, t("auth.loginError")),
         });
     };
 
@@ -63,7 +62,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-label" htmlFor="txtEmail">
-                        Correo electrónico
+                        {t("auth.email")}
                     </label>
 
                     <div className="relative">
@@ -75,7 +74,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             id="txtEmail"
                             disabled={isLoading}
                             {...register("email")}
-                            placeholder="Correo electrónico"
+                            placeholder={t("auth.email")}
                             className={`${inputClass} pl-11`}
                         />
                     </div>
@@ -92,14 +91,14 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             className="text-sm font-medium text-label"
                             htmlFor="txtPassword"
                         >
-                            Contraseña
+                            {t("auth.password")}
                         </label>
 
                         <Link
                             to="/auth/forgot-password"
                             className="text-sm font-medium text-primary hover:opacity-80"
                         >
-                            ¿Olvidaste tu contraseña?
+                            {t("auth.forgotPassword")}
                         </Link>
                     </div>
 
@@ -138,12 +137,12 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Iniciando sesión..." : "Iniciar sesión →"}
+                    {isLoading ? t("auth.loginLoading") : t("auth.signInButton")}
                 </button>
             </div>
 
             <p className="mt-8 text-center text-sm text-helper">
-                ¿No tienes cuenta?{" "}
+                {t("auth.noAccount")} {" "}
                 <Link
                     to="/auth/register"
                     className={`font-medium hover:opacity-80 ${
@@ -152,7 +151,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             : "text-primary"
                     }`}
                 >
-                    Crea una gratis
+                    {t("auth.createFree")}
                 </Link>
             </p>
         </form>

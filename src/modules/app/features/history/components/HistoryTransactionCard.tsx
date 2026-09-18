@@ -3,8 +3,8 @@ import {
     Eye,
     Wallet,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-import { formatTransactionSource } from "../utils/formatHistoryTransaction";
 import { HISTORY_TRANSACTION_TYPE_CONFIG } from "../utils/transactionTypeConfig";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
@@ -43,8 +43,9 @@ export const HistoryTransactionCard = ({
     onDuplicate,
     actionsDisabled = false,
 }: HistoryTransactionCardProps) => {
+    const { t } = useTranslation();
     const accentColor = transaction.categoryColor || "#64748B";
-    const sourceLabel = formatTransactionSource(transaction.source);
+    const sourceLabel = transaction.source?.toLowerCase() === "recurring" ? t("history.recurring") : t("history.manual");
     const typeStyle = HISTORY_TRANSACTION_TYPE_CONFIG[transaction.type];
     const TypeIcon = typeStyle.icon;
 
@@ -109,7 +110,7 @@ export const HistoryTransactionCard = ({
                                 className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide ${typeStyle.className}`}
                             >
                                 <TypeIcon className="h-3 w-3" />
-                                {typeStyle.label}
+                                {t(`history.${transaction.type === "INCOME" ? "income" : transaction.type === "EXPENSE" ? "expense" : "transfer"}`)}
                             </span>
 
                             {transaction.categoryName ? (
@@ -148,26 +149,26 @@ export const HistoryTransactionCard = ({
                                 type="button"
                                 disabled={actionsDisabled}
                                 onClick={() => onViewDetails(transaction)}
-                                title="Ver"
-                                aria-label="Ver detalles"
+                                title={t("history.view")}
+                                aria-label={t("history.viewDetails")}
                                 className="group/action relative rounded-lg border border-light-10 p-1.5 text-helper transition-colors hover:border-light-25 hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                             >
                                 <Eye className="h-4 w-4" />
                                 <span className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-surface-hard px-2 py-1 text-[11px] font-medium text-light opacity-0 shadow-sm transition-opacity group-hover/action:opacity-100">
-                                    Ver
+                                    {t("history.view")}
                                 </span>
                             </button>
                             <button
                                 type="button"
                                 disabled={actionsDisabled}
                                 onClick={() => onDuplicate(transaction)}
-                                title="Duplicar"
-                                aria-label="Duplicar transacción"
+                                title={t("history.duplicate")}
+                                aria-label={t("history.duplicateTransaction")}
                                 className="group/action relative rounded-lg border border-light-10 p-1.5 text-helper transition-colors hover:border-light-25 hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                             >
                                 <Copy className="h-4 w-4" />
                                 <span className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-surface-hard px-2 py-1 text-[11px] font-medium text-light opacity-0 shadow-sm transition-opacity group-hover/action:opacity-100">
-                                    Duplicar
+                                    {t("history.duplicate")}
                                 </span>
                             </button>
                         </div>

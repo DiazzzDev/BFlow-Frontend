@@ -1,5 +1,7 @@
 import { fetchAuthSession } from "aws-amplify/auth";
 
+import { getActiveLanguage } from "@/i18n/i18n";
+
 export type { ApiResponse, PaginatedListResponse } from "./api.interfaces";
 
 export class APIError extends Error {
@@ -47,6 +49,7 @@ export const apiRequest = async <T>(
             ...options,
             headers: {
                 ...(options.headers || {}),
+                "Accept-Language": getActiveLanguage(),
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
         });

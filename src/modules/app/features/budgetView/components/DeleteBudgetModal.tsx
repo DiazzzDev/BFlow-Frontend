@@ -1,4 +1,5 @@
 import { CustomModal } from "@/components/custom/CustomModal";
+import { useTranslation } from "react-i18next";
 
 interface DeleteBudgetModalProps {
     isOpen: boolean;
@@ -15,6 +16,7 @@ export const DeleteBudgetModal = ({
     onClose,
     onConfirm,
 }: DeleteBudgetModalProps) => {
+    const { t } = useTranslation();
     return (
         <CustomModal
             isModalOpen={isOpen}
@@ -23,7 +25,7 @@ export const DeleteBudgetModal = ({
                     onClose();
                 }
             }}
-            title="Eliminar presupuesto"
+            title={t("budgets.deleteTitle")}
             maxWidth="max-w-md"
         >
             <div className="flex flex-col gap-6">
@@ -41,7 +43,7 @@ export const DeleteBudgetModal = ({
                         onClick={onClose}
                         className="cursor-pointer rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        Cancelar
+                        {t("common.cancel")}
                     </button>
                     <button
                         type="button"
@@ -51,7 +53,7 @@ export const DeleteBudgetModal = ({
                         }}
                         className="cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-danger-dark disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        {isDeleting ? "Eliminando..." : "Eliminar"}
+                        {isDeleting ? t("budgets.deleteLoading") : t("transactions.delete")}
                     </button>
                 </div>
             </div>

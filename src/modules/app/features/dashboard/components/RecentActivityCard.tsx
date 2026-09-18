@@ -1,5 +1,6 @@
 import { ChevronRight, Receipt } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import type { RecentActivityItem } from "../interfaces/dashboard";
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
@@ -22,6 +23,7 @@ export const RecentActivityCard = ({
     onViewAll,
 }: RecentActivityCardProps) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleViewAll = () => {
         if (onViewAll) {
@@ -34,13 +36,13 @@ export const RecentActivityCard = ({
     return (
         <div className={dashboardCardClass}>
             <div className="mb-3 flex items-center justify-between">
-                <p className={dashboardLabelClass}>Actividad reciente</p>
+                <p className={dashboardLabelClass}>{t("dashboard.recentActivity")}</p>
                 <button
                     type="button"
                     onClick={handleViewAll}
                     className="cursor-pointer text-sm font-medium text-primary transition-colors hover:text-primary-dark"
                 >
-                    Ver todo
+                    {t("dashboard.viewAll")}
                 </button>
             </div>
 
@@ -64,8 +66,8 @@ export const RecentActivityCard = ({
 
             {!isLoading && activities.length === 0 && (
                 <CustomEmptyState
-                    title="Sin historial"
-                    description="Cuando registres movimientos, aparecerán aquí."
+                    title={t("dashboard.noHistory")}
+                    description={t("dashboard.activityHint")}
                     Icon={Receipt}
                     className="m-0!"
                 />

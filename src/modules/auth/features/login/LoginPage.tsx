@@ -1,4 +1,5 @@
 import { LoginHero } from "./components/LoginHero";
+import { useTranslation } from "react-i18next";
 import { LoginForm } from "./components/LoginForm";
 import { useLogin } from "./hooks/useLogin";
 
@@ -6,6 +7,7 @@ import { RightPart } from "@/modules/auth/components/RightPart";
 import { LeftPart } from "@/modules/auth/components/LeftPart";
 
 export const LoginPage = () => {
+    const { t } = useTranslation();
     // Shared so RightPart can disable Google / back while email login is pending
     const { mutateAsync: loginWithEmail, isPending: isEmailLoginPending } = useLogin();
 
@@ -13,9 +15,9 @@ export const LoginPage = () => {
         <main className="w-full h-screen flex gap-4">
             <LeftPart
                 Body={<LoginHero />}
-                title="Tu dinero bajo tu"
-                focusTitle="control total"
-                subtitle="Gestiona ingresos, gastos y billeteras compartidas desde un solo lugar. Simple, seguro y diseñado para tu día a día."
+                title={t("auth.loginHeroTitle")}
+                focusTitle={t("auth.loginHeroFocus")}
+                subtitle={t("auth.loginHeroSubtitle")}
             />
             <RightPart
                 Body={
@@ -25,9 +27,9 @@ export const LoginPage = () => {
                     />
                 }
                 isLoading={isEmailLoginPending}
-                separatorText="O inicia sesión con tu email"
-                title="Bienvenido de vuelta"
-                subtitle="Ingresa tus credenciales para continuar"
+                separatorText={t("auth.loginSeparator")}
+                title={t("auth.loginTitle")}
+                subtitle={t("auth.loginSubtitle")}
             />
         </main>
     );

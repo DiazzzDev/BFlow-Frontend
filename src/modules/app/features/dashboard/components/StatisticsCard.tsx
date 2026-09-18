@@ -1,4 +1,5 @@
 import { TrendingUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
     Line,
     LineChart,
@@ -62,20 +63,21 @@ const CustomTooltip = ({
 };
 
 export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
+    const { t } = useTranslation();
     return (
         <div className={dashboardCardClass}>
             <div className="flex items-start justify-between gap-3">
                 <div>
-                    <p className={dashboardLabelClass}>Estadísticas</p>
+                    <p className={dashboardLabelClass}>{t("dashboard.statistics")}</p>
 
                     <div className="mt-2 flex flex-wrap items-center gap-4">
                         <div className="flex items-center gap-1.5">
                             <span className="h-1.5 w-1.5 rounded-full bg-info" />
-                            <span className="text-xs text-helper">Ingresos totales</span>
+                            <span className="text-xs text-helper">{t("dashboard.totalIncome")}</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                            <span className="text-xs text-helper">Gastos totales</span>
+                            <span className="text-xs text-helper">{t("dashboard.totalExpenses")}</span>
                         </div>
                     </div>
                 </div>
@@ -89,8 +91,8 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                     <div className="h-full w-full animate-pulse rounded-xl bg-skeleton" />
                 ) : months.length === 0 ? (
                     <CustomEmptyState
-                        title="Sin estadísticas"
-                        description="Cuando tengas movimientos, verás ingresos y gastos aquí."
+                        title={t("dashboard.noStatistics")}
+                        description={t("dashboard.statisticsHint")}
                         Icon={TrendingUp}
                         className="m-0!"
                     />
@@ -126,7 +128,7 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                             <Line
                                 type="monotone"
                                 dataKey="income"
-                                name="Ingresos totales"
+                                name={t("dashboard.totalIncome")}
                                 stroke="var(--color-info)"
                                 strokeWidth={2.5}
                                 dot={false}
@@ -135,7 +137,7 @@ export const StatisticsCard = ({ isLoading, months }: StatisticsCardProps) => {
                             <Line
                                 type="monotone"
                                 dataKey="expense"
-                                name="Gastos totales"
+                                name={t("dashboard.totalExpenses")}
                                 stroke="var(--color-primary)"
                                 strokeWidth={2.5}
                                 dot={false}

@@ -8,6 +8,7 @@ import {
     Trash2,
     User,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { WalletItem } from "../../wallets/components/WalletItem";
 import {
@@ -75,6 +76,7 @@ const ContributorAvatar = ({
 };
 
 const TransactionCategoryCell = ({ transaction }: { transaction: Transaction }) => {
+    const { t } = useTranslation();
     if (hasCategory(transaction)) {
         const color = transaction.categoryColor || "#64748B";
 
@@ -98,7 +100,7 @@ const TransactionCategoryCell = ({ transaction }: { transaction: Transaction }) 
                 <ArrowLeftRight className="h-3.5 w-3.5" />
             </span>
             <span className="truncate text-sm text-helper">
-                {transaction.counterpartWalletName || "Transferencia"}
+                {transaction.counterpartWalletName || t("walletView.transfer")}
             </span>
         </div>
     );
@@ -132,6 +134,7 @@ export const TransactionsTable = ({
     onDuplicate,
     actionsDisabled = false,
 }: TransactionsTableProps) => {
+    const { t } = useTranslation();
     const desktopGridClass = showCategory
         ? "@5xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,0.7fr)_minmax(0,0.75fr)_auto]"
         : "@5xl:grid-cols-[minmax(0,1.8fr)_minmax(0,1.3fr)_minmax(0,0.7fr)_minmax(0,0.75fr)_auto]";
@@ -174,11 +177,11 @@ export const TransactionsTable = ({
         return (
             <div className="h-full p-4 sm:p-7">
                 <CustomEmptyState
-                    title={query.trim() ? "Sin resultados" : "Sin transacciones"}
+                    title={query.trim() ? t("walletView.searchResults") : t("transactions.noTransactions")}
                     description={
                         query.trim()
-                            ? "Prueba con otro término de búsqueda"
-                            : "Aún no hay movimientos en esta billetera."
+                            ? t("walletView.searchHint")
+                            : t("transactions.walletEmptyHint")
                     }
                     Icon={Receipt}
                 />
@@ -194,7 +197,7 @@ export const TransactionsTable = ({
                 const contributorName = getContributorDisplayName(tx);
                 const categoryLabel = hasCategory(tx)
                     ? tx.categoryName || "—"
-                    : tx.counterpartWalletName || "Transferencia";
+                    : tx.counterpartWalletName || t("walletView.transfer");
                 const categoryColor = hasCategory(tx)
                     ? tx.categoryColor || "#64748B"
                     : undefined;
@@ -273,7 +276,7 @@ export const TransactionsTable = ({
                                     <MenuButton
                                         type="button"
                                         disabled={actionsDisabled}
-                                        aria-label="Acciones de la transacción"
+                                        aria-label={t("transactions.actions")}
                                         className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         <MoreVertical className="h-4 w-4" />
@@ -293,7 +296,7 @@ export const TransactionsTable = ({
                                                             }`}
                                                     >
                                                         <Pencil className="h-4 w-4 text-helper" />
-                                                        Actualizar
+                                                        {t("transactions.update")}
                                                     </button>
                                                 )}
                                             </MenuItem>
@@ -309,7 +312,7 @@ export const TransactionsTable = ({
                                                             }`}
                                                     >
                                                         <Copy className="h-4 w-4 text-helper" />
-                                                        Duplicar
+                                                        {t("wallets.duplicate")}
                                                     </button>
                                                 )}
                                             </MenuItem>
@@ -325,7 +328,7 @@ export const TransactionsTable = ({
                                                             }`}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
-                                                        Eliminar
+                                                        {t("transactions.delete")}
                                                     </button>
                                                 )}
                                             </MenuItem>

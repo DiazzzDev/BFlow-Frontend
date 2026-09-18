@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { completeOAuthLogin } from "../oauthCallback.service";
 
 import { useAuthStore } from "@/auth/authStore";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 export const useOAuthCallback = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const setSession = useAuthStore((state) => state.setSession);
     const clearSession = useAuthStore((state) => state.clearSession);
@@ -25,16 +28,12 @@ export const useOAuthCallback = () => {
             try {
                 const user = await completeOAuthLogin();
                 setSession(user);
-                toast.success("Bienvenido");
+                toast.success(getApiMessage(user, t("auth.welcome")));
                 void navigate("/app/dashboard", { replace: true });
             } catch (error) {
                 console.error(error);
                 clearSession();
-                toast.error(
-                    error instanceof Error
-                        ? error.message
-                        : "Error al iniciar sesión",
-                );
+                toast.error(getApiErrorMessage(error, t("auth.loginError")));
                 void navigate("/auth/login", { replace: true });
             }
         };

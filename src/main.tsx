@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { StrictMode } from 'react'
 
 import "./auth/cognito/amplify.ts";
+import "./i18n/i18n.ts";
 
 import App from './App.tsx'
 import './index.css'

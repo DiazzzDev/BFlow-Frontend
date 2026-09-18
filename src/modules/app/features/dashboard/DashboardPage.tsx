@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 
 import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
@@ -27,6 +28,7 @@ const DEFAULT_CURRENCY = "USD";
 const DASHBOARD_TRANSACTION_TYPES = ["INCOME", "EXPENSE"] as const;
 
 export const DashboardPage = () => {
+    const { t } = useTranslation();
     const user = useAuthStore((state) => state.user);
     const firstName = getFirstName(user?.name);
 
@@ -52,18 +54,18 @@ export const DashboardPage = () => {
             <div className="mb-6 flex shrink-0 flex-col justify-between gap-4 lg:flex-row lg:items-center">
                 <div>
                     <h1 className="text-3xl font-semibold tracking-tight text-light">
-                        {getTimeGreeting()}
+                        {t(`dashboard.${getTimeGreeting()}`)}
                         {firstName ? `, ${firstName}` : ""}
                     </h1>
                     <p className="mt-1.5 text-sm text-helper">
-                        Así está tu dinero en este momento.
+                        {t("dashboard.subtitle")}
                     </p>
                 </div>
 
                 <Button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    text="Nueva transacción"
+                    text={t("dashboard.newTransaction")}
                     icon={<Plus className="h-4 w-4" />}
                     className="w-fit shrink-0"
                 />

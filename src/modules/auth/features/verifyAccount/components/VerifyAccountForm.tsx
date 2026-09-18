@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 type FormData = {
     code: string;
@@ -13,6 +14,7 @@ interface VerifyAccountFormProps {
 }
 
 export const VerifyAccountForm = ({ onSubmit, isLoading }: VerifyAccountFormProps) => {
+    const { t } = useTranslation();
     const {
         register,
         handleSubmit,
@@ -26,18 +28,18 @@ export const VerifyAccountForm = ({ onSubmit, isLoading }: VerifyAccountFormProp
                 void handleSubmit((data) => onSubmit(data.code))(e);
             }}
         >
-            <h1 className="text-3xl font-semibold">Verificar cuenta</h1>
+            <h1 className="text-3xl font-semibold">{t("auth.verifyTitle")}</h1>
 
             <p className="text-helper">
-                Revisa tu correo e ingresa el código.
+                {t("auth.verifyDescription")}
             </p>
 
             <input
-                placeholder="Código"
+                placeholder={t("auth.code")}
                 disabled={isLoading}
                 className={inputClass}
                 {...register("code", {
-                    required: "Código requerido",
+                    required: t("auth.validationCodeRequired"),
                 })}
             />
 
@@ -50,7 +52,7 @@ export const VerifyAccountForm = ({ onSubmit, isLoading }: VerifyAccountFormProp
                 disabled={isLoading}
                 className="w-full h-10 rounded-lg bg-primary text-light font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
             >
-                {isLoading ? "Verificando..." : "Verificar cuenta"}
+                {isLoading ? t("auth.verifyLoading") : t("auth.verifyButton")}
             </button>
         </form>
     );

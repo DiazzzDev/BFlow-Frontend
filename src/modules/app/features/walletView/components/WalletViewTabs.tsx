@@ -1,4 +1,5 @@
 import { WALLET_VIEW_TABS, type DetailTab } from "../utils/tabs/walletViewTabs";
+import { useTranslation } from "react-i18next";
 
 interface WalletViewTabsProps {
     activeTab: DetailTab;
@@ -7,6 +8,7 @@ interface WalletViewTabsProps {
 }
 
 export const WalletViewTabs = ({ activeTab, onChange, className = "mb-5" }: WalletViewTabsProps) => {
+    const { t } = useTranslation();
     return (
         <div className={`relative ${className}`}>
             <div className="overflow-x-auto border-b border-light-10 px-4 sm:px-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -21,7 +23,7 @@ export const WalletViewTabs = ({ activeTab, onChange, className = "mb-5" }: Wall
                                 : "border-transparent text-helper hover:text-light"
                                 }`}
                         >
-                            {tab.label}
+                            {t(`walletView.${tab.id === "overview" ? "all" : tab.id === "incomes" ? "income" : tab.id === "expenses" ? "expense" : tab.id === "transfers" ? "transfer" : tab.id}`, { defaultValue: tab.label })}
                         </button>
                     ))}
                 </div>

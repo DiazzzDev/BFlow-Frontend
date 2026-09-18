@@ -3,6 +3,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
 import { useGetCategories } from "../hooks/useGetCategories";
@@ -26,6 +27,7 @@ import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import {
     categoryIconKeys,
@@ -55,6 +57,7 @@ interface CategoriesModalProps {
 }
 
 export const CategoriesModal = ({ isOpen, onClose }: CategoriesModalProps) => {
+    const { t } = useTranslation();
     return (
         <CustomModal
             isModalOpen={isOpen}
@@ -63,7 +66,7 @@ export const CategoriesModal = ({ isOpen, onClose }: CategoriesModalProps) => {
                     onClose();
                 }
             }}
-            title="Administrar categorías"
+            title={t("settings.categoriesTitle")}
             maxWidth="max-w-4xl"
         >
             {/* Remount form/list state whenever the modal opens */}
@@ -73,6 +76,7 @@ export const CategoriesModal = ({ isOpen, onClose }: CategoriesModalProps) => {
 };
 
 const CategoriesModalContent = () => {
+    const { t } = useTranslation();
     // Categories list + create mutation
     const { data, isLoading, isError } = useGetCategories();
     const createCategory = useMutateCategories();
@@ -135,10 +139,9 @@ const CategoriesModalContent = () => {
         });
 
         toast.promise(promise, {
-            loading: "Creando categoría...",
-            success: "Categoría creada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al crear la categoría",
+            loading: t("profile.categoryLoading"),
+            success: (response) => getApiMessage(response, t("profile.categoryFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -167,13 +170,13 @@ const CategoriesModalContent = () => {
                         <CategoryIcon icon={selectedIcon} className="h-4 w-4" />
                     </span>
                     <p className="text-sm font-medium text-light">
-                        {editingCategory ? "Editar categoría" : "Nueva categoría"}
+                        {editingCategory ? t("settings.categoryEdit") : t("settings.categoryNew")}
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <div className="flex flex-col gap-1.5 sm:col-span-2">
-                        <Label htmlFor="categoryName">Nombre</Label>
+                        <Label htmlFor="categoryName">{t("settings.name")}</Label>
                         <Controller
                             name="name"
                             control={control}
@@ -181,7 +184,7 @@ const CategoriesModalContent = () => {
                                 <Input
                                     {...field}
                                     id="categoryName"
-                                    placeholder="Ej. Alimentos"
+                                    placeholder={t("settings.nameExample")}
                                 />
                             )}
                         />
@@ -193,7 +196,7 @@ const CategoriesModalContent = () => {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="categoryType">Tipo</Label>
+                        <Label htmlFor="categoryType">{t("settings.type")}</Label>
                         <Controller
                             name="type"
                             control={control}
@@ -204,7 +207,7 @@ const CategoriesModalContent = () => {
                                             key={option.value}
                                             value={option.value}
                                         >
-                                            {option.label}
+                                            {t(`settings.categoryType.${option.value}`, { defaultValue: option.label })}
                                         </option>
                                     ))}
                                 </Select>
@@ -213,7 +216,7 @@ const CategoriesModalContent = () => {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="categoryColor">Color</Label>
+                        <Label htmlFor="categoryColor">{t("settings.color")}</Label>
                         <Controller
                             name="color"
                             control={control}
@@ -230,7 +233,7 @@ const CategoriesModalContent = () => {
                     </div>
 
                     <div className="flex flex-col gap-1.5 sm:col-span-2">
-                        <Label htmlFor="categoryIcon">Ícono</Label>
+                        <Label htmlFor="categoryIcon">{t("settings.icon")}</Label>
                         <Controller
                             name="icon"
                             control={control}
@@ -262,12 +265,12 @@ const CategoriesModalContent = () => {
                             onClick={clearForm}
                             className="cursor-pointer rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5"
                         >
-                            Cancelar edición
+                            {t("settings.cancelEdit")}
                         </button>
                     ) : null}
                     <Button
                         type="submit"
-                        text={editingCategory ? "Guardar" : "Agregar"}
+                        text={editingCategory ? t("common.save") : t("settings.add")}
                         disabled={createCategory.isPending}
                         icon={
                             editingCategory ? (
@@ -293,7 +296,7 @@ const CategoriesModalContent = () => {
                                 : "border-transparent text-helper hover:text-light"
                                 }`}
                         >
-                            {tab.label}
+                            {t(`settings.categoryType.${tab.id}`, { defaultValue: tab.label })}
                         </button>
                     ))}
                 </div>
@@ -310,14 +313,14 @@ const CategoriesModalContent = () => {
                         </div>
                     ) : isError ? (
                         <CustomEmptyState
-                            title="No se pudieron cargar"
-                            description="Revisa tu conexión e intenta de nuevo."
+                            title={t("settings.categoriesLoadError")}
+                            description={t("settings.connectionHint")}
                             className="m-0!"
                         />
                     ) : filteredCategories.length === 0 ? (
                         <CustomEmptyState
-                            title="Sin categorías"
-                            description="Agrega una categoría para empezar a clasificar tus movimientos."
+                            title={t("settings.noCategories")}
+                            description={t("settings.categoryHint")}
                             className="m-0!"
                         />
                     ) : (
@@ -352,7 +355,7 @@ const CategoriesModalContent = () => {
                                             type="button"
                                             onClick={() => startEdit(category)}
                                             className="cursor-pointer rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light"
-                                            aria-label={`Editar ${category.name}`}
+                                            aria-label={`${t("settings.edit")} ${category.name}`}
                                         >
                                             <Pencil className="h-4 w-4" />
                                         </button>
@@ -360,7 +363,7 @@ const CategoriesModalContent = () => {
                                             type="button"
                                             onClick={() => handleDelete(category)}
                                             className="cursor-pointer rounded-lg p-2 text-helper transition-colors hover:bg-danger-sweet hover:text-danger"
-                                            aria-label={`Eliminar ${category.name}`}
+                                            aria-label={`${t("settings.delete")} ${category.name}`}
                                         >
                                             <Trash2 className="h-4 w-4" />
                                         </button>

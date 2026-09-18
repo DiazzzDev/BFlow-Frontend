@@ -9,31 +9,31 @@ type BreadcrumbRoute = {
 
 // Shell breadcrumb map for authenticated app routes
 export const APP_BREADCRUMB_ROUTES: BreadcrumbRoute[] = [
-    { path: "/app/dashboard", crumbs: [{ text: "Dashboard" }] },
-    { path: "/app/wallets", crumbs: [{ text: "Billeteras" }] },
+    { path: "/app/dashboard", crumbs: [{ text: "breadcrumbs.dashboard" }] },
+    { path: "/app/wallets", crumbs: [{ text: "breadcrumbs.wallets" }] },
     {
         path: "/app/wallets/:id",
         crumbs: [
-            { text: "Billeteras", path: "/app/wallets" },
-            { text: "Detalle" },
+            { text: "breadcrumbs.wallets", path: "/app/wallets" },
+            { text: "breadcrumbs.detail" },
         ],
     },
     {
         path: "/app/history",
         crumbs: [
-            { text: "Billeteras", path: "/app/wallets" },
-            { text: "Historial" },
+            { text: "breadcrumbs.wallets", path: "/app/wallets" },
+            { text: "breadcrumbs.history" },
         ],
     },
-    { path: "/app/budgets", crumbs: [{ text: "Presupuestos" }] },
+    { path: "/app/budgets", crumbs: [{ text: "breadcrumbs.budgets" }] },
     {
         path: "/app/budgets/:id",
         crumbs: [
-            { text: "Presupuestos", path: "/app/budgets" },
-            { text: "Detalle" },
+            { text: "breadcrumbs.budgets", path: "/app/budgets" },
+            { text: "breadcrumbs.detail" },
         ],
     },
-    { path: "/app/settings", crumbs: [{ text: "Ajustes" }] },
+    { path: "/app/settings", crumbs: [{ text: "breadcrumbs.settings" }] },
 ];
 
 export const getBreadcrumbs = (pathname: string): Breadcrumb[] => {
@@ -43,5 +43,5 @@ export const getBreadcrumbs = (pathname: string): Breadcrumb[] => {
         }
     }
 
-    return [{ text: "..." }];
+    return [{ text: "common.loading" }];
 };

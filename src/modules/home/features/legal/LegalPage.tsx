@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Calendar, Mail, Globe } from "lucide-react";
 
 import type { LegalDocumentType, LegalLang } from "./interfaces/LegalDocument";
@@ -8,7 +9,6 @@ import { LegalSkeleton } from "./components/LegalSkeleton";
 import { LegalError } from "./components/LegalError";
 import { LegalScrollProgress } from "./components/LegalScrollProgress";
 import { extractHeadings } from "./utils/extractHeadings";
-import { LEGAL_LANG_LABELS } from "./utils/legalLang";
 
 interface LegalPageProps {
     documentType: LegalDocumentType;
@@ -21,6 +21,7 @@ export const LegalPage = ({
     title,
     description,
 }: LegalPageProps) => {
+    const { t } = useTranslation();
     const { data, isLoading, isError, refetch, lang, setLang } =
         useGetLegalDocument(documentType);
 
@@ -49,7 +50,7 @@ export const LegalPage = ({
                     <div className="max-w-300 mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                         <div className="flex-1 min-w-0">
                             <p className="text-xs tracking-widest uppercase text-primary mb-3">
-                                Legal
+                                {t("home.legalLabel")}
                             </p>
 
                             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
@@ -64,7 +65,7 @@ export const LegalPage = ({
                                 <div className="flex flex-wrap items-center gap-4 mt-5">
                                     <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Calendar className="w-3.5 h-3.5" />
-                                        Actualizado el {data.lastUpdated}
+                                        {t("home.legalUpdated", { date: data.lastUpdated })}
                                     </span>
                                     <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Mail className="w-3.5 h-3.5" />
@@ -72,7 +73,7 @@ export const LegalPage = ({
                                     </span>
                                     <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Globe className="w-3.5 h-3.5" />
-                                        {LEGAL_LANG_LABELS[data.language]}
+                                        {data.language === "es" ? t("home.spanish") : t("home.english")}
                                     </span>
                                 </div>
                             )}
@@ -86,8 +87,8 @@ export const LegalPage = ({
                                     setLang(e.target.value as LegalLang)
                                 }
                             >
-                                <option value="es">Español</option>
-                                <option value="en">English</option>
+                                <option value="es">{t("home.spanish")}</option>
+                                <option value="en">{t("home.english")}</option>
                             </select>
                         </div>
                     </div>
@@ -98,7 +99,7 @@ export const LegalPage = ({
                         <aside className="hidden lg:block w-56 shrink-0">
                             <div className="sticky top-28">
                                 <p className="text-xs tracking-widest uppercase text-label mb-4">
-                                    Contenido
+                                    {t("home.contents")}
                                 </p>
 
                                 <nav className="flex flex-col gap-0.5">

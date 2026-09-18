@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Camera, User } from "lucide-react";
 
 import {
@@ -16,6 +17,7 @@ import { Button } from "@/components/controls/Button";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const profileSchema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
@@ -30,6 +32,7 @@ interface EditProfileModalProps {
 }
 
 export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => {
+    const { t } = useTranslation();
     return (
         <CustomModal
             isModalOpen={isOpen}
@@ -38,7 +41,7 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
                     onClose();
                 }
             }}
-            title="Editar perfil"
+            title={t("settings.editProfile")}
             maxWidth="max-w-md"
         >
             {/* Remount form state whenever the modal opens */}
@@ -55,6 +58,7 @@ interface EditProfileModalContentProps {
 }
 
 const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
+    const { t } = useTranslation();
     // Auth session (profile fields live on the user)
     const user = useAuthStore((state) => state.user);
     const setSession = useAuthStore((state) => state.setSession);
@@ -100,7 +104,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
         const promise = patchProfileData(data);
 
         toast.promise(promise, {
-            loading: "Actualizando datos...",
+            loading: t("profile.updateLoading"),
             success: (res) => {
                 const updated = res.data;
                 setSession({
@@ -112,9 +116,9 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                     roles: updated.roles,
                 });
                 onClose();
-                return "Datos actualizados correctamente";
+                return getApiMessage(res, t("profile.updateFallback"));
             },
-            error: "Error al actualizar los datos",
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -146,9 +150,9 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
         const promise = patchProfilePhoto(fd);
 
         toast.promise(promise, {
-            loading: "Actualizando foto de perfil...",
-            success: "Foto de perfil actualizada",
-            error: "Error al actualizar la foto de perfil",
+            loading: t("profile.photoLoading"),
+            success: (response) => getApiMessage(response, t("profile.photoFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -168,12 +172,12 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     className="group relative cursor-pointer"
-                    aria-label="Cambiar foto de perfil"
+                    aria-label={t("profile.changePhoto")}
                 >
                     {validatedSrc ? (
                         <img
                             src={validatedSrc}
-                            alt="Vista previa"
+                            alt={t("profile.preview")}
                             className="h-24 w-24 rounded-full border-2 border-light-10 object-cover"
                             referrerPolicy="no-referrer"
                         />
@@ -200,7 +204,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                     onClick={() => fileInputRef.current?.click()}
                     className="cursor-pointer text-sm font-medium text-primary transition-colors hover:text-primary-dark"
                 >
-                    {photoFile ? "Cambiar foto" : "Subir foto"}
+                    {photoFile ? t("profile.changePhoto") : t("profile.uploadPhoto")}
                 </button>
                 {photoFile ? (
                     <p className="text-xs text-helper">{photoFile.name}</p>
@@ -208,7 +212,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
             </div>
 
             <div className="flex flex-col gap-1.5">
-                <Label htmlFor="profileName">Nombre</Label>
+                <Label htmlFor="profileName">{t("profile.name")}</Label>
                 <Controller
                     name="name"
                     control={control}
@@ -216,7 +220,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                         <Input
                             {...field}
                             id="profileName"
-                            placeholder="Tu nombre"
+                            placeholder={t("profile.namePlaceholder")}
                         />
                     )}
                 />
@@ -227,7 +231,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
 
             {/* Email field kept in the form but hidden for now */}
             <div className="flex flex-col gap-1.5 hidden">
-                <Label htmlFor="profileEmail">Correo</Label>
+                <Label htmlFor="profileEmail">{t("profile.email")}</Label>
                 <Controller
                     name="email"
                     control={control}
@@ -248,7 +252,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
             <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <Button
                     type="submit"
-                    text="Actualizar"
+                    text={t("profile.update")}
                     className="w-full sm:w-auto"
                     disabled={isSubmitting}
                 />

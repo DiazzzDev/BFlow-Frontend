@@ -6,6 +6,7 @@ import {
 import { isBudgetViewTab, type BudgetViewTab } from "../utils/tabs/budgetViewTabs";
 
 import { useGetBudget } from "./useGetBudget";
+import { useTranslation } from "react-i18next";
 
 import { PERIODICITY_LABELS } from "@/modules/app/interfaces/Periodicity";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
@@ -20,6 +21,7 @@ const getScopeTags = (scope: string) => {
 };
 
 export const useBudgetViewPage = (budgetId?: string) => {
+    const { t } = useTranslation();
     // Budget detail fetch
     const { budget, isLoading, isNotFound } = useGetBudget(budgetId);
 
@@ -35,13 +37,13 @@ export const useBudgetViewPage = (budgetId?: string) => {
     // Header / overview labels derived from the budget
     const currency = budget?.currency;
     const usedPercent = budget?.percentage ?? 0;
-    const title = budget ? getBudgetDisplayName(budget) : "Presupuesto";
-    const periodLabel = budget ? PERIODICITY_LABELS[budget.period] : "";
-    const scopeTags = budget ? getScopeTags(budget.scope) : [];
-    const statusLabel = budget ? getBudgetStatusLabel(budget.status) : "";
+    const title = budget ? getBudgetDisplayName(budget) : t("budgets.empty");
+    const periodLabel = budget ? t(`budgets.periods.${budget.period.toLowerCase()}`, { defaultValue: PERIODICITY_LABELS[budget.period] }) : "";
+    const scopeTags = budget ? getScopeTags(budget.scope).map((tag) => tag === "Billetera" ? t("budgets.wallet") : t("budgets.category")) : [];
+    const statusLabel = budget ? t(`budgets.status.${budget.status?.toLowerCase()}`, { defaultValue: getBudgetStatusLabel(budget.status) }) : "";
     const transactionCount = budget?.transactionCount ?? 0;
     const spentSubtitle = budget
-        ? `${transactionCount} ${transactionCount === 1 ? "transacción" : "transacciones"} · ${formatCurrency(budget.averageDailySpend, currency)}/día`
+        ? `${transactionCount} ${transactionCount === 1 ? t("budgetView.transaction") : t("budgetView.transactions")} · ${formatCurrency(budget.averageDailySpend, currency)}${t("budgetView.perDay")}`
         : "";
 
     return {

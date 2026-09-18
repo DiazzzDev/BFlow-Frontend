@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { NewTransactionModal } from "../../../newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
@@ -38,6 +39,7 @@ export const WalletTransactionsPanel = ({
     numberOfElements,
     totalPages,
 }: WalletTransactionsPanelProps) => {
+    const { t } = useTranslation();
     // Duplicate action (shared with wallets history)
     const { duplicateTransaction, isPending: isDuplicating } = useDuplicateTransaction();
     const actionsDisabled = isDuplicating;
@@ -55,13 +57,13 @@ export const WalletTransactionsPanel = ({
             <div className="mb-4 flex flex-col gap-3 px-4 sm:px-7 @xl:flex-row @xl:items-center justify-between">
                 <SearchInput
                     id="txtSearchTransactions"
-                    placeholder="Buscar transacciones..."
+                    placeholder={t("transactions.search")}
                     className="w-full max-w-none min-w-0"
                     syncToParams
                 />
                 <Button
                     type="button"
-                    text="Nueva transacción"
+                    text={t("dashboard.newTransaction")}
                     icon={<Plus className="h-4 w-4" />}
                     onClick={() => setIsNewTransactionOpen(true)}
                     className="w-full shrink-0 @xl:w-auto"
@@ -71,11 +73,11 @@ export const WalletTransactionsPanel = ({
             <div
                 className={`hidden border-y border-light-10 px-7 py-4 text-sm text-light @5xl:grid ${columnsClassName}`}
             >
-                <span>Transacción</span>
-                <span>Registrado por</span>
-                {showCategory ? <span>Categoría</span> : null}
-                <span>Fecha</span>
-                <span className="text-right">Monto</span>
+                <span>{t("walletView.transaction")}</span>
+                <span>{t("walletView.registeredBy")}</span>
+                {showCategory ? <span>{t("walletView.category")}</span> : null}
+                <span>{t("walletView.date")}</span>
+                <span className="text-right">{t("walletView.amount")}</span>
                 <span className="sr-only">Acciones</span>
             </div>
 

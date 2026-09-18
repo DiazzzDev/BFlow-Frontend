@@ -1,4 +1,5 @@
 import { PieChart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { SpendingCategory } from "../interfaces/dashboard";
 import { dashboardCardClass, dashboardHeroClass, dashboardLabelClass } from "../utils/dashboardCard";
@@ -21,6 +22,7 @@ export const SpendingCard = ({
     totalActivityPercentage,
     topCategories,
 }: SpendingCardProps) => {
+    const { t } = useTranslation();
     const spendingPercent = formatPercentValue(totalActivityPercentage);
     const segments = topCategories.map((category) => ({
         label: category.categoryName,
@@ -29,7 +31,7 @@ export const SpendingCard = ({
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Gastos de este mes</p>
+            <p className={dashboardLabelClass}>{t("dashboard.monthlyExpenses")}</p>
 
             <div className="mt-3 flex items-end gap-3">
                 {isLoading ? (
@@ -39,10 +41,10 @@ export const SpendingCard = ({
                 )}
 
                 <div className="min-w-0 pb-1">
-                    <p className="text-xs leading-tight text-helper">Actividad total</p>
+                    <p className="text-xs leading-tight text-helper">{t("dashboard.totalActivity")}</p>
                     {!isLoading && (
                         <p className="mt-0.5 text-xs leading-snug text-helper">
-                            El {spendingPercent}% de tu movimiento de dinero fueron gastos
+                            {t("dashboard.expensesShare", { percent: spendingPercent })}
                         </p>
                     )}
                 </div>
@@ -52,8 +54,8 @@ export const SpendingCard = ({
                 <div className="mt-5 h-2 w-full animate-pulse rounded-full bg-skeleton" />
             ) : topCategories.length === 0 ? (
                 <CustomEmptyState
-                    title="Sin gastos"
-                    description="Cuando registres gastos, verás las categorías aquí."
+                    title={t("dashboard.noExpenses")}
+                    description={t("dashboard.expensesHint")}
                     Icon={PieChart}
                     className="m-0! mt-4!"
                 />
