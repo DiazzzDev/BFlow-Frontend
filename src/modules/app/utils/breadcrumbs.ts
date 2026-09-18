@@ -11,6 +11,7 @@ type BreadcrumbRoute = {
 export const APP_BREADCRUMB_ROUTES: BreadcrumbRoute[] = [
     { path: "/app/dashboard", crumbs: [{ text: "Dashboard" }] },
     { path: "/app/wallets", crumbs: [{ text: "Billeteras" }] },
+    { path: "/app/calendar", crumbs: [{ text: "Calendario" }] },
     {
         path: "/app/wallets/:id",
         crumbs: [
