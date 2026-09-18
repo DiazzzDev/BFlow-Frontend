@@ -35,7 +35,10 @@ interface WalletFormProps {
 }
 
 export const WalletForm = ({ onSuccess }: WalletFormProps) => {
+    // Create mutation
     const { createWallet } = useMutateWallets();
+
+    // RHF form
     const {
         control,
         handleSubmit,
@@ -46,6 +49,7 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
         defaultValues: defaultFormValues,
     });
 
+    // Create wallet then reset the form
     const onSubmit = async (formData: WalletFormValues) => {
         const promise = createWallet.mutateAsync({
             name: formData.name,

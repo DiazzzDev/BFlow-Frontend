@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 
-import { useDeleteExpense } from "../../../../components/newTransaction/hooks/useMutateExpenses";
-import { useDeleteIncome } from "../../../../components/newTransaction/hooks/useMutateIncomes";
+import { useDeleteExpense } from "../../../newTransaction/hooks/useMutateExpenses";
+import { useDeleteIncome } from "../../../newTransaction/hooks/useMutateIncomes";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CustomModal } from "@/components/custom/CustomModal";
@@ -15,10 +15,12 @@ export const DeleteTransactionModal = ({
     transaction,
     onClose,
 }: DeleteTransactionModalProps) => {
+    // Delete mutations (expense vs income)
     const deleteExpense = useDeleteExpense();
     const deleteIncome = useDeleteIncome();
     const isDeleting = deleteExpense.isPending || deleteIncome.isPending;
 
+    // Delete by type, then close the modal
     const handleConfirm = async () => {
         if (!transaction || (transaction.type !== "EXPENSE" && transaction.type !== "INCOME")) {
             return;

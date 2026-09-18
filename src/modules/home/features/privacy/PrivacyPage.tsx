@@ -1,4 +1,4 @@
-import { LegalPage } from "../legal/LegalPage.tsx";
+import { LegalPage } from "../legal/LegalPage";
 
 export const PrivacyPage = () => (
     <LegalPage
@@ -6,4 +6,4 @@ export const PrivacyPage = () => (
         title="Política de Privacidad"
         description="Cómo recopilamos, usamos y protegemos tu información personal en BFlow."
     />
-); 
+);

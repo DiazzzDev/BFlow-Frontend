@@ -1,1 +1,0 @@
-export { useGetLegalDocument as useGetPrivacy } from "../../legal/hooks/useGetLegalDocument.ts";

@@ -1,13 +1,7 @@
-import { Outlet } from 'react-router';
-import { Toaster } from 'sonner'
-
+import { Outlet } from "react-router";
 
 export const AuthLayout = () => {
-    return (
-        <>
-            <Outlet />
-            <Toaster />
-        </>
-    );
-}
+    return <Outlet />;
+};
+
 

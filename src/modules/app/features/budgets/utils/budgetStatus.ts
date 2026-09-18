@@ -1,4 +1,4 @@
-import type { Budget } from "../interfaces/Budget";
+import type { Budget } from "@/modules/app/interfaces/Budget";
 
 export type BudgetStatus = "exceeded" | "healthy" | "critical" | "warning";
 
@@ -31,13 +31,6 @@ export const BUDGET_STATUS_CLASS_NAMES: Record<BudgetStatus, string> = {
     healthy: "bg-info/15 text-info",
     critical: "bg-primary-15 text-primary",
     warning: "bg-warning-sweet text-warning",
-};
-
-export const BUDGET_PERIOD_LABELS: Record<string, string> = {
-    DAILY: "Diario",
-    WEEKLY: "Semanal",
-    MONTHLY: "Mensual",
-    YEARLY: "Anual",
 };
 
 export const BUDGET_SCOPE_LABELS: Record<string, string> = {

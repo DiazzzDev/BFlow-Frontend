@@ -29,8 +29,10 @@ export const WalletSentInvitationsHistory = ({
     isLoading,
     canManage,
 }: WalletSentInvitationsHistoryProps) => {
+    // Cancel pending invitation mutation
     const { cancelInvitation } = useMutateWalletInvitations();
 
+    // Cancel a sent invite (toast already surfaces errors)
     const handleCancel = async (invitation: WalletSentInvitation) => {
         const promise = cancelInvitation.mutateAsync(invitation.id);
 
@@ -77,6 +79,7 @@ export const WalletSentInvitationsHistory = ({
         );
     }
 
+    // Newest invitations first for the timeline
     const sorted = [...invitations].sort(
         (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),

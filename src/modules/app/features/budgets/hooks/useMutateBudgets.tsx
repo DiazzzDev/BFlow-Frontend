@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { deleteBudget, patchBudget, postBudget } from "../budgets.service";
-import type { CreateBudgetData, UpdateBudgetData } from "../interfaces/Budget";
+
+import type { CreateBudgetData, UpdateBudgetData } from "@/modules/app/interfaces/Budget";
 
 const invalidateBudgetQueries = (
     queryClient: ReturnType<typeof useQueryClient>,

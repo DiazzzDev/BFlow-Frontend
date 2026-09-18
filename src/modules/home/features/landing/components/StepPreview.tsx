@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { useState } from "react";
 
 interface StepPreviewProps {
@@ -10,6 +8,7 @@ interface StepPreviewProps {
 }
 
 export const StepPreview = ({ src, alt, label, active }: StepPreviewProps) => {
+    // Fallback placeholder when the step image is missing
     const [failed, setFailed] = useState(false);
 
     return (

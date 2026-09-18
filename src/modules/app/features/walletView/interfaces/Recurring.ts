@@ -1,6 +1,5 @@
-export type RecurringType = "INCOME" | "EXPENSE";
-
-export type RecurringFrequency = "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
+import type { CategoryType } from "@/modules/app/interfaces/Category";
+import type { Periodicity } from "@/modules/app/interfaces/Periodicity";
 
 export interface CreateRecurringData {
     title: string;
@@ -8,8 +7,8 @@ export interface CreateRecurringData {
     amount: number;
     walletId: string;
     categoryId: string;
-    type: RecurringType;
-    frequency: RecurringFrequency;
+    type: CategoryType;
+    frequency: Periodicity;
     intervalValue: number;
     startDate: string;
     endDate: string;

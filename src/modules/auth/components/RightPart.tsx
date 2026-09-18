@@ -1,10 +1,24 @@
-import { Link } from "react-router"
-import { ArrowLeft } from "lucide-react"
+import type { ReactElement } from "react";
+import { Link } from "react-router";
+import { ArrowLeft } from "lucide-react";
 
 import { useGoogleLogin } from "@/modules/auth/features/login/hooks/useGoogleLogin";
 
-export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: { Body: React.ReactElement; isLoading: boolean; separatorText: string; title: string; subtitle: string }) => {
+interface RightPartProps {
+    Body: ReactElement;
+    isLoading: boolean;
+    separatorText: string;
+    title: string;
+    subtitle: string;
+}
 
+export const RightPart = ({
+    Body,
+    isLoading,
+    separatorText,
+    title,
+    subtitle,
+}: RightPartProps) => {
     const {
         mutateAsync: loginWithGoogle,
         isPending: isGoogleLoading,
@@ -65,5 +79,5 @@ export const RightPart = ({ Body, isLoading, separatorText, title, subtitle }: {
                 {Body}
             </div>
         </section>
-    )
-}
+    );
+};

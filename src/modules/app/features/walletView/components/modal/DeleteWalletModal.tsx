@@ -19,9 +19,12 @@ export const DeleteWalletModal = ({
     onClose,
 }: DeleteWalletModalProps) => {
     const navigate = useNavigate();
+
+    // Delete mutation
     const { removeWallet } = useMutateWallets();
     const isDeleting = removeWallet.isPending;
 
+    // Delete wallet, close modal, then return to the wallets list
     const handleConfirm = async () => {
         const promise = removeWallet.mutateAsync(walletId);
 

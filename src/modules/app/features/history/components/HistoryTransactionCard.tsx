@@ -4,10 +4,10 @@ import {
     Wallet,
 } from "lucide-react";
 
-import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { formatTransactionSource } from "../utils/formatHistoryTransaction";
 import { HISTORY_TRANSACTION_TYPE_CONFIG } from "../utils/transactionTypeConfig";
 
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { getTransactionAmountClassName } from "@/utils/getTransactionAmountClassName";

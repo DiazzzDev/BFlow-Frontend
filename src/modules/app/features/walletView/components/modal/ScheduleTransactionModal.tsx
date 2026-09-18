@@ -22,6 +22,7 @@ export const ScheduleTransactionModal = ({
         >
             {walletId ? (
                 <RecurringForm
+                    key={isModalOpen ? "open" : "closed"}
                     walletId={walletId}
                     onSuccess={() => setIsModalOpen(false)}
                 />

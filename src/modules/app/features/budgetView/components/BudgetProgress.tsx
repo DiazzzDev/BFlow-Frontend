@@ -18,12 +18,7 @@ export const BudgetProgress = ({
     currency,
 }: BudgetProgressProps) => {
     const clamped = Math.min(Math.max(percent, 0), 100);
-    const fillClass =
-        clamped >= critical
-            ? "bg-danger"
-            : clamped >= warning
-                ? "bg-warning"
-                : "bg-primary";
+    const fillClass = clamped >= critical ? "bg-danger" : clamped >= warning ? "bg-warning" : "bg-primary";
 
     return (
         <article className="rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">

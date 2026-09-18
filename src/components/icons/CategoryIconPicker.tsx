@@ -4,6 +4,7 @@ import {
     type CategoryIconKey,
 } from "@/utils/categoryIcons";
 
+// Grid picker to choose a category icon key from the shared catalog
 interface CategoryIconPickerProps {
     value: string;
     onChange: (icon: CategoryIconKey) => void;

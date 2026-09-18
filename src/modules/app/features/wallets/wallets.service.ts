@@ -1,4 +1,3 @@
-import type { CreateWalletData, UpdateWalletData, Wallet } from "./interfaces/Wallets";
 import type {
     CreateWalletInvitationData,
     WalletInvitation,
@@ -6,6 +5,7 @@ import type {
 import type { WalletSentInvitation } from "./interfaces/WalletSentInvitation";
 import type { WalletCollaborator } from "./interfaces/WalletCollaborator";
 
+import type { CreateWalletData, UpdateWalletData, Wallet } from "@/modules/app/interfaces/Wallet";
 import { APIError, apiRequest, type PaginatedListResponse, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 
@@ -93,8 +93,7 @@ export const searchWalletCollaborators = async (
     const queryString = params.toString();
 
     return await apiRequest<ApiResponse<WalletCollaborator[]>>(
-        `${walletsUrl}/${walletId}/collaborators/search${
-            queryString ? `?${queryString}` : ""
+        `${walletsUrl}/${walletId}/collaborators/search${queryString ? `?${queryString}` : ""
         }`,
         { ...defaultApiOptions, method: "GET" },
         "Error al buscar colaboradores",

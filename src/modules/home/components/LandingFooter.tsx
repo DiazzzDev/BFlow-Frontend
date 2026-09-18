@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 
-import { useLandingHome } from "../hooks/custom/useLandingHome.tsx";
-import BflowLogo from ".././../../assets/BFlow logo.svg";
+import { useLandingNav } from "../hooks/useLandingNav";
+
+import BflowLogo from "@/assets/BFlow logo.svg";
 
 
 const GitHubIcon = () => (
@@ -11,7 +12,7 @@ const GitHubIcon = () => (
 );
 
 export const LandingFooter = () => {
-    const { handleNavClick } = useLandingHome();
+    const { handleNavClick } = useLandingNav();
 
     return (
         <footer className="border-t border-light-10 bg-surface-hard px-8 md:px-16 xl:px-24 pt-16 pb-10">

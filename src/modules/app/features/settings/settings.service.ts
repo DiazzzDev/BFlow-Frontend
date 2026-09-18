@@ -1,11 +1,11 @@
-import type { Category, CreateCategoryData } from "./interfaces/Category";
-
+import type { Category, CreateCategoryData } from "@/modules/app/interfaces/Category";
 import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
-import { UserProfile } from "@/auth/InternalUser";
+import type { UserProfile } from "@/auth/InternalUser";
 
 const categoriesUrl = `${config.API_BASE_URL}/api/v1/categories`;
 const profileUrl = `${config.API_BASE_URL}/api/v1/users`;
+const subscriptionsUrl = `${config.API_BASE_URL}/api/v1/subscriptions`;
 
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
@@ -22,7 +22,7 @@ export const getCategories = async () => {
 };
 
 export const postCategory = async (categoryData: CreateCategoryData) => {
-    return await apiRequest<ApiResponse<Category>>(
+    return await apiRequest(
         categoriesUrl,
         {
             ...defaultApiOptions,
@@ -55,5 +55,15 @@ export const patchProfileData = async (body: { email: string; name: string }) =>
             headers: { "Content-Type": "application/json" },
         },
         "Error al actualizar el perfil",
+    );
+};
+
+// --- /api/v1/subscriptions ---
+
+export const cancelSubscription = async (subscriptionId: string) => {
+    return await apiRequest<ApiResponse<void>>(
+        `${subscriptionsUrl}/${subscriptionId}/cancel`,
+        { ...defaultApiOptions, method: "PATCH" },
+        "Error al cancelar la suscripción",
     );
 };

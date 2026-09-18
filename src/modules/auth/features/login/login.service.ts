@@ -17,8 +17,8 @@ export const login = async (email: string, password: string) => {
             throw new Error(result.nextStep.signInStep);
         }
     } catch (error) {
-        // Cognito ya tenía sesión (caso típico tras refresh sin bootstrap previo).
-        // En vez de fallar, reconciliamos y devolvemos el perfil.
+        // Cognito already had a session (typical after refresh without prior bootstrap).
+        // Reconcile and return the profile instead of failing.
         if (!isUserAlreadyAuthenticatedError(error)) {
             throw error;
         }
@@ -34,8 +34,8 @@ export const login = async (email: string, password: string) => {
 };
 
 /**
- * Si ya hay sesión Cognito, sincroniza y retorna el user (sin redirect).
- * Si no, inicia el OAuth de Google (navegación fuera de la app).
+ * If a Cognito session already exists, sync and return the user (no redirect).
+ * Otherwise start Google OAuth (navigates away from the app).
  */
 export const loginWithGoogle = async (): Promise<InternalUser | void> => {
     const existingTokens = await getSessionTokens();
@@ -47,5 +47,5 @@ export const loginWithGoogle = async (): Promise<InternalUser | void> => {
     await authService.loginWithGoogle();
 };
 
-/** Re-export por si algún flujo necesita resolver sesión existente. */
+/** Re-export for flows that need to resolve an existing session. */
 export { resolveSession };

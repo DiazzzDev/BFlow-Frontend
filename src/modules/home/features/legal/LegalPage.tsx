@@ -1,13 +1,14 @@
 import { useEffect, useMemo } from "react";
 import { Calendar, Mail, Globe } from "lucide-react";
 
-import type { LegalDocumentType } from "../legal.service.ts";
-
-import { useGetLegalDocument } from "./hooks/useGetLegalDocument.ts";
-import { LegalMarkdown } from "./components/LegalMarkdown.tsx";
-import { LegalSkeleton } from "./components/LegalSkeleton.tsx";
-import { LegalError } from "./components/LegalError.tsx";
-import { LegalScrollProgress } from "./components/LegalScrollProgress.tsx";
+import type { LegalDocumentType, LegalLang } from "./interfaces/LegalDocument";
+import { useGetLegalDocument } from "./hooks/useGetLegalDocument";
+import { LegalMarkdown } from "./components/LegalMarkdown";
+import { LegalSkeleton } from "./components/LegalSkeleton";
+import { LegalError } from "./components/LegalError";
+import { LegalScrollProgress } from "./components/LegalScrollProgress";
+import { extractHeadings } from "./utils/extractHeadings";
+import { LEGAL_LANG_LABELS } from "./utils/legalLang";
 
 interface LegalPageProps {
     documentType: LegalDocumentType;
@@ -15,42 +16,17 @@ interface LegalPageProps {
     description: string;
 }
 
-const LANG_LABELS: Record<string, string> = {
-    es: "Español",
-    en: "English",
-};
-
-function extractHeadings(markdown: string): Array<{ id: string; label: string }> {
-
-    const lines = markdown.split("\n");
-    const headings: Array<{ id: string; label: string }> = [];
-    const pattern = /^#{1,2}\s+(.+)$/;
-
-    for (const line of lines) {
-
-        const match = pattern.exec(line);
-
-        if (match) {
-            const label = match[1].replace(/[*_`]/g, "").trim();
-
-            const id = label
-                .toLowerCase()
-                .replace(/[^a-z0-9\s]/g, "")
-                .replace(/\s+/g, "-");
-            headings.push({ id, label });
-        }
-    }
-    return headings;
-}
-
-export const LegalPage = ({ documentType, title, description }: LegalPageProps) => {
-
+export const LegalPage = ({
+    documentType,
+    title,
+    description,
+}: LegalPageProps) => {
     const { data, isLoading, isError, refetch, lang, setLang } =
         useGetLegalDocument(documentType);
 
     const headings = useMemo(
         () => (data?.content ? extractHeadings(data.content) : []),
-        [data]
+        [data],
     );
 
     useEffect(() => {
@@ -69,8 +45,6 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
             <LegalScrollProgress />
 
             <div className="min-h-screen bg-surface-hard text-light">
-
-                {/* Header */}
                 <div className="border-b border-light-10 px-6 md:px-20 py-10 md:py-14">
                     <div className="max-w-300 mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-6">
                         <div className="flex-1 min-w-0">
@@ -82,7 +56,9 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                                 {title}
                             </h1>
 
-                            <p className="text-sm text-helper max-w-lg">{description}</p>
+                            <p className="text-sm text-helper max-w-lg">
+                                {description}
+                            </p>
 
                             {data && (
                                 <div className="flex flex-wrap items-center gap-4 mt-5">
@@ -96,18 +72,19 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                                     </span>
                                     <span className="flex items-center gap-1.5 text-xs text-label">
                                         <Globe className="w-3.5 h-3.5" />
-                                        {LANG_LABELS[data.language] ?? data.language}
+                                        {LEGAL_LANG_LABELS[data.language]}
                                     </span>
                                 </div>
                             )}
                         </div>
 
-                        {/* Language selector */}
                         <div className="shrink-0">
                             <select
                                 className="bg-surface border border-light-10 text-light rounded-lg px-3 py-2 text-sm cursor-pointer hover:border-light-25 transition-colors outline-none"
                                 value={lang}
-                                onChange={(e) => setLang(e.target.value as "es" | "en")}
+                                onChange={(e) =>
+                                    setLang(e.target.value as LegalLang)
+                                }
                             >
                                 <option value="es">Español</option>
                                 <option value="en">English</option>
@@ -116,11 +93,7 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                     </div>
                 </div>
 
-                {/* Body */}
                 <div className="max-w-300 mx-auto px-6 md:px-20 py-10 md:py-12 flex gap-12">
-
-                    {/* Sidebar – hidden on mobile */}
-
                     {!isLoading && !isError && headings.length > 0 && (
                         <aside className="hidden lg:block w-56 shrink-0">
                             <div className="sticky top-28">
@@ -143,14 +116,19 @@ export const LegalPage = ({ documentType, title, description }: LegalPageProps) 
                         </aside>
                     )}
 
-                    {/* Main content */}
                     <main className="flex-1 min-w-0 max-w-3xl">
                         {isLoading && <LegalSkeleton />}
-                        {isError && <LegalError onRetry={() => { void refetch(); }} />}
+                        {isError && (
+                            <LegalError
+                                onRetry={() => {
+                                    void refetch();
+                                }}
+                            />
+                        )}
                         {data && <LegalMarkdown content={data.content} />}
                     </main>
                 </div>
             </div>
         </>
     );
-}; 
+};

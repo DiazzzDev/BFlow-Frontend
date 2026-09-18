@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
-import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
-import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
+import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
 
 import { HistoryFilters } from "./components/HistoryFilters";
 import { HistoryTimeline } from "./components/HistoryTimeline";
 import { useGetHistory } from "./hooks/useGetHistory";
 
+import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
 import { useDebounce } from "@/hooks/useDebounce";

@@ -1,4 +1,4 @@
-import type { BudgetPeriod, BudgetScope } from "../interfaces/Budget";
+import type { BudgetScope } from "@/modules/app/interfaces/Budget";
 
 export const BUDGET_PERIOD_TABS: Array<{ label: string; value: string }> = [
     { label: "Todos", value: "ALL" },
@@ -18,14 +18,4 @@ export const BUDGET_SORT_OPTIONS: Array<{ label: string; value: string }> = [
     { value: "amount,asc", label: "Menor monto" },
     { value: "updatedAt,desc", label: "Más recientes" },
     { value: "startDate,desc", label: "Inicio reciente" },
-];
-
-export const BUDGET_PERIOD_FORM_OPTIONS: Array<{
-    value: BudgetPeriod;
-    label: string;
-}> = [
-    { value: "MONTHLY", label: "Mensual" },
-    { value: "WEEKLY", label: "Semanal" },
-    { value: "YEARLY", label: "Anual" },
-    { value: "DAILY", label: "Diario" },
 ];

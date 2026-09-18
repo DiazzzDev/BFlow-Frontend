@@ -1,4 +1,4 @@
-import type { CategoryType } from "../interfaces/Category";
+import type { CategoryType } from "@/modules/app/interfaces/Category";
 
 export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
     INCOME: "Ingreso",

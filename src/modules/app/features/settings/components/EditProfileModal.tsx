@@ -41,6 +41,7 @@ export const EditProfileModal = ({ isOpen, onClose }: EditProfileModalProps) => 
             title="Editar perfil"
             maxWidth="max-w-md"
         >
+            {/* Remount form state whenever the modal opens */}
             <EditProfileModalContent
                 key={isOpen ? "open" : "closed"}
                 onClose={onClose}
@@ -54,20 +55,25 @@ interface EditProfileModalContentProps {
 }
 
 const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
+    // Auth session (profile fields live on the user)
     const user = useAuthStore((state) => state.user);
     const setSession = useAuthStore((state) => state.setSession);
+
+    // Profile photo + profile data mutations
     const { mutateAsync: patchProfilePhoto, isPending: isUpdatingPhoto } =
         usePatchProfilePhoto();
     const { mutateAsync: patchProfileData, isPending: isUpdatingData } =
         usePatchProfileData();
+    const isSubmitting = isUpdatingPhoto || isUpdatingData;
+
+    // Local photo file + preview (blob URLs must be revoked)
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [photoFile, setPhotoFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(() =>
         sanitizeImageUrl(user?.pictureUrl),
     );
 
-    const isSubmitting = isUpdatingPhoto || isUpdatingData;
-
+    // RHF form seeded from the current user
     const {
         control,
         handleSubmit,
@@ -80,6 +86,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
         },
     });
 
+    // Revoke blob preview URLs on change/unmount to avoid leaks
     useEffect(() => {
         return () => {
             if (previewUrl?.startsWith("blob:")) {
@@ -88,6 +95,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
         };
     }, [previewUrl]);
 
+    // Save name/email and refresh the auth store
     const handleSubmitData = async (data: ProfileFormValues) => {
         const promise = patchProfileData(data);
 
@@ -101,7 +109,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                     email: updated.email,
                     name: updated.name,
                     pictureUrl: updated.pictureUrl,
-                    roles: updated.roles ?? user?.roles ?? [],
+                    roles: updated.roles,
                 });
                 onClose();
                 return "Datos actualizados correctamente";
@@ -112,6 +120,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
         await promise;
     };
 
+    // Preview locally then upload the selected image immediately
     const handleSubmitImage = async (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
@@ -216,7 +225,7 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                 ) : null}
             </div>
 
-            {/* De momento el correo esta oculto */}
+            {/* Email field kept in the form but hidden for now */}
             <div className="flex flex-col gap-1.5 hidden">
                 <Label htmlFor="profileEmail">Correo</Label>
                 <Controller

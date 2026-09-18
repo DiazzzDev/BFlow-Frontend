@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import type { Category } from "../interfaces/Category";
 import { useGetCategories } from "../hooks/useGetCategories";
 import { useMutateCategories } from "../hooks/useMutateCategories";
 import {
@@ -18,6 +17,8 @@ import {
 } from "../utils/categoryType";
 
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
+import type { Category } from "@/modules/app/interfaces/Category";
+import { CATEGORY_TYPE_VALUES } from "@/modules/app/interfaces/Category";
 import { CategoryIconPicker } from "@/components/icons/CategoryIconPicker";
 import { Button } from "@/components/controls/Button";
 import { Input } from "@/components/controls/Input";
@@ -34,7 +35,7 @@ import {
 
 const categorySchema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
-    type: z.enum(["INCOME", "EXPENSE"]),
+    type: z.enum(CATEGORY_TYPE_VALUES),
     color: z.string().min(1, "El color es obligatorio"),
     icon: z.enum(categoryIconKeys as [typeof categoryIconKeys[number], ...typeof categoryIconKeys[number][]]),
 });
@@ -65,18 +66,23 @@ export const CategoriesModal = ({ isOpen, onClose }: CategoriesModalProps) => {
             title="Administrar categorías"
             maxWidth="max-w-4xl"
         >
+            {/* Remount form/list state whenever the modal opens */}
             <CategoriesModalContent key={isOpen ? "open" : "closed"} />
         </CustomModal>
     );
 };
 
 const CategoriesModalContent = () => {
+    // Categories list + create mutation
     const { data, isLoading, isError } = useGetCategories();
-    const { createCategory } = useMutateCategories();
+    const createCategory = useMutateCategories();
     const categories = data?.data ?? [];
+
+    // List filter + which category is being edited (null = create mode)
     const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>("ALL");
     const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
+    // RHF form + watched color/icon for the preview chip
     const {
         control,
         handleSubmit,
@@ -87,15 +93,16 @@ const CategoriesModalContent = () => {
         resolver: zodResolver(categorySchema),
         defaultValues,
     });
-
     const selectedColor = useWatch({ control, name: "color" });
     const selectedIcon = useWatch({ control, name: "icon" });
 
+    // Filtered list for the right-hand panel
     const filteredCategories =
         typeFilter === "ALL"
             ? categories
             : categories.filter((category) => category.type === typeFilter);
 
+    // Load a category into the form for edit mode
     const startEdit = (category: Category) => {
         setEditingCategory(category);
         reset({
@@ -108,14 +115,15 @@ const CategoriesModalContent = () => {
         });
     };
 
+    // Back to create mode with empty defaults
     const clearForm = () => {
         setEditingCategory(null);
         reset(defaultValues);
     };
 
+    // Create only for now — update endpoint is still pending
     const onSubmit = async (formData: CategoryFormValues) => {
         if (editingCategory) {
-            // Endpoint de update pendiente.
             return;
         }
 
@@ -137,9 +145,8 @@ const CategoriesModalContent = () => {
         clearForm();
     };
 
-    const handleDelete = (_category: Category) => {
-        // Endpoint de delete pendiente.
-    };
+    // Delete endpoint still pending
+    const handleDelete = (_category: Category) => { };
 
     return (
         <div className="flex flex-col gap-5 lg:flex-row">
@@ -281,11 +288,10 @@ const CategoriesModalContent = () => {
                             key={tab.id}
                             type="button"
                             onClick={() => setTypeFilter(tab.id)}
-                            className={`-mb-px cursor-pointer whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors ${
-                                typeFilter === tab.id
-                                    ? "border-primary font-medium text-light"
-                                    : "border-transparent text-helper hover:text-light"
-                            }`}
+                            className={`-mb-px cursor-pointer whitespace-nowrap border-b-2 px-3 py-2 text-sm transition-colors ${typeFilter === tab.id
+                                ? "border-primary font-medium text-light"
+                                : "border-transparent text-helper hover:text-light"
+                                }`}
                         >
                             {tab.label}
                         </button>
@@ -338,8 +344,7 @@ const CategoriesModalContent = () => {
                                             {category.name}
                                         </p>
                                         <p className="mt-0.5 text-xs text-helper">
-                                            {CATEGORY_TYPE_LABELS[category.type] ??
-                                                    category.type}
+                                            {CATEGORY_TYPE_LABELS[category.type]}
                                         </p>
                                     </div>
                                     <div className="flex shrink-0 items-center gap-1">
