@@ -57,7 +57,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     }
                     return getCognitoErrorMessage(err, "Error al iniciar sesión");
                 },
-            });
+            }).unwrap();
         } catch (err) {
             if (isUserNotConfirmedError(err)) {
                 const cleanEmail = data.email.trim().toLowerCase();
@@ -183,11 +183,10 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                 ¿No tienes cuenta?{" "}
                 <Link
                     to="/auth/register"
-                    className={`font-medium hover:opacity-80 transition-opacity ${
-                        isLoading
+                    className={`font-medium hover:opacity-80 transition-opacity ${isLoading
                             ? "pointer-events-none text-helper"
                             : "text-primary"
-                    }`}
+                        }`}
                 >
                     Crea una gratis
                 </Link>

@@ -66,7 +66,7 @@ export const RegisterForm = ({
                 loading: "Creando cuenta en Cognito...",
                 success: "Cuenta creada. Te enviamos un código a tu correo.",
                 error: (err) => getCognitoErrorMessage(err, "Error al crear la cuenta"),
-            });
+            }).unwrap();
             void navigate(`/auth/verify-account?email=${encodeURIComponent(data.email.trim().toLowerCase())}`);
         } catch (err) {
             // Check if user already exists
@@ -204,11 +204,10 @@ export const RegisterForm = ({
                 ¿Ya tienes cuenta?{" "}
                 <Link
                     to="/auth/login"
-                    className={`font-medium hover:opacity-80 transition-opacity ${
-                        isLoading
+                    className={`font-medium hover:opacity-80 transition-opacity ${isLoading
                             ? "pointer-events-none text-helper"
                             : "text-primary"
-                    }`}
+                        }`}
                 >
                     Inicia sesión
                 </Link>

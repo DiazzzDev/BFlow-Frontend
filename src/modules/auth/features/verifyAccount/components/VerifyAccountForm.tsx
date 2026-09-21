@@ -67,10 +67,11 @@ export const VerifyAccountForm = ({
                 loading: "Verificando cuenta...",
                 success: "¡Cuenta verificada exitosamente!",
                 error: (err) => getCognitoErrorMessage(err, "Error al verificar el código"),
-            });
+            }).unwrap();
             void navigate("/auth/login");
         } catch {
             // Error handled by toast
+
         }
     };
 
@@ -82,8 +83,7 @@ export const VerifyAccountForm = ({
                 loading: "Reenviando código...",
                 success: "Código enviado a tu correo",
                 error: (err) => getCognitoErrorMessage(err, "Error al reenviar el código"),
-            });
-            setCooldown(30);
+            }).unwrap();
         } catch {
             // Error handled by toast
         }
@@ -191,8 +191,8 @@ export const VerifyAccountForm = ({
                         {cooldown > 0
                             ? `Reenviar código (${cooldown}s)`
                             : isResending
-                            ? "Reenviando..."
-                            : "Reenviar código"}
+                                ? "Reenviando..."
+                                : "Reenviar código"}
                     </button>
                 </div>
 
