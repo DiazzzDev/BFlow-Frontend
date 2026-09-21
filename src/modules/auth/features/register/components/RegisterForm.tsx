@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 
 interface RegisterCredentials {
@@ -204,10 +205,11 @@ export const RegisterForm = ({
                 ¿Ya tienes cuenta?{" "}
                 <Link
                     to="/auth/login"
-                    className={`font-medium hover:opacity-80 transition-opacity ${isLoading
+                    className={`font-medium hover:opacity-80 transition-opacity ${
+                        isLoading
                             ? "pointer-events-none text-helper"
                             : "text-primary"
-                        }`}
+                    }`}
                 >
                     Inicia sesión
                 </Link>

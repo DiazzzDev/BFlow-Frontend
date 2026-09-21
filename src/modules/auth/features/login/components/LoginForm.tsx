@@ -5,7 +5,9 @@ import { AlertCircle, Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+
 import { isUserNotConfirmedError } from "../login.service";
+
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 
 interface LoginCredentials {
@@ -87,7 +89,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                         <button
                             type="button"
                             onClick={() =>
-                                navigate(`/auth/verify-account?email=${encodeURIComponent(unverifiedEmail)}`)
+                                void navigate(`/auth/verify-account?email=${encodeURIComponent(unverifiedEmail)}`)
                             }
                             className="mt-2 text-xs font-semibold text-amber-300 hover:text-amber-100 flex items-center gap-1 group cursor-pointer"
                         >
@@ -183,10 +185,11 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                 ¿No tienes cuenta?{" "}
                 <Link
                     to="/auth/register"
-                    className={`font-medium hover:opacity-80 transition-opacity ${isLoading
+                    className={`font-medium hover:opacity-80 transition-opacity ${
+                        isLoading
                             ? "pointer-events-none text-helper"
                             : "text-primary"
-                        }`}
+                    }`}
                 >
                     Crea una gratis
                 </Link>

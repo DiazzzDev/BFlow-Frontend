@@ -3,6 +3,7 @@ import { Mail, KeyRound, RefreshCw, Edit3, ArrowRight, CheckCircle2 } from "luci
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 
 type FormData = {
@@ -49,7 +50,9 @@ export const VerifyAccountForm = ({
 
     // Cooldown timer effect
     useEffect(() => {
-        if (cooldown <= 0) return;
+        if (cooldown <= 0) {
+            return;
+        }
         const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000);
         return () => clearTimeout(timer);
     }, [cooldown]);
@@ -71,12 +74,13 @@ export const VerifyAccountForm = ({
             void navigate("/auth/login");
         } catch {
             // Error handled by toast
-
         }
     };
 
     const handleResend = async () => {
-        if (!currentEmail || cooldown > 0 || isResending) return;
+        if (!currentEmail || cooldown > 0 || isResending) {
+            return;
+        }
 
         try {
             await toast.promise(onResendCode(currentEmail), {
@@ -84,6 +88,7 @@ export const VerifyAccountForm = ({
                 success: "Código enviado a tu correo",
                 error: (err) => getCognitoErrorMessage(err, "Error al reenviar el código"),
             }).unwrap();
+            setCooldown(30);
         } catch {
             // Error handled by toast
         }
@@ -191,8 +196,8 @@ export const VerifyAccountForm = ({
                         {cooldown > 0
                             ? `Reenviar código (${cooldown}s)`
                             : isResending
-                                ? "Reenviando..."
-                                : "Reenviar código"}
+                            ? "Reenviando..."
+                            : "Reenviar código"}
                     </button>
                 </div>
 
