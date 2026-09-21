@@ -1,4 +1,5 @@
 import { UserMinus, Users } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { WalletMember } from "../interfaces/WalletMember";
 import { roleLabel } from "../utils/walletRole";
@@ -22,6 +23,7 @@ export const WalletMembersList = ({
     canManage = false,
     onRemoveMember,
 }: WalletMembersListProps) => {
+    const { t } = useTranslation();
     const user = useAuthStore((state) => state.user);
 
     if (isLoading) {
@@ -51,8 +53,8 @@ export const WalletMembersList = ({
             <div className="flex h-full min-h-40 items-center justify-center">
                 <CustomEmptyState
                     Icon={Users}
-                    title="Sin miembros"
-                    description="Cuando invites a alguien y acepte, aparecerá aquí."
+                    title={t("walletView.noMembers")}
+                    description={t("walletView.membersHint")}
                     className="my-0!"
                 />
             </div>
@@ -69,7 +71,7 @@ export const WalletMembersList = ({
                 const canRemove =
                     canManage && !isOwner && !isCurrentUser && !!onRemoveMember;
                 const displayName = member.name.trim() || member.email;
-                const subtitle = isCurrentUser ? "Tú" : member.email;
+                const subtitle = isCurrentUser ? t("walletView.you") : member.email;
 
                 return (
                     <li
@@ -96,7 +98,7 @@ export const WalletMembersList = ({
                                     </p>
                                     {isCurrentUser ? (
                                         <span className="shrink-0 rounded-full bg-light-5 px-2 py-0.5 text-[10px] font-medium text-helper">
-                                            Tú
+                                            {t("walletView.you")}
                                         </span>
                                     ) : null}
                                 </div>
@@ -104,7 +106,7 @@ export const WalletMembersList = ({
                                     {isCurrentUser ? member.email : subtitle}
                                 </p>
                                 <p className="mt-0.5 text-[11px] text-label">
-                                    Se unió {formatterDynamicDate(member.joinedAt)}
+                                    {t("walletView.joined", { date: formatterDynamicDate(member.joinedAt) })}
                                 </p>
                             </div>
                         </div>
@@ -116,8 +118,8 @@ export const WalletMembersList = ({
                             {canRemove ? (
                                 <button
                                     type="button"
-                                    title="Eliminar miembro"
-                                    aria-label={`Eliminar a ${displayName}`}
+                                    title={t("walletView.removeMember")}
+                                    aria-label={`${t("walletView.removeMember")} ${displayName}`}
                                     onClick={() => onRemoveMember(member)}
                                     className="inline-flex cursor-pointer items-center justify-center rounded-lg p-2 text-helper opacity-70 transition-all hover:bg-danger-sweet hover:text-danger group-hover:opacity-100"
                                 >

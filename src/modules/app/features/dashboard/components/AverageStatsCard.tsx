@@ -1,5 +1,6 @@
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
+import { useTranslation } from "react-i18next";
 
 import { AmountDisplay } from "./AmountDisplay";
 
@@ -20,6 +21,7 @@ const AverageRow = ({
     percentageChangeLastMonth,
     changeTone,
 }: AverageRowProps) => {
+    const { t } = useTranslation();
     const changePercent = formatPercentValue(percentageChangeLastMonth);
     const isPositive = percentageChangeLastMonth >= 0;
     const toneClass = changeTone === "info" ? "text-info" : "text-danger";
@@ -41,7 +43,7 @@ const AverageRow = ({
                         {changePercent}%
                     </span>
                     {" "}
-                    frente al mes pasado
+                    {t("dashboard.vsLastMonth")}
                 </p>
             )}
         </div>
@@ -65,11 +67,12 @@ export const AverageStatsCard = ({
     averageExpenses,
     expensesPercentageChangeLastMonth,
 }: AverageStatsCardProps) => {
+    const { t } = useTranslation();
     return (
         <div className={`${dashboardCardClass} gap-5`}>
             <AverageRow
                 isLoading={isLoading}
-                label="Ingreso promedio"
+                label={t("dashboard.averageIncome")}
                 amount={averageIncome}
                 currency={currency}
                 percentageChangeLastMonth={incomePercentageChangeLastMonth}
@@ -78,7 +81,7 @@ export const AverageStatsCard = ({
             <div className="border-t border-light-10" />
             <AverageRow
                 isLoading={isLoading}
-                label="Gasto promedio"
+                label={t("dashboard.averageExpense")}
                 amount={averageExpenses}
                 currency={currency}
                 percentageChangeLastMonth={expensesPercentageChangeLastMonth}

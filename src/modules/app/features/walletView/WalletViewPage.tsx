@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { Receipt } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useWalletViewPage } from "./hooks/useWalletViewPage";
 import { WalletViewHeader } from "./components/WalletViewHeader";
@@ -14,6 +15,7 @@ import { isManagementTab } from "./utils/tabs/walletViewTabs";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 
 export const WalletViewPage = () => {
+    const { t } = useTranslation();
     const { id = "" } = useParams<{ id: string }>();
     const view = useWalletViewPage(id);
     const [isInfoDrawerOpen, setIsInfoDrawerOpen] = useState(false);
@@ -22,8 +24,8 @@ export const WalletViewPage = () => {
     if (view.isNotFound) {
         return (
             <CustomEmptyState
-                title="Billetera no encontrada"
-                description="La billetera que buscas no existe o ya no tienes acceso."
+                title={t("walletView.notFound")}
+                description={t("walletView.notFoundHint")}
                 Icon={Receipt}
             />
         );

@@ -1,5 +1,6 @@
 import { ChevronRight, CreditCard } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import type { BudgetHealth, BudgetHealthStatus } from "../interfaces/dashboard";
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
@@ -14,17 +15,8 @@ const STATUS_STYLES: Record<string, string> = {
     AT_RISK: "bg-danger-sweet text-danger",
 };
 
-const STATUS_LABELS: Record<string, string> = {
-    OK: "Saludable",
-    WARNING: "Advertencia",
-    AT_RISK: "En riesgo",
-};
-
 const getStatusStyle = (status: BudgetHealthStatus) =>
     STATUS_STYLES[status] ?? "bg-light-10 text-helper";
-
-const getStatusLabel = (status: BudgetHealthStatus) =>
-    STATUS_LABELS[status] ?? status;
 
 interface BudgetsHealthCardProps {
     isLoading: boolean;
@@ -38,6 +30,7 @@ export const BudgetsHealthCard = ({
     onReviewBudgets,
 }: BudgetsHealthCardProps) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleReview = () => {
         if (onReviewBudgets) {
@@ -53,7 +46,7 @@ export const BudgetsHealthCard = ({
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Salud de presupuestos</p>
+            <p className={dashboardLabelClass}>{t("dashboard.budgetHealth")}</p>
 
             <div className="mt-4 flex flex-1 flex-col gap-1">
                 {isLoading &&
@@ -66,8 +59,8 @@ export const BudgetsHealthCard = ({
 
                 {!isLoading && budgets.length === 0 && (
                     <CustomEmptyState
-                        title="Sin presupuestos"
-                        description="Crea un presupuesto para ver su salud aquí."
+                        title={t("dashboard.noBudgets")}
+                        description={t("dashboard.createBudgetHint")}
                         Icon={CreditCard}
                         className="m-0! py-2!"
                     />
@@ -87,14 +80,14 @@ export const BudgetsHealthCard = ({
                                     {budget.displayName}
                                 </p>
                                 <p className="truncate text-[11px] text-helper">
-                                    Actualizado {formatterDynamicDate(budget.updatedAt)}
+                                    {t("dashboard.updated", { date: formatterDynamicDate(budget.updatedAt) })}
                                 </p>
                             </div>
 
                             <span
                                 className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${getStatusStyle(budget.status)}`}
                             >
-                                {getStatusLabel(budget.status)}
+                                {t(`budgets.status.${budget.status}`, { defaultValue: budget.status })}
                             </span>
 
                             <ChevronRight className="h-4 w-4 shrink-0 text-helper" />
@@ -105,7 +98,7 @@ export const BudgetsHealthCard = ({
             <Button
                 type="button"
                 onClick={handleReview}
-                text="Revisar presupuestos"
+                text={t("dashboard.reviewBudgets")}
                 className="mt-4 w-full"
             />
         </div>

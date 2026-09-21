@@ -1,8 +1,8 @@
 export const getTimeGreeting = (date = new Date()) => {
     const hour = date.getHours();
-    if (hour < 12) { return "Buenos días" };
-    if (hour < 18) { return "Buenas tardes" };
-    return "Buenas noches";
+    if (hour < 12) { return "morning" };
+    if (hour < 18) { return "afternoon" };
+    return "evening";
 };
 
 export const getFirstName = (fullName: string | null | undefined) => {

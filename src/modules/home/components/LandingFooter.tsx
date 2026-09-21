@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { useLandingNav } from "../hooks/useLandingNav";
 
@@ -13,6 +14,7 @@ const GitHubIcon = () => (
 
 export const LandingFooter = () => {
     const { handleNavClick } = useLandingNav();
+    const { t } = useTranslation();
 
     return (
         <footer className="border-t border-light-10 bg-surface-hard px-8 md:px-16 xl:px-24 pt-16 pb-10">
@@ -24,7 +26,7 @@ export const LandingFooter = () => {
                             <span className="text-lg font-bold tracking-tight">BFlow <span className="text-light-75">Studio</span></span>
                         </div>
                         <p className="text-sm text-helper mb-5 max-w-xs">
-                            El control financiero que siempre quisiste
+                            {t("home.heroTitle")} {t("home.heroFocus")}
                         </p>
                         <a
                             href="https://github.com"
@@ -38,21 +40,21 @@ export const LandingFooter = () => {
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-semibold mb-4">Nosotros</h4>
+                        <h4 className="text-sm font-semibold mb-4">{t("home.footerAbout")}</h4>
                         <div className="flex flex-col gap-3">
                             <button
                                 type="button"
                                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Inicio
+                                {t("home.footerHome")}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("faq")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Preguntas frecuentes
+                                {t("home.navFaq")}
                             </button>
                             <a
                                 href="mailto:hola@bflow.studio"
@@ -64,36 +66,36 @@ export const LandingFooter = () => {
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-semibold mb-4">Planes</h4>
+                        <h4 className="text-sm font-semibold mb-4">{t("home.footerPlans")}</h4>
                         <div className="flex flex-col gap-3">
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("pricing")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Personal
+                                {t("home.plans.personal.name")}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("pricing")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Bflow pro
+                                {t("home.plans.pro.name")}
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-semibold mb-4">Legal</h4>
+                        <h4 className="text-sm font-semibold mb-4">{t("home.footerLegal")}</h4>
                         <div className="flex flex-col gap-3">
                             <Link to="/terms" className="text-sm text-helper hover:text-light transition-colors">
-                                Términos y condiciones
+                                {t("home.termsTitle")}
                             </Link>
                             <Link to="/privacy" className="text-sm text-helper hover:text-light transition-colors">
-                                Política de privacidad
+                                {t("home.privacyTitle")}
                             </Link>
                             <Link to="/cookies" className="text-sm text-helper hover:text-light transition-colors">
-                                Política de cookies
+                                {t("home.cookiesTitle")}
                             </Link>
                         </div>
                     </div>

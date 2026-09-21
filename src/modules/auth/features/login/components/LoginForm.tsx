@@ -5,6 +5,9 @@ import { AlertCircle, Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 import { isUserNotConfirmedError } from "../login.service";
 
@@ -15,15 +18,7 @@ interface LoginCredentials {
     password: string;
 }
 
-const loginSchema = z.object({
-    email: z
-        .string()
-        .min(1, "El correo electrónico es requerido")
-        .email("El formato del correo no es válido"),
-    password: z.string().min(1, "La contraseña es requerida"),
-});
-
-type LoginFormInputs = z.infer<typeof loginSchema>;
+type LoginFormInputs = LoginCredentials;
 
 const inputClass =
     "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all duration-200";
@@ -102,7 +97,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
             <div className="w-full max-w-md flex-col space-y-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium text-label" htmlFor="txtEmail">
-                        Correo electrónico
+                        {t("auth.email")}
                     </label>
 
                     <div className="relative">
@@ -114,7 +109,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             id="txtEmail"
                             disabled={isLoading}
                             {...register("email")}
-                            placeholder="tu@correo.com"
+                            placeholder={t("auth.email")}
                             className={`${inputClass} pl-11`}
                         />
                     </div>
@@ -131,14 +126,14 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             className="text-sm font-medium text-label"
                             htmlFor="txtPassword"
                         >
-                            Contraseña
+                            {t("auth.password")}
                         </label>
 
                         <Link
                             to="/auth/forgot-password"
                             className="text-sm font-medium text-primary hover:opacity-80 transition-opacity"
                         >
-                            ¿Olvidaste tu contraseña?
+                            {t("auth.forgotPassword")}
                         </Link>
                     </div>
 
@@ -177,12 +172,12 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Iniciando sesión..." : "Iniciar sesión →"}
+                    {isLoading ? t("auth.loginLoading") : t("auth.signInButton")}
                 </button>
             </div>
 
             <p className="mt-8 text-center text-sm text-helper">
-                ¿No tienes cuenta?{" "}
+                {t("auth.noAccount")} {" "}
                 <Link
                     to="/auth/register"
                     className={`font-medium hover:opacity-80 transition-opacity ${
@@ -191,7 +186,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             : "text-primary"
                     }`}
                 >
-                    Crea una gratis
+                    {t("auth.createFree")}
                 </Link>
             </p>
         </form>

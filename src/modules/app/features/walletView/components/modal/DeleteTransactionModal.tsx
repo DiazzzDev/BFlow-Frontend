@@ -1,10 +1,12 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { useDeleteExpense } from "../../../newTransaction/hooks/useMutateExpenses";
 import { useDeleteIncome } from "../../../newTransaction/hooks/useMutateIncomes";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface DeleteTransactionModalProps {
     transaction: Transaction | null;
@@ -15,6 +17,7 @@ export const DeleteTransactionModal = ({
     transaction,
     onClose,
 }: DeleteTransactionModalProps) => {
+    const { t } = useTranslation();
     // Delete mutations (expense vs income)
     const deleteExpense = useDeleteExpense();
     const deleteIncome = useDeleteIncome();
@@ -38,10 +41,9 @@ export const DeleteTransactionModal = ({
                 });
 
         toast.promise(promise, {
-            loading: "Eliminando transacción...",
-            success: "Transacción eliminada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al eliminar la transacción",
+            loading: t("transactions.deleteLoading"),
+            success: (response) => getApiMessage(response, t("transactions.deleteFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -56,7 +58,7 @@ export const DeleteTransactionModal = ({
                     onClose();
                 }
             }}
-            title="Eliminar transacción"
+            title={t("transactions.delete")}
             maxWidth="max-w-md"
         >
             <div className="flex flex-col gap-6">
@@ -84,7 +86,7 @@ export const DeleteTransactionModal = ({
                         }}
                         className="cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-danger-dark disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        {isDeleting ? "Eliminando..." : "Eliminar"}
+                        {isDeleting ? t("transactions.deleteLoading") : t("transactions.delete")}
                     </button>
                 </div>
             </div>

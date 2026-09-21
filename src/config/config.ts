@@ -12,4 +12,6 @@ export const config = {
     VITE_COGNITO_REDIRECT_SIGN_IN: String(import.meta.env.VITE_COGNITO_REDIRECT_SIGN_IN),
     
     VITE_COGNITO_USER_POOL_ID: String(import.meta.env.VITE_COGNITO_USER_POOL_ID),
+
+    MCP_SERVER_URL: import.meta.env.VITE_MCP_SERVER_URL?.trim() ?? "",
 };

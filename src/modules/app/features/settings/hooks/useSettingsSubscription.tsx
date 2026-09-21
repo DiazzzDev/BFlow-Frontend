@@ -1,20 +1,15 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { useCancelSubscription } from "./useCancelSubscription";
 
 import { useAuthStore } from "@/auth/authStore";
 import type { SubscriptionStatus, UserSubscription } from "@/auth/InternalUser";
+import { getActiveLanguage } from "@/i18n/i18n";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
-const statusLabels: Record<SubscriptionStatus, string> = {
-    PENDING_ACTIVATION: "Pendiente de activación",
-    ACTIVE: "Activa",
-    EXPIRED: "Vencida",
-    CANCELED: "Cancelada",
-    PAST_DUE: "Pago pendiente",
-};
-
-const formatSubscriptionDate = (date: string | null): string | null => {
+const formatSubscriptionDate = (date: string | null, language: string): string | null => {
     if (!date) {
         return null;
     }
@@ -25,7 +20,7 @@ const formatSubscriptionDate = (date: string | null): string | null => {
         return null;
     }
 
-    return new Intl.DateTimeFormat("es-SV", {
+    return new Intl.DateTimeFormat(language === "es" ? "es-SV" : "en-US", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -39,7 +34,17 @@ const isFreePlan = (subscription: UserSubscription): boolean => {
     return planCode === "FREE" || planName === "FREE";
 };
 
+const statusTranslationKeys = {
+    PENDING_ACTIVATION: "subscription.status.PENDING_ACTIVATION",
+    ACTIVE: "subscription.status.ACTIVE",
+    EXPIRED: "subscription.status.EXPIRED",
+    CANCELED: "subscription.status.CANCELED",
+    PAST_DUE: "subscription.status.PAST_DUE",
+} as const satisfies Record<SubscriptionStatus, string>;
+
 export const useSettingsSubscription = () => {
+    const { t } = useTranslation();
+    const activeLanguage = getActiveLanguage();
     const user = useAuthStore((state) => state.user);
     const setSession = useAuthStore((state) => state.setSession);
     const { mutateAsync: cancelSubscription, isPending: isCancelling } =
@@ -57,8 +62,8 @@ export const useSettingsSubscription = () => {
         const promise = cancelSubscription(subscription.id);
 
         toast.promise(promise, {
-            loading: "Cancelando suscripción...",
-            success: () => {
+            loading: t("subscription.cancelLoading"),
+            success: (response) => {
                 setSession({
                     ...user,
                     subscription: {
@@ -68,20 +73,34 @@ export const useSettingsSubscription = () => {
                     },
                 });
 
-                return "Suscripción cancelada correctamente";
+                return getApiMessage(response, t("subscription.cancelSuccess"));
             },
-            error: "No se pudo cancelar la suscripción",
+            error: (error) => getApiErrorMessage(error, t("subscription.cancelError")),
         });
     };
 
     return {
         subscription,
-        statusLabel: subscription?.status ? statusLabels[subscription.status] : null,
-        cancellationDate: formatSubscriptionDate(subscription?.endsAt ?? null),
-        renewalDate: formatSubscriptionDate(subscription?.nextBillingAt ?? null),
+        statusLabel: subscription?.status
+            ? t(statusTranslationKeys[subscription.status])
+            : null,
+        cancellationDate: formatSubscriptionDate(
+            subscription?.endsAt ?? null,
+            activeLanguage,
+        ),
+        renewalDate: formatSubscriptionDate(
+            subscription?.nextBillingAt ?? null,
+            activeLanguage,
+        ),
         billingAmount:
-            subscription?.billingAmount !== null && subscription?.billingAmount !== undefined
-                ? formatCurrency(subscription.billingAmount)
+            subscription?.billingAmount !== null &&
+            subscription?.billingAmount !== undefined &&
+            subscription.billingAmount > 0
+                ? formatCurrency(
+                      subscription.billingAmount,
+                      "USD",
+                      activeLanguage,
+                  )
                 : null,
         canCancel,
         isCancelling,

@@ -1,4 +1,5 @@
 import { BUDGET_VIEW_TABS, type BudgetViewTab } from "../utils/tabs/budgetViewTabs";
+import { useTranslation } from "react-i18next";
 
 interface BudgetViewTabsProps {
     activeTab: BudgetViewTab;
@@ -11,6 +12,7 @@ export const BudgetViewTabs = ({
     onChange,
     className = "mb-5",
 }: BudgetViewTabsProps) => {
+    const { t } = useTranslation();
     return (
         <div className={`relative ${className}`}>
             <div className="overflow-x-auto border-b border-light-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -25,7 +27,7 @@ export const BudgetViewTabs = ({
                                 : "border-transparent text-helper hover:text-light"
                                 }`}
                         >
-                            {tab.label}
+                            {t(`budgetView.${tab.id}`, { defaultValue: tab.label })}
                         </button>
                     ))}
                 </div>

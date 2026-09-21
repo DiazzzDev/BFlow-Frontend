@@ -1,4 +1,5 @@
 import { RecurringForm } from "../RecurringForm";
+import { useTranslation } from "react-i18next";
 
 import { CustomModal } from "@/components/custom/CustomModal";
 
@@ -13,11 +14,12 @@ export const ScheduleTransactionModal = ({
     setIsModalOpen,
     walletId,
 }: ScheduleTransactionModalProps) => {
+    const { t } = useTranslation();
     return (
         <CustomModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            title="Programar transacción"
+            title={t("walletView.schedule")}
             maxWidth="max-w-lg"
         >
             {walletId ? (

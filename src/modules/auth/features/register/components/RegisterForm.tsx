@@ -5,6 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 
@@ -64,7 +67,7 @@ export const RegisterForm = ({
     const onInternalSubmit = async (data: RegisterFormInputs) => {
         try {
             await toast.promise(onRegisterUser(data), {
-                loading: "Creando cuenta en Cognito...",
+                loading: "Creando cuenta en Bflow Studio...",
                 success: "Cuenta creada. Te enviamos un código a tu correo.",
                 error: (err) => getCognitoErrorMessage(err, "Error al crear la cuenta"),
             }).unwrap();
@@ -95,7 +98,7 @@ export const RegisterForm = ({
                         className="text-sm font-medium text-label"
                         htmlFor="txtFullName"
                     >
-                        Nombre completo
+                        {t("auth.fullName")}
                     </label>
 
                     <div className="relative">
@@ -107,7 +110,7 @@ export const RegisterForm = ({
                             disabled={isLoading}
                             {...register("fullName")}
                             id="txtFullName"
-                            placeholder="Tu nombre completo"
+                            placeholder={t("auth.namePlaceholder")}
                             className={`${inputClass} pl-11`}
                         />
                     </div>
@@ -123,7 +126,7 @@ export const RegisterForm = ({
                         className="text-sm font-medium text-label"
                         htmlFor="txtEmail"
                     >
-                        Correo electrónico
+                        {t("auth.email")}
                     </label>
 
                     <div className="relative">
@@ -135,7 +138,7 @@ export const RegisterForm = ({
                             id="txtEmail"
                             disabled={isLoading}
                             {...register("email")}
-                            placeholder="tu@correo.com"
+                            placeholder={t("auth.emailPlaceholder")}
                             className={`${inputClass} pl-11`}
                         />
                     </div>
@@ -151,7 +154,7 @@ export const RegisterForm = ({
                         className="text-sm font-medium text-label"
                         htmlFor="txtPassword"
                     >
-                        Contraseña
+                        {t("auth.password")}
                     </label>
 
                     <div className="relative">
@@ -165,7 +168,7 @@ export const RegisterForm = ({
                             {...register("password")}
                             id="txtPassword"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Ej. MiClave2026!"
+                            placeholder={t("auth.passwordPlaceholder")}
                             className={`${inputClass} px-11`}
                         />
 
@@ -197,12 +200,12 @@ export const RegisterForm = ({
                     className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Creando cuenta..." : "Crear cuenta →"}
+                    {isLoading ? t("auth.registerLoading") : t("auth.registerButton")}
                 </button>
             </div>
 
             <p className="mt-8 text-center text-sm text-helper">
-                ¿Ya tienes cuenta?{" "}
+                {t("auth.hasAccount")} {" "}
                 <Link
                     to="/auth/login"
                     className={`font-medium hover:opacity-80 transition-opacity ${
@@ -211,7 +214,7 @@ export const RegisterForm = ({
                             : "text-primary"
                     }`}
                 >
-                    Inicia sesión
+                    {t("auth.signIn")}
                 </Link>
             </p>
         </form>

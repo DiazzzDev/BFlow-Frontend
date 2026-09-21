@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Check, Clock, Wallet, X } from "lucide-react";
 
 import type { WalletInvitation } from "../interfaces/WalletInvitation";
@@ -9,12 +10,14 @@ import {
 } from "../utils/invitationExpiry";
 
 import { getInitials } from "@/utils/getInitials";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface WalletInvitationItemProps {
     invitation: WalletInvitation;
 }
 
 export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) => {
+    const { t } = useTranslation();
     // Accept / decline mutations
     const { acceptInvitation, declineInvitation } = useMutateWalletInvitations();
 
@@ -36,10 +39,9 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
         const promise = acceptInvitation.mutateAsync(invitation.id);
 
         toast.promise(promise, {
-            loading: "Aceptando invitación...",
-            success: `Te uniste a ${invitation.walletName}`,
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al aceptar la invitación",
+            loading: t("wallets.acceptLoading"),
+            success: (response) => getApiMessage(response, t("wallets.acceptFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         try {
@@ -58,10 +60,9 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
         const promise = declineInvitation.mutateAsync(invitation.id);
 
         toast.promise(promise, {
-            loading: "Rechazando invitación...",
-            success: "Invitación rechazada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al rechazar la invitación",
+            loading: t("wallets.declineLoading"),
+            success: (response) => getApiMessage(response, t("wallets.declineFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         try {
@@ -103,7 +104,7 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
             </div>
 
             <div className="px-4 py-4">
-                <p className="text-xs text-helper">Te invitó a unirte a</p>
+                <p className="text-xs text-helper">{t("wallets.invitedYou")}</p>
 
                 <div className="mt-2 flex items-start gap-2">
                     <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-light-5 text-primary">
@@ -111,7 +112,7 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
                     </span>
                     <div className="min-w-0">
                         <h3 className="text-sm font-semibold text-light">
-                            {invitation.walletName || "Billetera compartida"}
+                            {invitation.walletName || t("wallets.sharedWallet")}
                         </h3>
                         {invitation.invitedEmail ? (
                             <p className="mt-0.5 truncate text-xs text-label">

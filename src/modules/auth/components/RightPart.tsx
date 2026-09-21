@@ -19,6 +19,7 @@ export const RightPart = ({
     title,
     subtitle,
 }: RightPartProps) => {
+    const { t } = useTranslation();
     const {
         mutateAsync: loginWithGoogle,
         isPending: isGoogleLoading,
@@ -38,7 +39,7 @@ export const RightPart = ({
                     }`}
                 >
                     <ArrowLeft size={16} />
-                    Volver al inicio
+                    {t("auth.backHome")}
                 </Link>
 
                 <div className="space-y-2 mb-8">

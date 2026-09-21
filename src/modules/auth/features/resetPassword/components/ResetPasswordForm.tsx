@@ -1,19 +1,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 
-const resetPasswordSchema = z
-    .object({
-        code: z.string().min(1, "Código requerido"),
-        password: z.string().min(8, "La contraseña debe tener mínimo 8 caracteres"),
-        confirmPassword: z.string(),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: "Las contraseñas no coinciden",
-        path: ["confirmPassword"],
-    });
-
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+type ResetPasswordFormData = { code: string; password: string; confirmPassword: string };
 
 const inputClass =
     "h-10 w-full rounded-lg border border-light-10 bg-surface px-3 text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
@@ -24,6 +14,15 @@ interface ResetPasswordFormProps {
 }
 
 export const ResetPasswordForm = ({ onSubmit, isLoading }: ResetPasswordFormProps) => {
+    const { t } = useTranslation();
+    const resetPasswordSchema = z.object({
+        code: z.string().min(1, t("auth.validationCodeRequired")),
+        password: z.string().min(8, t("auth.validationPasswordMin")),
+        confirmPassword: z.string(),
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: t("auth.validationPasswordsMatch"),
+        path: ["confirmPassword"],
+    });
     const {
         register,
         handleSubmit,
@@ -41,14 +40,14 @@ export const ResetPasswordForm = ({ onSubmit, isLoading }: ResetPasswordFormProp
                 )(e);
             }}
         >
-            <h1 className="text-3xl font-semibold">Nueva contraseña</h1>
+            <h1 className="text-3xl font-semibold">{t("auth.resetTitle")}</h1>
 
             <p className="text-helper">
-                Revisa tu correo y pega el código recibido.
+                {t("auth.resetDescription")}
             </p>
 
             <input
-                placeholder="Código"
+                placeholder={t("auth.code")}
                 disabled={isLoading}
                 className={inputClass}
                 {...register("code")}
@@ -59,7 +58,7 @@ export const ResetPasswordForm = ({ onSubmit, isLoading }: ResetPasswordFormProp
 
             <input
                 type="password"
-                placeholder="Nueva contraseña"
+                placeholder={t("auth.newPassword")}
                 disabled={isLoading}
                 className={inputClass}
                 {...register("password")}
@@ -70,7 +69,7 @@ export const ResetPasswordForm = ({ onSubmit, isLoading }: ResetPasswordFormProp
 
             <input
                 type="password"
-                placeholder="Confirmar contraseña"
+                placeholder={t("auth.confirmPassword")}
                 disabled={isLoading}
                 className={inputClass}
                 {...register("confirmPassword")}
@@ -84,7 +83,7 @@ export const ResetPasswordForm = ({ onSubmit, isLoading }: ResetPasswordFormProp
                 disabled={isLoading}
                 className="w-full h-10 rounded-lg bg-primary text-light font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
             >
-                {isLoading ? "Actualizando..." : "Actualizar contraseña"}
+                {isLoading ? t("auth.resetLoading") : t("auth.resetButton")}
             </button>
         </form>
     );

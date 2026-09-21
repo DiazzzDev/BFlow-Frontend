@@ -3,6 +3,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { usePostRecurring } from "../hooks/useMutateRecurring";
 import {
@@ -27,6 +28,7 @@ import {
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const recurringSchema = z
     .object({
@@ -79,6 +81,7 @@ interface RecurringFormProps {
 }
 
 export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
+    const { t } = useTranslation();
     // Create mutation
     const createRecurring = usePostRecurring();
 
@@ -137,10 +140,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
         });
 
         toast.promise(promise, {
-            loading: "Programando transacción...",
-            success: "Transacción programada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al programar la transacción",
+            loading: t("transactions.recurringLoading"),
+            success: (response) => getApiMessage(response, t("transactions.recurringFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -177,7 +179,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             />
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="recurringTitle">Título</Label>
+                <Label htmlFor="recurringTitle">{t("transactions.recurringTitle")}</Label>
                 <Controller
                     name="title"
                     control={control}
@@ -196,7 +198,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="recurringDescription">Descripción</Label>
+                <Label htmlFor="recurringDescription">{t("transactions.recurringDescription")}</Label>
                 <Controller
                     name="description"
                     control={control}
@@ -218,7 +220,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="recurringAmount">Monto</Label>
+                <Label htmlFor="recurringAmount">{t("transactions.recurringAmount")}</Label>
                 <Controller
                     name="amount"
                     control={control}
@@ -252,11 +254,11 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     render={({ field }) => (
                         <SelectAutoComplete<Category>
                             idSelect="recurringCategoryId"
-                            label="Categoría"
+                            label={t("transactions.category")}
                             placeholder={
                                 isCategoriesLoading
-                                    ? "Cargando categorías..."
-                                    : "Buscar categoría..."
+                                    ? t("transactions.loadingCategories")
+                                    : t("transactions.searchCategory")
                             }
                             selectedItem={selectedCategory}
                             setSelectedItem={(category) => {
@@ -281,7 +283,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringFrequency">Frecuencia</Label>
+                <Label htmlFor="recurringFrequency">{t("transactions.frequency")}</Label>
                     <Controller
                         name="frequency"
                         control={control}
@@ -309,7 +311,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringInterval">Cada</Label>
+                <Label htmlFor="recurringInterval">{t("transactions.every")}</Label>
                     <Controller
                         name="intervalValue"
                         control={control}
@@ -343,7 +345,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringStartDate">Fecha de inicio</Label>
+                <Label htmlFor="recurringStartDate">{t("transactions.startDate")}</Label>
                     <Controller
                         name="startDate"
                         control={control}
@@ -365,7 +367,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringEndDate">Fecha de fin</Label>
+                <Label htmlFor="recurringEndDate">{t("transactions.endDate")}</Label>
                     <Controller
                         name="endDate"
                         control={control}
@@ -393,7 +395,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 text={
                     createRecurring.isPending
                         ? "Programando..."
-                        : "Programar transacción"
+                        : t("walletView.schedule")
                 }
                 className="self-end"
             />

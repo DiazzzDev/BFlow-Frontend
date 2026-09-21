@@ -1,8 +1,11 @@
-import { SubscriptionCancelButton } from "./SubscriptionCancelButton";
+import { useTranslation } from "react-i18next";
 
 import { useSettingsSubscription } from "../hooks/useSettingsSubscription";
 
+import { SubscriptionCancelButton } from "./SubscriptionCancelButton";
+
 export const SettingsSubscriptionSection = () => {
+    const { t } = useTranslation();
     const {
         subscription,
         statusLabel,
@@ -22,9 +25,9 @@ export const SettingsSubscriptionSection = () => {
         <section className="rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
-                    <h3 className="text-base font-semibold text-light">Suscripción</h3>
+                    <h3 className="text-base font-semibold text-light">{t("settings.subscription")}</h3>
                     <p className="mt-1 text-sm text-helper">
-                        Plan actual: <span className="font-medium text-light">{subscription.planName}</span>
+                        {t("settings.currentPlan")}: <span className="font-medium text-light">{subscription.planName}</span>
                         {statusLabel ? ` - ${statusLabel}` : ""}
                     </p>
                 </div>
@@ -37,22 +40,22 @@ export const SettingsSubscriptionSection = () => {
             </div>
 
             {billingAmount || cancellationDate || renewalDate ? (
-                <dl className="mt-5 grid gap-3 border-t border-light-10 pt-5 text-sm sm:grid-cols-3">
+                <dl className="mt-5 grid gap-3 border-light-10 text-sm sm:grid-cols-3">
                     {billingAmount ? (
                         <div>
-                            <dt className="text-helper">Precio</dt>
+                        <dt className="text-helper">{t("settings.price")}</dt>
                             <dd className="mt-1 font-medium text-light">{billingAmount}</dd>
                         </div>
                     ) : null}
                     {renewalDate ? (
                         <div>
-                            <dt className="text-helper">Próximo cobro</dt>
+                        <dt className="text-helper">{t("settings.nextBilling")}</dt>
                             <dd className="mt-1 font-medium text-light">{renewalDate}</dd>
                         </div>
                     ) : null}
                     {cancellationDate ? (
                         <div>
-                            <dt className="text-helper">Vigente hasta</dt>
+                        <dt className="text-helper">{t("settings.validUntil")}</dt>
                             <dd className="mt-1 font-medium text-light">{cancellationDate}</dd>
                         </div>
                     ) : null}

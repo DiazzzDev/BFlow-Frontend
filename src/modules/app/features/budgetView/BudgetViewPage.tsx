@@ -1,5 +1,6 @@
 import { WalletCards } from "lucide-react";
 import { useParams } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { useBudgetViewPage } from "./hooks/useBudgetViewPage";
 import { BudgetViewTabs } from "./components/BudgetViewTabs";
@@ -13,14 +14,15 @@ import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 
 export const BudgetViewPage = () => {
+    const { t } = useTranslation();
     const { id: budgetId } = useParams<{ id: string }>();
     const view = useBudgetViewPage(budgetId);
 
     if (view.isNotFound) {
         return (
             <CustomEmptyState
-                title="Presupuesto no encontrado"
-                description="El presupuesto que buscas no existe o ya no tienes acceso."
+                title={t("budgetView.notFound")}
+                description={t("budgetView.notFoundHint")}
                 Icon={WalletCards}
             />
         );
@@ -74,21 +76,21 @@ export const BudgetViewPage = () => {
                 <div className="flex flex-1 flex-col gap-5 pb-5">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <BudgetMetricCard
-                            title="Restante"
+                            title={t("budgetView.remaining")}
                             amount={view.budget?.remaining ?? 0}
                             currency={view.currency}
-                            subtitle={`${view.budget?.daysLeft ?? 0} ${(view.budget?.daysLeft ?? 0) === 1 ? "día restante" : "días restantes"}`}
+                            subtitle={`${view.budget?.daysLeft ?? 0} ${(view.budget?.daysLeft ?? 0) === 1 ? t("budgetView.dayRemaining") : t("budgetView.daysRemaining")}`}
                             isLoading={view.isLoading && !view.budget}
                         />
                         <BudgetMetricCard
-                            title="Gastado"
+                            title={t("budgetView.spent")}
                             amount={view.budget?.spent ?? 0}
                             currency={view.currency}
                             subtitle={view.spentSubtitle}
                             isLoading={view.isLoading && !view.budget}
                         />
                         <BudgetMetricCard
-                            title="Presupuesto"
+                            title={t("budgetView.budget")}
                             amount={view.budget?.budgetLimit ?? 0}
                             currency={view.currency}
                             isLoading={view.isLoading && !view.budget}

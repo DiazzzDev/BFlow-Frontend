@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useGetNotifications } from "../hooks/useGetNotifications";
 
@@ -19,6 +20,7 @@ export const NotificationsSidebar = ({
     isOpen,
     onClose,
 }: NotificationsSidebarProps) => {
+    const { t } = useTranslation();
     const { data: notificationsResponse, isLoading } = useGetNotifications();
     const notifications = notificationsResponse?.data ?? [];
     const unreadCount = notifications.filter((notification) => !notification.read).length;
@@ -42,7 +44,7 @@ export const NotificationsSidebar = ({
                 <div className="fixed inset-0 z-50">
                     <motion.button
                         type="button"
-                        aria-label="Cerrar notificaciones"
+                        aria-label={t("notifications.close")}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -61,19 +63,19 @@ export const NotificationsSidebar = ({
                         <div className="flex items-start justify-between gap-3 border-b border-light-10 px-5 py-4">
                             <div>
                                 <h2 className="text-base font-semibold text-light">
-                                    Notificaciones
+                                    {t("a11y.notifications")}
                                 </h2>
                                 <p className="mt-0.5 text-xs text-helper">
                                     {unreadCount > 0
-                                        ? `${unreadCount} sin leer`
-                                        : "Estás al día"}
+                                        ? `${unreadCount} ${t("notifications.unread")}`
+                                        : t("notifications.upToDate")}
                                 </p>
                             </div>
 
                             <button
                                 type="button"
                                 onClick={onClose}
-                                aria-label="Cerrar panel de notificaciones"
+                                aria-label={t("notifications.closePanel")}
                                 className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                             >
                                 <X className="h-4 w-4" />
@@ -97,8 +99,8 @@ export const NotificationsSidebar = ({
                             ) : notifications.length === 0 ? (
                                 <CustomEmptyState
                                     Icon={Bell}
-                                    title="Sin notificaciones"
-                                    description="Cuando tengas novedades, las verás aquí."
+                                    title={t("notifications.empty")}
+                                    description={t("notifications.emptyHint")}
                                     className="my-0!"
                                 />
                             ) : (
