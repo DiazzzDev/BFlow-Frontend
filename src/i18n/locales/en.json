@@ -72,6 +72,9 @@
         "nextBilling": "Next billing",
         "validUntil": "Valid until",
         "editProfile": "Edit profile",
+        "claudeTitle": "Connect with Claude",
+        "claudeDescription": "Add BFlow to Claude as a custom connector to access your financial information.",
+        "connectClaude": "Connect with Claude",
         "profile": "Your profile",
         "profileUpdated": "Profile updated successfully",
         "profileUpdateError": "Could not update the profile",
@@ -101,6 +104,8 @@
             "PAST_DUE": "Payment overdue"
         },
         "cancelLoading": "Canceling subscription...",
+        "cancelling": "Canceling...",
+        "cancel": "Cancel subscription",
         "cancelSuccess": "Subscription canceled successfully",
         "cancelError": "Could not cancel the subscription"
     },

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FolderOpen, LogOut } from "lucide-react";
 
 import { CategoriesModal } from "./components/CategoriesModal";
+import { ConnectClaudeButton } from "./components/ConnectClaudeButton";
 import { EditProfileModal } from "./components/EditProfileModal";
 import { SettingsProfileSection } from "./components/SettingsProfileSection";
 import { SettingsSectionCard } from "./components/SettingsSectionCard";
@@ -13,6 +14,7 @@ import { LanguageSettingsSection } from "./components/LanguageSettingsSection";
 
 import { useLogout } from "@/auth/hooks/useLogout";
 import { Button } from "@/components/controls/Button";
+import { config } from "@/config/config";
 
 export const SettingsPage = () => {
     const { t } = useTranslation();
@@ -39,6 +41,14 @@ export const SettingsPage = () => {
                 <SettingsSubscriptionSection />
 
                 <LanguageSettingsSection />
+
+                {config.MCP_SERVER_URL ? (
+                    <SettingsSectionCard
+                        title={t("settings.claudeTitle")}
+                        description={t("settings.claudeDescription")}
+                        action={<ConnectClaudeButton />}
+                    />
+                ) : null}
 
                 <SettingsSectionCard
                     title={t("settings.categoriesTitle")}

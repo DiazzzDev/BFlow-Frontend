@@ -1,6 +1,6 @@
-import { LANDING_PLANS } from "../utils/landingContent";
 import { useTranslation } from "react-i18next";
 
+import { LANDING_PLANS } from "../utils/landingContent";
 import { PricingCard } from "./PricingCard";
 
 
@@ -14,7 +14,7 @@ export const LandingPricing = () => {
             name: t(`home.plans.${key}.name`, { defaultValue: plan.name }),
             btnText: t(`home.plans.${key}.button`, { defaultValue: plan.btnText }),
             period: t(plan.period === "Año" ? "home.year" : "home.month", { defaultValue: plan.period }),
-            features: t(`home.plans.${key}.features`, { returnObjects: true, defaultValue: plan.features }) as unknown as string[],
+            features: t(`home.plans.${key}.features`, { returnObjects: true, defaultValue: plan.features }),
         };
     });
     return (

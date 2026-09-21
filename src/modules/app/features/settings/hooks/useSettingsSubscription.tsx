@@ -93,7 +93,9 @@ export const useSettingsSubscription = () => {
             activeLanguage,
         ),
         billingAmount:
-            subscription?.billingAmount !== null && subscription?.billingAmount !== undefined
+            subscription?.billingAmount !== null &&
+            subscription?.billingAmount !== undefined &&
+            subscription.billingAmount > 0
                 ? formatCurrency(
                       subscription.billingAmount,
                       "USD",

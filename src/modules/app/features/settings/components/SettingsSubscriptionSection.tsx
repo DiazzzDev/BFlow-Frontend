@@ -40,7 +40,7 @@ export const SettingsSubscriptionSection = () => {
             </div>
 
             {billingAmount || cancellationDate || renewalDate ? (
-                <dl className="mt-5 grid gap-3 border-t border-light-10 pt-5 text-sm sm:grid-cols-3">
+                <dl className="mt-5 grid gap-3 border-light-10 text-sm sm:grid-cols-3">
                     {billingAmount ? (
                         <div>
                         <dt className="text-helper">{t("settings.price")}</dt>

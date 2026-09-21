@@ -72,6 +72,9 @@
         "nextBilling": "Próximo cobro",
         "validUntil": "Vigente hasta",
         "editProfile": "Editar perfil",
+        "claudeTitle": "Conectar con Claude",
+        "claudeDescription": "Añade BFlow a Claude como un conector personalizado para consultar tu información financiera.",
+        "connectClaude": "Conectar con Claude",
         "profile": "Tu perfil",
         "profileUpdated": "Datos actualizados correctamente",
         "profileUpdateError": "Error al actualizar los datos",
@@ -101,6 +104,8 @@
             "PAST_DUE": "Pago pendiente"
         },
         "cancelLoading": "Cancelando suscripción...",
+        "cancelling": "Cancelando...",
+        "cancel": "Cancelar suscripción",
         "cancelSuccess": "Suscripción cancelada correctamente",
         "cancelError": "No se pudo cancelar la suscripción"
     },
