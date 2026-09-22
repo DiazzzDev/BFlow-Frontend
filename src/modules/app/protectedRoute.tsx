@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router";
 
 import { AuthLoadingScreen } from "@/auth/components/AuthLoadingScreen";
+import { AccountDeleted } from "@/auth/components/AccountDeleted";
 import { useAuthStore } from "@/auth/authStore";
 
 /**
@@ -11,6 +12,10 @@ export const ProtectedRoute = () => {
 
     if (authStatus === "checking") {
         return <AuthLoadingScreen />;
+    }
+
+    if (authStatus === "account-deleted") {
+        return <AccountDeleted />;
     }
 
     if (authStatus !== "authenticated") {

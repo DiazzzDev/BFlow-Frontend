@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { FolderOpen, LogOut } from "lucide-react";
+import { AlertTriangle, FolderOpen, LogOut } from "lucide-react";
 
 import { CategoriesModal } from "./components/CategoriesModal";
+import { DeleteAccountModal } from "./components/DeleteAccountModal";
 import { EditProfileModal } from "./components/EditProfileModal";
 import { SettingsProfileSection } from "./components/SettingsProfileSection";
 import { SettingsSectionCard } from "./components/SettingsSectionCard";
@@ -13,6 +14,7 @@ import { Button } from "@/components/controls/Button";
 export const SettingsPage = () => {
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
     const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
 
     const handleLogout = async () => {
@@ -63,6 +65,22 @@ export const SettingsPage = () => {
                         </button>
                     }
                 />
+
+                <SettingsSectionCard
+                    title="Eliminar cuenta"
+                    description="Desactiva tu cuenta y cierra el acceso a tus datos."
+                    titleClassName="text-danger"
+                    action={
+                        <button
+                            type="button"
+                            onClick={() => setIsDeleteAccountModalOpen(true)}
+                            className="flex cursor-pointer items-center gap-2 rounded-lg border border-danger/40 px-5 py-2 text-sm font-medium text-danger transition-colors hover:bg-danger-sweet"
+                        >
+                            <AlertTriangle className="h-4 w-4" />
+                            Eliminar cuenta
+                        </button>
+                    }
+                />
             </div>
 
             <EditProfileModal
@@ -72,6 +90,10 @@ export const SettingsPage = () => {
             <CategoriesModal
                 isOpen={isCategoryModalOpen}
                 onClose={() => setIsCategoryModalOpen(false)}
+            />
+            <DeleteAccountModal
+                isOpen={isDeleteAccountModalOpen}
+                onClose={() => setIsDeleteAccountModalOpen(false)}
             />
         </div>
     );

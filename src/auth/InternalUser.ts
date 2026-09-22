@@ -1,3 +1,5 @@
+export type AccountStatus = "ACTIVE" | "DELETED";
+
 export interface UserProfile {
     id: string;
     email: string;
@@ -14,4 +16,5 @@ export interface InternalUser {
     isNewUser: boolean;
     name: string | null;
     pictureUrl: string | null;
+    status: AccountStatus;
 }

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-    CalendarDays,
     ChartBarIcon,
     ChevronDown,
     LayoutDashboard,
+    LogOut,
     Settings,
     Wallet,
     X,
@@ -19,6 +19,8 @@ import {
     WALLET_NAV_CHILDREN,
 } from "../utils/navItems";
 
+import { useLogout } from "@/auth/hooks/useLogout";
+
 interface NavbarProps {
     isOpen: boolean;
     onClose: () => void;
@@ -28,6 +30,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
     const { pathname } = useLocation();
     const isWalletsSectionActive = isWalletsSectionPath(pathname);
     const [walletsExpanded, setWalletsExpanded] = useState(isWalletsSectionActive);
+    const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
     useEffect(() => {
         onClose();
@@ -210,17 +213,6 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         </AnimatePresence>
                     </div>
 
-                    <NavLink to="/app/calendar" className={linkClassName}>
-                        {({ isActive }) => (
-                            <>
-                                <span className={iconChipClassName(isActive)}>
-                                    <CalendarDays size={15} />
-                                </span>
-                                Calendario
-                            </>
-                        )}
-                    </NavLink>
-
                     <NavLink to="/app/budgets" className={linkClassName}>
                         {({ isActive }) => (
                             <>
@@ -231,10 +223,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                             </>
                         )}
                     </NavLink>
-                </nav>
 
-                <div className="mt-auto pt-4">
-                    <div className="mb-3 h-px bg-light-10" />
                     <NavLink to="/app/settings" className={linkClassName}>
                         {({ isActive }) => (
                             <>
@@ -245,6 +234,21 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                             </>
                         )}
                     </NavLink>
+                </nav>
+
+                <div className="mt-auto pt-4">
+                    <div className="mb-3 h-px bg-light-10" />
+                    <button
+                        type="button"
+                        disabled={isLoggingOut}
+                        onClick={() => logout()}
+                        className="group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-normal text-light-75 transition-all duration-150 hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-light-5 text-helper transition-colors duration-150 group-hover:text-light">
+                            <LogOut size={15} />
+                        </span>
+                        {isLoggingOut ? "Cerrando..." : "Cerrar sesión"}
+                    </button>
                 </div>
             </aside>
         </>

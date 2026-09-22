@@ -3,12 +3,19 @@ import { persist } from "zustand/middleware";
 
 import type { InternalUser } from "./InternalUser";
 
-export type AuthStatus = "checking" | "authenticated" | "not-authenticated";
+import { queryClient } from "@/queryClient";
+
+export type AuthStatus =
+    | "checking"
+    | "authenticated"
+    | "not-authenticated"
+    | "account-deleted";
 
 interface AuthState {
     user: InternalUser | null;
     authStatus: AuthStatus;
     setSession: (user: InternalUser) => void;
+    setDeletedAccount: () => void;
     clearSession: () => void;
     setChecking: () => void;
 }
@@ -20,10 +27,25 @@ export const useAuthStore = create<AuthState>()(
             authStatus: "checking",
 
             setSession: (user) =>
-                set({
-                    user,
-                    authStatus: "authenticated",
+                set(() => {
+                    if (user.status === "DELETED") {
+                        queryClient.clear();
+                        return { user: null, authStatus: "account-deleted" };
+                    }
+
+                    return {
+                        user,
+                        authStatus: "authenticated",
+                    };
                 }),
+
+            setDeletedAccount: () => {
+                queryClient.clear();
+                set({
+                    user: null,
+                    authStatus: "account-deleted",
+                });
+            },
 
             clearSession: () =>
                 set({

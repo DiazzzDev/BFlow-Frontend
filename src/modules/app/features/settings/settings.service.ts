@@ -56,3 +56,11 @@ export const patchProfileData = async (body: { email: string; name: string }) =>
         "Error al actualizar el perfil",
     );
 };
+
+export const deleteAccount = async () => {
+    return await apiRequest<ApiResponse<string>>(
+        `${profileUrl}/me`,
+        { method: "DELETE" },
+        "Error al eliminar la cuenta",
+    );
+};

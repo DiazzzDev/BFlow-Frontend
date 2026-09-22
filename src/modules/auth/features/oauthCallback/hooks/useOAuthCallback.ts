@@ -25,6 +25,11 @@ export const useOAuthCallback = () => {
             try {
                 const user = await completeOAuthLogin();
                 setSession(user);
+
+                if (user.status === "DELETED") {
+                    return;
+                }
+
                 toast.success("Bienvenido");
                 void navigate("/app/dashboard", { replace: true });
             } catch (error) {

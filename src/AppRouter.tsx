@@ -8,7 +8,6 @@ import { SettingsPage } from "./modules/app/features/settings/SettingsPage.tsx";
 import { BudgetsPage } from "./modules/app/features/budgets/BudgetsPage.tsx";
 import { BudgetViewPage } from "./modules/app/features/budgetView/BudgetViewPage.tsx";
 import { HistoryPage } from "./modules/app/features/history/HistoryPage.tsx";
-import { CalendarPage } from "./modules/app/features/calendar/CalendarPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
 import { AppLayout } from "./modules/app/appLayout.tsx";
 // Auth
@@ -52,7 +51,6 @@ export const appRouter = createBrowserRouter([
                     { path: "wallets", element: <WalletsPage /> },
                     { path: "wallets/:id", element: <WalletViewPage /> },
                     { path: "history", element: <HistoryPage /> },
-                    { path: "calendar", element: <CalendarPage /> },
                     { path: "settings", element: <SettingsPage /> },
                     { path: "budgets", element: <BudgetsPage /> },
                     { path: "budgets/:id", element: <BudgetViewPage /> },
