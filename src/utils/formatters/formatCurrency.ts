@@ -5,6 +5,7 @@ export const formatCurrency = (
     currency = "USD",
     language = getActiveLanguage(),
 ): string => {
+    if(currency === null){ currency = 'USD'}
     return new Intl.NumberFormat(language === "es" ? "es-SV" : "en-US", {
         style: "currency",
         currency: currency,
