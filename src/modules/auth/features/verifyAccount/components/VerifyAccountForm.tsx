@@ -196,8 +196,8 @@ export const VerifyAccountForm = ({
                         {cooldown > 0
                             ? `Reenviar código (${cooldown}s)`
                             : isResending
-                            ? "Reenviando..."
-                            : "Reenviar código"}
+                                ? "Reenviando..."
+                                : "Reenviar código"}
                     </button>
                 </div>
 

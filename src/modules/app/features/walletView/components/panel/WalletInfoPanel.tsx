@@ -7,7 +7,8 @@ import {
     WalletViewSidebar,
     type WalletViewSidebarProps,
 } from "../WalletViewSidebar";
-import { ScheduleTransactionModal } from "../modal/ScheduleTransactionModal";
+
+import { ScheduleTransactionModal } from "@/modules/app/features/scheduleTransaction/ScheduleTransactionModal";
 
 interface WalletInfoPanelProps {
     walletId: string;

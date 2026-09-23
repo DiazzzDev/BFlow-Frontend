@@ -26,6 +26,33 @@ export const TAB_TO_TYPE: Record<
     transfers: "TRANSFER",
 };
 
+/** Shared wallets cannot create or list transfers between wallets. */
+export const walletAllowsTransfers = (memberCount: number) => memberCount <= 1;
+
+export const getWalletAllowedTransactionTypes = (memberCount: number) =>
+    walletAllowsTransfers(memberCount)
+        ? (["INCOME", "EXPENSE", "TRANSFER"] as const)
+        : (["INCOME", "EXPENSE"] as const);
+
+export const getVisibleWalletViewTabs = (
+    memberCount: number,
+    options?: { forceHideTransfers?: boolean },
+) =>
+    WALLET_VIEW_TABS.filter(
+        (tab) =>
+            tab.id !== "transfers" ||
+            (!options?.forceHideTransfers &&
+                walletAllowsTransfers(memberCount)),
+    );
+
+export const resolveWalletViewTab = (
+    tab: DetailTab,
+    memberCount: number,
+): DetailTab =>
+    tab === "transfers" && !walletAllowsTransfers(memberCount)
+        ? "overview"
+        : tab;
+
 export const isManagementTab = (tab: DetailTab) =>
     tab === "members" || tab === "settings";
 

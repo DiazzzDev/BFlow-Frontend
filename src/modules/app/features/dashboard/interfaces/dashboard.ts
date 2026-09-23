@@ -1,3 +1,5 @@
+import type { CategoryIconKey } from "@/utils/categoryIcons";
+
 export interface MonthlyStatistic {
     month: string;
     income: number;
@@ -6,20 +8,6 @@ export interface MonthlyStatistic {
 
 export interface DashboardStatistics {
     months: MonthlyStatistic[];
-}
-
-export interface SpendingCategory {
-    categoryId: string;
-    categoryName: string;
-    /** Percent units as returned by API (e.g. 58.7 = 58.7%). */
-    percentage: number;
-}
-
-export interface DashboardSpending {
-    totalSpent: number;
-    /** Percent units as returned by API (e.g. 5.8 = 5.8%). */
-    totalActivityPercentage: number;
-    topCategories: SpendingCategory[];
 }
 
 export interface DashboardActivityBreakdown {
@@ -31,15 +19,16 @@ export interface DashboardActivityBreakdown {
 }
 
 export interface RecentActivityItem {
-    type: string; // TODO: confirmar enum real (ej: "INCOME" | "EXPENSE")
+    type: string;
     name: string;
     createdAt: string;
     amount: number;
     walletName: string;
+    categoryColor: string;
+    categoryIcon: CategoryIconKey;
 }
 
-// TODO: el swagger solo muestra "OK" como ejemplo, confirmar el resto del enum
-export type BudgetHealthStatus = "OK" | (string & {});
+export type BudgetHealthStatus = "OK" | "WARNING" | "CRITICAL" | "EXCEEDED";
 
 export interface BudgetHealth {
     id: string;

@@ -30,7 +30,7 @@ import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 const incomeSchema = z
     .object({
         title: z.string().min(1, "El título es obligatorio"),
-        description: z.string().min(1, "La descripción es obligatoria"),
+        description: z.string().optional(),
         amount: z
             .string()
             .min(1, "El monto es obligatorio")
@@ -224,7 +224,7 @@ export const IncomeForm = ({
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="amount">{t("transactions.amount")}</Label>
+                    <Label htmlFor="amount">{t("transactions.amount")}</Label>
                     <Controller
                         name="amount"
                         control={control}
@@ -252,7 +252,7 @@ export const IncomeForm = ({
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                <Label htmlFor="date">{t("transactions.date")}</Label>
+                    <Label htmlFor="date">{t("transactions.date")}</Label>
                     <Controller
                         name="date"
                         control={control}

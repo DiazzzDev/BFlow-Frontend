@@ -14,8 +14,8 @@
         "create": "Crear",
         "search": "Buscar...",
         "createOption": "Crear “{{value}}”",
-        "noResults": "Sin resultados"
-        ,"operationError": "No se pudo completar la operación."
+        "noResults": "Sin resultados",
+        "operationError": "No se pudo completar la operación."
     },
     "dates": {
         "today": "Hoy",
@@ -93,7 +93,11 @@
         "categoryHint": "Agrega una categoría para empezar a clasificar tus movimientos.",
         "edit": "Editar",
         "delete": "Eliminar",
-        "categoryType": { "ALL": "Todas", "EXPENSE": "Gastos", "INCOME": "Ingresos" }
+        "categoryType": {
+            "ALL": "Todas",
+            "EXPENSE": "Gastos",
+            "INCOME": "Ingresos"
+        }
     },
     "subscription": {
         "status": {
@@ -144,10 +148,34 @@
         "critical": "Crítico",
         "saving": "Guardando...",
         "scopeLabel": "Alcance del presupuesto",
-        "periods": { "all": "Todos", "monthly": "Mensual", "weekly": "Semanal", "yearly": "Anual" },
-        "scopes": { "wallet": "Billetera", "category": "Categoría", "walletCategory": "Billetera + categoría" },
-        "sort": { "amountDesc": "Mayor monto", "amountAsc": "Menor monto", "updated": "Más recientes", "start": "Inicio reciente" },
-        "status": { "OK": "Activo", "exceeded": "Excedido", "healthy": "Saludable", "critical": "Crítico", "warning": "Advertencia", "active": "Activo" }
+        "periods": {
+            "all": "Todos",
+            "monthly": "Mensual",
+            "weekly": "Semanal",
+            "yearly": "Anual"
+        },
+        "scopes": {
+            "wallet": "Billetera",
+            "category": "Categoría",
+            "walletCategory": "Billetera + categoría"
+        },
+        "sort": {
+            "amountDesc": "Mayor monto",
+            "amountAsc": "Menor monto",
+            "updated": "Más recientes",
+            "start": "Inicio reciente"
+        },
+        "status": {
+            "OK": "Saludable",
+            "WARNING": "Advertencia",
+            "CRITICAL": "Crítico",
+            "EXCEEDED": "Excedido",
+            "exceeded": "Excedido",
+            "healthy": "Saludable",
+            "critical": "Crítico",
+            "warning": "Advertencia",
+            "active": "Activo"
+        }
     },
     "wallets": {
         "createLoading": "Creando billetera...",
@@ -209,9 +237,9 @@
         "deleteTitle": "Eliminar billetera",
         "deleteLoading": "Eliminando billetera...",
         "deleteConfirm": "Eliminar",
-        "memberDeleteConfirm": "Eliminar miembro"
-        ,"searchCollaborator": "Buscar por nombre o correo..."
-        ,"minSearchChars": "Escribe al menos 2 caracteres para buscar."
+        "memberDeleteConfirm": "Eliminar miembro",
+        "searchCollaborator": "Buscar por nombre o correo...",
+        "minSearchChars": "Escribe al menos 2 caracteres para buscar."
     },
     "transactions": {
         "createExpenseLoading": "Creando gasto...",
@@ -279,14 +307,14 @@
         "outgoingHint": "El dinero saldrá de esta billetera hacia la seleccionada.",
         "incomingHint": "El dinero entrará a esta billetera desde la seleccionada.",
         "invertHint": "Toca la flecha para invertir el sentido.",
-        "transferReason": "Motivo de la transferencia"
-        ,"recurringTitle": "Título"
-        ,"recurringDescription": "Descripción"
-        ,"recurringAmount": "Monto"
-        ,"frequency": "Frecuencia"
-        ,"every": "Cada"
-        ,"startDate": "Fecha de inicio"
-        ,"endDate": "Fecha de fin"
+        "transferReason": "Motivo de la transferencia",
+        "recurringTitle": "Título",
+        "recurringDescription": "Descripción",
+        "recurringAmount": "Monto",
+        "frequency": "Frecuencia",
+        "every": "Cada",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin"
     },
     "walletView": {
         "notFound": "Billetera no encontrada",
@@ -385,10 +413,10 @@
         "markFallback": "Notificación marcada como leída",
         "close": "Cerrar notificaciones",
         "closePanel": "Cerrar panel de notificaciones",
-        "empty": "Sin notificaciones"
-        ,"unread": "sin leer"
-        ,"upToDate": "Estás al día"
-        ,"emptyHint": "Cuando tengas novedades, las verás aquí."
+        "empty": "Sin notificaciones",
+        "unread": "sin leer",
+        "upToDate": "Estás al día",
+        "emptyHint": "Cuando tengas novedades, las verás aquí."
     },
     "profile": {
         "updateLoading": "Actualizando datos...",
@@ -411,6 +439,7 @@
         "evening": "Buenas noches",
         "subtitle": "Así está tu dinero en este momento.",
         "newTransaction": "Nueva transacción",
+        "scheduleTransaction": "Programar transacción",
         "totalBalance": "Balance total",
         "vsLastMonth": "frente al mes pasado",
         "budgetHealth": "Salud de presupuestos",
@@ -431,6 +460,10 @@
         "noExpenses": "Sin gastos",
         "expensesHint": "Cuando registres gastos, verás las categorías aquí.",
         "statistics": "Estadísticas",
+        "statisticsPeriod": "Periodo",
+        "statisticsPeriodMonth": "Este mes",
+        "statisticsPeriodWeek": "Esta semana",
+        "statisticsPeriodYear": "Este año",
         "totalIncome": "Ingresos totales",
         "totalExpenses": "Gastos totales",
         "noStatistics": "Sin estadísticas",
@@ -478,19 +511,73 @@
         "month": "Mes",
         "year": "Año",
         "plans": {
-            "personal": { "name": "Personal", "button": "Empezar gratis", "features": ["Hasta 2 wallets", "Hasta 2 Recurrencias", "Hasta 3 presupuestos", "Participar en una wallet con un máximo de 3 personas"] },
-            "pro": { "name": "BFlow Pro", "button": "Empezar con Pro", "features": ["Hasta un máximo de 100 wallets", "Hasta un máximo de 25 Recurrencias", "Hasta un máximo de 100 presupuestos", "Crear wallets compartidas, invitar y administrar un máximo de 10 personas", "Transacciones entre wallets", "Personalización de dashboard", "Autocompletado inteligente"] },
-            "annual": { "name": "BFlow Pro anual", "button": "Empezar con Pro anual", "features": ["Hasta un máximo de 100 wallets", "Hasta un máximo de 25 Recurrencias", "Hasta un máximo de 100 presupuestos", "Crear wallets compartidas, invitar y administrar un máximo de 10 personas", "Transacciones entre wallets", "Personalización de dashboard", "Autocompletado inteligente"] }
+            "personal": {
+                "name": "Personal",
+                "button": "Empezar gratis",
+                "features": [
+                    "Hasta 2 wallets",
+                    "Hasta 2 Recurrencias",
+                    "Hasta 3 presupuestos",
+                    "Participar en una wallet con un máximo de 3 personas"
+                ]
+            },
+            "pro": {
+                "name": "BFlow Pro",
+                "button": "Empezar con Pro",
+                "features": [
+                    "Hasta un máximo de 100 wallets",
+                    "Hasta un máximo de 25 Recurrencias",
+                    "Hasta un máximo de 100 presupuestos",
+                    "Crear wallets compartidas, invitar y administrar un máximo de 10 personas",
+                    "Transacciones entre wallets",
+                    "Personalización de dashboard",
+                    "Autocompletado inteligente"
+                ]
+            },
+            "annual": {
+                "name": "BFlow Pro anual",
+                "button": "Empezar con Pro anual",
+                "features": [
+                    "Hasta un máximo de 100 wallets",
+                    "Hasta un máximo de 25 Recurrencias",
+                    "Hasta un máximo de 100 presupuestos",
+                    "Crear wallets compartidas, invitar y administrar un máximo de 10 personas",
+                    "Transacciones entre wallets",
+                    "Personalización de dashboard",
+                    "Autocompletado inteligente"
+                ]
+            }
         },
         "steps": [
-            { "title": "Crea tu cuenta", "description": "Regístrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.", "alt": "Pantalla de registro de BFlow" },
-            { "title": "Agrega tus billeteras", "description": "Crea billeteras para cada cuenta bancaria, efectivo o tarjeta e invita miembros si quieres compartirlas.", "alt": "Pantalla para agregar una billetera" },
-            { "title": "Controla tus finanzas", "description": "Registra movimientos, define presupuestos y visualiza tu situación financiera en tiempo real.", "alt": "Dashboard de BFlow" }
+            {
+                "title": "Crea tu cuenta",
+                "description": "Regístrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.",
+                "alt": "Pantalla de registro de BFlow"
+            },
+            {
+                "title": "Agrega tus billeteras",
+                "description": "Crea billeteras para cada cuenta bancaria, efectivo o tarjeta e invita miembros si quieres compartirlas.",
+                "alt": "Pantalla para agregar una billetera"
+            },
+            {
+                "title": "Controla tus finanzas",
+                "description": "Registra movimientos, define presupuestos y visualiza tu situación financiera en tiempo real.",
+                "alt": "Dashboard de BFlow"
+            }
         ],
         "faq": [
-            { "question": "¿Por qué usar BFlow?", "answer": "BFlow te ayuda a organizar ingresos, gastos y billeteras compartidas en un solo lugar, con una interfaz simple pensada para el día a día." },
-            { "question": "¿Mis datos están seguros?", "answer": "Sí. Usamos autenticación segura y buenas prácticas de protección de datos para que tu información financiera esté resguardada." },
-            { "question": "¿Qué pasarela de pago es utilizada en Bflow?", "answer": "Los pagos de planes premium se procesan a través de una pasarela de pago confiable. El detalle se confirma al momento de la suscripción." }
+            {
+                "question": "¿Por qué usar BFlow?",
+                "answer": "BFlow te ayuda a organizar ingresos, gastos y billeteras compartidas en un solo lugar, con una interfaz simple pensada para el día a día."
+            },
+            {
+                "question": "¿Mis datos están seguros?",
+                "answer": "Sí. Usamos autenticación segura y buenas prácticas de protección de datos para que tu información financiera esté resguardada."
+            },
+            {
+                "question": "¿Qué pasarela de pago es utilizada en Bflow?",
+                "answer": "Los pagos de planes premium se procesan a través de una pasarela de pago confiable. El detalle se confirma al momento de la suscripción."
+            }
         ]
     },
     "auth": {

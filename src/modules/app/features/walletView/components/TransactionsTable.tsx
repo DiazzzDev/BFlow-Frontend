@@ -33,6 +33,8 @@ interface TransactionsTableProps {
     query: string;
     currency?: string;
     showCategory?: boolean;
+    /** Hide "registered by" when the wallet has a single member. */
+    showRegisteredBy?: boolean;
     onEdit?: (transaction: Transaction) => void;
     onDelete?: (transaction: Transaction) => void;
     onDuplicate?: (transaction: Transaction) => void;
@@ -75,8 +77,13 @@ const ContributorAvatar = ({
     );
 };
 
-const TransactionCategoryCell = ({ transaction }: { transaction: Transaction }) => {
+const TransactionCategoryCell = ({
+    transaction,
+}: {
+    transaction: Transaction;
+}) => {
     const { t } = useTranslation();
+
     if (hasCategory(transaction)) {
         const color = transaction.categoryColor || "#64748B";
 
@@ -123,53 +130,209 @@ const TransactionContributorCell = ({
     );
 };
 
+interface TransactionActionsMenuProps {
+    transaction: Transaction;
+    actionsDisabled: boolean;
+    onEdit?: (transaction: Transaction) => void;
+    onDelete?: (transaction: Transaction) => void;
+    onDuplicate?: (transaction: Transaction) => void;
+}
+
+const TransactionActionsMenu = ({
+    transaction,
+    actionsDisabled,
+    onEdit,
+    onDelete,
+    onDuplicate,
+}: TransactionActionsMenuProps) => {
+    const { t } = useTranslation();
+    const showManageActions = canEditOrDelete(transaction.type);
+
+    return (
+        <Menu as="div" className="relative">
+            <MenuButton
+                type="button"
+                disabled={actionsDisabled}
+                aria-label={t("transactions.actions")}
+                className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50"
+            >
+                <MoreVertical className="h-4 w-4" />
+            </MenuButton>
+
+            <MenuItems
+                anchor="bottom end"
+                className="z-50 w-48 rounded-xl border border-light-10 bg-surface p-1 shadow-custom focus:outline-none"
+            >
+                {showManageActions && onEdit && (
+                    <MenuItem>
+                        {({ focus }) => (
+                            <button
+                                type="button"
+                                onClick={() => onEdit(transaction)}
+                                className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${
+                                    focus ? "bg-light-5" : ""
+                                }`}
+                            >
+                                <Pencil className="h-4 w-4 text-helper" />
+                                {t("transactions.update")}
+                            </button>
+                        )}
+                    </MenuItem>
+                )}
+
+                {onDuplicate && (
+                    <MenuItem>
+                        {({ focus }) => (
+                            <button
+                                type="button"
+                                onClick={() => onDuplicate(transaction)}
+                                className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${
+                                    focus ? "bg-light-5" : ""
+                                }`}
+                            >
+                                <Copy className="h-4 w-4 text-helper" />
+                                {t("wallets.duplicate")}
+                            </button>
+                        )}
+                    </MenuItem>
+                )}
+
+                {showManageActions && onDelete && (
+                    <MenuItem>
+                        {({ focus }) => (
+                            <button
+                                type="button"
+                                onClick={() => onDelete(transaction)}
+                                className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-danger ${
+                                    focus ? "bg-danger-sweet" : ""
+                                }`}
+                            >
+                                <Trash2 className="h-4 w-4" />
+                                {t("transactions.delete")}
+                            </button>
+                        )}
+                    </MenuItem>
+                )}
+            </MenuItems>
+        </Menu>
+    );
+};
+
+const tableHeaderClass =
+    "border-b border-light-10 px-3 py-4 text-left text-sm font-medium text-light first:pl-7 last:pr-7";
+const tableCellClass =
+    "border-b border-light-10 px-3 py-5 align-middle first:pl-7 last:pr-7";
+
 export const TransactionsTable = ({
     transactions,
     isLoading,
     query,
     currency = "USD",
     showCategory = true,
+    showRegisteredBy = true,
     onEdit,
     onDelete,
     onDuplicate,
     actionsDisabled = false,
 }: TransactionsTableProps) => {
     const { t } = useTranslation();
-    const desktopGridClass = showCategory
-        ? "@5xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,0.7fr)_minmax(0,0.75fr)_auto]"
-        : "@5xl:grid-cols-[minmax(0,1.8fr)_minmax(0,1.3fr)_minmax(0,0.7fr)_minmax(0,0.75fr)_auto]";
 
     if (isLoading) {
         return (
-            <section className="flex flex-col">
-                {Array.from({ length: 6 }).map((_, index) => (
-                    <WalletItemSkeleton key={index} className="px-4 sm:px-7">
-                        <div
-                            className={`flex items-start justify-between gap-3 @5xl:grid @5xl:items-center @5xl:gap-3 ${desktopGridClass}`}
+            <>
+                <section className="flex flex-col @5xl:hidden">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <WalletItemSkeleton
+                            key={index}
+                            className="px-4 sm:px-7"
                         >
-                            <div className="min-w-0 flex-1 space-y-2">
-                                <SkeletonText className="h-4 w-28 sm:w-36" />
-                                <div className="flex items-center gap-2 @5xl:hidden">
-                                    <SkeletonText className="h-6 w-6 rounded-full" />
-                                    <SkeletonText className="h-3 w-28" />
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0 flex-1 space-y-2">
+                                    <SkeletonText className="h-4 w-28 sm:w-36" />
+                                    {showRegisteredBy ? (
+                                        <div className="flex items-center gap-2">
+                                            <SkeletonText className="h-6 w-6 rounded-full" />
+                                            <SkeletonText className="h-3 w-28" />
+                                        </div>
+                                    ) : (
+                                        <SkeletonText className="h-3 w-20" />
+                                    )}
+                                </div>
+                                <div className="flex shrink-0 items-center gap-2">
+                                    <SkeletonText className="h-4 w-16" />
+                                    <SkeletonText className="size-5" />
                                 </div>
                             </div>
-                            <div className="hidden items-center gap-2 @5xl:flex">
-                                <SkeletonText className="h-8 w-8 rounded-full" />
-                                <SkeletonText className="h-4 w-24" />
-                            </div>
-                            {showCategory ? (
-                                <SkeletonText className="hidden h-4 w-20 @5xl:block" />
-                            ) : null}
-                            <SkeletonText className="hidden h-4 w-20 @5xl:block" />
-                            <div className="flex shrink-0 items-center gap-2">
-                                <SkeletonText className="h-4 w-16" />
-                                <SkeletonText className="size-5" />
-                            </div>
-                        </div>
-                    </WalletItemSkeleton>
-                ))}
-            </section>
+                        </WalletItemSkeleton>
+                    ))}
+                </section>
+
+                <div className="hidden @5xl:block">
+                    <table className="w-full table-fixed">
+                        <thead>
+                            <tr>
+                                <th className={tableHeaderClass}>
+                                    {t("walletView.transaction")}
+                                </th>
+                                {showRegisteredBy ? (
+                                    <th className={tableHeaderClass}>
+                                        {t("walletView.registeredBy")}
+                                    </th>
+                                ) : null}
+                                {showCategory ? (
+                                    <th className={tableHeaderClass}>
+                                        {t("walletView.category")}
+                                    </th>
+                                ) : null}
+                                <th className={tableHeaderClass}>
+                                    {t("walletView.date")}
+                                </th>
+                                <th
+                                    className={`${tableHeaderClass} text-right`}
+                                >
+                                    {t("walletView.amount")}
+                                </th>
+                                <th className={`${tableHeaderClass} w-12`}>
+                                    <span className="sr-only">
+                                        {t("transactions.actions")}
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Array.from({ length: 6 }).map((_, index) => (
+                                <tr key={index}>
+                                    <td className={tableCellClass}>
+                                        <SkeletonText className="h-4 w-36" />
+                                    </td>
+                                    {showRegisteredBy ? (
+                                        <td className={tableCellClass}>
+                                            <div className="flex items-center gap-2">
+                                                <SkeletonText className="h-8 w-8 rounded-full" />
+                                                <SkeletonText className="h-4 w-24" />
+                                            </div>
+                                        </td>
+                                    ) : null}
+                                    {showCategory ? (
+                                        <td className={tableCellClass}>
+                                            <SkeletonText className="h-4 w-20" />
+                                        </td>
+                                    ) : null}
+                                    <td className={tableCellClass}>
+                                        <SkeletonText className="h-4 w-20" />
+                                    </td>
+                                    <td className={tableCellClass}>
+                                        <SkeletonText className="ml-auto h-4 w-16" />
+                                    </td>
+                                    <td className={tableCellClass}>
+                                        <SkeletonText className="size-5" />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </>
         );
     }
 
@@ -177,7 +340,11 @@ export const TransactionsTable = ({
         return (
             <div className="h-full p-4 sm:p-7">
                 <CustomEmptyState
-                    title={query.trim() ? t("walletView.searchResults") : t("transactions.noTransactions")}
+                    title={
+                        query.trim()
+                            ? t("walletView.searchResults")
+                            : t("transactions.noTransactions")
+                    }
                     description={
                         query.trim()
                             ? t("walletView.searchHint")
@@ -190,156 +357,191 @@ export const TransactionsTable = ({
     }
 
     return (
-        <section className="flex flex-col">
-            {transactions.map((tx) => {
-                const amount = displayAmount(tx);
-                const showManageActions = canEditOrDelete(tx.type);
-                const contributorName = getContributorDisplayName(tx);
-                const categoryLabel = hasCategory(tx)
-                    ? tx.categoryName || "—"
-                    : tx.counterpartWalletName || t("walletView.transfer");
-                const categoryColor = hasCategory(tx)
-                    ? tx.categoryColor || "#64748B"
-                    : undefined;
+        <>
+            {/* Mobile: stacked card rows */}
+            <section className="flex flex-col @5xl:hidden">
+                {transactions.map((tx) => {
+                    const amount = displayAmount(tx);
+                    const categoryLabel = hasCategory(tx)
+                        ? tx.categoryName || "—"
+                        : tx.counterpartWalletName || t("walletView.transfer");
+                    const categoryColor = hasCategory(tx)
+                        ? tx.categoryColor || "#64748B"
+                        : undefined;
 
-                return (
-                    <WalletItem key={tx.id} className="px-4 sm:px-7">
-                        <div
-                            className={`flex items-start justify-between gap-3 @5xl:grid @5xl:items-center @5xl:gap-3 ${desktopGridClass}`}
-                        >
-                            <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-semibold text-light">
-                                    {tx.title}
-                                </p>
+                    return (
+                        <WalletItem key={tx.id} className="px-4 sm:px-7">
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="min-w-0 flex-1">
+                                    <p className="truncate text-sm font-semibold text-light">
+                                        {tx.title}
+                                    </p>
 
-                                <div className="mt-2 flex flex-col gap-1.5 @5xl:hidden">
-                                    <div className="flex min-w-0 items-center gap-2">
-                                        <ContributorAvatar
-                                            transaction={tx}
-                                            sizeClassName="h-6 w-6"
-                                            textClassName="text-[9px]"
-                                        />
-                                        <span className="truncate text-xs text-helper">
-                                            {contributorName}
-                                        </span>
-                                        <span className="shrink-0 text-xs text-label">
-                                            · {formatMonthYear(tx.date)}
-                                        </span>
+                                    <div className="mt-2 flex flex-col gap-1.5">
+                                        <div className="flex min-w-0 items-center gap-2">
+                                            {showRegisteredBy ? (
+                                                <>
+                                                    <ContributorAvatar
+                                                        transaction={tx}
+                                                        sizeClassName="h-6 w-6"
+                                                        textClassName="text-[9px]"
+                                                    />
+                                                    <span className="truncate text-xs text-helper">
+                                                        {getContributorDisplayName(
+                                                            tx,
+                                                        )}
+                                                    </span>
+                                                    <span className="shrink-0 text-xs text-label">
+                                                        ·{" "}
+                                                        {formatMonthYear(
+                                                            tx.date,
+                                                        )}
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <span className="shrink-0 text-xs text-label">
+                                                    {formatMonthYear(tx.date)}
+                                                </span>
+                                            )}
+                                        </div>
+                                        {showCategory ? (
+                                            hasCategory(tx) ? (
+                                                <span
+                                                    className="w-fit max-w-full truncate rounded-full px-2 py-0.5 text-[11px] font-medium"
+                                                    style={{
+                                                        backgroundColor: `${categoryColor}22`,
+                                                        color: categoryColor,
+                                                    }}
+                                                >
+                                                    {categoryLabel}
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex w-fit items-center gap-1 text-xs text-helper">
+                                                    <ArrowLeftRight className="h-3 w-3" />
+                                                    {categoryLabel}
+                                                </span>
+                                            )
+                                        ) : null}
                                     </div>
+                                </div>
 
-                                    {showCategory ? (
-                                        hasCategory(tx) ? (
-                                            <span
-                                                className="w-fit max-w-full truncate rounded-full px-2 py-0.5 text-[11px] font-medium"
-                                                style={{
-                                                    backgroundColor: `${categoryColor}22`,
-                                                    color: categoryColor,
-                                                }}
-                                            >
-                                                {categoryLabel}
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex w-fit items-center gap-1 text-xs text-helper">
-                                                <ArrowLeftRight className="h-3 w-3" />
-                                                {categoryLabel}
-                                            </span>
-                                        )
-                                    ) : null}
+                                <div className="flex shrink-0 items-start gap-1">
+                                    <p
+                                        className={`pt-0.5 text-right text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
+                                            tx.type,
+                                            amount,
+                                        )}`}
+                                    >
+                                        {formatCurrency(amount, currency)}
+                                    </p>
+
+                                    <TransactionActionsMenu
+                                        transaction={tx}
+                                        actionsDisabled={actionsDisabled}
+                                        onEdit={onEdit}
+                                        onDelete={onDelete}
+                                        onDuplicate={onDuplicate}
+                                    />
                                 </div>
                             </div>
+                        </WalletItem>
+                    );
+                })}
+            </section>
 
-                            <div className="hidden min-w-0 @5xl:block">
-                                <TransactionContributorCell transaction={tx} />
-                            </div>
-
-                            {showCategory ? (
-                                <div className="hidden min-w-0 @5xl:block">
-                                    <TransactionCategoryCell transaction={tx} />
-                                </div>
+            {/* Desktop: real table so columns hide cleanly */}
+            <div className="hidden @5xl:block">
+                <table className="w-full table-fixed">
+                    <thead>
+                        <tr>
+                            <th className={tableHeaderClass}>
+                                {t("walletView.transaction")}
+                            </th>
+                            {showRegisteredBy ? (
+                                <th className={tableHeaderClass}>
+                                    {t("walletView.registeredBy")}
+                                </th>
                             ) : null}
+                            {showCategory ? (
+                                <th className={tableHeaderClass}>
+                                    {t("walletView.category")}
+                                </th>
+                            ) : null}
+                            <th className={tableHeaderClass}>
+                                {t("walletView.date")}
+                            </th>
+                            <th className={`${tableHeaderClass} text-right`}>
+                                {t("walletView.amount")}
+                            </th>
+                            <th className={`${tableHeaderClass} w-14`}>
+                                <span className="sr-only">
+                                    {t("transactions.actions")}
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map((tx) => {
+                            const amount = displayAmount(tx);
 
-                            <p className="hidden truncate text-sm text-helper @5xl:block">
-                                {formatMonthYear(tx.date)}
-                            </p>
-
-                            <div className="flex shrink-0 items-start gap-1 @5xl:contents">
-                                <p
-                                    className={`pt-0.5 text-right text-sm font-semibold tabular-nums @5xl:pt-0 ${getTransactionAmountClassName(
-                                        tx.type,
-                                        amount,
-                                    )}`}
+                            return (
+                                <tr
+                                    key={tx.id}
+                                    className="transition-colors hover:bg-secondary/40"
                                 >
-                                    {formatCurrency(amount, currency)}
-                                </p>
-
-                                <Menu as="div" className="relative @5xl:justify-self-end">
-                                    <MenuButton
-                                        type="button"
-                                        disabled={actionsDisabled}
-                                        aria-label={t("transactions.actions")}
-                                        className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50"
-                                    >
-                                        <MoreVertical className="h-4 w-4" />
-                                    </MenuButton>
-
-                                    <MenuItems
-                                        anchor="bottom end"
-                                        className="z-50 w-48 rounded-xl border border-light-10 bg-surface p-1 shadow-custom focus:outline-none"
-                                    >
-                                        {showManageActions && onEdit && (
-                                            <MenuItem>
-                                                {({ focus }) => (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => onEdit(tx)}
-                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${focus ? "bg-light-5" : ""
-                                                            }`}
-                                                    >
-                                                        <Pencil className="h-4 w-4 text-helper" />
-                                                        {t("transactions.update")}
-                                                    </button>
-                                                )}
-                                            </MenuItem>
-                                        )}
-
-                                        {onDuplicate && (
-                                            <MenuItem>
-                                                {({ focus }) => (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => onDuplicate(tx)}
-                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-light ${focus ? "bg-light-5" : ""
-                                                            }`}
-                                                    >
-                                                        <Copy className="h-4 w-4 text-helper" />
-                                                        {t("wallets.duplicate")}
-                                                    </button>
-                                                )}
-                                            </MenuItem>
-                                        )}
-
-                                        {showManageActions && onDelete && (
-                                            <MenuItem>
-                                                {({ focus }) => (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => onDelete(tx)}
-                                                        className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-danger ${focus ? "bg-danger-sweet" : ""
-                                                            }`}
-                                                    >
-                                                        <Trash2 className="h-4 w-4" />
-                                                        {t("transactions.delete")}
-                                                    </button>
-                                                )}
-                                            </MenuItem>
-                                        )}
-                                    </MenuItems>
-                                </Menu>
-                            </div>
-                        </div>
-                    </WalletItem>
-                );
-            })}
-        </section>
+                                    <td className={tableCellClass}>
+                                        <p className="truncate text-sm font-semibold text-light">
+                                            {tx.title}
+                                        </p>
+                                    </td>
+                                    {showRegisteredBy ? (
+                                        <td className={tableCellClass}>
+                                            <TransactionContributorCell
+                                                transaction={tx}
+                                            />
+                                        </td>
+                                    ) : null}
+                                    {showCategory ? (
+                                        <td className={tableCellClass}>
+                                            <TransactionCategoryCell
+                                                transaction={tx}
+                                            />
+                                        </td>
+                                    ) : null}
+                                    <td className={tableCellClass}>
+                                        <p className="truncate text-sm text-helper">
+                                            {formatMonthYear(tx.date)}
+                                        </p>
+                                    </td>
+                                    <td className={tableCellClass}>
+                                        <p
+                                            className={`text-right text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
+                                                tx.type,
+                                                amount,
+                                            )}`}
+                                        >
+                                            {formatCurrency(amount, currency)}
+                                        </p>
+                                    </td>
+                                    <td className={tableCellClass}>
+                                        <div className="flex justify-end">
+                                            <TransactionActionsMenu
+                                                transaction={tx}
+                                                actionsDisabled={
+                                                    actionsDisabled
+                                                }
+                                                onEdit={onEdit}
+                                                onDelete={onDelete}
+                                                onDuplicate={onDuplicate}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
+        </>
     );
 };

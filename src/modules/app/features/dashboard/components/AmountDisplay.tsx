@@ -1,6 +1,12 @@
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
-export const AmountDisplay = ({ amount, currency }: { amount: number; currency: string }) => {
+interface AmountDisplayProps {
+    amount: number;
+    currency: string;
+}
+
+// Split whole vs cents so decimals render muted
+export const AmountDisplay = ({ amount, currency }: AmountDisplayProps) => {
     const formatted = formatCurrency(amount, currency);
     const decimalIndex = formatted.lastIndexOf(".");
 

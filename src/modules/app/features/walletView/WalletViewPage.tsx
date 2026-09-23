@@ -45,6 +45,8 @@ export const WalletViewPage = () => {
                 />
 
                 <WalletViewTabs
+                    isLoading={view.isWalletLoading}
+                    members={view.memberCount}
                     activeTab={view.activeTab}
                     onChange={view.setTab}
                     className={isManagementTab(view.activeTab) ? "" : "mb-5"}
@@ -68,10 +70,12 @@ export const WalletViewPage = () => {
                         isLoading={view.isLoadingList}
                         currency={view.wallet?.currency}
                         showCategory={view.activeTab !== "transfers"}
+                        showRegisteredBy={view.memberCount > 1}
                         initialType={view.transactionType}
                         totalTransactions={view.totalTransactions}
                         numberOfElements={view.numberOfElements}
                         totalPages={view.totalPages}
+                        members={view.memberCount}
                     />
                 )}
             </section>

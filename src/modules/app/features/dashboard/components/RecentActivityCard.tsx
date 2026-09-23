@@ -3,7 +3,10 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import type { RecentActivityItem } from "../interfaces/dashboard";
-import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
+import {
+    dashboardCardClass,
+    dashboardLabelClass,
+} from "../utils/dashboardCard";
 
 import { RecentActivityRow } from "./RecentActivityRow";
 
@@ -25,6 +28,7 @@ export const RecentActivityCard = ({
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+    // Navigate to wallets history (or custom handler)
     const handleViewAll = () => {
         if (onViewAll) {
             onViewAll();
@@ -36,7 +40,9 @@ export const RecentActivityCard = ({
     return (
         <div className={dashboardCardClass}>
             <div className="mb-3 flex items-center justify-between">
-                <p className={dashboardLabelClass}>{t("dashboard.recentActivity")}</p>
+                <p className={dashboardLabelClass}>
+                    {t("dashboard.recentActivity")}
+                </p>
                 <button
                     type="button"
                     onClick={handleViewAll}

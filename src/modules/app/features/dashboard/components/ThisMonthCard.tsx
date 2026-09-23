@@ -1,6 +1,12 @@
-import type { DashboardActivityBreakdown } from "../interfaces/dashboard";
 import { useTranslation } from "react-i18next";
-import { dashboardCardClass, dashboardHeroClass, dashboardLabelClass } from "../utils/dashboardCard";
+
+import type { DashboardActivityBreakdown } from "../interfaces/dashboard";
+import { ACTIVITY_BREAKDOWN_SEGMENTS } from "../utils/activityBreakdown";
+import {
+    dashboardCardClass,
+    dashboardHeroClass,
+    dashboardLabelClass,
+} from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
 
 import { SegmentedBar } from "./SegmentedBar";
@@ -10,23 +16,14 @@ interface ThisMonthCardProps {
     breakdown: DashboardActivityBreakdown | undefined;
 }
 
-const ACTIVITY_SEGMENTS: Array<{
-    key: keyof Pick<
-        DashboardActivityBreakdown,
-        "incomePercentage" | "expensePercentage" | "transferPercentage"
-    >;
-    keyLabel: "income" | "expenses" | "transfers";
-    colorClass: string;
-}> = [
-    { key: "incomePercentage", keyLabel: "income", colorClass: "bg-info" },
-    { key: "expensePercentage", keyLabel: "expenses", colorClass: "bg-primary" },
-    { key: "transferPercentage", keyLabel: "transfers", colorClass: "bg-success" },
-];
-
 export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
     const { t } = useTranslation();
-    const activityPercent = formatPercentValue(breakdown?.activityChangePercentage ?? 0);
-    const segments = ACTIVITY_SEGMENTS.map((segment) => ({
+
+    // Hero % + bar segments from activity-breakdown
+    const activityPercent = formatPercentValue(
+        breakdown?.activityChangePercentage ?? 0,
+    );
+    const segments = ACTIVITY_BREAKDOWN_SEGMENTS.map((segment) => ({
         label: t(`dashboard.${segment.keyLabel}`),
         percent: breakdown?.[segment.key] ?? 0,
         colorClass: segment.colorClass,
