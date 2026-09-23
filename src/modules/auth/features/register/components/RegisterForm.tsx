@@ -2,12 +2,12 @@ import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
+import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 
 interface RegisterCredentials {
     email: string;
@@ -15,10 +15,31 @@ interface RegisterCredentials {
     fullName: string;
 }
 
-type RegisterFormInputs = RegisterCredentials;
+const registerSchema = z.object({
+    email: z
+        .string()
+        .min(1, "El correo electrónico es requerido")
+        .email("El formato del correo no es válido"),
+    password: z
+        .string()
+        .min(1, "La contraseña es requerida")
+        .min(8, "La contraseña debe tener al menos 8 caracteres")
+        .refine((val) => /[A-Z]/.test(val), {
+            message: "La contraseña debe incluir al menos una letra mayúscula (ej: A, B, C)",
+        })
+        .refine((val) => /[a-z]/.test(val), {
+            message: "La contraseña debe incluir al menos una letra minúscula (ej: a, b, c)",
+        })
+        .refine((val) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(val), {
+            message: "La contraseña debe incluir al menos un número o símbolo (ej: 1, 2, !@#)",
+        }),
+    fullName: z.string().min(1, "El nombre completo es requerido"),
+});
+
+type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const inputClass =
-    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
+    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all duration-200";
 
 interface RegisterFormProps {
     onRegisterUser: (data: RegisterCredentials) => Promise<unknown>;
@@ -30,12 +51,6 @@ export const RegisterForm = ({
     isLoading,
 }: RegisterFormProps) => {
     const { t } = useTranslation();
-    const registerSchema = z.object({
-        email: z.string().min(1, t("auth.validationEmailRequired")).email(t("auth.validationEmailInvalid")),
-        password: z.string().min(1, t("auth.validationPasswordRequired")).min(8, t("auth.validationPasswordMin")),
-        fullName: z.string().min(1, t("auth.validationNameRequired")),
-    });
-    // RHF form (validate on submit only)
     const {
         register,
         handleSubmit,
@@ -45,22 +60,33 @@ export const RegisterForm = ({
         mode: "onSubmit",
     });
 
-    // Password visibility toggle
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
-    // Submit signup via toast.promise
-    const onInternalSubmit = (data: RegisterFormInputs) => {
-        toast.promise(onRegisterUser(data), {
-            loading: t("auth.registerLoading"),
-            success: (response) =>
-                getApiMessage(response, t("auth.registerSuccess")),
-            error: (error) => getApiErrorMessage(error, t("auth.registerError")),
-        });
+    const onInternalSubmit = async (data: RegisterFormInputs) => {
+        try {
+            await toast.promise(onRegisterUser(data), {
+                loading: "Creando cuenta en Bflow Studio...",
+                success: "Cuenta creada. Te enviamos un código a tu correo.",
+                error: (err) => getCognitoErrorMessage(err, "Error al crear la cuenta"),
+            }).unwrap();
+            void navigate(`/auth/verify-account?email=${encodeURIComponent(data.email.trim().toLowerCase())}`);
+        } catch (err) {
+            // Check if user already exists
+            if (
+                typeof err === "object" &&
+                err !== null &&
+                (err as { name?: string }).name === "UsernameExistsException"
+            ) {
+                setTimeout(() => {
+                    void navigate(`/auth/login?email=${encodeURIComponent(data.email.trim().toLowerCase())}`);
+                }, 1500);
+            }
+        }
     };
 
     return (
         <form
-            action=""
             onSubmit={(e) => {
                 void handleSubmit(onInternalSubmit)(e);
             }}
@@ -147,7 +173,7 @@ export const RegisterForm = ({
 
                         <button
                             type="button"
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light transition-colors"
                             onClick={() => setShowPassword(!showPassword)}
                         >
                             {showPassword ? (
@@ -157,16 +183,20 @@ export const RegisterForm = ({
                             )}
                         </button>
                     </div>
-                    {isSubmitted && errors.password && (
+                    {isSubmitted && errors.password ? (
                         <p className="text-sm text-danger mt-1">
                             {errors.password.message}
+                        </p>
+                    ) : (
+                        <p className="text-xs text-helper mt-1">
+                            Requisitos: mínimo 8 caracteres, al menos 1 letra mayúscula y 1 número o símbolo.
                         </p>
                     )}
                 </div>
 
                 <button
                     type="submit"
-                    className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
+                    className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
                     {isLoading ? t("auth.registerLoading") : t("auth.registerButton")}
@@ -177,7 +207,7 @@ export const RegisterForm = ({
                 {t("auth.hasAccount")} {" "}
                 <Link
                     to="/auth/login"
-                    className={`font-medium hover:opacity-80 ${
+                    className={`font-medium hover:opacity-80 transition-opacity ${
                         isLoading
                             ? "pointer-events-none text-helper"
                             : "text-primary"
