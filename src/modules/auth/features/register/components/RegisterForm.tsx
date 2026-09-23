@@ -7,8 +7,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
-
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 
 interface RegisterCredentials {
@@ -52,6 +50,7 @@ export const RegisterForm = ({
     onRegisterUser,
     isLoading,
 }: RegisterFormProps) => {
+    const { t } = useTranslation();
     const {
         register,
         handleSubmit,

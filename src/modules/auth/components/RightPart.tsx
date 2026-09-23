@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 import { Link } from "react-router";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useGoogleLogin } from "@/modules/auth/features/login/hooks/useGoogleLogin";
 

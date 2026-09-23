@@ -7,8 +7,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
-
 import { isUserNotConfirmedError } from "../login.service";
 
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
@@ -29,6 +27,14 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
+    const { t } = useTranslation();
+    const loginSchema = z.object({
+        email: z
+            .string()
+            .min(1, t("auth.validationEmailRequired"))
+            .email(t("auth.validationEmailInvalid")),
+        password: z.string().min(1, t("auth.validationPasswordRequired")),
+    });
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
