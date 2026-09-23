@@ -23,7 +23,7 @@ export const LandingPage = () => {
                 onPauseChange={page.setPaused}
             />
 
-            <LandingPricing />
+            <LandingPricing isAuthenticated={page.isAuthenticated} />
 
             <LandingFaq
                 openFaq={page.openFaq}

@@ -3,9 +3,20 @@ import { useTranslation } from "react-i18next";
 import { LANDING_PLANS } from "../utils/landingContent";
 import { PricingCard } from "./PricingCard";
 
+interface LandingPricingProps {
+    isAuthenticated: boolean;
+}
 
-export const LandingPricing = () => {
+export const LandingPricing = ({ isAuthenticated }: LandingPricingProps) => {
     const { t } = useTranslation();
+    const getPlanDestination = (checkoutPlanKey?: string): string | undefined => {
+        if (!isAuthenticated || !checkoutPlanKey) {
+            return undefined;
+        }
+
+        return `/app/wompi?plan=${checkoutPlanKey}`;
+    };
+
     const planKeys = ["personal", "pro", "annual"] as const;
     const plans = LANDING_PLANS.map((plan, index) => {
         const key = planKeys[index];
@@ -31,7 +42,11 @@ export const LandingPricing = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch md:pt-2">
                 {plans.map((plan) => (
-                    <PricingCard key={plan.name} {...plan} />
+                    <PricingCard
+                        key={plan.name}
+                        {...plan}
+                        to={getPlanDestination(plan.checkoutPlanKey)}
+                    />
                 ))}
             </div>
         </section>
