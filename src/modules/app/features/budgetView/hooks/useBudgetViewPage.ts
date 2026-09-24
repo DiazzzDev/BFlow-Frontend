@@ -40,7 +40,7 @@ export const useBudgetViewPage = (budgetId?: string) => {
     const title = budget ? getBudgetDisplayName(budget) : t("budgets.empty");
     const periodLabel = budget ? t(`budgets.periods.${budget.period.toLowerCase()}`, { defaultValue: PERIODICITY_LABELS[budget.period] }) : "";
     const scopeTags = budget ? getScopeTags(budget.scope).map((tag) => tag === "Billetera" ? t("budgets.wallet") : t("budgets.category")) : [];
-    const statusLabel = budget ? t(`budgets.status.${budget.status?.toLowerCase()}`, { defaultValue: getBudgetStatusLabel(budget.status) }) : "";
+    const statusLabel = budget ? t(`budgets.status.${budget.status.toLowerCase()}`, { defaultValue: getBudgetStatusLabel(budget.status) }) : "";
     const transactionCount = budget?.transactionCount ?? 0;
     const spentSubtitle = budget
         ? `${transactionCount} ${transactionCount === 1 ? t("budgetView.transaction") : t("budgetView.transactions")} · ${formatCurrency(budget.averageDailySpend, currency)}${t("budgetView.perDay")}`

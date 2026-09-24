@@ -8,4 +8,4 @@ const STATUS_STYLES: Record<BudgetHealthStatus, string> = {
 };
 
 export const getBudgetHealthStatusStyle = (status: BudgetHealthStatus) =>
-    STATUS_STYLES[status] ?? "bg-light-10 text-helper";
+    STATUS_STYLES[status];

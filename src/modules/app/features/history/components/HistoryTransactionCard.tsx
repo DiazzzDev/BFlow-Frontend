@@ -45,7 +45,7 @@ export const HistoryTransactionCard = ({
 }: HistoryTransactionCardProps) => {
     const { t } = useTranslation();
     const accentColor = transaction.categoryColor || "#64748B";
-    const sourceLabel = transaction.source?.toLowerCase() === "recurring" ? t("history.recurring") : t("history.manual");
+    const sourceLabel = transaction.source.toLowerCase() === "recurring" ? t("history.recurring") : t("history.manual");
     const typeStyle = HISTORY_TRANSACTION_TYPE_CONFIG[transaction.type];
     const TypeIcon = typeStyle.icon;
 

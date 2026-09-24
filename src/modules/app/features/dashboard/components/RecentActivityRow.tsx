@@ -19,7 +19,7 @@ export const RecentActivityRow = ({
     const isIncome = activity.type.toUpperCase() === "INCOME";
 
     return (
-        <li className="flex items-center gap-3 border-b border-light-10 py-3.5 last:border-b-0">
+        <li className="flex items-center gap-2 border-b border-light-10 py-3.5 last:border-b-0 sm:gap-3">
             <div
                 style={{
                     backgroundColor: `${activity.categoryColor}33`,
@@ -51,7 +51,7 @@ export const RecentActivityRow = ({
             </div>
 
             <p
-                className={`shrink-0 text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
+                className={`max-w-[35%] shrink-0 truncate text-right text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
                     activity.type,
                     activity.amount,
                 )}`}
