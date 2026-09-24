@@ -24,7 +24,7 @@ export const isUserNotConfirmedError = (error: unknown): boolean => {
         return true;
     }
     if (typeof error === "object" && error !== null && "name" in error) {
-        const name = (error as { name: string }).name;
+        const { name } = error as { name: string };
         if (name === "UserNotConfirmedException" || name === "UserNotConfirmedError") {
             return true;
         }
@@ -40,7 +40,7 @@ export const login = async (email: string, password: string) => {
         const result = await authService.login(email, password);
 
         if (!result.isSignedIn) {
-            if (result.nextStep?.signInStep === "CONFIRM_SIGN_UP") {
+            if (result.nextStep.signInStep === "CONFIRM_SIGN_UP") {
                 throw new UserNotConfirmedError(email);
             }
             throw new Error(result.nextStep.signInStep);

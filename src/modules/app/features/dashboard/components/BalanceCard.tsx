@@ -32,7 +32,7 @@ export const BalanceCard = ({
     const isPositive = percentageChangeLastMonth >= 0;
 
     return (
-        <div className={`${dashboardCardClass} flex-row gap-14`}>
+        <div className={`${dashboardCardClass} grid grid-cols-1 gap-5 sm:grid-cols-3`}>
             <div className="flex flex-col">
                 <p className={dashboardLabelClass}>
                     {t("dashboard.totalBalance")}

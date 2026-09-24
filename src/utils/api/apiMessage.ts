@@ -8,12 +8,16 @@ export const getApiMessage = (response: unknown, fallback: string): string => {
     }
 
     const responseRecord = response as Record<string, unknown>;
-    const data = responseRecord.data;
+    const {
+        data,
+        message: responseMessage,
+        serverMessage,
+    } = responseRecord;
     const dataMessage =
         typeof data === "object" && data !== null
             ? (data as Record<string, unknown>).message
             : undefined;
-    const message = responseRecord.message ?? responseRecord.serverMessage ?? dataMessage;
+    const message = responseMessage ?? serverMessage ?? dataMessage;
 
     return typeof message === "string" && message.trim() ? message : fallback;
 };

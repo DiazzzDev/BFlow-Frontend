@@ -18,10 +18,10 @@ export const DashboardPage = () => {
     const page = useDashboardPage();
 
     return (
-        <div className="mx-auto flex w-full max-w-380 flex-col gap-5 px-4 py-5 sm:px-6">
+        <div className="mx-auto flex w-full max-w-380 flex-col gap-5 px-4 py-5 sm:px-6 lg:px-8">
             <div className="flex shrink-0 flex-col justify-between gap-4 pb-1 lg:flex-row lg:items-center">
                 <div>
-                    <h1 className="text-3xl font-semibold tracking-tight text-light">
+                    <h1 className="text-2xl font-semibold tracking-tight text-light sm:text-3xl">
                         {t(page.greetingKey)}
                         {page.firstName ? `, ${page.firstName}` : ""}
                     </h1>
@@ -29,27 +29,27 @@ export const DashboardPage = () => {
                         {t("dashboard.subtitle")}
                     </p>
                 </div>
-                <div className="flex gap-4 self-end">
+                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:gap-4 lg:self-end">
                     <Button
                         type="button"
                         onClick={() => page.setIsScheduleOpen(true)}
                         text={t("dashboard.scheduleTransaction")}
                         icon={<Clock className="h-4 w-4" />}
                         variant="secondary"
-                        className="px-3!"
+                        className="w-full px-3! sm:w-auto"
                     />
                     <Button
                         type="button"
                         onClick={() => page.setIsNewTransactionOpen(true)}
                         text={t("dashboard.newTransaction")}
                         icon={<Plus className="h-4 w-4" />}
-                        className="w-fit shrink-0"
+                        className="w-full shrink-0 sm:w-fit"
                     />
                 </div>
             </div>
 
-            <div className="flex gap-5">
-                <div className="flex min-w-0 flex-4 flex-col gap-5">
+            <div className="flex flex-col gap-5 lg:flex-row">
+                <div className="flex min-w-0 flex-col gap-5 lg:flex-4">
                     <BalanceCard
                         isLoading={page.isLoadingBalance}
                         total={page.balanceTotal}
@@ -67,7 +67,7 @@ export const DashboardPage = () => {
                     />
                 </div>
 
-                <div className="flex min-w-0 flex-2 flex-col gap-5">
+                <div className="flex min-w-0 flex-col gap-5 lg:flex-2">
                     <BudgetsHealthCard
                         isLoading={page.isLoadingBudgets}
                         budgets={page.budgets}

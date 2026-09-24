@@ -98,7 +98,7 @@ export const StatisticsCard = ({
 
     return (
         <div className={dashboardCardClass}>
-            <div className="flex items-start justify-between gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <p className={dashboardLabelClass}>{t("dashboard.statistics")}</p>
 
                 {/* Design-only period filter — not wired to data yet */}

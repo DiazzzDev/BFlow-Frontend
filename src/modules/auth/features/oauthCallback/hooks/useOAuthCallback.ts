@@ -39,5 +39,5 @@ export const useOAuthCallback = () => {
         };
 
         void syncUser();
-    }, [navigate, setSession, clearSession]);
+    }, [navigate, setSession, clearSession, t]);
 };

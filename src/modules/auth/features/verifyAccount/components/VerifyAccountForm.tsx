@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Mail, KeyRound, RefreshCw, Edit3, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
@@ -36,7 +36,7 @@ export const VerifyAccountForm = ({
     const {
         register,
         handleSubmit,
-        watch,
+        control,
         setValue,
         formState: { errors, isSubmitted },
     } = useForm<FormData>({
@@ -46,7 +46,7 @@ export const VerifyAccountForm = ({
         },
     });
 
-    const currentEmail = watch("email");
+    const currentEmail = useWatch({ control, name: "email" });
 
     // Cooldown timer effect
     useEffect(() => {
