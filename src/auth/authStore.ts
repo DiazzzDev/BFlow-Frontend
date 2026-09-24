@@ -3,6 +3,8 @@ import { persist } from "zustand/middleware";
 
 import type { InternalUser } from "./InternalUser";
 
+import { setActiveLanguage } from "@/i18n/i18n";
+
 export type AuthStatus = "checking" | "authenticated" | "not-authenticated";
 
 interface AuthState {
@@ -19,11 +21,13 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             authStatus: "checking",
 
-            setSession: (user) =>
+            setSession: (user) => {
+                setActiveLanguage(user.language);
                 set({
                     user,
                     authStatus: "authenticated",
-                }),
+                });
+            },
 
             clearSession: () =>
                 set({

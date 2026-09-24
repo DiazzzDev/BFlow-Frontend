@@ -1,4 +1,5 @@
 import { ArrowDownLeft, ArrowUpRight, CalendarClock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { UpcomingTransaction } from "../interfaces/WalletDetails";
 
@@ -44,12 +45,13 @@ export const WalletViewSidebar = ({
     isLoading = false,
     className = "",
 }: WalletViewSidebarProps) => {
+    const { t } = useTranslation();
     return (
         <aside
             className={`flex flex-col gap-8 px-6 py-5 ${className}`}
         >
             <section>
-                <h2 className="mb-5 text-xl font-semibold text-light">Información</h2>
+                <h2 className="mb-5 text-xl font-semibold text-light">{t("walletView.information")}</h2>
                 {isLoading ? (
                     <div className="flex flex-col gap-4">
                         {infoSkeletonRows.map((row) => (
@@ -64,11 +66,11 @@ export const WalletViewSidebar = ({
                     </div>
                 ) : (
                     <dl className="flex flex-col gap-4">
-                        <InfoRow label="Última actividad" value={formatterDynamicDate(lastActivity) || "—"} />
-                        <InfoRow label="Gasto más alto" value={highestExpense} />
-                        <InfoRow label="Transacciones" value={String(transactionsCount)} />
+                        <InfoRow label={t("walletView.lastActivity")} value={formatterDynamicDate(lastActivity) || "—"} />
+                        <InfoRow label={t("walletView.highestExpense")} value={highestExpense} />
+                        <InfoRow label={t("walletView.transactions")} value={String(transactionsCount)} />
                         <InfoRow
-                            label="Valor inicial"
+                            label={t("walletView.initialValue")}
                             value={formatCurrency(initialValue, currency)}
                         />
                     </dl>
@@ -77,7 +79,7 @@ export const WalletViewSidebar = ({
 
             <section className="flex flex-1 flex-col">
                 <div className="mb-5 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold text-light">Próximas</h2>
+                    <h2 className="text-xl font-semibold text-light">{t("walletView.upcoming")}</h2>
                 </div>
 
                 {isLoading ? (
@@ -94,8 +96,8 @@ export const WalletViewSidebar = ({
                     </ul>
                 ) : upcoming.length === 0 ? (
                     <CustomEmptyState
-                        title="Sin programadas"
-                        description="No hay transacciones recurrentes próximas."
+                        title={t("walletView.noScheduled")}
+                        description={t("walletView.noUpcoming")}
                         Icon={CalendarClock}
                         className="m-0! mb-6! p-4!"
                     />
@@ -119,7 +121,7 @@ export const WalletViewSidebar = ({
                         onClick={() => onSchedule?.()}
                         className="mt-auto h-11 w-full cursor-pointer rounded-lg border border-light-10 bg-transparent text-sm font-medium text-light transition-colors hover:bg-secondary"
                     >
-                        Programar transacción
+                        {t("walletView.schedule")}
                     </button>
                 )}
             </section>

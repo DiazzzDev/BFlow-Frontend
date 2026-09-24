@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useGetWallets } from "../wallets/hooks/useGetWallets";
 
@@ -57,6 +58,7 @@ export const NewTransactionModal = ({
     mode = "create",
     transaction = null,
 }: NewTransactionModalProps) => {
+    const { t } = useTranslation();
     const visibleTypes = allowedTypes ?? TRANSACTION_TYPE_VALUES;
     const headingType = resolveInitialTransactionType(
         mode,
@@ -69,7 +71,7 @@ export const NewTransactionModal = ({
         <CustomModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            title={getTransactionModalTitle(mode, headingType)}
+            title={t(getTransactionModalTitle(mode, headingType), { defaultValue: getTransactionModalTitle(mode, headingType) })}
             maxWidth={getTransactionModalMaxWidth(visibleTypes, headingType)}
         >
             <NewTransactionModalContent
@@ -110,6 +112,7 @@ const NewTransactionModalContent = ({
     transaction = null,
     onClose,
 }: NewTransactionModalContentProps) => {
+    const { t } = useTranslation();
     // Mode flags: view/edit lock type + wallet; create may need a wallet picker
     const isViewMode = mode === "view";
     const isEditMode = mode === "edit";
@@ -118,7 +121,10 @@ const NewTransactionModalContent = ({
 
     // Visible transaction type tabs
     const visibleTypes = allowedTypes ?? TRANSACTION_TYPE_VALUES;
-    const visibleTabs = getVisibleTransactionTypeTabs(visibleTypes);
+    const visibleTabs = getVisibleTransactionTypeTabs(visibleTypes).map((tab) => ({
+        ...tab,
+            label: t(tab.id === "INCOME" ? "transactions.incomeTab" : tab.id === "EXPENSE" ? "transactions.expenseTab" : "transactions.transferTab", { defaultValue: tab.label }),
+    }));
     const [activeType, setActiveType] = useState<TransactionType>(() =>
         resolveInitialTransactionType(
             mode,
@@ -148,11 +154,11 @@ const NewTransactionModalContent = ({
             {needsWalletSelect && (
                 <SelectAutoComplete<Wallet>
                     idSelect="transactionWalletId"
-                    label="Cartera"
+                    label={t("transactions.wallet")}
                     placeholder={
                         isWalletsFetching
-                            ? "Buscando carteras..."
-                            : "Seleccionar cartera..."
+                            ? t("transactions.searchingWallets")
+                            : t("transactions.selectWallet")
                     }
                     selectedItem={selectedWallet}
                     setSelectedItem={setSelectedWallet}
@@ -169,13 +175,13 @@ const NewTransactionModalContent = ({
                     tabs={visibleTabs}
                     selected={activeType}
                     onChange={setActiveType}
-                    ariaLabel="Tipo de transacción"
+                    ariaLabel={t("transactions.actions")}
                 />
             )}
 
             {!canShowForms && needsWalletSelect && (
                 <p className="rounded-xl border border-dashed border-light-10 bg-surface-hard/40 px-4 py-6 text-center text-sm text-helper">
-                    Seleccioná una cartera para continuar.
+                    {t("transactions.selectWalletHint")}
                 </p>
             )}
 

@@ -1,5 +1,12 @@
+import { useTranslation } from "react-i18next";
+
 import type { DashboardActivityBreakdown } from "../interfaces/dashboard";
-import { dashboardCardClass, dashboardHeroClass, dashboardLabelClass } from "../utils/dashboardCard";
+import { ACTIVITY_BREAKDOWN_SEGMENTS } from "../utils/activityBreakdown";
+import {
+    dashboardCardClass,
+    dashboardHeroClass,
+    dashboardLabelClass,
+} from "../utils/dashboardCard";
 import { formatPercentValue } from "../utils/formatPercent";
 
 import { SegmentedBar } from "./SegmentedBar";
@@ -9,30 +16,22 @@ interface ThisMonthCardProps {
     breakdown: DashboardActivityBreakdown | undefined;
 }
 
-const ACTIVITY_SEGMENTS: Array<{
-    key: keyof Pick<
-        DashboardActivityBreakdown,
-        "incomePercentage" | "expensePercentage" | "transferPercentage"
-    >;
-    label: string;
-    colorClass: string;
-}> = [
-    { key: "incomePercentage", label: "Ingresos", colorClass: "bg-info" },
-    { key: "expensePercentage", label: "Gastos", colorClass: "bg-primary" },
-    { key: "transferPercentage", label: "Transferencias", colorClass: "bg-success" },
-];
-
 export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
-    const activityPercent = formatPercentValue(breakdown?.activityChangePercentage ?? 0);
-    const segments = ACTIVITY_SEGMENTS.map((segment) => ({
-        label: segment.label,
+    const { t } = useTranslation();
+
+    // Hero % + bar segments from activity-breakdown
+    const activityPercent = formatPercentValue(
+        breakdown?.activityChangePercentage ?? 0,
+    );
+    const segments = ACTIVITY_BREAKDOWN_SEGMENTS.map((segment) => ({
+        label: t(`dashboard.${segment.keyLabel}`),
         percent: breakdown?.[segment.key] ?? 0,
         colorClass: segment.colorClass,
     }));
 
     return (
         <div className={dashboardCardClass}>
-            <p className={dashboardLabelClass}>Este mes</p>
+            <p className={dashboardLabelClass}>{t("dashboard.thisMonth")}</p>
 
             <div className="mt-3 flex items-center gap-2.5">
                 {isLoading ? (
@@ -41,7 +40,7 @@ export const ThisMonthCard = ({ isLoading, breakdown }: ThisMonthCardProps) => {
                     <p className={dashboardHeroClass}>{activityPercent}%</p>
                 )}
                 <span className="max-w-16 text-xs leading-tight text-helper">
-                    Actividad total
+                    {t("dashboard.totalActivity")}
                 </span>
             </div>
 

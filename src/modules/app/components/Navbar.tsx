@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
     ChartBarIcon,
     ChevronDown,
@@ -24,6 +25,7 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
+    const { t } = useTranslation();
     const { pathname } = useLocation();
     const isWalletsSectionActive = isWalletsSectionPath(pathname);
     const [walletsExpanded, setWalletsExpanded] = useState(isWalletsSectionActive);
@@ -63,7 +65,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
         <>
             <button
                 type="button"
-                aria-label="Cerrar menú"
+                aria-label={t("a11y.closeMenu")}
                 onClick={onClose}
                 className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
                     }`}
@@ -76,13 +78,13 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">
                     <div>
                         <img src={BflowLogo} alt="BFlow Studio" className="w-5 h-5" />
-                        <p className="mt-0.5 text-sm text-helper">Finance tool</p>
+                        <p className="mt-0.5 text-sm text-helper">{t("nav.financeTool")}</p>
                     </div>
 
                     <button
                         type="button"
                         onClick={onClose}
-                        aria-label="Cerrar menú"
+                        aria-label={t("a11y.closeMenu")}
                         className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer lg:hidden"
                     >
                         <X className="h-5 w-5" />
@@ -94,7 +96,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         <span className="shrink-0">
                             <LayoutDashboard size={17} />
                         </span>
-                        Dashboard
+                        {t("nav.dashboard")}
                     </NavLink>
 
                     <div className="flex flex-col">
@@ -111,15 +113,15 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                 <span className="shrink-0">
                                     <Wallet size={17} />
                                 </span>
-                                Billeteras
+                                {t("nav.wallets")}
                             </NavLink>
 
                             <button
                                 type="button"
                                 aria-label={
                                     walletsExpanded
-                                        ? "Ocultar opciones de billeteras"
-                                        : "Mostrar opciones de billeteras"
+                                        ? t("nav.hideWalletOptions")
+                                        : t("nav.showWalletOptions")
                                 }
                                 aria-expanded={walletsExpanded}
                                 onClick={() => setWalletsExpanded((current) => !current)}
@@ -149,7 +151,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                     className="overflow-hidden"
                                 >
                                     <div className="relative ml-6 mt-2">
-                                        {WALLET_NAV_CHILDREN.map(({ label, to }, index) => {
+                                        {WALLET_NAV_CHILDREN.map(({ to }, index) => {
                                             const isLast =
                                                 index === WALLET_NAV_CHILDREN.length - 1;
 
@@ -179,7 +181,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                                             }`
                                                         }
                                                     >
-                                                        {label}
+                                                        {t("nav.history")}
                                                     </NavLink>
                                                 </div>
                                             );
@@ -194,7 +196,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         <span className="shrink-0">
                             <ChartBarIcon size={17} />
                         </span>
-                        Presupuestos
+                        {t("nav.budgets")}
                     </NavLink>
                 </nav>
 
@@ -203,7 +205,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         <span className="shrink-0">
                             <Settings size={17} />
                         </span>
-                        Ajustes
+                        {t("nav.settings")}
                     </NavLink>
                 </div>
             </aside>

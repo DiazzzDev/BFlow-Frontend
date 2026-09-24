@@ -3,13 +3,14 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
+import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import { usePostRecurring } from "../hooks/useMutateRecurring";
 import {
     RECURRING_INTERVAL_UNIT_LABELS,
     RECURRING_TYPE_TABS,
 } from "../utils/tabs/recurringTabs";
-import { useGetCategories } from "../../settings/hooks/useGetCategories";
 
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
@@ -27,6 +28,7 @@ import {
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const recurringSchema = z
     .object({
@@ -79,6 +81,8 @@ interface RecurringFormProps {
 }
 
 export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
+    const { t } = useTranslation();
+
     // Create mutation
     const createRecurring = usePostRecurring();
 
@@ -105,7 +109,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
     const frequency = useWatch({ control, name: "frequency" });
     const intervalValue = useWatch({ control, name: "intervalValue" });
 
-    const categories = categoriesResponse?.data.filter((category) => category.type === type) ?? [];
+    const categories =
+        categoriesResponse?.data.filter((category) => category.type === type) ??
+        [];
 
     // UI selection: "auto" = first item; manual pick leaves auto mode
     const {
@@ -137,10 +143,11 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
         });
 
         toast.promise(promise, {
-            loading: "Programando transacción...",
-            success: "Transacción programada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al programar la transacción",
+            loading: t("transactions.recurringLoading"),
+            success: (response) =>
+                getApiMessage(response, t("transactions.recurringFallback")),
+            error: (error) =>
+                getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -177,7 +184,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             />
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="recurringTitle">Título</Label>
+                <Label htmlFor="recurringTitle">
+                    {t("transactions.recurringTitle")}
+                </Label>
                 <Controller
                     name="title"
                     control={control}
@@ -191,12 +200,16 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     )}
                 />
                 {errors.title && (
-                    <span className="text-xs text-danger">{errors.title.message}</span>
+                    <span className="text-xs text-danger">
+                        {errors.title.message}
+                    </span>
                 )}
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="recurringDescription">Descripción</Label>
+                <Label htmlFor="recurringDescription">
+                    {t("transactions.recurringDescription")}
+                </Label>
                 <Controller
                     name="description"
                     control={control}
@@ -218,7 +231,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="recurringAmount">Monto</Label>
+                <Label htmlFor="recurringAmount">
+                    {t("transactions.recurringAmount")}
+                </Label>
                 <Controller
                     name="amount"
                     control={control}
@@ -232,7 +247,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                             name={field.name}
                             value={field.value}
                             onChange={(e) => {
-                                const formatted = formatterDecimal(e.target.value);
+                                const formatted = formatterDecimal(
+                                    e.target.value,
+                                );
                                 if (formatted !== null) {
                                     field.onChange(formatted);
                                 }
@@ -241,7 +258,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     )}
                 />
                 {errors.amount && (
-                    <span className="text-xs text-danger">{errors.amount.message}</span>
+                    <span className="text-xs text-danger">
+                        {errors.amount.message}
+                    </span>
                 )}
             </div>
 
@@ -252,11 +271,11 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     render={({ field }) => (
                         <SelectAutoComplete<Category>
                             idSelect="recurringCategoryId"
-                            label="Categoría"
+                            label={t("transactions.category")}
                             placeholder={
                                 isCategoriesLoading
-                                    ? "Cargando categorías..."
-                                    : "Buscar categoría..."
+                                    ? t("transactions.loadingCategories")
+                                    : t("transactions.searchCategory")
                             }
                             selectedItem={selectedCategory}
                             setSelectedItem={(category) => {
@@ -268,7 +287,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                             data={categories}
                             getKey={(category) => category.id}
                             getLabel={(category) => category.name}
-                            disabled={createRecurring.isPending || isCategoriesLoading}
+                            disabled={
+                                createRecurring.isPending || isCategoriesLoading
+                            }
                         />
                     )}
                 />
@@ -281,7 +302,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringFrequency">Frecuencia</Label>
+                    <Label htmlFor="recurringFrequency">
+                        {t("transactions.frequency")}
+                    </Label>
                     <Controller
                         name="frequency"
                         control={control}
@@ -290,14 +313,18 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                 id="recurringFrequency"
                                 value={field.value}
                                 disabled={createRecurring.isPending}
-                                onChange={(event) => field.onChange(event.target.value)}
+                                onChange={(event) =>
+                                    field.onChange(event.target.value)
+                                }
                                 onBlur={field.onBlur}
                             >
-                                {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => (
-                                    <option key={value} value={value}>
-                                        {label}
-                                    </option>
-                                ))}
+                                {PERIODICITY_FORM_OPTIONS.map(
+                                    ({ value, label }) => (
+                                        <option key={value} value={value}>
+                                            {label}
+                                        </option>
+                                    ),
+                                )}
                             </Select>
                         )}
                     />
@@ -309,7 +336,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringInterval">Cada</Label>
+                    <Label htmlFor="recurringInterval">
+                        {t("transactions.every")}
+                    </Label>
                     <Controller
                         name="intervalValue"
                         control={control}
@@ -323,7 +352,10 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                 name={field.name}
                                 value={field.value}
                                 onChange={(e) => {
-                                    const nextValue = e.target.value.replace(/\D/g, "");
+                                    const nextValue = e.target.value.replace(
+                                        /\D/g,
+                                        "",
+                                    );
                                     field.onChange(nextValue);
                                 }}
                             />
@@ -343,7 +375,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringStartDate">Fecha de inicio</Label>
+                    <Label htmlFor="recurringStartDate">
+                        {t("transactions.startDate")}
+                    </Label>
                     <Controller
                         name="startDate"
                         control={control}
@@ -365,7 +399,9 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="recurringEndDate">Fecha de fin</Label>
+                    <Label htmlFor="recurringEndDate">
+                        {t("transactions.endDate")}
+                    </Label>
                     <Controller
                         name="endDate"
                         control={control}
@@ -393,7 +429,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 text={
                     createRecurring.isPending
                         ? "Programando..."
-                        : "Programar transacción"
+                        : t("walletView.schedule")
                 }
                 className="self-end"
             />

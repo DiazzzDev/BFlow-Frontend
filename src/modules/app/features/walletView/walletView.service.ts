@@ -1,19 +1,16 @@
 import type { WalletDetails } from "./interfaces/WalletDetails";
 import type { WalletMember } from "./interfaces/WalletMember";
-import type { CreateRecurringData, Recurring } from "./interfaces/Recurring";
 
 import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import {
     apiRequest,
-    idempotentPost,
     type ApiResponse,
     type PaginatedListResponse,
 } from "@/utils/api";
 import { config } from "@/config/config";
 
 const walletsUrl = `${config.API_BASE_URL}/api/v1/wallets`;
-const recurringUrl = `${config.API_BASE_URL}/api/v1/recurring`;
 
 const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
@@ -86,12 +83,4 @@ export const getWalletTransactions = async (
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener las transacciones",
     );
-};
-
-// --- /api/v1/recurring ---
-
-export const postRecurring = async (recurringData: CreateRecurringData) => {
-    return await idempotentPost<Recurring>(recurringUrl, recurringData, {
-        friendlyMessage: "Error al programar la transacción",
-    });
 };

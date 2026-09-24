@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
@@ -25,6 +26,7 @@ const getPageItems = (current: number, total: number): PageItem[] => {
 };
 
 export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
+    const { t } = useTranslation();
     const { params, updateSearchParams } = useUpdateSearchParams();
 
     const queryPage = params.get("page") ?? "1";
@@ -55,7 +57,7 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                 type="button"
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page <= 1}
-                aria-label="Página anterior"
+                aria-label={t("common.previousPage")}
                 className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-30"
             >
                 <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />
@@ -105,7 +107,7 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                 type="button"
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page >= safeTotalPages}
-                aria-label="Página siguiente"
+                aria-label={t("common.nextPage")}
                 className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-30"
             >
                 <ChevronRight className="h-4 w-4" strokeWidth={2.5} />

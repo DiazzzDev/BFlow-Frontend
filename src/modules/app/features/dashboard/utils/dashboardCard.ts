@@ -5,4 +5,3 @@ export const dashboardLabelClass = "text-base font-semibold text-light";
 
 export const dashboardHeroClass =
     "text-4xl font-semibold tracking-tight text-light";
-

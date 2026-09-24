@@ -1,15 +1,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 
-const forgotPasswordSchema = z.object({
-    email: z
-        .string()
-        .min(1, "El correo es requerido")
-        .email("Correo inválido"),
-});
-
-type FormData = z.infer<typeof forgotPasswordSchema>;
+type FormData = { email: string };
 
 const inputClass =
     "h-10 w-full rounded-lg border border-light-10 bg-surface px-3 text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
@@ -20,6 +14,10 @@ interface ForgotPasswordFormProps {
 }
 
 export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormProps) => {
+    const { t } = useTranslation();
+    const forgotPasswordSchema = z.object({
+        email: z.string().min(1, t("auth.validationEmailRequired")).email(t("auth.validationEmailInvalid")),
+    });
     const {
         register,
         handleSubmit,
@@ -36,14 +34,14 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
                 void handleSubmit((data) => onSubmit(data.email))(e);
             }}
         >
-            <h1 className="text-3xl font-semibold">Recuperar contraseña</h1>
+            <h1 className="text-3xl font-semibold">{t("auth.forgotTitle")}</h1>
 
             <p className="text-helper">
-                Te enviaremos un código de recuperación.
+                {t("auth.forgotDescription")}
             </p>
 
             <input
-                placeholder="Correo electrónico"
+                placeholder={t("auth.email")}
                 disabled={isLoading}
                 className={inputClass}
                 {...register("email")}
@@ -58,7 +56,7 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
                 disabled={isLoading}
                 className="w-full h-10 rounded-lg bg-primary text-light font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
             >
-                {isLoading ? "Enviando..." : "Enviar código"}
+                {isLoading ? t("auth.forgotLoading") : t("auth.forgotButton")}
             </button>
         </form>
     );

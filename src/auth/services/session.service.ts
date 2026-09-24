@@ -6,6 +6,7 @@ import type {
     SubscriptionStatus,
     UserProfile,
 } from "@/auth/InternalUser";
+import { getBrowserLanguage, normalizeLanguage } from "@/i18n/types";
 
 const AUTH_SYNC_URL = `${config.API_BASE_URL}/api/v1/auth/sync`;
 
@@ -40,6 +41,9 @@ type SyncAuthResponse = {
     } | null;
     wallets?: unknown[];
     profile?: UserProfile | null;
+    language?: string | null;
+    preferredLanguage?: string | null;
+    message?: string;
 };
 
 const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
@@ -53,6 +57,14 @@ const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
         isNewUser: response.isNewUser,
         name: response.profile?.name ?? null,
         pictureUrl: response.profile?.pictureUrl ?? null,
+        language:
+            normalizeLanguage(
+                response.language ??
+                    response.preferredLanguage ??
+                    response.profile?.language ??
+                    response.profile?.preferredLanguage,
+            ) ?? getBrowserLanguage(),
+        serverMessage: response.message,
         subscription: {
             id: subscription?.id ?? null,
             planCode: plan?.planCode ?? subscription?.planName ?? "FREE",

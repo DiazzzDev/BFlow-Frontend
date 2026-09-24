@@ -46,7 +46,13 @@ export const patchProfilePhoto = async (formData: FormData) => {
     );
 };
 
-export const patchProfileData = async (body: { email: string; name: string }) => {
+export type UpdateProfileData = {
+    email: string;
+    name: string;
+    language?: string;
+};
+
+export const patchProfileData = async (body: UpdateProfileData) => {
     return await apiRequest<ApiResponse<UserProfile>>(
         `${profileUrl}/me`,
         {

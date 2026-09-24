@@ -1,5 +1,6 @@
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 import { DEFAULT_PAGE_SIZE } from "@/hooks/usePaginationParams";
+import { useTranslation } from "react-i18next";
 
 interface PaginationSelectProps {
     totalItems?: number;
@@ -12,6 +13,7 @@ export const PaginationSelect = ({
     totalItems = 0,
     numberOfElements,
 }: PaginationSelectProps) => {
+    const { t } = useTranslation();
     const { params, updateSearchParams } = useUpdateSearchParams();
     const limit = params.get("limit") || String(DEFAULT_PAGE_SIZE);
 
@@ -25,14 +27,14 @@ export const PaginationSelect = ({
     return (
         <div className="flex flex-wrap items-center gap-3 text-sm text-helper">
             <span className="min-w-0">
-                Mostrando {showing} de {totalItems} resultados
+                {t("common.showing", { showing, total: totalItems })}
             </span>
 
             <div className="relative w-auto shrink-0 overflow-hidden rounded-lg border border-light-10 bg-surface">
                 <select
                     id="paginationLimit"
                     value={limit}
-                    aria-label="Resultados por página"
+                    aria-label={t("common.resultsPerPage")}
                     onChange={(event) => {
                         updateSearchParams(
                             {

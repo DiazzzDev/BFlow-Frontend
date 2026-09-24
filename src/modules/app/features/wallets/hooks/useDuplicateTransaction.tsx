@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import {
     buildDuplicateExpensePayload,
@@ -10,8 +11,10 @@ import { usePostIncome } from "../../newTransaction/hooks/useMutateIncomes";
 import { useMutateTransfers } from "../../newTransaction/hooks/useMutateTransfers";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 export const useDuplicateTransaction = () => {
+    const { t } = useTranslation();
     // Create mutations reused from newTransaction
     const createExpense = usePostExpense();
     const createIncome = usePostIncome();
@@ -30,17 +33,16 @@ export const useDuplicateTransaction = () => {
         } else {
             const payload = buildDuplicateTransferPayload(transaction);
             if (!payload) {
-                toast.error("No se puede duplicar: falta la billetera contraparte");
+                toast.error(t("wallets.missingCounterpart"));
                 return;
             }
             promise = createTransfer.mutateAsync(payload);
         }
 
         toast.promise(promise, {
-            loading: "Duplicando transacción...",
-            success: "Transacción duplicada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al duplicar la transacción",
+            loading: t("wallets.duplicateLoading"),
+            success: (response) => getApiMessage(response, t("wallets.duplicateFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;

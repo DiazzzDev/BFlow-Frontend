@@ -3,7 +3,6 @@ import type {
     DashboardActivityBreakdown,
     DashboardAverages,
     DashboardBalance,
-    DashboardSpending,
     DashboardStatistics,
     RecentActivityItem,
 } from "./interfaces/dashboard";
@@ -30,14 +29,6 @@ export const getAverages = async () => {
         `${dashboardUrl}/averages`,
         { ...defaultApiOptions, method: "GET" },
         "Error al obtener los promedios",
-    );
-};
-
-export const getSpending = async () => {
-    return await apiRequest<ApiResponse<DashboardSpending>>(
-        `${dashboardUrl}/spending`,
-        { ...defaultApiOptions, method: "GET" },
-        "Error al obtener los gastos",
     );
 };
 

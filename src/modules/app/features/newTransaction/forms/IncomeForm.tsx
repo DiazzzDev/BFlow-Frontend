@@ -3,6 +3,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { usePostIncome, usePutIncome } from "../hooks/useMutateIncomes";
 import { getCategory } from "../utils/getCategory";
@@ -24,11 +25,12 @@ import {
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const incomeSchema = z
     .object({
         title: z.string().min(1, "El título es obligatorio"),
-        description: z.string().min(1, "La descripción es obligatoria"),
+        description: z.string().optional(),
         amount: z
             .string()
             .min(1, "El monto es obligatorio")
@@ -79,6 +81,7 @@ export const IncomeForm = ({
     source = "manual",
     initialValues,
 }: IncomeFormProps) => {
+    const { t } = useTranslation();
     // Create / update mutations
     const createIncome = usePostIncome();
     const updateIncome = usePutIncome();
@@ -145,14 +148,19 @@ export const IncomeForm = ({
             : createIncome.mutateAsync(payload);
 
         toast.promise(promise, {
-            loading: isEditing ? "Actualizando ingreso..." : "Creando ingreso...",
-            success: isEditing ? "Ingreso actualizado" : "Ingreso creado",
-            error: (err) =>
-                err instanceof Error
-                    ? err.message
-                    : isEditing
-                        ? "Error al actualizar el ingreso"
-                        : "Error al crear el ingreso",
+            loading: isEditing
+                ? t("transactions.updateIncomeLoading")
+                : t("transactions.createIncomeLoading"),
+            success: (response) =>
+                getApiMessage(
+                    response,
+                    isEditing ? t("transactions.incomeUpdated") : t("transactions.incomeCreated"),
+                ),
+            error: (error) =>
+                getApiErrorMessage(
+                    error,
+                    isEditing ? t("transactions.incomeUpdated") : t("transactions.incomeCreated"),
+                ),
         });
 
         await promise;
@@ -176,7 +184,7 @@ export const IncomeForm = ({
             }}
         >
             <div className="flex flex-col gap-1">
-                <Label htmlFor="title">Título</Label>
+                <Label htmlFor="title">{t("transactions.title")}</Label>
                 <Controller
                     name="title"
                     control={control}
@@ -195,7 +203,7 @@ export const IncomeForm = ({
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="description">Descripción</Label>
+                <Label htmlFor="description">{t("transactions.description")}</Label>
                 <Controller
                     name="description"
                     control={control}
@@ -216,7 +224,7 @@ export const IncomeForm = ({
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="amount">Monto</Label>
+                    <Label htmlFor="amount">{t("transactions.amount")}</Label>
                     <Controller
                         name="amount"
                         control={control}
@@ -244,7 +252,7 @@ export const IncomeForm = ({
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="date">Fecha</Label>
+                    <Label htmlFor="date">{t("transactions.date")}</Label>
                     <Controller
                         name="date"
                         control={control}
@@ -271,11 +279,11 @@ export const IncomeForm = ({
                     render={({ field }) => (
                         <SelectAutoComplete<Category>
                             idSelect="categoryId"
-                            label="Categoría"
+                            label={t("transactions.category")}
                             placeholder={
                                 isCategoriesLoading
-                                    ? "Cargando categorías..."
-                                    : "Buscar categoría..."
+                                    ? t("transactions.loadingCategories")
+                                    : t("transactions.searchCategory")
                             }
                             selectedItem={selectedCategory}
                             setSelectedItem={(category) => {
@@ -302,7 +310,7 @@ export const IncomeForm = ({
                     control={control}
                     render={({ field }) => (
                         <ToggleSwitch
-                            label="Ingreso recurrente"
+                            label={t("transactions.recurringIncome")}
                             checked={field.value}
                             disabled={isDisabled}
                             onChange={field.onChange}
@@ -312,7 +320,7 @@ export const IncomeForm = ({
 
                 {recurring && (
                     <div className="flex flex-col gap-1">
-                        <Label htmlFor="recurrencePattern">Patrón</Label>
+                        <Label htmlFor="recurrencePattern">{t("transactions.pattern")}</Label>
                         <Controller
                             name="recurrencePattern"
                             control={control}
@@ -330,10 +338,10 @@ export const IncomeForm = ({
                                     }
                                     onBlur={field.onBlur}
                                 >
-                                    <option value="">Selecciona un patrón</option>
+                                    <option value="">{t("transactions.selectPattern")}</option>
                                     {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => (
                                         <option key={value} value={value}>
-                                            {label}
+                                            {t(`budgets.periods.${value.toLowerCase()}`, { defaultValue: label })}
                                         </option>
                                     ))}
                                 </Select>
@@ -353,7 +361,7 @@ export const IncomeForm = ({
                         control={control}
                         render={({ field }) => (
                             <ToggleSwitch
-                                label="Gravable"
+                                label={t("transactions.taxable")}
                                 checked={field.value}
                                 disabled={isDisabled}
                                 onChange={field.onChange}
@@ -369,10 +377,10 @@ export const IncomeForm = ({
                     disabled={isSaving}
                     text={
                         isSaving
-                            ? "Guardando..."
+                            ? t("transactions.saving")
                             : isEditing
-                                ? "Guardar cambios"
-                                : "Crear ingreso"
+                                ? t("transactions.saveChanges")
+                                : t("transactions.createIncome")
                     }
                     className="self-end"
                 />

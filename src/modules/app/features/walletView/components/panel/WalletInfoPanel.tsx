@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import {
     WalletViewSidebar,
     type WalletViewSidebarProps,
 } from "../WalletViewSidebar";
-import { ScheduleTransactionModal } from "../modal/ScheduleTransactionModal";
+
+import { ScheduleTransactionModal } from "@/modules/app/features/scheduleTransaction/ScheduleTransactionModal";
 
 interface WalletInfoPanelProps {
     walletId: string;
@@ -23,6 +25,7 @@ export const WalletInfoPanel = ({
     onCloseMobile,
     sidebarProps,
 }: WalletInfoPanelProps) => {
+    const { t } = useTranslation();
     // Schedule-transaction modal (opened from the sidebar CTA)
     const [isScheduleOpen, setIsScheduleOpen] = useState(false);
 
@@ -69,7 +72,7 @@ export const WalletInfoPanel = ({
 
             <button
                 type="button"
-                aria-label="Cerrar información"
+                aria-label={t("walletView.closeInformation")}
                 onClick={onCloseMobile}
                 className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity @3xl:hidden ${
                     isMobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
@@ -84,7 +87,7 @@ export const WalletInfoPanel = ({
                     <button
                         type="button"
                         onClick={onCloseMobile}
-                        aria-label="Cerrar información"
+                        aria-label={t("walletView.closeInformation")}
                         className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light"
                     >
                         <X className="h-5 w-5" />

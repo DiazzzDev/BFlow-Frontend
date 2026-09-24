@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import {
     AlertCircle,
     AlertTriangle,
@@ -13,6 +14,7 @@ import { useMutateNotifications } from "../hooks/useMutateNotifications";
 
 import { Button } from "@/components/controls/Button";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface NotificationItemProps {
     notification: Notification;
@@ -61,6 +63,7 @@ const getTypeStyles = (type: string) => {
 };
 
 export const NotificationItem = ({ notification }: NotificationItemProps) => {
+    const { t } = useTranslation();
     const { markAsRead } = useMutateNotifications();
     const { icon: Icon, iconClassName, badgeClassName } = getTypeStyles(notification.type);
     const isMarking = markAsRead.isPending && markAsRead.variables === notification.id;
@@ -73,12 +76,9 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
         const promise = markAsRead.mutateAsync(notification.id);
 
         toast.promise(promise, {
-            loading: "Marcando como leída...",
-            success: "Notificación marcada como leída",
-            error: (err) =>
-                err instanceof Error
-                    ? err.message
-                    : "Error al marcar la notificación como leída",
+            loading: t("notifications.markLoading"),
+            success: (response) => getApiMessage(response, t("notifications.markFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         try {

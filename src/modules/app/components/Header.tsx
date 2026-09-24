@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router";
 import { Bell, Menu, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { NotificationsSidebar } from "../features/notifications/components/NotificationsSidebar";
 import { useGetUnreadNotificationsCount } from "../features/notifications/hooks/useGetUnreadNotificationsCount";
@@ -13,6 +14,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ onOpenNav }: HeaderProps) => {
+    const { t } = useTranslation();
     const { pathname } = useLocation();
     const crumbs = getBreadcrumbs(pathname);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -28,7 +30,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                     <button
                         type="button"
                         onClick={onOpenNav}
-                        aria-label="Abrir menú"
+                        aria-label={t("a11y.openMenu")}
                         className="shrink-0 rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer lg:hidden"
                     >
                         <Menu className="h-5 w-5" />
@@ -47,7 +49,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                                             to={crumb.path}
                                             className="truncate text-helper transition-colors hover:text-light"
                                         >
-                                            {crumb.text}
+                                            {t(crumb.text, { defaultValue: crumb.text })}
                                         </Link>
                                     ) : (
                                         <span
@@ -55,7 +57,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                                                 isLast ? "text-light font-medium" : "text-helper"
                                             }`}
                                         >
-                                            {crumb.text}
+                                            {t(crumb.text, { defaultValue: crumb.text })}
                                         </span>
                                     )}
                                 </span>
@@ -75,7 +77,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                         type="button"
                         className="relative rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                         onClick={() => setNotificationsOpen(true)}
-                        aria-label="Notificaciones"
+                        aria-label={t("a11y.notifications")}
                     >
                         <Bell className="h-5 w-5" />
                         {unreadCount > 0 ? (
@@ -88,7 +90,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                     {user?.pictureUrl ? (
                         <img
                             src={user.pictureUrl}
-                            alt={user.name || user.email || "Usuario"}
+                            alt={user.name || user.email || t("a11y.user")}
                             className="h-9 w-9 rounded-full object-cover"
                             referrerPolicy="no-referrer"
                         />

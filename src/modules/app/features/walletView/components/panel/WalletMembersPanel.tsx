@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useGetWalletMembers } from "../../hooks/useGetWalletMembers";
 import { useGetWalletSentInvitations } from "../../hooks/useGetWalletSentInvitations";
@@ -22,6 +23,7 @@ export const WalletMembersPanel = ({
     wallet,
     isLoading,
 }: WalletMembersPanelProps) => {
+    const { t } = useTranslation();
     const { data: membersResponse, isLoading: isMembersLoading } = useGetWalletMembers(
         wallet?.id ?? "",
     );
@@ -66,12 +68,10 @@ export const WalletMembersPanel = ({
                 <div className="flex items-start justify-between gap-3 border-b border-light-10 px-4 py-5 sm:px-7">
                     <div className="min-w-0">
                         <h2 className="text-base font-semibold text-light">
-                            Miembros actuales
+                            {t("walletView.currentMembers")}
                         </h2>
                         <p className="mt-1 text-sm text-helper">
-                            {members.length}{" "}
-                            {members.length === 1 ? "persona" : "personas"} con acceso
-                            a esta billetera.
+                            {members.length} {members.length === 1 ? t("walletView.person") : t("walletView.people")} {t("walletView.withAccess")}
                         </p>
                     </div>
                     {isOwner ? (
@@ -81,7 +81,7 @@ export const WalletMembersPanel = ({
                             className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-light-10 px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5"
                         >
                             <UserPlus className="h-4 w-4" />
-                            Invitar
+                            {t("walletView.invite")}
                         </button>
                     ) : null}
                 </div>
@@ -100,14 +100,14 @@ export const WalletMembersPanel = ({
                 <section className="flex min-h-0 min-w-0 flex-1 flex-col">
                     <div className="border-b border-light-10 px-4 py-5 sm:px-7">
                         <h2 className="text-base font-semibold text-light">
-                            Invitaciones enviadas
+                            {t("walletView.sentInvitations")}
                         </h2>
                         <p className="mt-1 text-sm text-helper">
                             {pendingCount > 0
-                                ? `${pendingCount} pendiente${pendingCount === 1 ? "" : "s"} de respuesta.`
+                                ? `${pendingCount} ${t("walletView.pendingResponse")}`
                                 : sentInvitations.length > 0
-                                    ? "Historial de invitaciones de esta billetera."
-                                    : "Todavía no enviaste invitaciones."}
+                                    ? t("walletView.invitationHistory")
+                                    : t("walletView.noSentInvitations")}
                         </p>
                     </div>
 
