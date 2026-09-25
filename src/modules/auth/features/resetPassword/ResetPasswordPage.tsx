@@ -1,22 +1,22 @@
-import { useSearchParams } from "react-router";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 
-import { ResetPasswordForm } from "./components/ResetPasswordForm";
-import { useResetPassword } from "./hooks/useResetPassword";
-
+/**
+ * Legacy route kept for backward-compatibility with any saved links.
+ * Redirects to the unified forgot-password stepper, preserving the email
+ * query param so the old URL still works gracefully.
+ */
 export const ResetPasswordPage = () => {
+    const navigate = useNavigate();
     const [params] = useSearchParams();
-    const email = params.get("email") ?? "";
+    const email = params.get("email");
 
-    const { mutateAsync: resetPassword, isPending: isLoading } = useResetPassword();
+    useEffect(() => {
+        const target = email
+            ? `/auth/forgot-password?email=${encodeURIComponent(email)}`
+            : "/auth/forgot-password";
+        void navigate(target, { replace: true });
+    }, [navigate, email]);
 
-    return (
-        <div className="flex min-h-screen items-center justify-center">
-            <ResetPasswordForm
-                isLoading={isLoading}
-                onSubmit={async ({ code, password }) => {
-                    await resetPassword({ email, code, password });
-                }}
-            />
-        </div>
-    );
+    return null;
 };

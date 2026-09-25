@@ -2,13 +2,21 @@
 export const LANDING_STEP_INTERVAL_MS = 4000;
 
 // Hero-adjacent how-it-works steps + preview images
-export const LANDING_STEPS = [
+export const LANDING_STEPS: Array<{
+    number: string;
+    title: string;
+    desc: string;
+    image: string;
+    alt: string;
+    illustration: "register" | "wallet" | "dashboard";
+}> = [
     {
         number: "01",
         title: "Crea tu cuenta",
         desc: "Regístrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.",
         image: "/landing/step-register.png",
         alt: "Pantalla de registro de BFlow",
+        illustration: "register",
     },
     {
         number: "02",
@@ -16,6 +24,7 @@ export const LANDING_STEPS = [
         desc: "Crea billeteras para cada cuenta bancaria, efectivo o tarjeta e invita miembros si quieres compartirlas.",
         image: "/landing/step-wallet.png",
         alt: "Pantalla para agregar una billetera",
+        illustration: "wallet",
     },
     {
         number: "03",
@@ -23,6 +32,7 @@ export const LANDING_STEPS = [
         desc: "Registra movimientos, define presupuestos y visualiza tu situación financiera en tiempo real.",
         image: "/landing/step-dashboard.png",
         alt: "Dashboard de BFlow",
+        illustration: "dashboard",
     },
 ];
 
@@ -87,7 +97,7 @@ export const LANDING_PLANS: Array<{
 ];
 
 // FAQ accordion copy
-export const LANDING_FAQS = [
+export const LANDING_FAQS: Array<{ question: string; answer: string }> = [
     {
         question: "¿Por qué usar BFlow?",
         answer:
@@ -104,3 +114,10 @@ export const LANDING_FAQS = [
             "Los pagos de planes premium se procesan a través de una pasarela de pago confiable. El detalle se confirma al momento de la suscripción.",
     },
 ];
+
+// In-page section anchors used by navbar / footer
+export const LANDING_NAV_LINKS = [
+    { label: "Características", id: "how" },
+    { label: "Precios", id: "pricing" },
+    { label: "Preguntas frecuentes", id: "faq" },
+] as const;

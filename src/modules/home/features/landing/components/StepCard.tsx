@@ -3,15 +3,23 @@ interface StepCardProps {
     title: string;
     desc: string;
     active?: boolean;
+    progress?: number;
     onSelect: () => void;
 }
 
-export const StepCard = ({ number, title, desc, active = false, onSelect }: StepCardProps) => {
+export const StepCard = ({
+    number,
+    title,
+    desc,
+    active = false,
+    progress = 0,
+    onSelect,
+}: StepCardProps) => {
     return (
         <button
             type="button"
             onClick={onSelect}
-            className={`relative w-full text-left rounded-2xl border px-5 py-5 transition-all cursor-pointer ${
+            className={`relative w-full overflow-hidden text-left rounded-2xl border px-5 py-5 transition-all cursor-pointer ${
                 active
                     ? "bg-surface border-primary-25"
                     : "bg-surface border-light-10 hover:border-light-25"
@@ -31,6 +39,15 @@ export const StepCard = ({ number, title, desc, active = false, onSelect }: Step
 
             {active && (
                 <span className="pointer-events-none absolute top-1/2 -right-4 hidden h-px w-4 bg-light-25 lg:block" />
+            )}
+
+            {active && (
+                <div className="absolute inset-x-0 bottom-0 h-[3px] bg-light-10">
+                    <div
+                        className="h-full bg-primary"
+                        style={{ width: `${progress}%` }}
+                    />
+                </div>
             )}
         </button>
     );

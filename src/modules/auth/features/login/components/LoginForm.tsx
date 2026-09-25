@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Loader2 } from "lucide-react";
 import { Link } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -21,16 +21,12 @@ const loginSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
-const inputClass =
-    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
-
 interface LoginFormProps {
     onSubmitLogin: (data: LoginCredentials) => Promise<unknown>;
     isLoading: boolean;
 }
 
 export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
-    // RHF form (validate on submit only)
     const {
         register,
         handleSubmit,
@@ -40,64 +36,70 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
         mode: "onSubmit",
     });
 
-    // Password visibility toggle
     const [showPassword, setShowPassword] = useState(false);
 
-    // Submit credentials via toast.promise
     const onInternalSubmit = (data: LoginFormInputs) => {
         toast.promise(onSubmitLogin(data), {
             loading: "Iniciando sesión...",
-            success: "Bienvenido",
+            success: "¡Bienvenido de vuelta!",
             error: (err) =>
                 err instanceof Error ? err.message : "Error al iniciar sesión",
         });
     };
 
+    const inputBase =
+        "h-11 w-full rounded-xl border bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-40 transition-all duration-150";
+
+    const inputNormal = `${inputBase} border-light-10 focus:border-primary/50`;
+    const inputError = `${inputBase} border-danger/60 focus:ring-danger/40`;
+
     return (
         <form
-            action=""
             onSubmit={(e) => {
                 void handleSubmit(onInternalSubmit)(e);
             }}
         >
             <div className="w-full max-w-md flex-col space-y-4">
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-label" htmlFor="txtEmail">
+                {/* Email */}
+                <div className="space-y-1.5">
+                    <label className="text-xs font-medium text-label" htmlFor="txtEmail">
                         Correo electrónico
                     </label>
-
                     <div className="relative">
                         <Mail
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
+                            size={16}
+                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-helper"
                         />
                         <input
                             id="txtEmail"
                             disabled={isLoading}
                             {...register("email")}
-                            placeholder="Correo electrónico"
-                            className={`${inputClass} pl-11`}
+                            placeholder="tu@correo.com"
+                            aria-invalid={isSubmitted && !!errors.email}
+                            aria-describedby={isSubmitted && errors.email ? "email-error" : undefined}
+                            className={`${isSubmitted && errors.email ? inputError : inputNormal} pl-10`}
                         />
                     </div>
                     {isSubmitted && errors.email && (
-                        <p className="text-sm text-danger mt-1">
+                        <p id="email-error" className="text-xs text-danger mt-1 flex items-center gap-1">
                             {errors.email.message}
                         </p>
                     )}
                 </div>
 
-                <div className="space-y-2">
+                {/* Password */}
+                <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                         <label
-                            className="text-sm font-medium text-label"
+                            className="text-xs font-medium text-label"
                             htmlFor="txtPassword"
                         >
                             Contraseña
                         </label>
-
                         <Link
                             to="/auth/forgot-password"
-                            className="text-sm font-medium text-primary hover:opacity-80"
+                            tabIndex={isLoading ? -1 : undefined}
+                            className="text-xs font-medium text-primary hover:opacity-75 transition-opacity"
                         >
                             ¿Olvidaste tu contraseña?
                         </Link>
@@ -105,44 +107,53 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
 
                     <div className="relative">
                         <Lock
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
+                            size={16}
+                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-helper"
                         />
-
                         <input
                             id="txtPassword"
                             disabled={isLoading}
                             {...register("password")}
                             type={showPassword ? "text" : "password"}
                             placeholder="••••••••••"
-                            className={`${inputClass} px-11`}
+                            aria-invalid={isSubmitted && !!errors.password}
+                            aria-describedby={isSubmitted && errors.password ? "password-error" : undefined}
+                            className={`${isSubmitted && errors.password ? inputError : inputNormal} px-10`}
                         />
-
                         <button
                             type="button"
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light"
+                            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-helper hover:text-light transition-colors"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                         </button>
                     </div>
                     {isSubmitted && errors.password && (
-                        <p className="text-sm text-danger mt-1">
+                        <p id="password-error" className="text-xs text-danger mt-1">
                             {errors.password.message}
                         </p>
                     )}
                 </div>
 
+                {/* Submit */}
                 <button
                     type="submit"
-                    className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
+                    className="h-11 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-40 cursor-pointer transition-colors duration-200 inline-flex items-center justify-center gap-2"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Iniciando sesión..." : "Iniciar sesión →"}
+                    {isLoading ? (
+                        <>
+                            <Loader2 size={16} className="animate-spin" />
+                            Iniciando sesión...
+                        </>
+                    ) : (
+                        "Iniciar sesión"
+                    )}
                 </button>
             </div>
 
-            <p className="mt-8 text-center text-sm text-helper">
+            <p className="mt-6 text-center text-xs text-helper">
                 ¿No tienes cuenta?{" "}
                 <Link
                     to="/auth/register"

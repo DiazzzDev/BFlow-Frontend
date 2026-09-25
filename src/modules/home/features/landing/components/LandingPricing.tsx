@@ -2,13 +2,13 @@ import { LANDING_PLANS } from "../utils/landingContent";
 
 import { PricingCard } from "./PricingCard";
 
-
 export const LandingPricing = () => {
     return (
-        <section
-            id="pricing"
-            className="px-8 md:px-16 xl:px-24 pb-28 md:pb-36"
-        >
+        <section id="pricing" className="px-8 md:px-16 xl:px-24 pb-28 md:pb-36">
+            <p className="mb-3 text-sm font-medium text-primary">
+                Planes y precios
+            </p>
+
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
                 Mira nuestros planes
             </h2>

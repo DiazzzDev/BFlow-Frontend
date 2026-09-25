@@ -17,19 +17,40 @@ export const useLandingPage = () => {
     // Step carousel: auto-advance unless hovered / manually selected
     const [activeStep, setActiveStep] = useState(0);
     const [paused, setPaused] = useState(false);
+    const [progress, setProgress] = useState(0);
     const resumeTimeoutRef = useRef<number | null>(null);
 
+    // Reset the fill immediately whenever the active step changes
+    useEffect(() => {
+        setProgress(0);
+    }, [activeStep]);
+
+    // Drive both the progress fill and the auto-advance off one rAF loop,
+    // so the bar and the step change always stay in sync
     useEffect(() => {
         if (paused) {
             return;
         }
 
-        const id = window.setInterval(() => {
-            setActiveStep((current) => (current + 1) % LANDING_STEPS.length);
-        }, LANDING_STEP_INTERVAL_MS);
+        let rafId: number;
+        const start = performance.now();
 
-        return () => window.clearInterval(id);
-    }, [paused]);
+        const tick = (now: number) => {
+            const elapsed = now - start;
+            const pct = Math.min(100, (elapsed / LANDING_STEP_INTERVAL_MS) * 100);
+            setProgress(pct);
+
+            if (elapsed >= LANDING_STEP_INTERVAL_MS) {
+                setActiveStep((current) => (current + 1) % LANDING_STEPS.length);
+                return;
+            }
+
+            rafId = requestAnimationFrame(tick);
+        };
+
+        rafId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafId);
+    }, [paused, activeStep]);
 
     useEffect(() => {
         return () => {
@@ -61,6 +82,7 @@ export const useLandingPage = () => {
     return {
         openFaq,
         activeStep,
+        progress,
         setPaused,
         isAuthenticated,
         isChecking,

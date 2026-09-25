@@ -3,20 +3,25 @@ import { LANDING_STEPS } from "../utils/landingContent";
 import { StepCard } from "./StepCard";
 import { StepPreview } from "./StepPreview";
 
-
 interface LandingHowProps {
     activeStep: number;
+    progress: number;
     onSelectStep: (index: number) => void;
     onPauseChange: (paused: boolean) => void;
 }
 
 export const LandingHow = ({
     activeStep,
+    progress,
     onSelectStep,
     onPauseChange,
 }: LandingHowProps) => {
     return (
         <section id="how" className="px-8 md:px-16 xl:px-24 pb-28 md:pb-36">
+            <p className="mb-3 text-sm font-medium text-primary">
+                Cómo funciona
+            </p>
+
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-12 md:mb-16 max-w-xl leading-tight">
                 Tres pasos para la paz financiera
             </h2>
@@ -33,10 +38,10 @@ export const LandingHow = ({
                     {LANDING_STEPS.map((step, index) => (
                         <div key={step.number} className="relative sm:pl-8">
                             <span
-                                className={`absolute left-0 top-1/2 hidden h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300 sm:block ${
+                                className={`absolute left-0 top-1/2 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 sm:block border-2 ${
                                     activeStep === index
-                                        ? "bg-light"
-                                        : "bg-helper"
+                                        ? "bg-primary border-primary shadow-[0_0_8px_rgba(249,115,22,0.6)]"
+                                        : "bg-surface-hard border-light-10"
                                 }`}
                             />
                             <StepCard
@@ -44,6 +49,7 @@ export const LandingHow = ({
                                 title={step.title}
                                 desc={step.desc}
                                 active={activeStep === index}
+                                progress={activeStep === index ? progress : 0}
                                 onSelect={() => onSelectStep(index)}
                             />
                         </div>
@@ -61,6 +67,7 @@ export const LandingHow = ({
                             alt={step.alt}
                             label={step.title}
                             active={activeStep === index}
+                            illustration={step.illustration}
                         />
                     ))}
                 </div>
