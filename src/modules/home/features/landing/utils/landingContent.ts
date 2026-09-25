@@ -91,16 +91,27 @@ export const LANDING_FAQS = [
     {
         question: "¿Por qué usar BFlow?",
         answer:
-            "BFlow te ayuda a organizar ingresos, gastos y billeteras compartidas en un solo lugar, con una interfaz simple pensada para el día a día.",
+            "BFlow reúne tus ingresos, gastos, presupuestos y billeteras en un solo lugar para que tengas claridad sobre tu dinero cada día.",
+    },
+    {
+        question: "¿Puedo compartir mis billeteras?",
+        answer:
+            "Sí. Puedes crear billeteras compartidas e invitar a las personas con las que organizas tus finanzas.",
+    },
+    {
+        question: "¿Cómo se procesan los pagos?",
+        answer:
+            "Los pagos de los planes premium se procesan con Wompi, una plataforma de pagos en línea.",
+        reference: "https://www.wompi.sv/",
     },
     {
         question: "¿Mis datos están seguros?",
         answer:
-            "Sí. Usamos autenticación segura y buenas prácticas de protección de datos para que tu información financiera esté resguardada.",
+            "Sí. Protegemos tu información con autenticación segura y buenas prácticas para que tus datos financieros permanezcan privados.",
     },
     {
-        question: "¿Qué pasarela de pago es utilizada en Bflow?",
+        question: "¿Puedo cambiar de plan o cancelarlo?",
         answer:
-            "Los pagos de planes premium se procesan a través de una pasarela de pago confiable. El detalle se confirma al momento de la suscripción.",
+            "Sí. Puedes revisar, cambiar o cancelar tu plan desde la configuración de tu cuenta, según las condiciones vigentes.",
     },
 ];

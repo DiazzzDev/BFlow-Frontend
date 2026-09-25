@@ -481,12 +481,14 @@
         "navFeatures": "Características",
         "navPricing": "Precios",
         "navFaq": "Preguntas frecuentes",
+        "navContact": "Contacto",
         "goDashboard": "Ir al dashboard",
         "signIn": "Iniciar sesión",
         "startFree": "Empezar gratis",
         "register": "Registrarse",
         "footerAbout": "Nosotros",
         "footerHome": "Inicio",
+        "footerContact": "Contacto",
         "footerPlans": "Planes",
         "footerLegal": "Legal",
         "legalLabel": "Legal",
@@ -507,6 +509,7 @@
         "pricingTitle": "Mira nuestros planes",
         "pricingDescription": "Todos los precios están expresados en USD. El importe final en moneda local dependerá del tipo de cambio aplicado por su banco o entidad emisora.",
         "faqTitle": "Preguntas frecuentes",
+        "wompiReference": "Visita Wompi",
         "stepImageFallback": "Pega la imagen en {{path}}",
         "month": "Mes",
         "year": "Año",
@@ -568,17 +571,55 @@
         "faq": [
             {
                 "question": "¿Por qué usar BFlow?",
-                "answer": "BFlow te ayuda a organizar ingresos, gastos y billeteras compartidas en un solo lugar, con una interfaz simple pensada para el día a día."
+                "answer": "BFlow reúne tus ingresos, gastos, presupuestos y billeteras en un solo lugar para que tengas claridad sobre tu dinero cada día."
+            },
+            {
+                "question": "¿Puedo compartir mis billeteras?",
+                "answer": "Sí. Puedes crear billeteras compartidas e invitar a las personas con las que organizas tus finanzas."
+            },
+            {
+                "question": "¿Cómo se procesan los pagos?",
+                "answer": "Los pagos de los planes premium se procesan con Wompi, una plataforma de pagos en línea."
             },
             {
                 "question": "¿Mis datos están seguros?",
-                "answer": "Sí. Usamos autenticación segura y buenas prácticas de protección de datos para que tu información financiera esté resguardada."
+                "answer": "Sí. Protegemos tu información con autenticación segura y buenas prácticas para que tus datos financieros permanezcan privados."
             },
             {
-                "question": "¿Qué pasarela de pago es utilizada en Bflow?",
-                "answer": "Los pagos de planes premium se procesan a través de una pasarela de pago confiable. El detalle se confirma al momento de la suscripción."
+                "question": "¿Puedo cambiar de plan o cancelarlo?",
+                "answer": "Sí. Puedes revisar, cambiar o cancelar tu plan desde la configuración de tu cuenta, según las condiciones vigentes."
             }
         ]
+    },
+    "contact": {
+        "title": "Hablemos",
+        "description": "¿Tienes una pregunta, sugerencia o necesitas ayuda? Envíanos un mensaje y nuestro equipo te responderá.",
+        "name": "Nombre",
+        "namePlaceholder": "Tu nombre",
+        "email": "Correo electrónico",
+        "emailPlaceholder": "tu@correo.com",
+        "subject": "Asunto",
+        "subjectPlaceholder": "¿En qué podemos ayudarte?",
+        "message": "Mensaje",
+        "messagePlaceholder": "Escribe tu mensaje aquí...",
+        "characterCount": "{{count}}/500 caracteres",
+        "send": "Enviar mensaje",
+        "sending": "Enviando...",
+        "success": "Tu mensaje se envió correctamente.",
+        "error": "No pudimos enviar tu mensaje. Inténtalo de nuevo.",
+        "validationName": "El nombre es requerido",
+        "validationEmailRequired": "El correo es requerido",
+        "validationEmail": "Ingresa un correo válido",
+        "validationSubject": "El asunto es requerido",
+        "validationMessage": "El mensaje es requerido",
+        "validationMessageMin": "El mensaje debe tener al menos 10 caracteres",
+        "validationMessageMax": "El mensaje no puede superar los 500 caracteres",
+        "copyEmail": "Copiar correo de soporte",
+        "emailCopied": "Correo de soporte copiado",
+        "asideTitle": "Otras formas de conectar",
+        "asideDescription": "Sigue a BFlow Studio o explora el proyecto mientras te respondemos.",
+        "github": "Ver el proyecto en GitHub",
+        "backHome": "Volver al inicio"
     },
     "auth": {
         "welcome": "Bienvenido",

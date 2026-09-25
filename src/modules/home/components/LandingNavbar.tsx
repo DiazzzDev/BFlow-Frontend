@@ -7,6 +7,19 @@ import { useLandingNav } from "../hooks/useLandingNav";
 
 import { useAuth } from "@/auth/hooks/useAuth";
 
+const getNavTranslationKey = (id: string) => {
+    if (id === "how") {
+        return "home.navFeatures";
+    }
+    if (id === "pricing") {
+        return "home.navPricing";
+    }
+    if (id === "faq") {
+        return "home.navFaq";
+    }
+    return "home.navContact";
+};
+
 export const LandingNavbar = () => {
     const { navLinks, handleNavClick } = useLandingNav();
     const { isAuthenticated, isChecking } = useAuth();
@@ -38,7 +51,7 @@ export const LandingNavbar = () => {
                                 onClick={() => onNavClick(id)}
                                 className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light"
                             >
-                                {t(`home.nav${id === "how" ? "Features" : id === "pricing" ? "Pricing" : "Faq"}`, { defaultValue: label })}
+                                {t(getNavTranslationKey(id), { defaultValue: label })}
                             </button>
                         ))}
                     </div>
@@ -94,7 +107,7 @@ export const LandingNavbar = () => {
                                 onClick={() => onNavClick(id)}
                                 className="cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light"
                             >
-                                {t(`home.nav${id === "how" ? "Features" : id === "pricing" ? "Pricing" : "Faq"}`, { defaultValue: label })}
+                                {t(getNavTranslationKey(id), { defaultValue: label })}
                             </button>
                         ))}
                         {!isAuthenticated && !isChecking && (

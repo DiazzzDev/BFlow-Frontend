@@ -23,6 +23,8 @@ export const LandingFaq = ({ openFaq, onToggleFaq }: LandingFaqProps) => {
                         key={faq.question}
                         question={t(`home.faq.${index}.question`, { defaultValue: faq.question })}
                         answer={t(`home.faq.${index}.answer`, { defaultValue: faq.answer })}
+                        reference={faq.reference}
+                        referenceLabel={faq.reference ? t("home.wompiReference") : undefined}
                         open={openFaq === index}
                         onToggle={() => onToggleFaq(index)}
                     />
