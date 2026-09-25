@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
+import { SiInstagram } from "@icons-pack/react-simple-icons";
 
 import { useLandingNav } from "../hooks/useLandingNav";
 
@@ -28,15 +29,26 @@ export const LandingFooter = () => {
                         <p className="text-sm text-helper mb-5 max-w-xs">
                             {t("home.heroTitle")} {t("home.heroFocus")}
                         </p>
-                        <a
-                            href="https://github.com"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex text-helper hover:text-light transition-colors"
-                            aria-label="GitHub"
-                        >
-                            <GitHubIcon />
-                        </a>
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="https://github.com/DiazzzDev/BFlow-Financial-Engine"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex text-light transition-colors hover:text-primary"
+                                aria-label="GitHub"
+                            >
+                                <GitHubIcon />
+                            </a>
+                            <a
+                                href="https://www.instagram.com/bflow_studio?stkn=MXZvemE5cnh2NG1kMA=="
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex text-light transition-colors hover:text-primary"
+                                aria-label="Instagram"
+                            >
+                                <SiInstagram className="h-5 w-5" />
+                            </a>
+                        </div>
                     </div>
 
                     <div>
@@ -56,12 +68,12 @@ export const LandingFooter = () => {
                             >
                                 {t("home.navFaq")}
                             </button>
-                            <a
-                                href="mailto:hola@bflow.studio"
-                                className="text-sm text-helper hover:text-light transition-colors"
+                            <Link
+                                to="/contact"
+                                className="text-sm text-helper transition-colors hover:text-light"
                             >
-                                Contacto
-                            </a>
+                                {t("home.footerContact")}
+                            </Link>
                         </div>
                     </div>
 

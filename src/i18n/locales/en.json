@@ -479,12 +479,14 @@
         "navFeatures": "Features",
         "navPricing": "Pricing",
         "navFaq": "Frequently asked questions",
+        "navContact": "Contact",
         "goDashboard": "Go to dashboard",
         "signIn": "Sign in",
         "startFree": "Start free",
         "register": "Sign up",
         "footerAbout": "About us",
         "footerHome": "Home",
+        "footerContact": "Contact",
         "footerPlans": "Plans",
         "footerLegal": "Legal",
         "legalLabel": "Legal",
@@ -505,6 +507,7 @@
         "pricingTitle": "Explore our plans",
         "pricingDescription": "All prices are expressed in USD. The final amount in local currency depends on the exchange rate applied by your bank or issuer.",
         "faqTitle": "Frequently asked questions",
+        "wompiReference": "Visit Wompi",
         "stepImageFallback": "Place the image at {{path}}",
         "month": "Month",
         "year": "Year",
@@ -566,17 +569,55 @@
         "faq": [
             {
                 "question": "Why use BFlow?",
-                "answer": "BFlow helps you organize income, expenses and shared wallets in one place, with a simple interface designed for everyday use."
+                "answer": "BFlow brings your income, expenses, budgets and wallets together so you can understand your money every day."
             },
             {
-                "question": "Are my data safe?",
-                "answer": "Yes. We use secure authentication and data protection best practices to keep your financial information safe."
+                "question": "Can I share my wallets?",
+                "answer": "Yes. You can create shared wallets and invite the people you manage your finances with."
             },
             {
                 "question": "Which payment gateway does BFlow use?",
-                "answer": "Premium plan payments are processed through a trusted payment gateway. The details are confirmed during subscription."
+                "answer": "Premium plan payments are processed through Wompi, an online payment platform."
+            },
+            {
+                "question": "Is my data safe?",
+                "answer": "Yes. We protect your information with secure authentication and good practices so your financial data remains private."
+            },
+            {
+                "question": "Can I change or cancel my plan?",
+                "answer": "Yes. You can review, change or cancel your plan from your account settings, according to the current terms."
             }
         ]
+    },
+    "contact": {
+        "title": "Let's talk",
+        "description": "Have a question, suggestion or need help? Send us a message and our team will get back to you.",
+        "name": "Name",
+        "namePlaceholder": "Your name",
+        "email": "Email",
+        "emailPlaceholder": "you@email.com",
+        "subject": "Subject",
+        "subjectPlaceholder": "How can we help you?",
+        "message": "Message",
+        "messagePlaceholder": "Write your message here...",
+        "characterCount": "{{count}}/500 characters",
+        "send": "Send message",
+        "sending": "Sending...",
+        "success": "Your message was sent successfully.",
+        "error": "We couldn't send your message. Please try again.",
+        "validationName": "Name is required",
+        "validationEmailRequired": "Email is required",
+        "validationEmail": "Enter a valid email",
+        "validationSubject": "Subject is required",
+        "validationMessage": "Message is required",
+        "validationMessageMin": "Message must be at least 10 characters",
+        "validationMessageMax": "Message cannot exceed 500 characters",
+        "copyEmail": "Copy support email",
+        "emailCopied": "Support email copied",
+        "asideTitle": "Other ways to connect",
+        "asideDescription": "Follow BFlow Studio or explore the project while we get back to you.",
+        "github": "View the project on GitHub",
+        "backHome": "Back to home"
     },
     "auth": {
         "welcome": "Welcome",
