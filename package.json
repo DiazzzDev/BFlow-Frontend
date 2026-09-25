@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "echo 'No hay tests instalados aún' && exit 0"
+    "test": "npm run test:wompi",
+    "test:wompi": "node --test tests/wompi.checkout.test.mts"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",

@@ -113,6 +113,20 @@
         "cancelSuccess": "Subscription canceled successfully",
         "cancelError": "Could not cancel the subscription"
     },
+    "wompi": {
+        "title": "Complete your subscription",
+        "description": "Review your plan details before continuing to secure payment with Wompi.",
+        "selectedPlan": "Selected plan",
+        "included": "Included",
+        "continue": "Continue",
+        "loading": "Generating payment...",
+        "checkoutError": "Could not generate the payment link.",
+        "checkoutUrlError": "A valid payment URL was not received.",
+        "planConfigurationError": "This plan is not configured correctly for payment.",
+        "invalidPlanTitle": "Plan unavailable",
+        "invalidPlanDescription": "Choose one of the available plans to continue with payment.",
+        "backToPlans": "Back to plans"
+    },
     "budgets": {
         "createLoading": "Creating budget...",
         "createFallback": "Budget created",

@@ -7,6 +7,7 @@ import { WalletViewPage } from "./modules/app/features/walletView/WalletViewPage
 import { SettingsPage } from "./modules/app/features/settings/SettingsPage.tsx";
 import { BudgetsPage } from "./modules/app/features/budgets/BudgetsPage.tsx";
 import { BudgetViewPage } from "./modules/app/features/budgetView/BudgetViewPage.tsx";
+import { WompiPage } from "./modules/app/features/wompi/WompiPage.tsx";
 import { HistoryPage } from "./modules/app/features/history/HistoryPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
 import { AppLayout } from "./modules/app/appLayout.tsx";
@@ -56,6 +57,7 @@ export const appRouter = createBrowserRouter([
                     { path: "settings", element: <SettingsPage /> },
                     { path: "budgets", element: <BudgetsPage /> },
                     { path: "budgets/:id", element: <BudgetViewPage /> },
+                    { path: "wompi", element: <WompiPage /> },
                 ],
             },
         ],

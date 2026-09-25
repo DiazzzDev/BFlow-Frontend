@@ -1,3 +1,5 @@
+import { config } from "@/config/config";
+
 // Auto-advance interval for the how-it-works step carousel
 export const LANDING_STEP_INTERVAL_MS = 4000;
 
@@ -26,8 +28,9 @@ export const LANDING_STEPS = [
     },
 ];
 
-// Pricing cards (USD copy; CTA routes to register by default)
-export const LANDING_PLANS: Array<{
+export type CheckoutPlanKey = "pro-monthly" | "pro-yearly";
+
+export type LandingPlan = {
     name: string;
     price: string;
     period: string;
@@ -35,7 +38,12 @@ export const LANDING_PLANS: Array<{
     btnStyle: "outline" | "filled";
     featured: boolean;
     features: string[];
-}> = [
+    checkoutPlanKey?: CheckoutPlanKey;
+    planId?: string;
+};
+
+// Pricing cards (USD copy; CTA routes to register by default)
+export const LANDING_PLANS: LandingPlan[] = [
     {
         name: "Personal",
         price: "$0",
@@ -57,6 +65,8 @@ export const LANDING_PLANS: Array<{
         btnText: "Empezar con Pro",
         btnStyle: "filled",
         featured: true,
+        checkoutPlanKey: "pro-monthly",
+        planId: config.WOMPI_PRO_MONTHLY_PLAN_ID,
         features: [
             "Hasta un maximo de 100 wallets",
             "Hasta un maximo de 25 Recurrencias",
@@ -74,6 +84,8 @@ export const LANDING_PLANS: Array<{
         btnText: "Empezar con Pro anual",
         btnStyle: "outline",
         featured: false,
+        checkoutPlanKey: "pro-yearly",
+        planId: config.WOMPI_PRO_YEARLY_PLAN_ID,
         features: [
             "Hasta un maximo de 100 wallets",
             "Hasta un maximo de 25 Recurrencias",
