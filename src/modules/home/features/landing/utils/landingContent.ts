@@ -13,7 +13,7 @@ export const LANDING_STEPS: Array<{
     {
         number: "01",
         title: "Crea tu cuenta",
-        desc: "Regístrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.",
+        desc: "Con tu email o Google. Sin tarjeta, menos de un minuto.",
         image: "/landing/step-register.png",
         alt: "Pantalla de registro de BFlow",
         illustration: "register",
@@ -21,7 +21,7 @@ export const LANDING_STEPS: Array<{
     {
         number: "02",
         title: "Agrega tus billeteras",
-        desc: "Crea billeteras para cada cuenta bancaria, efectivo o tarjeta e invita miembros si quieres compartirlas.",
+        desc: "Una por cada cuenta, tarjeta o efectivo. Invita a otros si la compartís.",
         image: "/landing/step-wallet.png",
         alt: "Pantalla para agregar una billetera",
         illustration: "wallet",
@@ -29,7 +29,7 @@ export const LANDING_STEPS: Array<{
     {
         number: "03",
         title: "Controla tus finanzas",
-        desc: "Registra movimientos, define presupuestos y visualiza tu situación financiera en tiempo real.",
+        desc: "Movimientos, presupuestos y balance, actualizados al momento.",
         image: "/landing/step-dashboard.png",
         alt: "Dashboard de BFlow",
         illustration: "dashboard",
@@ -54,10 +54,10 @@ export const LANDING_PLANS: Array<{
         btnStyle: "outline",
         featured: false,
         features: [
-            "Hasta 2 wallets",
-            "Hasta 2 Recurrencias",
+            "Hasta 2 billeteras",
+            "Hasta 2 recurrencias",
             "Hasta 3 presupuestos",
-            "Participar en una wallet con un máximo de 3 personas",
+            "Compartir una billetera con hasta 3 personas",
         ],
     },
     {
@@ -68,12 +68,12 @@ export const LANDING_PLANS: Array<{
         btnStyle: "filled",
         featured: true,
         features: [
-            "Hasta un maximo de 100 wallets",
-            "Hasta un maximo de 25 Recurrencias",
-            "Hasta un maximo de 100 presupuestos",
-            "Crear wallets compartidas, invitar e administrar un máximo de 10 personas",
-            "Transacciones entre wallets",
-            "Personalización de dashboard",
+            "Hasta 100 billeteras",
+            "Hasta 25 recurrencias",
+            "Hasta 100 presupuestos",
+            "Billeteras compartidas con hasta 10 personas",
+            "Transacciones entre billeteras",
+            "Dashboard personalizable",
             "Autocompletado inteligente",
         ],
     },
@@ -85,12 +85,12 @@ export const LANDING_PLANS: Array<{
         btnStyle: "outline",
         featured: false,
         features: [
-            "Hasta un maximo de 100 wallets",
-            "Hasta un maximo de 25 Recurrencias",
-            "Hasta un maximo de 100 presupuestos",
-            "Crear wallets compartidas, invitar e administrar un máximo de 10 personas",
-            "Transacciones entre wallets",
-            "Personalización de dashboard",
+            "Hasta 100 billeteras",
+            "Hasta 25 recurrencias",
+            "Hasta 100 presupuestos",
+            "Billeteras compartidas con hasta 10 personas",
+            "Transacciones entre billeteras",
+            "Dashboard personalizable",
             "Autocompletado inteligente",
         ],
     },
@@ -101,17 +101,17 @@ export const LANDING_FAQS: Array<{ question: string; answer: string }> = [
     {
         question: "¿Por qué usar BFlow?",
         answer:
-            "BFlow te ayuda a organizar ingresos, gastos y billeteras compartidas en un solo lugar, con una interfaz simple pensada para el día a día.",
+            "Junta ingresos, gastos y billeteras compartidas en un solo lugar. Menos apps sueltas, más claridad sobre tu plata.",
     },
     {
         question: "¿Mis datos están seguros?",
         answer:
-            "Sí. Usamos autenticación segura y buenas prácticas de protección de datos para que tu información financiera esté resguardada.",
+            "Sí. Usamos autenticación segura y buenas prácticas de protección de datos para resguardar tu información financiera.",
     },
     {
-        question: "¿Qué pasarela de pago es utilizada en Bflow?",
+        question: "¿Qué pasarela de pago usa BFlow?",
         answer:
-            "Los pagos de planes premium se procesan a través de una pasarela de pago confiable. El detalle se confirma al momento de la suscripción.",
+            "Los planes pagos se procesan a través de una pasarela confiable. El detalle se confirma al momento de suscribirte.",
     },
 ];
 

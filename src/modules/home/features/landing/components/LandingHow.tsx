@@ -23,7 +23,7 @@ export const LandingHow = ({
             </p>
 
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-12 md:mb-16 max-w-xl leading-tight">
-                Tres pasos para la paz financiera
+                Tres pasos, sin fricción
             </h2>
 
             <div
@@ -38,9 +38,9 @@ export const LandingHow = ({
                     {LANDING_STEPS.map((step, index) => (
                         <div key={step.number} className="relative sm:pl-8">
                             <span
-                                className={`absolute left-0 top-1/2 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-300 sm:block border-2 ${
+                                className={`absolute left-0 top-1/2 hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300 sm:block border-2 ${
                                     activeStep === index
-                                        ? "bg-primary border-primary shadow-[0_0_8px_rgba(249,115,22,0.6)]"
+                                        ? "bg-primary border-primary"
                                         : "bg-surface-hard border-light-10"
                                 }`}
                             />
