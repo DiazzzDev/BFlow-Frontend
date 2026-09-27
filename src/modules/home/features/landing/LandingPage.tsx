@@ -1,34 +1,21 @@
 import { GitHubFab } from "./components/GitHubFab";
-import { LandingHero } from "./components/LandingHero";
-import { LandingHow } from "./components/LandingHow";
-import { LandingPricing } from "./components/LandingPricing";
-import { LandingFaq } from "./components/LandingFaq";
-import { useLandingPage } from "./hooks/useLandingPage";
+import { LandingHero } from "./components/hero/LandingHero";
+import { LandingSolutions } from "./components/solutions/LandingSolutions";
+import { LandingHow } from "./components/how/LandingHow";
+import { LandingPricing } from "./components/pricing/LandingPricing";
+import { LandingFaq } from "./components/faq/LandingFaq";
+import { LandingCta } from "./components/cta/LandingCta";
 
 export const LandingPage = () => {
-    const page = useLandingPage();
-
     return (
-        <>
+        <div className="flex flex-col items-center">
             <GitHubFab />
-
-            <LandingHero
-                isChecking={page.isChecking}
-                isAuthenticated={page.isAuthenticated}
-            />
-
-            <LandingHow
-                activeStep={page.activeStep}
-                onSelectStep={page.selectStep}
-                onPauseChange={page.setPaused}
-            />
-
+            <LandingHero />
+            <LandingSolutions />
+            <LandingHow />
             <LandingPricing />
-
-            <LandingFaq
-                openFaq={page.openFaq}
-                onToggleFaq={page.toggleFaq}
-            />
-        </>
+            <LandingFaq />
+            <LandingCta />
+        </div>
     );
 };

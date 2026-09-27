@@ -505,10 +505,109 @@
         "heroTitle": "El control financiero que",
         "heroFocus": "siempre quisiste",
         "heroDescription": "Gestiona tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.",
+        "heroPreview": {
+            "sharedWallet": "Billetera compartida",
+            "members": "{{count}} miembros",
+            "budgetPeriod": "Presupuesto mensual",
+            "monthBalance": "Balance del mes",
+            "walletName": "Viaje en familia",
+            "personalWallet": "Billetera personal",
+            "personalWalletDescription": "Gastos del día a día",
+            "walletDescription": "Vacaciones de diciembre",
+            "availableBalance": "Saldo disponible",
+            "imageAlt": "Dashboard de BFlow con balance, estadísticas y salud de presupuestos"
+        },
+        "solutions": {
+            "eyebrow": "Módulos",
+            "title": "Organiza tu dinero a tu manera",
+            "description": "Cada módulo resuelve una parte de tus finanzas: desde saber a dónde se fue tu dinero hasta avisarte antes de pasarte del presupuesto.",
+            "learnMore": "Conocer más sobre {{module}}",
+            "items": {
+                "wallets": {
+                    "label": "Billeteras",
+                    "title": "Cada cuenta en su lugar",
+                    "description": "Crea una billetera por cada banco, tarjeta o efectivo y mira cuánto tienes en cada una.",
+                    "highlights": ["Saldo por billetera", "Movimientos recientes a la mano"]
+                },
+                "sharedWallets": {
+                    "label": "Billeteras compartidas",
+                    "title": "Finanzas en equipo, sin perder el control",
+                    "description": "Comparte billeteras con tu pareja, familia o amigos y define qué puede hacer cada quien.",
+                    "highlights": ["Roles por miembro", "Sabe quién registró cada movimiento"]
+                },
+                "budgets": {
+                    "label": "Presupuestos",
+                    "title": "Te avisa antes de pasarte, no después",
+                    "description": "Ponle límite a una billetera o categoría y sigue su estado en todo momento.",
+                    "highlights": ["Límites por billetera o categoría", "Alertas antes de pasarte"]
+                }
+            }
+        },
+        "modules": {
+            "title": "Módulos",
+            "description": "Las herramientas de BFlow para entender, organizar y controlar tu dinero, todas en un solo lugar.",
+            "viewModule": "Ver cómo funciona",
+            "more": {
+                "label": "Conocer más",
+                "description": "Descubre todo lo que BFlow puede hacer por ti"
+            },
+            "items": {
+                "dashboard": {
+                    "question": "¿A dónde se fue mi dinero este mes?",
+                    "name": "Dashboard",
+                    "tagline": "tu dinero de un vistazo",
+                    "answer": "Ve tu balance, lo que entra y lo que sale en una sola pantalla, sin hacer cuentas.",
+                    "highlights": [
+                        "Balance total al instante",
+                        "Ingresos vs. gastos mes a mes",
+                        "Comparación con el mes pasado"
+                    ]
+                },
+                "wallets": {
+                    "question": "¿Cómo llevo las cuentas con mi pareja o familia?",
+                    "name": "Billeteras",
+                    "tagline": "personales y compartidas",
+                    "answer": "Separa tu banco, tarjeta o efectivo y comparte las que quieras con quien quieras.",
+                    "highlights": [
+                        "Una billetera por cada cuenta",
+                        "Invita a otras personas",
+                        "Sabe quién registró cada gasto"
+                    ]
+                },
+                "transactions": {
+                    "question": "¿Y si se me olvida anotar un gasto?",
+                    "name": "Transacciones",
+                    "tagline": "cada movimiento en segundos",
+                    "answer": "Registra un movimiento en segundos y programa los que se repiten para no volver a pensar en ellos.",
+                    "highlights": [
+                        "Ingresos y gastos con categoría",
+                        "Salario, renta y suscripciones automáticas",
+                        "Transferencias entre billeteras"
+                    ]
+                },
+                "budgets": {
+                    "question": "¿Cómo sé si me estoy pasando?",
+                    "name": "Presupuestos",
+                    "tagline": "gasta sin pasarte",
+                    "answer": "Ponle un límite a lo que gastas y BFlow te avisa antes de que sea tarde.",
+                    "highlights": [
+                        "Límites por billetera o categoría",
+                        "Alertas cuando te acercas",
+                        "Estados claros de un vistazo"
+                    ]
+                }
+            }
+        },
         "howTitle": "Tres pasos para la paz financiera",
         "pricingTitle": "Mira nuestros planes",
         "pricingDescription": "Todos los precios están expresados en USD. El importe final en moneda local dependerá del tipo de cambio aplicado por su banco o entidad emisora.",
         "faqTitle": "Preguntas frecuentes",
+        "faqDescription": "Todo lo que necesitas saber antes de empezar. ¿Te quedó alguna duda?",
+        "faqContact": "Escríbenos",
+        "cta": {
+            "title": "Empieza a organizar tu dinero hoy",
+            "description": "Crea tu cuenta gratis en menos de un minuto y ten tus billeteras, presupuestos y gastos compartidos en un solo lugar."
+        },
         "wompiReference": "Visita Wompi",
         "stepImageFallback": "Pega la imagen en {{path}}",
         "month": "Mes",

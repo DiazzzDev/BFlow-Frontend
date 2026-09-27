@@ -17,7 +17,7 @@ export const FaqItem = ({
 }: FaqItemProps) => {
     return (
         <div
-            className={`bg-surface border rounded-2xl overflow-hidden transition-colors duration-300 ${
+            className={`bg-surface-hard border rounded-2xl overflow-hidden transition-colors duration-300 ${
                 open ? "border-light-25" : "border-light-10"
             }`}
         >
