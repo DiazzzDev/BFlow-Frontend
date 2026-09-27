@@ -503,10 +503,109 @@
         "heroTitle": "The financial control you",
         "heroFocus": "always wanted",
         "heroDescription": "Manage your income, expenses and shared wallets in one place. Simple, powerful and designed for your everyday life.",
+        "heroPreview": {
+            "sharedWallet": "Shared wallet",
+            "members": "{{count}} members",
+            "budgetPeriod": "Monthly budget",
+            "monthBalance": "Monthly balance",
+            "walletName": "Family trip",
+            "personalWallet": "Personal wallet",
+            "personalWalletDescription": "Everyday expenses",
+            "walletDescription": "December vacation",
+            "availableBalance": "Available balance",
+            "imageAlt": "BFlow dashboard with balance, statistics and budget health"
+        },
+        "solutions": {
+            "eyebrow": "Modules",
+            "title": "Organize your money your way",
+            "description": "Each module solves one part of your finances: from knowing where your money went to warning you before you go over budget.",
+            "learnMore": "Learn more about {{module}}",
+            "items": {
+                "wallets": {
+                    "label": "Wallets",
+                    "title": "Every account in its place",
+                    "description": "Create a wallet for each bank, card or cash and see how much you have in each one.",
+                    "highlights": ["Balance per wallet", "Recent transactions at hand"]
+                },
+                "sharedWallets": {
+                    "label": "Shared wallets",
+                    "title": "Team finances without losing control",
+                    "description": "Share wallets with your partner, family or friends and decide what each person can do.",
+                    "highlights": ["Roles per member", "Know who recorded each transaction"]
+                },
+                "budgets": {
+                    "label": "Budgets",
+                    "title": "Warns you before you overspend, not after",
+                    "description": "Set a limit on a wallet or category and follow its status at all times.",
+                    "highlights": ["Limits per wallet or category", "Alerts before you overspend"]
+                }
+            }
+        },
+        "modules": {
+            "title": "Modules",
+            "description": "BFlow tools to understand, organize and control your money, all in one place.",
+            "viewModule": "See how it works",
+            "more": {
+                "label": "Learn more",
+                "description": "Discover everything BFlow can do for you"
+            },
+            "items": {
+                "dashboard": {
+                    "question": "Where did my money go this month?",
+                    "name": "Dashboard",
+                    "tagline": "your money at a glance",
+                    "answer": "See your balance, what comes in and what goes out on a single screen, no math required.",
+                    "highlights": [
+                        "Total balance instantly",
+                        "Income vs. expenses month by month",
+                        "Comparison with last month"
+                    ]
+                },
+                "wallets": {
+                    "question": "How do I share expenses with my partner or family?",
+                    "name": "Wallets",
+                    "tagline": "personal and shared",
+                    "answer": "Split your bank, card or cash and share the ones you want with whoever you want.",
+                    "highlights": [
+                        "One wallet per account",
+                        "Invite other people",
+                        "Know who logged each expense"
+                    ]
+                },
+                "transactions": {
+                    "question": "What if I forget to log an expense?",
+                    "name": "Transactions",
+                    "tagline": "every movement in seconds",
+                    "answer": "Log a movement in seconds and schedule the recurring ones so you never think about them again.",
+                    "highlights": [
+                        "Income and expenses by category",
+                        "Automatic salary, rent and subscriptions",
+                        "Transfers between wallets"
+                    ]
+                },
+                "budgets": {
+                    "question": "How do I know if I am overspending?",
+                    "name": "Budgets",
+                    "tagline": "spend without overspending",
+                    "answer": "Set a limit on what you spend and BFlow warns you before it is too late.",
+                    "highlights": [
+                        "Limits by wallet or category",
+                        "Alerts as you get close",
+                        "Clear statuses at a glance"
+                    ]
+                }
+            }
+        },
         "howTitle": "Three steps to financial peace",
         "pricingTitle": "Explore our plans",
         "pricingDescription": "All prices are expressed in USD. The final amount in local currency depends on the exchange rate applied by your bank or issuer.",
         "faqTitle": "Frequently asked questions",
+        "faqDescription": "Everything you need to know before you start. Still have questions?",
+        "faqContact": "Write to us",
+        "cta": {
+            "title": "Start organizing your money today",
+            "description": "Create your free account in less than a minute and keep your wallets, budgets and shared expenses in one place."
+        },
         "wompiReference": "Visit Wompi",
         "stepImageFallback": "Place the image at {{path}}",
         "month": "Month",

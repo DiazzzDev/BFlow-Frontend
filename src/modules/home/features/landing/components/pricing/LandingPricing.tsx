@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import { LANDING_PLANS } from "../utils/landingContent";
-import { PricingCard } from "./PricingCard";
+import { LANDING_PLANS } from "../../utils/landingContent";
 
+import { PricingCard } from "./PricingCard";
 
 export const LandingPricing = () => {
     const { t } = useTranslation();
@@ -20,7 +20,7 @@ export const LandingPricing = () => {
     return (
         <section
             id="pricing"
-            className="px-8 md:px-16 xl:px-24 pb-28 md:pb-36"
+            className="px-8 pb-28 md:pb-36 w-full max-w-360 mt-20"
         >
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
                 {t("home.pricingTitle")}
