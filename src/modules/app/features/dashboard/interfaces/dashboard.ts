@@ -6,8 +6,13 @@ export interface MonthlyStatistic {
     expense: number;
 }
 
+export type StatisticsPeriod = "WEEK" | "MONTH" | "YEAR" | "CUSTOM";
+
 export interface DashboardStatistics {
-    months: MonthlyStatistic[];
+    points: MonthlyStatistic[];
+    period: StatisticsPeriod;
+    startDate: string;
+    endDate: string;
 }
 
 export interface DashboardActivityBreakdown {

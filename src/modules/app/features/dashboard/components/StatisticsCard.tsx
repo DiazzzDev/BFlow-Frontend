@@ -11,7 +11,10 @@ import {
     YAxis,
 } from "recharts";
 
-import type { MonthlyStatistic } from "../interfaces/dashboard";
+import type {
+    MonthlyStatistic,
+    StatisticsPeriod,
+} from "../interfaces/dashboard";
 import {
     dashboardCardClass,
     dashboardLabelClass,
@@ -26,7 +29,9 @@ type FocusedSeries = "all" | "income" | "expense";
 
 interface StatisticsCardProps {
     isLoading: boolean;
-    months: MonthlyStatistic[];
+    points: MonthlyStatistic[];
+    period: StatisticsPeriod;
+    onPeriodChange: (period: StatisticsPeriod) => void;
     currency?: string;
 }
 
@@ -80,7 +85,9 @@ const StatisticsTooltip = ({
 
 export const StatisticsCard = ({
     isLoading,
-    months,
+    points,
+    period,
+    onPeriodChange,
     currency = "USD",
 }: StatisticsCardProps) => {
     const { t } = useTranslation();
@@ -101,26 +108,28 @@ export const StatisticsCard = ({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <p className={dashboardLabelClass}>{t("dashboard.statistics")}</p>
 
-                {/* Design-only period filter — not wired to data yet */}
                 <Select
                     id="statisticsPeriod"
-                    defaultValue="month"
+                    value={period}
                     aria-label={t("dashboard.statisticsPeriod")}
+                    onChange={(event) => {
+                        onPeriodChange(event.target.value as StatisticsPeriod);
+                    }}
                     className="w-auto min-w-36 py-1.5!"
                 >
-                    <option value="month">
+                    <option value="MONTH">
                         {t("dashboard.statisticsPeriodMonth")}
                     </option>
-                    <option value="week">
+                    <option value="WEEK">
                         {t("dashboard.statisticsPeriodWeek")}
                     </option>
-                    <option value="year">
+                    <option value="YEAR">
                         {t("dashboard.statisticsPeriodYear")}
                     </option>
                 </Select>
             </div>
 
-            {!isLoading && months.length > 0 ? (
+            {!isLoading && points.length > 0 ? (
                 <div className="mt-3 flex flex-wrap items-center gap-4">
                     <button
                         type="button"
@@ -152,7 +161,7 @@ export const StatisticsCard = ({
             <div className="mt-4 flex h-64 w-full items-center">
                 {isLoading ? (
                     <div className="h-full w-full animate-pulse rounded-xl bg-skeleton" />
-                ) : months.length === 0 ? (
+                ) : points.length === 0 ? (
                     <CustomEmptyState
                         title={t("dashboard.noStatistics")}
                         description={t("dashboard.statisticsHint")}
@@ -162,7 +171,7 @@ export const StatisticsCard = ({
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart
-                            data={months}
+                            data={points}
                             margin={{ top: 12, right: 8, left: 0, bottom: 0 }}
                         >
                             <defs>
