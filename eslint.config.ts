@@ -68,10 +68,6 @@ export default tseslint.config(
             'prefer-destructuring': ['warn', { object: true, array: false }],
 
             // Imports
-            'import/order': ['warn', {
-                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-                'newlines-between': 'always',
-            }],
             'import/no-duplicates': 'error',
             'import/no-unused-modules': 'warn',
 

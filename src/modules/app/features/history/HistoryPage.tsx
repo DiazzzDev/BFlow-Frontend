@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
@@ -18,6 +19,7 @@ const isTransactionType = (value: string | null): value is TransactionType =>
     value === "INCOME" || value === "EXPENSE" || value === "TRANSFER";
 
 export const HistoryPage = () => {
+    const { t } = useTranslation();
     const [params] = useSearchParams();
     const query = params.get("query") || "";
     const debouncedQuery = useDebounce(query, 500);
@@ -52,10 +54,10 @@ export const HistoryPage = () => {
         <div className="flex h-full min-h-0 flex-col px-4 py-5 sm:px-6">
             <div className="mb-6">
                 <h1 className="text-2xl font-semibold tracking-tight text-light">
-                    Historial
+                    {t("history.title")}
                 </h1>
                 <p className="mt-1 text-sm text-helper">
-                    Revisa tus movimientos agrupados por día.
+                    {t("history.subtitle")}
                 </p>
             </div>
 

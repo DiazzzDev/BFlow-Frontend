@@ -1,9 +1,11 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import type { WalletMember } from "../../interfaces/WalletMember";
 import { useMutateWalletMembers } from "../../hooks/useMutateWalletMembers";
 
 import { CustomModal } from "@/components/custom/CustomModal";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface RemoveWalletMemberModalProps {
     isOpen: boolean;
@@ -18,6 +20,7 @@ export const RemoveWalletMemberModal = ({
     member,
     onClose,
 }: RemoveWalletMemberModalProps) => {
+    const { t } = useTranslation();
     // Remove-member mutation
     const removeMember = useMutateWalletMembers();
     const isRemoving = removeMember.isPending;
@@ -37,10 +40,9 @@ export const RemoveWalletMemberModal = ({
         });
 
         toast.promise(promise, {
-            loading: "Eliminando miembro...",
-            success: `${displayName} ya no forma parte de la billetera`,
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al eliminar el miembro",
+            loading: t("wallets.removeMemberLoading"),
+            success: (response) => getApiMessage(response, t("wallets.removeMemberFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         try {
@@ -59,7 +61,7 @@ export const RemoveWalletMemberModal = ({
                     onClose();
                 }
             }}
-            title="Eliminar miembro"
+            title={t("wallets.memberDeleteConfirm")}
             maxWidth="max-w-md"
         >
             <div className="flex flex-col gap-6">
@@ -85,7 +87,7 @@ export const RemoveWalletMemberModal = ({
                         }}
                         className="cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-danger-dark disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        {isRemoving ? "Eliminando..." : "Eliminar"}
+                        {isRemoving ? t("wallets.removeMemberLoading") : t("wallets.memberDeleteConfirm")}
                     </button>
                 </div>
             </div>

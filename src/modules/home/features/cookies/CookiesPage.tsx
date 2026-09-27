@@ -1,9 +1,7 @@
 import { LegalPage } from "../legal/LegalPage";
+import { useTranslation } from "react-i18next";
 
-export const CookiesPage = () => (
-    <LegalPage
-        documentType="cookies"
-        title="Política de Cookies"
-        description="Información sobre las cookies y tecnologías de seguimiento que utiliza BFlow."
-    />
-);
+export const CookiesPage = () => {
+    const { t } = useTranslation();
+    return <LegalPage documentType="cookies" title={t("home.cookiesTitle")} description={t("home.cookiesDescription")} />;
+};

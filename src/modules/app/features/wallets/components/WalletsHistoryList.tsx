@@ -1,4 +1,5 @@
 import { Receipt } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { HistoryItem } from "./HistoryItem";
 import { HistoryItemSkeleton } from "./HistoryItemSkeleton";
@@ -21,6 +22,7 @@ export const WalletsHistoryList = ({
     onViewDetails,
     onDuplicate,
 }: WalletsHistoryListProps) => {
+    const { t } = useTranslation();
     if (isLoading) {
         return (
             <ul className="flex flex-col">
@@ -49,8 +51,8 @@ export const WalletsHistoryList = ({
 
     return (
         <CustomEmptyState
-            title="Sin historial"
-            description="Cuando registres movimientos, aparecerán aquí."
+            title={t("dashboard.noHistory")}
+            description={t("dashboard.activityHint")}
             Icon={Receipt}
             className="m-0!"
         />

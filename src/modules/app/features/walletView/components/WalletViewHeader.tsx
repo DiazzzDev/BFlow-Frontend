@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
@@ -25,6 +26,7 @@ export const WalletViewHeader = ({
     onOpenMobileInfo,
     onToggleDesktopInfo,
 }: WalletViewHeaderProps) => {
+    const { t } = useTranslation();
     return (
         <div className="mb-6 flex flex-col gap-3 px-4 sm:px-7 @md:flex-row @md:items-center @md:justify-between">
             <div className="min-w-0">
@@ -36,10 +38,10 @@ export const WalletViewHeader = ({
                 ) : (
                     <>
                         <h1 className="truncate text-2xl font-semibold tracking-tight text-light sm:text-3xl">
-                            {name ?? "Billetera"}
+                            {name ?? t("walletView.wallet")}
                         </h1>
                         <p className="mt-1 text-sm text-helper">
-                            {formatCurrency(balance, currency)} saldo actual
+                            {formatCurrency(balance, currency)} {t("walletView.currentBalance")}
                         </p>
                     </>
                 )}
@@ -53,7 +55,7 @@ export const WalletViewHeader = ({
                         className="inline-flex items-center justify-center gap-2 rounded-lg border border-light-10 bg-surface px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 cursor-pointer @3xl:hidden"
                     >
                         <PanelRightOpen className="h-4 w-4" />
-                        Ver info
+                        {t("walletView.viewInfo")}
                     </button>
 
                     <button
@@ -71,12 +73,12 @@ export const WalletViewHeader = ({
                             {isInfoPanelOpen ? (
                                 <>
                                     <PanelRightClose className="h-4 w-4" />
-                                    Ocultar info
+                                    {t("walletView.hideInfo")}
                                 </>
                             ) : (
                                 <>
                                     <PanelRightOpen className="h-4 w-4" />
-                                    Ver info
+                                    {t("walletView.viewInfo")}
                                 </>
                             )}
                         </motion.span>

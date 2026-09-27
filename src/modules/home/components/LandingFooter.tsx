@@ -1,4 +1,6 @@
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
+import { SiInstagram } from "@icons-pack/react-simple-icons";
 
 import { useLandingNav } from "../hooks/useLandingNav";
 
@@ -13,6 +15,7 @@ const GitHubIcon = () => (
 
 export const LandingFooter = () => {
     const { handleNavClick } = useLandingNav();
+    const { t } = useTranslation();
 
     return (
         <footer className="border-t border-light-10 bg-surface-hard px-8 md:px-16 xl:px-24 pt-16 pb-10">
@@ -24,76 +27,87 @@ export const LandingFooter = () => {
                             <span className="text-lg font-bold tracking-tight">BFlow <span className="text-light-75">Studio</span></span>
                         </div>
                         <p className="text-sm text-helper mb-5 max-w-xs">
-                            El control financiero que siempre quisiste
+                            {t("home.heroTitle")} {t("home.heroFocus")}
                         </p>
-                        <a
-                            href="https://github.com"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex text-helper hover:text-light transition-colors"
-                            aria-label="GitHub"
-                        >
-                            <GitHubIcon />
-                        </a>
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="https://github.com/DiazzzDev/BFlow-Financial-Engine"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex text-light transition-colors hover:text-primary"
+                                aria-label="GitHub"
+                            >
+                                <GitHubIcon />
+                            </a>
+                            <a
+                                href="https://www.instagram.com/bflow_studio?stkn=MXZvemE5cnh2NG1kMA=="
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex text-light transition-colors hover:text-primary"
+                                aria-label="Instagram"
+                            >
+                                <SiInstagram className="h-5 w-5" />
+                            </a>
+                        </div>
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-semibold mb-4">Nosotros</h4>
+                        <h4 className="text-sm font-semibold mb-4">{t("home.footerAbout")}</h4>
                         <div className="flex flex-col gap-3">
                             <button
                                 type="button"
                                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Inicio
+                                {t("home.footerHome")}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("faq")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Preguntas frecuentes
+                                {t("home.navFaq")}
                             </button>
-                            <a
-                                href="mailto:hola@bflow.studio"
-                                className="text-sm text-helper hover:text-light transition-colors"
+                            <Link
+                                to="/contact"
+                                className="text-sm text-helper transition-colors hover:text-light"
                             >
-                                Contacto
-                            </a>
+                                {t("home.footerContact")}
+                            </Link>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-semibold mb-4">Planes</h4>
+                        <h4 className="text-sm font-semibold mb-4">{t("home.footerPlans")}</h4>
                         <div className="flex flex-col gap-3">
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("pricing")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Personal
+                                {t("home.plans.personal.name")}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("pricing")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                Bflow pro
+                                {t("home.plans.pro.name")}
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <h4 className="text-sm font-semibold mb-4">Legal</h4>
+                        <h4 className="text-sm font-semibold mb-4">{t("home.footerLegal")}</h4>
                         <div className="flex flex-col gap-3">
                             <Link to="/terms" className="text-sm text-helper hover:text-light transition-colors">
-                                Términos y condiciones
+                                {t("home.termsTitle")}
                             </Link>
                             <Link to="/privacy" className="text-sm text-helper hover:text-light transition-colors">
-                                Política de privacidad
+                                {t("home.privacyTitle")}
                             </Link>
                             <Link to="/cookies" className="text-sm text-helper hover:text-light transition-colors">
-                                Política de cookies
+                                {t("home.cookiesTitle")}
                             </Link>
                         </div>
                     </div>

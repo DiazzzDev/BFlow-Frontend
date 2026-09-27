@@ -7,19 +7,19 @@ export const TRANSACTION_MODAL_TITLES: Record<
     Record<TransactionType, string>
 > = {
     create: {
-        INCOME: "Nueva transacción",
-        EXPENSE: "Nueva transacción",
-        TRANSFER: "Nueva transacción",
+        INCOME: "transactions.new",
+        EXPENSE: "transactions.new",
+        TRANSFER: "transactions.new",
     },
     view: {
-        INCOME: "Detalle de ingreso",
-        EXPENSE: "Detalle de gasto",
-        TRANSFER: "Detalle de transferencia",
+        INCOME: "transactions.incomeDetail",
+        EXPENSE: "transactions.expenseDetail",
+        TRANSFER: "transactions.transferDetail",
     },
     edit: {
-        INCOME: "Editar ingreso",
-        EXPENSE: "Editar gasto",
-        TRANSFER: "Editar transferencia",
+        INCOME: "transactions.incomeEdit",
+        EXPENSE: "transactions.expenseEdit",
+        TRANSFER: "transactions.transferEdit",
     },
 };
 
@@ -28,5 +28,5 @@ export const getTransactionModalTitle = (
     type: TransactionType,
 ) =>
     mode === "create"
-        ? "Nueva transacción"
+        ? "transactions.new"
         : TRANSACTION_MODAL_TITLES[mode][type];

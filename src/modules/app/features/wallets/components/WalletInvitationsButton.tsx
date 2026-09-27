@@ -1,4 +1,5 @@
 import { Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface WalletInvitationsButtonProps {
     count: number;
@@ -11,6 +12,7 @@ export const WalletInvitationsButton = ({
     onClick,
     className = "",
 }: WalletInvitationsButtonProps) => {
+    const { t } = useTranslation();
     const hasPending = count > 0;
 
     return (
@@ -24,7 +26,7 @@ export const WalletInvitationsButton = ({
             } ${className}`}
         >
             <Mail className="h-4 w-4 shrink-0" />
-            <span>Invitaciones</span>
+            <span>{t("wallets.invitations")}</span>
             {hasPending ? (
                 <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[11px] font-semibold leading-none text-light">
                     {count > 99 ? "99+" : count}

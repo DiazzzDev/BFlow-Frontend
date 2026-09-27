@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Mail, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useGetWalletInvitations } from "../hooks/useGetWalletInvitations";
 
@@ -19,6 +20,7 @@ export const WalletInvitationsSidebar = ({
     isOpen,
     onClose,
 }: WalletInvitationsSidebarProps) => {
+    const { t } = useTranslation();
     // Invitations fetch + pending-only list for the panel
     const { data: invitationsResponse, isLoading } = useGetWalletInvitations();
     const invitations = invitationsResponse?.data ?? [];
@@ -46,7 +48,7 @@ export const WalletInvitationsSidebar = ({
                 <div className="fixed inset-0 z-50">
                     <motion.button
                         type="button"
-                        aria-label="Cerrar invitaciones"
+                        aria-label={t("wallets.closeInvitations")}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -66,15 +68,15 @@ export const WalletInvitationsSidebar = ({
                             <div className="flex min-w-0 items-start gap-3">
                                 <div className="min-w-0">
                                     <h2 className="text-base font-semibold text-light">
-                                        Invitaciones
+                                        {t("wallets.invitations")}
                                     </h2>
                                     <p className="mt-0.5 text-xs text-helper">
                                         {pendingInvitations.length > 0
                                             ? `${pendingInvitations.length} ${pendingInvitations.length === 1
-                                                ? "pendiente"
-                                                : "pendientes"
+                                                ? t("wallets.pending")
+                                                : t("wallets.pendingPlural")
                                             }`
-                                            : "No tienes invitaciones pendientes"}
+                                            : t("wallets.noPending")}
                                     </p>
                                 </div>
                             </div>
@@ -82,7 +84,7 @@ export const WalletInvitationsSidebar = ({
                             <button
                                 type="button"
                                 onClick={onClose}
-                                aria-label="Cerrar panel de invitaciones"
+                                aria-label={t("wallets.closeInvitations")}
                                 className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                             >
                                 <X className="h-4 w-4" />
@@ -112,8 +114,8 @@ export const WalletInvitationsSidebar = ({
                             ) : pendingInvitations.length === 0 ? (
                                 <CustomEmptyState
                                     Icon={Mail}
-                                    title="Sin invitaciones"
-                                    description="Cuando alguien te invite a una billetera, aparecerá aquí."
+                                    title={t("wallets.noInvitations")}
+                                    description={t("wallets.invitationHint")}
                                     className="my-0!"
                                 />
                             ) : (

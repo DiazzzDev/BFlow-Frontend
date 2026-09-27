@@ -48,12 +48,7 @@ export const useWalletViewPage = (walletId: string) => {
             return;
         }
         updateSearchParams({ tab: null }, { resetPage: true });
-    }, [
-        isWalletLoading,
-        requestedTab,
-        memberCount,
-        updateSearchParams,
-    ]);
+    }, [isWalletLoading, requestedTab, memberCount, updateSearchParams]);
 
     // While the wallet is loading, do not honor transfers (avoids a shared-wallet flash)
     const activeTab =

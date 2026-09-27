@@ -7,6 +7,11 @@ export const useLandingNav = () => {
     const navigate = useNavigate();
 
     const handleNavClick = (id: string) => {
+        if (id === "contact") {
+            void navigate("/contact");
+            return;
+        }
+
         if (pathname === "/") {
             const element = document.getElementById(id);
             if (element) {

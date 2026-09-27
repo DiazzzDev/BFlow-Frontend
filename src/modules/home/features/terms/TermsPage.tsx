@@ -1,9 +1,7 @@
 import { LegalPage } from "../legal/LegalPage";
+import { useTranslation } from "react-i18next";
 
-export const TermsPage = () => (
-    <LegalPage
-        documentType="terms"
-        title="Términos y Condiciones"
-        description="Las reglas y condiciones que rigen el uso de BFlow y nuestros servicios."
-    />
-);
+export const TermsPage = () => {
+    const { t } = useTranslation();
+    return <LegalPage documentType="terms" title={t("home.termsTitle")} description={t("home.termsDescription")} />;
+};

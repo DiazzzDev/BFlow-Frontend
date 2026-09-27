@@ -5,12 +5,12 @@ import { registerDeviceToken } from "./notifications.service";
 import { config } from "@/config/config";
 
 const firebaseConfig = {
-    apiKey: config.FIREBASE_API_KEY,
-    authDomain: config.FIREBASE_AUTH_DOMAIN,
-    projectId: config.FIREBASE_PROJECT_ID,
-    storageBucket: config.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: config.FIREBASE_MESSAGING_SENDER_ID,
-    appId: config.FIREBASE_APP_ID,
+    apiKey: String(config.FIREBASE_API_KEY),
+    authDomain: String(config.FIREBASE_AUTH_DOMAIN),
+    projectId: String(config.FIREBASE_PROJECT_ID),
+    storageBucket: String(config.FIREBASE_STORAGE_BUCKET),
+    messagingSenderId: String(config.FIREBASE_MESSAGING_SENDER_ID),
+    appId: String(config.FIREBASE_APP_ID),
 };
 
 const hasRequiredConfig = Object.values(firebaseConfig).every(Boolean);
@@ -68,7 +68,7 @@ const registerFirebaseDeviceInternal = async (): Promise<boolean> => {
 
     const { getToken } = await import("firebase/messaging");
     const token = await getToken(messaging, {
-        vapidKey: config.FIREBASE_VAPID_KEY,
+        vapidKey: String(config.FIREBASE_VAPID_KEY),
         serviceWorkerRegistration,
     });
 

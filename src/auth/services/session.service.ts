@@ -1,7 +1,12 @@
 import { apiRequest } from "@/utils/api";
 import { config } from "@/config/config";
 import { authService } from "@/auth/services/authService";
-import type { AccountStatus, InternalUser, UserProfile } from "@/auth/InternalUser";
+import type {
+    InternalUser,
+    SubscriptionStatus,
+    UserProfile,
+} from "@/auth/InternalUser";
+import { getBrowserLanguage, normalizeLanguage } from "@/i18n/types";
 
 const AUTH_SYNC_URL = `${config.API_BASE_URL}/api/v1/auth/sync`;
 
@@ -15,41 +20,69 @@ export type CognitoSessionTokens = {
     email?: string;
 };
 
-type SyncAuthPayload = {
-    id?: string;
-    email?: string;
-    roles?: string[];
-    isNewUser?: boolean;
-    status?: string;
-    subscription?: unknown;
+type SyncAuthResponse = {
+    id: string;
+    email: string;
+    roles: string[];
+    isNewUser: boolean;
+    subscription?: {
+        id: string;
+        planName: string;
+        status: SubscriptionStatus;
+        billingAmount: number;
+        startsAt: string;
+        endsAt: string;
+        nextBillingAt: string;
+    } | null;
+    plan?: {
+        planCode: string;
+        planName: string;
+        status: SubscriptionStatus;
+    } | null;
     wallets?: unknown[];
     profile?: UserProfile | null;
+    language?: string | null;
+    preferredLanguage?: string | null;
+    status?: string | null;
+    message?: string;
 };
-
-type SyncAuthResponse = SyncAuthPayload | { data: SyncAuthPayload };
-
-const getSyncPayload = (response: SyncAuthResponse): SyncAuthPayload => {
-    if ("data" in response) {
-        return response.data;
-    }
-
-    return response;
-};
-
-const normalizeAccountStatus = (status: string | undefined): AccountStatus =>
-    status === "DELETED" ? "DELETED" : "ACTIVE";
 
 const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
-    const payload = getSyncPayload(response);
+    const subscription = response.subscription ?? null;
+    const plan = response.plan ?? null;
 
     return {
-        id: payload.id ?? "",
-        email: payload.email ?? "",
-        roles: payload.roles ?? [],
-        isNewUser: payload.isNewUser ?? false,
-        name: payload.profile?.name ?? null,
-        pictureUrl: payload.profile?.pictureUrl ?? null,
-        status: normalizeAccountStatus(payload.status),
+        id: response.id,
+        email: response.email,
+        roles: response.roles,
+        isNewUser: response.isNewUser,
+        name: response.profile?.name ?? null,
+        pictureUrl: response.profile?.pictureUrl ?? null,
+        status:
+            response.status === "DELETED" || response.profile?.status === "DELETED"
+                ? "DELETED"
+                : response.status === "PENDING_DELETION" ||
+                    response.profile?.status === "PENDING_DELETION"
+                  ? "PENDING_DELETION"
+                  : "ACTIVE",
+        language:
+            normalizeLanguage(
+                response.language ??
+                    response.preferredLanguage ??
+                    response.profile?.language ??
+                    response.profile?.preferredLanguage,
+            ) ?? getBrowserLanguage(),
+        serverMessage: response.message,
+        subscription: {
+            id: subscription?.id ?? null,
+            planCode: plan?.planCode ?? subscription?.planName ?? "FREE",
+            planName: plan?.planName ?? subscription?.planName ?? "Free",
+            status: plan?.status ?? subscription?.status ?? null,
+            billingAmount: subscription?.billingAmount ?? null,
+            startsAt: subscription?.startsAt ?? null,
+            endsAt: subscription?.endsAt ?? null,
+            nextBillingAt: subscription?.nextBillingAt ?? null,
+        },
     };
 };
 
@@ -61,7 +94,7 @@ export const isUserAlreadyAuthenticatedError = (error: unknown): boolean => {
     return (error as { name: string }).name === "UserAlreadyAuthenticatedException";
 };
 
-export const syncAuthUser = async (idToken: string, email?: string): Promise<InternalUser> => {
+export const syncAuthUser = async (idToken: string, email?: string) => {
     const response = await apiRequest<SyncAuthResponse>(
         AUTH_SYNC_URL,
         {

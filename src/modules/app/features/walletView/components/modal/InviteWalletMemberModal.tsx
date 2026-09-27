@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import type { WalletCollaborator } from "../../../wallets/interfaces/WalletCollaborator";
 import { useMutateWalletInvitations } from "../../../wallets/hooks/useMutateWalletInvitations";
@@ -14,6 +15,7 @@ import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { CustomModal } from "@/components/custom/CustomModal";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getInitials } from "@/utils/getInitials";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const inviteSchema = z.object({
     invitedEmail: z
@@ -39,6 +41,7 @@ export const InviteWalletMemberModal = ({
     walletName,
     onClose,
 }: InviteWalletMemberModalProps) => {
+    const { t } = useTranslation();
     return (
         <CustomModal
             isModalOpen={isOpen}
@@ -47,7 +50,7 @@ export const InviteWalletMemberModal = ({
                     onClose();
                 }
             }}
-            title="Invitar a la billetera"
+            title={t("wallets.inviteTitle")}
             maxWidth="max-w-md"
         >
             {/* Remount form/search state whenever the modal opens */}
@@ -72,6 +75,7 @@ const InviteWalletMemberModalContent = ({
     walletName,
     onClose,
 }: InviteWalletMemberModalContentProps) => {
+    const { t } = useTranslation();
     // Invite mutation
     const { inviteMember } = useMutateWalletInvitations();
 
@@ -107,12 +111,9 @@ const InviteWalletMemberModalContent = ({
         });
 
         toast.promise(promise, {
-            loading: "Enviando invitación...",
-            success: `Invitación enviada a ${formData.invitedEmail.trim()}`,
-            error: (err) =>
-                err instanceof Error
-                    ? err.message
-                    : "Error al enviar la invitación",
+            loading: t("wallets.inviteLoading"),
+            success: (response) => getApiMessage(response, t("wallets.inviteFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -146,11 +147,11 @@ const InviteWalletMemberModalContent = ({
                     render={({ field }) => (
                         <SelectAutoComplete<WalletCollaborator>
                             idSelect="inviteCollaborator"
-                            label="Correo electrónico"
+                            label={t("auth.email")}
                             placeholder={
                                 isCollaboratorsLoading
-                                    ? "Buscando..."
-                                    : "Buscar por nombre o correo..."
+                                    ? t("common.loading")
+                                    : t("wallets.searchCollaborator")
                             }
                             selectedItem={selectedCollaborator}
                             setSelectedItem={(collaborator) => {
@@ -231,7 +232,7 @@ const InviteWalletMemberModalContent = ({
                 {collaboratorQuery.trim().length > 0 &&
                     collaboratorQuery.trim().length < 2 ? (
                     <span className="text-xs text-helper">
-                        Escribe al menos 2 caracteres para buscar.
+                        {t("wallets.minSearchChars")}
                     </span>
                 ) : null}
             </div>
@@ -239,7 +240,7 @@ const InviteWalletMemberModalContent = ({
             <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <Button
                     type="submit"
-                    text={inviteMember.isPending ? "Enviando..." : "Invitar"}
+                    text={inviteMember.isPending ? t("wallets.inviteLoading") : t("walletView.invite")}
                     disabled={inviteMember.isPending}
                     className="w-full sm:w-auto"
                 />

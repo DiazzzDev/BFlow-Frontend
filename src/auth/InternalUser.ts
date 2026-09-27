@@ -1,4 +1,24 @@
-export type AccountStatus = "ACTIVE" | "DELETED";
+import type { LanguageCode } from "@/i18n/types";
+
+export type AccountStatus = "ACTIVE" | "PENDING_DELETION" | "DELETED";
+
+export type SubscriptionStatus =
+    | "PENDING_ACTIVATION"
+    | "ACTIVE"
+    | "EXPIRED"
+    | "CANCELED"
+    | "PAST_DUE";
+
+export interface UserSubscription {
+    id: string | null;
+    planCode: string;
+    planName: string;
+    status: SubscriptionStatus | null;
+    billingAmount: number | null;
+    startsAt: string | null;
+    endsAt: string | null;
+    nextBillingAt: string | null;
+}
 
 export interface UserProfile {
     id: string;
@@ -7,6 +27,8 @@ export interface UserProfile {
     pictureUrl: string | null;
     roles: string[];
     status: string;
+    language?: string | null;
+    preferredLanguage?: string | null;
 }
 
 export interface InternalUser {
@@ -17,4 +39,7 @@ export interface InternalUser {
     name: string | null;
     pictureUrl: string | null;
     status: AccountStatus;
+    language: LanguageCode;
+    serverMessage?: string;
+    subscription: UserSubscription;
 }

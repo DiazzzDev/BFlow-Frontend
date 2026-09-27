@@ -1,6 +1,10 @@
 import { useMutation } from "@tanstack/react-query"
 
-import { patchProfileData, patchProfilePhoto } from "../settings.service";
+import {
+    patchProfileData,
+    patchProfilePhoto,
+    type UpdateProfileData,
+} from "../settings.service";
 
 export const usePatchProfilePhoto = () => {
 
@@ -12,6 +16,6 @@ export const usePatchProfilePhoto = () => {
 export const usePatchProfileData = () => {
 
     return useMutation({
-        mutationFn: (body: { email: string; name: string }) => patchProfileData(body),
+        mutationFn: (body: UpdateProfileData) => patchProfileData(body),
     })
 }

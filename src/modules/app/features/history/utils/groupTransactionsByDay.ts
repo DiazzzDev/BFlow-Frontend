@@ -1,6 +1,8 @@
 import { format, parseISO } from "date-fns";
+import { enUS } from "date-fns/locale/en-US";
 import { es } from "date-fns/locale/es";
 
+import { getActiveLanguage } from "@/i18n/i18n";
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 
 export interface HistoryDayGroup {
@@ -37,7 +39,11 @@ export const groupTransactionsByDay = (
 };
 
 export const formatHistoryDayLabel = (date: Date) => ({
-    day: format(date, "d", { locale: es }),
-    monthYear: format(date, "MMM, yyyy", { locale: es }).toUpperCase(),
-    weekday: format(date, "EEE", { locale: es }).toUpperCase(),
+    day: format(date, "d", { locale: getActiveLanguage() === "es" ? es : enUS }),
+    monthYear: format(date, "MMM, yyyy", {
+        locale: getActiveLanguage() === "es" ? es : enUS,
+    }).toUpperCase(),
+    weekday: format(date, "EEE", {
+        locale: getActiveLanguage() === "es" ? es : enUS,
+    }).toUpperCase(),
 });

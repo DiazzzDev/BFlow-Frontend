@@ -1,4 +1,5 @@
 import { Receipt } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { BudgetCardEmpty } from "./BudgetCardEmpty";
 
@@ -14,14 +15,15 @@ interface BudgetRecentActivityProps {
 }
 
 export const BudgetRecentActivity = ({
-    title = "Actividad reciente",
+    title,
     items = [],
     currency = "USD",
     isLoading = false,
 }: BudgetRecentActivityProps) => {
+    const { t } = useTranslation();
     return (
         <article className="flex min-h-64 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
-            <p className="mb-4 text-base font-semibold text-light">{title}</p>
+            <p className="mb-4 text-base font-semibold text-light">{title ?? t("budgetView.recentActivity")}</p>
 
             {isLoading ? (
                 <ul className="flex flex-col">
@@ -41,8 +43,8 @@ export const BudgetRecentActivity = ({
             ) : items.length === 0 ? (
                 <BudgetCardEmpty
                     Icon={Receipt}
-                    title="Sin historial"
-                    description="Cuando registres gastos en este presupuesto, aparecerán aquí."
+                    title={t("budgetView.noHistory")}
+                    description={t("budgetView.historyHint")}
                 />
             ) : (
                 <ul className="flex flex-col">

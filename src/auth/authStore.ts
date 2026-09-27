@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 import type { InternalUser } from "./InternalUser";
 
-import { queryClient } from "@/queryClient";
+import { setActiveLanguage } from "@/i18n/i18n";
 
 export type AuthStatus =
     | "checking"
@@ -15,7 +15,6 @@ interface AuthState {
     user: InternalUser | null;
     authStatus: AuthStatus;
     setSession: (user: InternalUser) => void;
-    setDeletedAccount: () => void;
     clearSession: () => void;
     setChecking: () => void;
 }
@@ -26,24 +25,11 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             authStatus: "checking",
 
-            setSession: (user) =>
-                set(() => {
-                    if (user.status === "DELETED") {
-                        queryClient.clear();
-                        return { user: null, authStatus: "account-deleted" };
-                    }
-
-                    return {
-                        user,
-                        authStatus: "authenticated",
-                    };
-                }),
-
-            setDeletedAccount: () => {
-                queryClient.clear();
+            setSession: (user) => {
+                setActiveLanguage(user.language);
                 set({
-                    user: null,
-                    authStatus: "account-deleted",
+                    user,
+                    authStatus: user.status === "DELETED" ? "account-deleted" : "authenticated",
                 });
             },
 

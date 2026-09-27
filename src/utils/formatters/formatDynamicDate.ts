@@ -10,6 +10,9 @@ import {
     startOfDay,
 } from "date-fns";
 import { es } from "date-fns/locale/es";
+import { enUS } from "date-fns/locale/en-US";
+
+import i18n, { getActiveLanguage } from "@/i18n/i18n";
 
 const DATE_ONLY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -34,6 +37,9 @@ export const formatterDynamicDate = (dateString?: string | null): string => {
         }
 
         const now = new Date();
+        const language = getActiveLanguage();
+        const locale = language === "es" ? es : enUS;
+        const datePattern = language === "es" ? "d 'de' MMMM 'de' yyyy" : "MMM d, yyyy";
 
         if (DATE_ONLY_PATTERN.test(dateString.trim())) {
             const targetDay = startOfDay(date);
@@ -41,34 +47,34 @@ export const formatterDynamicDate = (dateString?: string | null): string => {
             const dayDiff = differenceInCalendarDays(targetDay, today);
 
             if (isToday(targetDay)) {
-                return "Hoy";
+                return i18n.t("dates.today");
             }
             if (isTomorrow(targetDay)) {
-                return "Mañana";
+                return i18n.t("dates.tomorrow");
             }
             if (isYesterday(targetDay)) {
-                return "Ayer";
+                return i18n.t("dates.yesterday");
             }
 
             if (Math.abs(dayDiff) >= 30) {
-                return format(date, "d 'de' MMMM 'de' yyyy", { locale: es });
+                return format(date, datePattern, { locale });
             }
 
             return formatDistanceToNow(targetDay, {
                 addSuffix: true,
-                locale: es,
+                locale,
             });
         }
 
         const daysDifference = differenceInDays(now, date);
 
         if (daysDifference >= 30) {
-            return format(date, "d 'de' MMMM 'de' yyyy", { locale: es });
+            return format(date, datePattern, { locale });
         }
 
         return formatDistanceToNow(date, {
             addSuffix: true,
-            locale: es,
+            locale,
         });
     } catch (error: unknown) {
         console.error("Error al formatear la fecha:", error);

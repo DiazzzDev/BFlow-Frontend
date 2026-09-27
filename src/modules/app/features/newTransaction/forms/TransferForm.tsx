@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -23,6 +24,7 @@ import { Button } from "@/components/controls/Button";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 
 const transferSchema = z.object({
@@ -58,6 +60,7 @@ export const TransferForm = ({
     readOnly = false,
     initialValues,
 }: TransferFormProps) => {
+    const { t } = useTranslation();
     // Create mutation
     const { createTransfer } = useMutateTransfers();
 
@@ -138,10 +141,9 @@ export const TransferForm = ({
         });
 
         toast.promise(promise, {
-            loading: "Creando transferencia...",
-            success: "Transferencia creada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al crear la transferencia",
+            loading: t("transactions.transferLoading"),
+            success: (response) => getApiMessage(response, t("transactions.transferFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -174,7 +176,7 @@ export const TransferForm = ({
                     ) : (
                         <WalletTransferCard
                             wallet={currentWallet}
-                            label="Esta billetera"
+                            label={t("transactions.currentWallet")}
                             highlight
                         />
                     )}
@@ -184,7 +186,7 @@ export const TransferForm = ({
                     <motion.button
                         type="button"
                         onClick={toggleDirection}
-                        title="Invertir dirección"
+                        title={t("transactions.invertDirection")}
                         disabled={readOnly}
                         whileTap={readOnly ? undefined : { scale: 0.92 }}
                         className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors ${readOnly
@@ -206,17 +208,17 @@ export const TransferForm = ({
                     {counterpartCardWallet ? (
                         <WalletTransferCard
                             wallet={counterpartCardWallet}
-                            label={isOutgoing ? "Destino" : "Origen"}
+                            label={isOutgoing ? t("transactions.destination") : t("transactions.origin")}
                         />
                     ) : (
                         <div className="flex min-h-36 flex-col items-center justify-center rounded-2xl border border-dashed border-light-10 bg-surface-hard/30 px-4 text-center">
                             <p className="text-sm font-medium text-light">
                                 {isOutgoing
-                                    ? "Elige la billetera destino"
-                                    : "Elige la billetera origen"}
+                                    ? t("transactions.chooseDestination")
+                                    : t("transactions.chooseOrigin")}
                             </p>
                             <p className="mt-1 text-xs text-helper">
-                                Busca y selecciona una de tus billeteras
+                                {t("transactions.chooseWalletHint")}
                             </p>
                         </div>
                     )}
@@ -232,13 +234,13 @@ export const TransferForm = ({
                                     idSelect="counterpartWalletId"
                                     label={
                                         isOutgoing
-                                            ? "Billetera destino"
-                                            : "Billetera origen"
+                                            ? t("transactions.destination")
+                                            : t("transactions.origin")
                                     }
                                     placeholder={
                                         isWalletsFetching
-                                            ? "Buscando billeteras..."
-                                            : "Buscar billetera..."
+                                            ? t("transactions.searchingWallets")
+                                            : t("transactions.searchWallet")
                                     }
                                     selectedItem={selectedWallet}
                                     setSelectedItem={(wallet) => {
@@ -265,15 +267,12 @@ export const TransferForm = ({
 
             {!readOnly && (
                 <p className="text-center text-xs text-helper">
-                    {isOutgoing
-                        ? "El dinero saldrá de esta billetera hacia la seleccionada."
-                        : "El dinero entrará a esta billetera desde la seleccionada."}{" "}
-                    Toca la flecha para invertir el sentido.
+                    {isOutgoing ? t("transactions.outgoingHint") : t("transactions.incomingHint")} {t("transactions.invertHint")}
                 </p>
             )}
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="amount">Monto</Label>
+                <Label htmlFor="amount">{t("transactions.amount")}</Label>
                 <Controller
                     name="amount"
                     control={control}
@@ -301,14 +300,14 @@ export const TransferForm = ({
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="description">Descripción</Label>
+                <Label htmlFor="description">{t("transactions.description")}</Label>
                 <Controller
                     name="description"
                     control={control}
                     render={({ field }) => (
                         <Textarea
                             id="description"
-                            placeholder="Motivo de la transferencia"
+                            placeholder={t("transactions.transferReason")}
                             rows={3}
                             disabled={isDisabled}
                             {...field}
@@ -325,7 +324,7 @@ export const TransferForm = ({
                     type="submit"
                     disabled={createTransfer.isPending}
                     text={
-                        createTransfer.isPending ? "Guardando..." : "Crear transferencia"
+                        createTransfer.isPending ? t("transactions.saving") : t("transactions.createTransfer")
                     }
                     className="self-end"
                 />

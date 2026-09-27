@@ -2,7 +2,7 @@ import type { Periodicity } from "@/modules/app/interfaces/Periodicity";
 
 export interface CreateIncomeData {
     title: string;
-    description: string;
+    description?: string;
     amount: number;
     date: string;
     walletId: string;

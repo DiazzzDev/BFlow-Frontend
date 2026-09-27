@@ -1,4 +1,5 @@
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { Clock, Mail, X } from "lucide-react";
 
 import type { WalletSentInvitation } from "../../wallets/interfaces/WalletSentInvitation";
@@ -17,6 +18,7 @@ import {
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface WalletSentInvitationsHistoryProps {
     invitations: WalletSentInvitation[];
@@ -29,6 +31,7 @@ export const WalletSentInvitationsHistory = ({
     isLoading,
     canManage,
 }: WalletSentInvitationsHistoryProps) => {
+    const { t } = useTranslation();
     // Cancel pending invitation mutation
     const { cancelInvitation } = useMutateWalletInvitations();
 
@@ -37,10 +40,9 @@ export const WalletSentInvitationsHistory = ({
         const promise = cancelInvitation.mutateAsync(invitation.id);
 
         toast.promise(promise, {
-            loading: "Cancelando invitación...",
-            success: "Invitación cancelada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al cancelar la invitación",
+            loading: t("wallets.cancelLoading"),
+            success: (response) => getApiMessage(response, t("wallets.cancelFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         try {
@@ -167,7 +169,7 @@ export const WalletSentInvitationsHistory = ({
                                         className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50"
                                     >
                                         <X className="h-3.5 w-3.5" />
-                                        {isCancelling ? "Cancelando..." : "Cancelar"}
+                                        {isCancelling ? t("wallets.cancelLoading") : t("common.cancel")}
                                     </button>
                                 </div>
                             ) : null}

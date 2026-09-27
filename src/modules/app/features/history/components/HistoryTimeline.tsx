@@ -1,4 +1,5 @@
 import { Receipt } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { groupTransactionsByDay } from "../utils/groupTransactionsByDay";
 
@@ -23,6 +24,7 @@ export const HistoryTimeline = ({
     onDuplicate,
     actionsDisabled = false,
 }: HistoryTimelineProps) => {
+    const { t } = useTranslation();
     if (isLoading) {
         return <HistoryTimelineSkeleton />;
     }
@@ -33,8 +35,8 @@ export const HistoryTimeline = ({
         return (
             <CustomEmptyState
                 Icon={Receipt}
-                title="Sin movimientos"
-                description="No hay transacciones que coincidan con los filtros seleccionados."
+                title={t("history.empty")}
+                description={t("history.emptyHint")}
                 className="my-8"
             />
         );

@@ -7,3 +7,6 @@ interface VerifyAccountArgs {
 
 export const verifyAccount = ({ email, code }: VerifyAccountArgs) =>
     authService.confirmRegister(email, code);
+
+export const resendVerificationCode = (email: string) =>
+    authService.resendCode(email);

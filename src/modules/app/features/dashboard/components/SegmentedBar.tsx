@@ -22,6 +22,7 @@ export const SegmentedBar = ({
     showLegend = true,
     showSegmentLabels = false,
 }: SegmentedBarProps) => {
+    // Only grow bars for non-zero slices
     const visibleSegments = segments
         .map((segment, index) => ({ segment, index }))
         .filter(({ segment }) => segment.percent > 0);
@@ -33,7 +34,11 @@ export const SegmentedBar = ({
                     <div
                         key={`${segment.label}-${index}`}
                         className={`min-w-0 rounded-full ${getSegmentColor(segment, index)}`}
-                        style={{ flexGrow: segment.percent, flexShrink: 0, flexBasis: 0 }}
+                        style={{
+                            flexGrow: segment.percent,
+                            flexShrink: 0,
+                            flexBasis: 0,
+                        }}
                     />
                 ))}
             </div>
@@ -44,7 +49,11 @@ export const SegmentedBar = ({
                         <span
                             key={`${segment.label}-label-${index}`}
                             className="min-w-0 text-[11px] leading-none text-helper"
-                            style={{ flexGrow: segment.percent, flexShrink: 0, flexBasis: 0 }}
+                            style={{
+                                flexGrow: segment.percent,
+                                flexShrink: 0,
+                                flexBasis: 0,
+                            }}
                         >
                             {formatPercentValue(segment.percent)}%
                         </span>
@@ -63,7 +72,8 @@ export const SegmentedBar = ({
                                 className={`h-2 w-2 shrink-0 rounded-full ${getSegmentColor(segment, index)}`}
                             />
                             <span className="text-xs text-helper">
-                                {segment.label} - {formatPercentValue(segment.percent)}%
+                                {segment.label} -{" "}
+                                {formatPercentValue(segment.percent)}%
                             </span>
                         </li>
                     ))}

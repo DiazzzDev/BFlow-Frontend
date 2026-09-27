@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
 
 import { CustomModal } from "@/components/custom/CustomModal";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface DeleteWalletModalProps {
     isOpen: boolean;
@@ -18,6 +20,7 @@ export const DeleteWalletModal = ({
     walletName,
     onClose,
 }: DeleteWalletModalProps) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     // Delete mutation
@@ -29,10 +32,9 @@ export const DeleteWalletModal = ({
         const promise = removeWallet.mutateAsync(walletId);
 
         toast.promise(promise, {
-            loading: "Eliminando billetera...",
-            success: "Billetera eliminada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al eliminar la billetera",
+            loading: t("wallets.deleteLoading"),
+            success: (response) => getApiMessage(response, t("wallets.deleteFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -48,7 +50,7 @@ export const DeleteWalletModal = ({
                     onClose();
                 }
             }}
-            title="Eliminar billetera"
+            title={t("wallets.deleteTitle")}
             maxWidth="max-w-md"
         >
             <div className="flex flex-col gap-6">
@@ -76,7 +78,7 @@ export const DeleteWalletModal = ({
                         }}
                         className="cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-danger-dark disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        {isDeleting ? "Eliminando..." : "Eliminar"}
+                        {isDeleting ? t("wallets.deleteLoading") : t("wallets.deleteConfirm")}
                     </button>
                 </div>
             </div>

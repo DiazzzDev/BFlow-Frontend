@@ -1,6 +1,6 @@
 import { fetchAuthSession } from "aws-amplify/auth";
 
-import { useAuthStore } from "@/auth/authStore";
+import { getActiveLanguage } from "@/i18n/i18n";
 
 export type { ApiResponse, PaginatedListResponse } from "./api.interfaces";
 
@@ -32,24 +32,6 @@ async function getAmplifyToken(): Promise<string | undefined> {
     }
 }
 
-const responseIndicatesDeletedAccount = (data: unknown): boolean => {
-    if (typeof data !== "object" || data === null) {
-        return false;
-    }
-
-    const response = data as Record<string, unknown>;
-    if (response.status === "DELETED") {
-        return true;
-    }
-
-    const nestedData = response.data;
-    return (
-        typeof nestedData === "object" &&
-        nestedData !== null &&
-        (nestedData as Record<string, unknown>).status === "DELETED"
-    );
-};
-
 export const apiRequest = async <T>(
     url: string,
     options: RequestInit = {},
@@ -67,6 +49,7 @@ export const apiRequest = async <T>(
             ...options,
             headers: {
                 ...(options.headers || {}),
+                "Accept-Language": getActiveLanguage(),
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
         });
@@ -77,10 +60,6 @@ export const apiRequest = async <T>(
             data = await response.json();
         } else {
             data = await response.text();
-        }
-
-        if (responseIndicatesDeletedAccount(data)) {
-            useAuthStore.getState().setDeletedAccount();
         }
 
         if (!response.ok) {

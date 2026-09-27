@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { WalletsHistoryList } from "./WalletsHistoryList";
 
@@ -20,17 +21,18 @@ export const WalletsHistoryPanel = ({
     onViewDetails,
     onDuplicate,
 }: WalletsHistoryPanelProps) => {
+    const { t } = useTranslation();
     return (
         <>
             <div className="mb-6 flex items-center justify-between gap-3 px-5 pt-6">
                 <h2 className="text-2xl font-semibold tracking-tight text-light">
-                    Historial
+                    {t("wallets.history")}
                 </h2>
                 <Link
                     to="/app/history"
                     className="text-sm font-medium text-primary transition-colors hover:opacity-80"
                 >
-                    Ver más
+                    {t("wallets.viewMore")}
                 </Link>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">

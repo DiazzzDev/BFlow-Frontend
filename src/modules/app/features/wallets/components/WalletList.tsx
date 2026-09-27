@@ -1,7 +1,7 @@
 import { ChevronRight, Users, Wallet } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { WalletTypeFilter } from "../utils/filters";
-import { getEmptyDescription, getEmptyTitle } from "../utils/walletsEmptyState";
 
 import { WalletItem } from "./WalletItem";
 import { WalletItemSkeleton } from "./WalletItemSkeleton";
@@ -30,6 +30,7 @@ export const WalletList = ({
     showCreateButton,
     onCreate,
 }: WalletListProps) => {
+    const { t } = useTranslation();
     if (isLoading) {
         return (
             <section className="flex flex-col gap-3 overflow-x-hidden">
@@ -81,12 +82,19 @@ export const WalletList = ({
         );
     }
 
+    const emptyTitle = query.trim()
+        ? t("wallets.noResults")
+        : t(walletType === "MINE" ? "wallets.noMine" : "wallets.noShared");
+    const emptyDescription = query.trim()
+        ? t("wallets.searchHint")
+        : t(walletType === "MINE" ? "wallets.mineHint" : "wallets.sharedHint");
+
     return (
         <CustomEmptyState
-            title={getEmptyTitle(query, walletType)}
-            description={getEmptyDescription(query, walletType)}
+            title={emptyTitle}
+            description={emptyDescription}
             Icon={walletType === "MINE" ? Wallet : Users}
-            buttonText={showCreateButton ? "Crear billetera" : undefined}
+            buttonText={showCreateButton ? t("wallets.create") : undefined}
             onButtonClick={showCreateButton ? onCreate : undefined}
         />
     );

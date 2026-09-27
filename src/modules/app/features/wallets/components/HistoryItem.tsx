@@ -1,5 +1,6 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Copy, Eye, MoreVertical } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
@@ -20,6 +21,7 @@ export const HistoryItem = ({
     onDuplicate,
     actionsDisabled = false,
 }: HistoryItemProps) => {
+    const { t } = useTranslation();
     return (
         <li className="flex items-start justify-between gap-3 border-b border-light-10 pr-3 py-4 last:border-b-0">
             <div className="flex min-w-0 items-start gap-3">
@@ -61,7 +63,7 @@ export const HistoryItem = ({
                     <MenuButton
                         type="button"
                         disabled={actionsDisabled}
-                        aria-label="Acciones de la transacción"
+                        aria-label={t("wallets.transactionActions")}
                         className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                     >
                         <MoreVertical className="h-4 w-4" />
@@ -80,7 +82,7 @@ export const HistoryItem = ({
                                         }`}
                                 >
                                     <Eye className="h-4 w-4 text-helper" />
-                                    Ver detalles
+                                    {t("wallets.viewDetails")}
                                 </button>
                             )}
                         </MenuItem>
@@ -93,7 +95,7 @@ export const HistoryItem = ({
                                         }`}
                                 >
                                     <Copy className="h-4 w-4 text-helper" />
-                                    Duplicar
+                                    {t("wallets.duplicate")}
                                 </button>
                             )}
                         </MenuItem>

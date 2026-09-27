@@ -26,7 +26,7 @@ export const TAB_TO_TYPE: Record<
     transfers: "TRANSFER",
 };
 
-// Shared wallets cannot create or list transfers between wallets
+/** Shared wallets cannot create or list transfers between wallets. */
 export const walletAllowsTransfers = (memberCount: number) => memberCount <= 1;
 
 export const getWalletAllowedTransactionTypes = (memberCount: number) =>

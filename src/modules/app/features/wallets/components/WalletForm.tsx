@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { useMutateWallets } from "../hooks/useMutateWallets";
 
@@ -10,6 +11,7 @@ import { Label } from "@/components/controls/Label";
 import { Textarea } from "@/components/controls/Textarea";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { Button } from "@/components/controls/Button";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const DEFAULT_CURRENCY = "USD";
 
@@ -35,6 +37,7 @@ interface WalletFormProps {
 }
 
 export const WalletForm = ({ onSuccess }: WalletFormProps) => {
+    const { t } = useTranslation();
     // Create mutation
     const { createWallet } = useMutateWallets();
 
@@ -59,10 +62,9 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
         });
 
         toast.promise(promise, {
-            loading: "Creando billetera...",
-            success: "Billetera creada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al crear la billetera",
+            loading: t("wallets.createLoading"),
+            success: (response) => getApiMessage(response, t("wallets.createFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -78,14 +80,14 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
             }}
         >
             <div className="flex flex-col gap-1">
-                <Label htmlFor="name">Nombre de la billetera</Label>
+                <Label htmlFor="name">{t("wallets.name")}</Label>
                 <Controller
                     name="name"
                     control={control}
                     render={({ field }) => (
                         <Input
                             id="name"
-                            placeholder="Ej. Ahorros personales"
+                            placeholder={t("wallets.nameExample")}
                             disabled={createWallet.isPending}
                             {...field}
                         />
@@ -97,14 +99,14 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="description">Descripción</Label>
+                <Label htmlFor="description">{t("wallets.description")}</Label>
                 <Controller
                     name="description"
                     control={control}
                     render={({ field }) => (
                         <Textarea
                             id="description"
-                            placeholder="Descripción"
+                            placeholder={t("wallets.descriptionPlaceholder")}
                             rows={3}
                             disabled={createWallet.isPending}
                             {...field}
@@ -118,7 +120,7 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="initialValue">Balance inicial</Label>
+                <Label htmlFor="initialValue">{t("wallets.initialBalance")}</Label>
                 <Controller
                     name="initialValue"
                     control={control}
@@ -150,7 +152,7 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
             <Button
                 type="submit"
                 disabled={createWallet.isPending}
-                text={createWallet.isPending ? "Guardando..." : "Crear billetera"}
+                text={createWallet.isPending ? t("wallets.updateLoading") : t("wallets.create")}
                 className="self-end"
             />
         </form>

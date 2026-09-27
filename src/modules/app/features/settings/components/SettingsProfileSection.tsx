@@ -1,4 +1,5 @@
 import { Pencil, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useAuthStore } from "@/auth/authStore";
 import { getInitials } from "@/utils/getInitials";
@@ -8,8 +9,9 @@ interface SettingsProfileSectionProps {
 }
 
 export const SettingsProfileSection = ({ onEdit }: SettingsProfileSectionProps) => {
+    const { t } = useTranslation();
     const user = useAuthStore((state) => state.user);
-    const displayName = user?.name?.trim() || "Tu perfil";
+    const displayName = user?.name?.trim() || t("settings.profile");
     const email = user?.email ?? "";
 
     return (
@@ -33,8 +35,8 @@ export const SettingsProfileSection = ({ onEdit }: SettingsProfileSectionProps) 
                         type="button"
                         onClick={onEdit}
                         className="absolute bottom-0 right-0 cursor-pointer rounded-full border border-light-10 bg-surface-hard p-2 text-light transition-colors hover:bg-secondary active:scale-95"
-                        title="Editar perfil"
-                        aria-label="Editar perfil"
+                        title={t("a11y.editProfile")}
+                        aria-label={t("a11y.editProfile")}
                     >
                         <Pencil className="h-4 w-4" />
                     </button>

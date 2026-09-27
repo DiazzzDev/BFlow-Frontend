@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-import type { Notification } from "../interfaces/Notification";
 import { useMutateNotifications } from "../hooks/useMutateNotifications";
+import type { Notification } from "../interfaces/Notification";
 
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 
 interface NotificationItemProps {
@@ -32,6 +34,7 @@ const getTypeTone = (type: string) => {
 };
 
 export const NotificationItem = ({ notification }: NotificationItemProps) => {
+    const { t } = useTranslation();
     const { markAsRead } = useMutateNotifications();
     const typeTone = getTypeTone(notification.type);
     const isMarking = markAsRead.isPending && markAsRead.variables === notification.id;
@@ -44,12 +47,9 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
         const promise = markAsRead.mutateAsync(notification.id);
 
         toast.promise(promise, {
-            loading: "Marcando como leída...",
-            success: "Notificación marcada como leída",
-            error: (err) =>
-                err instanceof Error
-                    ? err.message
-                    : "Error al marcar la notificación como leída",
+            loading: t("notifications.markLoading"),
+            success: (response) => getApiMessage(response, t("notifications.markFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         try {
@@ -62,9 +62,7 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
     return (
         <article
             className={`border-b border-light-10 px-3 py-2.5 transition-colors last:border-b-0 hover:bg-light-5 ${
-                notification.read
-                    ? "bg-transparent"
-                    : "bg-light-5/45"
+                notification.read ? "bg-transparent" : "bg-light-5/45"
             }`}
         >
             <div className="flex items-start gap-2.5">
@@ -74,15 +72,13 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
                 />
 
                 <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                        <h3
-                            className={`truncate text-[13px] font-medium ${
-                                notification.read ? "text-helper" : "text-light"
-                            }`}
-                        >
-                            {notification.title}
-                        </h3>
-                    </div>
+                    <h3
+                        className={`truncate text-[13px] font-medium ${
+                            notification.read ? "text-helper" : "text-light"
+                        }`}
+                    >
+                        {notification.title}
+                    </h3>
 
                     <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-helper">
                         {notification.message}

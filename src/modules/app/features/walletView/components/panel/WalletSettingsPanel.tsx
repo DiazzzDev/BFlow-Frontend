@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import {
     AlertTriangle,
     Building2,
@@ -30,6 +31,7 @@ import { Textarea } from "@/components/controls/Textarea";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const settingsSchema = z.object({
     name: z.string().min(1, "El nombre es obligatorio"),
@@ -65,6 +67,7 @@ export const WalletSettingsPanel = ({
     wallet,
     isLoading,
 }: WalletSettingsPanelProps) => {
+    const { t } = useTranslation();
     // Update mutation + wallet info stats (transaction count, etc.)
     const { updateWallet } = useMutateWallets();
     const { data: walletDetailsResponse } = useGetWalletDetails(wallet?.id ?? "");
@@ -116,10 +119,9 @@ export const WalletSettingsPanel = ({
         });
 
         toast.promise(promise, {
-            loading: "Guardando cambios...",
-            success: "Billetera actualizada",
-            error: (err) =>
-                err instanceof Error ? err.message : "Error al actualizar la billetera",
+            loading: t("wallets.updateLoading"),
+            success: (response) => getApiMessage(response, t("wallets.updateFallback")),
+            error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
         await promise;
@@ -157,8 +159,8 @@ export const WalletSettingsPanel = ({
                         {wallet.name}
                         {" · "}
                         {isOwner
-                            ? "Editá la información general y revisá los detalles de la cuenta"
-                            : "Revisá la información general y los detalles de la cuenta"}
+                            ? t("wallets.settings")
+                            : t("wallets.settings")}
                     </p>
                 </header>
 
@@ -172,7 +174,7 @@ export const WalletSettingsPanel = ({
                                     </h3>
                                     <p className="mt-0.5 text-sm text-helper">
                                         {isOwner
-                                            ? "Editá el nombre y la descripción de esta billetera"
+                                            ? t("wallets.description")
                                             : "Solo el propietario puede editar estos datos"}
                                     </p>
                                 </div>
@@ -211,7 +213,7 @@ export const WalletSettingsPanel = ({
 
                                     <div className="flex flex-col gap-1.5">
                                         <Label htmlFor="walletSettingsDescription">
-                                            Descripción
+                                            {t("wallets.description")}
                                         </Label>
                                         <Controller
                                             name="description"
@@ -219,7 +221,7 @@ export const WalletSettingsPanel = ({
                                             render={({ field }) => (
                                                 <Textarea
                                                     id="walletSettingsDescription"
-                                                    placeholder="Para qué usas esta billetera"
+                                                    placeholder={t("wallets.descriptionPlaceholder")}
                                                     rows={3}
                                                     disabled={fieldsDisabled}
                                                     readOnly={!isOwner}
@@ -244,7 +246,7 @@ export const WalletSettingsPanel = ({
                                     <div className="flex items-center justify-between gap-3 border-t border-light-10 px-5 py-3.5">
                                         <p className="text-xs text-helper">
                                             {isSaving
-                                                ? "Guardando..."
+                                                ? t("wallets.updateLoading")
                                                 : isDirty
                                                     ? "Hay cambios sin guardar"
                                                     : "Todo guardado"}
@@ -255,7 +257,7 @@ export const WalletSettingsPanel = ({
                                             className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-light-10 bg-surface px-3.5 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             <Save className="h-4 w-4" />
-                                            {isSaving ? "Guardando..." : "Guardar cambios"}
+                                            {isSaving ? t("wallets.updateLoading") : t("wallets.saveChanges")}
                                         </button>
                                     </div>
                                 ) : null}
@@ -299,7 +301,7 @@ export const WalletSettingsPanel = ({
                         <div className="flex items-center gap-2 border-b border-light-10 px-5 py-4">
                             <Info className="h-4 w-4 text-helper" />
                             <h3 className="text-base font-semibold text-light">
-                                Información
+                                {t("walletView.information")}
                             </h3>
                         </div>
 
@@ -311,12 +313,12 @@ export const WalletSettingsPanel = ({
                                 <div>
                                     <InfoRow
                                         icon={<CircleDollarSign className="h-4 w-4" />}
-                                        label="Moneda"
+                                        label={t("walletView.currency")}
                                         value={wallet.currency}
                                     />
                                     <InfoRow
                                         icon={<Building2 className="h-4 w-4" />}
-                                        label="Valor inicial"
+                                        label={t("walletView.initial")}
                                         value={formatCurrency(
                                             wallet.initialValue,
                                             wallet.currency,
@@ -324,7 +326,7 @@ export const WalletSettingsPanel = ({
                                     />
                                     <InfoRow
                                         icon={<Wallet className="h-4 w-4" />}
-                                        label="Saldo actual"
+                                        label={t("walletView.current")}
                                         value={formatCurrency(
                                             wallet.balance,
                                             wallet.currency,
@@ -332,7 +334,7 @@ export const WalletSettingsPanel = ({
                                     />
                                     <InfoRow
                                         icon={<ArrowLeftRight className="h-4 w-4" />}
-                                        label="Transacciones"
+                                        label={t("walletView.transactions")}
                                         value={String(transactionsCount)}
                                     />
                                 </div>
@@ -345,12 +347,12 @@ export const WalletSettingsPanel = ({
                                 <div>
                                     <InfoRow
                                         icon={<Users className="h-4 w-4" />}
-                                        label="Miembros"
+                                        label={t("walletView.members")}
                                         value={String(wallet.memberCount ?? 0)}
                                     />
                                     <InfoRow
                                         icon={<ShieldCheck className="h-4 w-4" />}
-                                        label="Tu rol"
+                                        label={t("walletView.role")}
                                         value={roleLabel(wallet.role)}
                                     />
                                 </div>
@@ -363,14 +365,14 @@ export const WalletSettingsPanel = ({
                                 <div>
                                     <InfoRow
                                         icon={<Calendar className="h-4 w-4" />}
-                                        label="Creada"
+                                        label={t("walletView.created")}
                                         value={
                                             formatterDynamicDate(wallet.createdAt) || "—"
                                         }
                                     />
                                     <InfoRow
                                         icon={<Clock className="h-4 w-4" />}
-                                        label="Actualizada"
+                                        label={t("walletView.updated")}
                                         value={
                                             formatterDynamicDate(wallet.updatedAt) || "—"
                                         }

@@ -1,14 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useLandingNav } from "../hooks/useLandingNav";
 
 import { useAuth } from "@/auth/hooks/useAuth";
 
+const getNavTranslationKey = (id: string) => {
+    if (id === "how") {
+        return "home.navFeatures";
+    }
+    if (id === "pricing") {
+        return "home.navPricing";
+    }
+    if (id === "faq") {
+        return "home.navFaq";
+    }
+    return "home.navContact";
+};
+
 export const LandingNavbar = () => {
     const { navLinks, handleNavClick } = useLandingNav();
     const { isAuthenticated, isChecking } = useAuth();
+    const { t } = useTranslation();
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const onNavClick = (id: string) => {
@@ -36,7 +51,7 @@ export const LandingNavbar = () => {
                                 onClick={() => onNavClick(id)}
                                 className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light"
                             >
-                                {label}
+                                {t(getNavTranslationKey(id), { defaultValue: label })}
                             </button>
                         ))}
                     </div>
@@ -49,7 +64,7 @@ export const LandingNavbar = () => {
                                 type="button"
                                 className="cursor-pointer rounded-md bg-primary px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-primary-dark"
                             >
-                                Ir al dashboard
+                                {t("home.goDashboard")}
                             </button>
                         </Link>
                     ) : (
@@ -58,14 +73,14 @@ export const LandingNavbar = () => {
                                 to="/auth/login"
                                 className="hidden text-sm font-medium text-helper transition-colors hover:text-light sm:inline"
                             >
-                                Iniciar sesión
+                                {t("home.signIn")}
                             </Link>
                             <Link to="/auth/register">
                                 <button
                                     type="button"
                                     className="cursor-pointer rounded-md bg-primary px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-primary-dark"
                                 >
-                                    Empezar gratis
+                                    {t("home.startFree")}
                                 </button>
                             </Link>
                         </>
@@ -75,7 +90,7 @@ export const LandingNavbar = () => {
                         type="button"
                         className="inline-flex cursor-pointer items-center justify-center rounded-md p-2 text-helper hover:bg-light-10 hover:text-light md:hidden"
                         onClick={() => setMobileOpen((open) => !open)}
-                        aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+                        aria-label={mobileOpen ? t("a11y.closeMenu") : t("a11y.openMenu")}
                     >
                         {mobileOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
@@ -92,7 +107,7 @@ export const LandingNavbar = () => {
                                 onClick={() => onNavClick(id)}
                                 className="cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light"
                             >
-                                {label}
+                                {t(getNavTranslationKey(id), { defaultValue: label })}
                             </button>
                         ))}
                         {!isAuthenticated && !isChecking && (
@@ -101,7 +116,7 @@ export const LandingNavbar = () => {
                                 onClick={() => setMobileOpen(false)}
                                 className="rounded-md px-3 py-2 text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light sm:hidden"
                             >
-                                Iniciar sesión
+                                {t("home.signIn")}
                             </Link>
                         )}
                     </div>

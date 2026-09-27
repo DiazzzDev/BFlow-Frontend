@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router";
 import { Bell, LogOut, Menu, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { NotificationsSidebar } from "../features/notifications/components/NotificationsSidebar";
 import { useGetUnreadNotificationsCount } from "../features/notifications/hooks/useGetUnreadNotificationsCount";
@@ -14,6 +15,7 @@ interface HeaderProps {
 }
 
 export const Header = ({ onOpenNav }: HeaderProps) => {
+    const { t } = useTranslation();
     const { pathname } = useLocation();
     const crumbs = getBreadcrumbs(pathname);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -22,7 +24,6 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
     const { data: unreadCountResponse } = useGetUnreadNotificationsCount();
     const unreadCount = unreadCountResponse?.data ?? 0;
     const { mutate: logout, isPending: isLoggingOut } = useLogout();
-
     const user = useAuthStore((state) => state.user);
 
     useEffect(() => {
@@ -59,7 +60,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                 <button
                     type="button"
                     onClick={onOpenNav}
-                    aria-label="Abrir menú"
+                    aria-label={t("a11y.openMenu")}
                     className="shrink-0 cursor-pointer rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light lg:hidden"
                 >
                     <Menu className="h-5 w-5" />
@@ -71,26 +72,22 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
 
                         return (
                             <span className="flex min-w-0 items-center gap-2" key={index}>
-                                {index > 0 && (
-                                    <span className="shrink-0 text-helper">/</span>
-                                )}
+                                {index > 0 ? <span className="shrink-0 text-helper">/</span> : null}
 
                                 {!isLast && crumb.path ? (
                                     <Link
                                         to={crumb.path}
                                         className="truncate text-helper transition-colors hover:text-light"
                                     >
-                                        {crumb.text}
+                                        {t(crumb.text, { defaultValue: crumb.text })}
                                     </Link>
                                 ) : (
                                     <span
                                         className={`truncate ${
-                                            isLast
-                                                ? "font-medium text-light"
-                                                : "text-helper"
+                                            isLast ? "font-medium text-light" : "text-helper"
                                         }`}
                                     >
-                                        {crumb.text}
+                                        {t(crumb.text, { defaultValue: crumb.text })}
                                     </span>
                                 )}
                             </span>
@@ -112,7 +109,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                             setNotificationsOpen((open) => !open);
                             setProfileOpen(false);
                         }}
-                        aria-label="Notificaciones"
+                        aria-label={t("a11y.notifications")}
                         aria-expanded={notificationsOpen}
                         aria-haspopup="dialog"
                     >
@@ -137,19 +134,17 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                             setProfileOpen((open) => !open);
                             setNotificationsOpen(false);
                         }}
-                        aria-label="Abrir menú de usuario"
+                        aria-label={t("a11y.editProfile")}
                         aria-expanded={profileOpen}
                         aria-haspopup="menu"
                         className={`flex h-9 w-9 cursor-pointer items-center justify-center overflow-hidden rounded-full transition-shadow ${
-                            profileOpen
-                                ? "ring-2 ring-primary ring-offset-2 ring-offset-surface-hard"
-                                : ""
+                            profileOpen ? "ring-2 ring-primary ring-offset-2 ring-offset-surface-hard" : ""
                         }`}
                     >
                         {user?.pictureUrl ? (
                             <img
                                 src={user.pictureUrl}
-                                alt={user.name || user.email || "Usuario"}
+                                alt={user.name || user.email || t("a11y.user")}
                                 className="h-full w-full object-cover"
                                 referrerPolicy="no-referrer"
                             />
@@ -163,7 +158,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                     {profileOpen ? (
                         <div
                             role="menu"
-                            aria-label="Menú de usuario"
+                            aria-label={t("a11y.editProfile")}
                             className="absolute right-0 top-[calc(100%+0.75rem)] z-50 w-[min(20rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-light-10 bg-surface-hard p-2 shadow-custom max-[420px]:fixed max-[420px]:left-2 max-[420px]:right-2 max-[420px]:top-16 max-[420px]:w-auto"
                         >
                             <div className="border-b border-light-10 px-3 py-2.5">
@@ -176,29 +171,13 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                             </div>
 
                             <div className="py-1">
-                                <MenuLink
-                                    to="/app/settings"
-                                    label="Profile"
-                                    onClick={closeProfileMenu}
-                                />
+                                <MenuLink to="/app/settings" label="Profile" onClick={closeProfileMenu} />
                             </div>
 
                             <div className="border-t border-light-10 py-1">
-                                <MenuLink
-                                    to="/terms"
-                                    label="Terms"
-                                    onClick={closeProfileMenu}
-                                />
-                                <MenuLink
-                                    to="/privacy"
-                                    label="Privacy"
-                                    onClick={closeProfileMenu}
-                                />
-                                <MenuLink
-                                    to="/cookies"
-                                    label="Cookies"
-                                    onClick={closeProfileMenu}
-                                />
+                                <MenuLink to="/terms" label="Terms" onClick={closeProfileMenu} />
+                                <MenuLink to="/privacy" label="Privacy" onClick={closeProfileMenu} />
+                                <MenuLink to="/cookies" label="Cookies" onClick={closeProfileMenu} />
                             </div>
 
                             <div className="border-t border-light-10 pt-1">

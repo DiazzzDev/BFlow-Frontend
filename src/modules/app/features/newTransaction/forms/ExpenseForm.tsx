@@ -3,6 +3,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import { usePostExpense, usePutExpense } from "../hooks/useMutateExpenses";
 import { getCategory } from "../utils/getCategory";
@@ -24,6 +25,7 @@ import {
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
+import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const expenseSchema = z
     .object({
@@ -37,6 +39,8 @@ const expenseSchema = z
         recurring: z.boolean(),
         recurrencePattern: z.enum(PERIODICITY_VALUES).nullable(),
         categoryId: z.string().uuid("Selecciona una categoría"),
+        taxDeductible: z.boolean(),
+        reimbursable: z.boolean(),
     })
     .superRefine((values, ctx) => {
         if (values.recurring && !values.recurrencePattern) {
@@ -58,6 +62,8 @@ const defaultFormValues: ExpenseFormValues = {
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
+    taxDeductible: false,
+    reimbursable: false,
 };
 
 interface ExpenseFormProps {
@@ -77,6 +83,7 @@ export const ExpenseForm = ({
     source = "manual",
     initialValues,
 }: ExpenseFormProps) => {
+    const { t } = useTranslation();
     // Create / update mutations
     const createExpense = usePostExpense();
     const updateExpense = usePutExpense();
@@ -135,6 +142,8 @@ export const ExpenseForm = ({
             recurring: formData.recurring,
             recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
             categoryId: formData.categoryId,
+            taxDeductible: formData.taxDeductible,
+            reimbursable: formData.reimbursable,
         };
 
         const promise = isEditing
@@ -142,14 +151,19 @@ export const ExpenseForm = ({
             : createExpense.mutateAsync(payload);
 
         toast.promise(promise, {
-            loading: isEditing ? "Actualizando gasto..." : "Creando gasto...",
-            success: isEditing ? "Gasto actualizado" : "Gasto creado",
-            error: (err) =>
-                err instanceof Error
-                    ? err.message
-                    : isEditing
-                        ? "Error al actualizar el gasto"
-                        : "Error al crear el gasto",
+            loading: isEditing
+                ? t("transactions.updateExpenseLoading")
+                : t("transactions.createExpenseLoading"),
+            success: (response) =>
+                getApiMessage(
+                    response,
+                    isEditing ? t("transactions.expenseUpdated") : t("transactions.expenseCreated"),
+                ),
+            error: (error) =>
+                getApiErrorMessage(
+                    error,
+                    isEditing ? t("transactions.expenseUpdated") : t("transactions.expenseCreated"),
+                ),
         });
 
         await promise;
@@ -173,14 +187,14 @@ export const ExpenseForm = ({
             }}
         >
             <div className="flex flex-col gap-1">
-                <Label htmlFor="title">Título</Label>
+                <Label htmlFor="title">{t("transactions.title")}</Label>
                 <Controller
                     name="title"
                     control={control}
                     render={({ field }) => (
                         <Input
                             id="title"
-                            placeholder="Ej. Almuerzo"
+                            placeholder="Example: Lunch"
                             disabled={isDisabled}
                             {...field}
                         />
@@ -192,14 +206,14 @@ export const ExpenseForm = ({
             </div>
 
             <div className="flex flex-col gap-1">
-                <Label htmlFor="description">Descripción</Label>
+                <Label htmlFor="description">{t("transactions.description")}</Label>
                 <Controller
                     name="description"
                     control={control}
                     render={({ field }) => (
                         <Textarea
                             id="description"
-                            placeholder="Detalle del gasto"
+                            placeholder={t("transactions.expenseDetail")}
                             rows={3}
                             disabled={isDisabled}
                             {...field}
@@ -213,7 +227,7 @@ export const ExpenseForm = ({
 
             <div className="flex flex-col gap-4 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="amount">Monto</Label>
+                    <Label htmlFor="amount">{t("transactions.amount")}</Label>
                     <Controller
                         name="amount"
                         control={control}
@@ -241,7 +255,7 @@ export const ExpenseForm = ({
                 </div>
 
                 <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="date">Fecha</Label>
+                    <Label htmlFor="date">{t("transactions.date")}</Label>
                     <Controller
                         name="date"
                         control={control}
@@ -268,11 +282,11 @@ export const ExpenseForm = ({
                     render={({ field }) => (
                         <SelectAutoComplete<Category>
                             idSelect="categoryId"
-                            label="Categoría"
+                            label={t("transactions.category")}
                             placeholder={
                                 isCategoriesLoading
-                                    ? "Cargando categorías..."
-                                    : "Buscar categoría..."
+                                    ? t("transactions.loadingCategories")
+                                    : t("transactions.searchCategory")
                             }
                             selectedItem={selectedCategory}
                             setSelectedItem={(category) => {
@@ -299,7 +313,7 @@ export const ExpenseForm = ({
                     control={control}
                     render={({ field }) => (
                         <ToggleSwitch
-                            label="Gasto recurrente"
+                            label={t("transactions.recurringExpense")}
                             checked={field.value}
                             disabled={isDisabled}
                             onChange={field.onChange}
@@ -309,7 +323,7 @@ export const ExpenseForm = ({
 
                 {recurring && (
                     <div className="flex flex-col gap-1">
-                        <Label htmlFor="recurrencePattern">Patrón</Label>
+                        <Label htmlFor="recurrencePattern">{t("transactions.pattern")}</Label>
                         <Controller
                             name="recurrencePattern"
                             control={control}
@@ -327,10 +341,10 @@ export const ExpenseForm = ({
                                     }
                                     onBlur={field.onBlur}
                                 >
-                                    <option value="">Selecciona un patrón</option>
+                                    <option value="">{t("transactions.selectPattern")}</option>
                                     {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => (
                                         <option key={value} value={value}>
-                                            {label}
+                                            {t(`budgets.periods.${value.toLowerCase()}`, { defaultValue: label })}
                                         </option>
                                     ))}
                                 </Select>
@@ -343,6 +357,34 @@ export const ExpenseForm = ({
                         )}
                     </div>
                 )}
+
+                {/* Campos ocultos por el momento */}
+                <div className="hidden">
+                    <Controller
+                        name="taxDeductible"
+                        control={control}
+                        render={({ field }) => (
+                            <ToggleSwitch
+                                label={t("transactions.taxDeductible")}
+                                checked={field.value}
+                                disabled={isDisabled}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="reimbursable"
+                        control={control}
+                        render={({ field }) => (
+                            <ToggleSwitch
+                                label={t("transactions.reimbursable")}
+                                checked={field.value}
+                                disabled={isDisabled}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+                </div>
             </div>
 
             {!readOnly && (
@@ -351,10 +393,10 @@ export const ExpenseForm = ({
                     disabled={isSaving}
                     text={
                         isSaving
-                            ? "Guardando..."
+                            ? t("transactions.saving")
                             : isEditing
-                                ? "Guardar cambios"
-                                : "Crear gasto"
+                                ? t("transactions.saveChanges")
+                                : t("transactions.createExpense")
                     }
                     className="self-end"
                 />

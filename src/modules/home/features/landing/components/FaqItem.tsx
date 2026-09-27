@@ -1,11 +1,20 @@
 interface FaqItemProps {
     question: string;
     answer: string;
+    reference?: string;
+    referenceLabel?: string;
     open: boolean;
     onToggle: () => void;
 }
 
-export const FaqItem = ({ question, answer, open, onToggle }: FaqItemProps) => {
+export const FaqItem = ({
+    question,
+    answer,
+    reference,
+    referenceLabel,
+    open,
+    onToggle,
+}: FaqItemProps) => {
     return (
         <div
             className={`bg-surface border rounded-2xl overflow-hidden transition-colors duration-300 ${
@@ -42,7 +51,19 @@ export const FaqItem = ({ question, answer, open, onToggle }: FaqItemProps) => {
                 }`}
             >
                 <div className="overflow-hidden">
-                    <p className="px-7 pb-6 text-sm text-helper leading-relaxed">{answer}</p>
+                    <div className="px-7 pb-6">
+                        <p className="text-sm leading-relaxed text-helper">{answer}</p>
+                        {reference && referenceLabel ? (
+                            <a
+                                href={reference}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="mt-3 inline-flex text-sm font-medium text-primary transition-colors hover:text-primary-dark"
+                            >
+                                {referenceLabel} →
+                            </a>
+                        ) : null}
+                    </div>
                 </div>
             </div>
         </div>

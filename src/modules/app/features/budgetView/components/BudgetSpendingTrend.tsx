@@ -1,4 +1,5 @@
 import { TrendingUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
     CartesianGrid,
     Line,
@@ -52,6 +53,7 @@ export const BudgetSpendingTrend = ({
     currency = "USD",
     yMax = 0,
 }: BudgetSpendingTrendProps) => {
+    const { t } = useTranslation();
     const data = points.map((point, index) => ({
         day: point.dayIndex > 0 ? point.dayIndex : index + 1,
         amount: point.cumulativeAmount,
@@ -62,7 +64,7 @@ export const BudgetSpendingTrend = ({
 
     return (
         <article className="flex h-full min-h-80 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
-            <p className="mb-4 text-base font-semibold text-light">Tendencia de gasto</p>
+            <p className="mb-4 text-base font-semibold text-light">{t("budgetView.trend")}</p>
 
             <div className="flex min-h-0 flex-1 items-center">
                 {isLoading ? (
@@ -70,7 +72,7 @@ export const BudgetSpendingTrend = ({
                 ) : isEmpty ? (
                     <BudgetCardEmpty
                         Icon={TrendingUp}
-                        title="Sin tendencia"
+                        title={t("budgetView.noTrend")}
                         description="Todavía no hay gasto en este periodo."
                     />
                 ) : (

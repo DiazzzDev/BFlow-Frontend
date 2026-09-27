@@ -1,4 +1,5 @@
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
+import { useTranslation } from "react-i18next";
 import {
     categoryIconKeys,
     type CategoryIconKey,
@@ -16,6 +17,7 @@ export const CategoryIconPicker = ({
     onChange,
     color = "#F97316",
 }: CategoryIconPickerProps) => {
+    const { t } = useTranslation();
     return (
         <div className="grid max-h-44 grid-cols-6 gap-2 overflow-y-auto rounded-xl border border-light-10 bg-surface p-2 sm:grid-cols-8">
             {categoryIconKeys.map((iconKey) => {
@@ -27,7 +29,7 @@ export const CategoryIconPicker = ({
                         type="button"
                         onClick={() => onChange(iconKey)}
                         title={iconKey}
-                        aria-label={`Seleccionar ícono ${iconKey}`}
+                        aria-label={t("common.selectIcon", { icon: iconKey })}
                         aria-pressed={isSelected}
                         className={`flex h-10 w-full cursor-pointer items-center justify-center rounded-lg border transition-colors ${
                             isSelected

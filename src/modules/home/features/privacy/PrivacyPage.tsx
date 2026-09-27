@@ -1,9 +1,7 @@
 import { LegalPage } from "../legal/LegalPage";
+import { useTranslation } from "react-i18next";
 
-export const PrivacyPage = () => (
-    <LegalPage
-        documentType="privacy"
-        title="Política de Privacidad"
-        description="Cómo recopilamos, usamos y protegemos tu información personal en BFlow."
-    />
-);
+export const PrivacyPage = () => {
+    const { t } = useTranslation();
+    return <LegalPage documentType="privacy" title={t("home.privacyTitle")} description={t("home.privacyDescription")} />;
+};

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { Plus, WalletCards } from "lucide-react";
 
 import { BudgetOverview } from "./components/BudgetOverview";
@@ -19,9 +20,12 @@ import { PaginationSelect } from "@/components/PaginationSelect";
 import { useUpdateSearchParams } from "@/hooks/useUpdateSearchParams";
 
 export const BudgetsPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { updateSearchParams } = useUpdateSearchParams();
     const { budgets, isLoading, totalBudgets, totalPages, numberOfElements, totalLimit, hasActiveFilters, isModalOpen, setIsModalOpen, sort, periodParam } = useBudgetsPage();
+    const periodTabs = BUDGET_PERIOD_TABS.map((tab) => ({ ...tab, label: t(`budgets.periods.${tab.value === "ALL" ? "all" : tab.value.toLowerCase()}`, { defaultValue: tab.label }) }));
+    const sortOptions = BUDGET_SORT_OPTIONS.map((option) => ({ ...option, label: t(`budgets.sort.${option.value === "amount,desc" ? "amountDesc" : option.value === "amount,asc" ? "amountAsc" : option.value === "updatedAt,desc" ? "updated" : "start"}`, { defaultValue: option.label }) }));
 
     return (
         <div className="flex flex-col px-4 py-5 sm:px-6 pb-10 min-h-full">
@@ -35,14 +39,14 @@ export const BudgetsPage = () => {
                 <div className="mb-5 flex flex-col gap-3 @3xl:flex-row @xl:justify-between">
                     <SearchInput
                         id="txtSearchBudgets"
-                        placeholder="Buscar presupuestos..."
+                        placeholder={t("budgets.search")}
                         className="w-full max-w-none min-w-0 @xl:max-w-xl"
                         syncToParams
                     />
 
                     <div className="flex min-w-0 flex-col gap-3 @lg:flex-row @md:items-center justify-between">
                         <TabFilter
-                            options={BUDGET_PERIOD_TABS}
+                            options={periodTabs}
                             selected={periodParam}
                             keyFilter="period"
                             layoutId="budgetPeriodTab"
@@ -51,7 +55,7 @@ export const BudgetsPage = () => {
 
                         <Button
                             type="button"
-                            text="Crear presupuesto"
+                            text={t("budgets.create")}
                             icon={<Plus className="h-4 w-4" />}
                             onClick={() => setIsModalOpen(true)}
                             className="w-full shrink-0 @lg:w-auto"
@@ -61,13 +65,13 @@ export const BudgetsPage = () => {
 
                 <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <h2 className="text-base font-semibold text-light sm:text-lg">
-                        Presupuestos activos {isLoading ? "" : `(${totalBudgets})`}
+                        {t("budgets.active")} {isLoading ? "" : `(${totalBudgets})`}
                     </h2>
 
                     <Select
                         id="budgetSort"
                         value={sort}
-                        aria-label="Ordenar presupuestos"
+                        aria-label={t("budgets.sortLabel")}
                         className="w-full sm:min-w-44 sm:max-w-52"
                         onChange={(event) =>
                             updateSearchParams(
@@ -76,7 +80,7 @@ export const BudgetsPage = () => {
                             )
                         }
                     >
-                        {BUDGET_SORT_OPTIONS.map((option) => (
+                        {sortOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>
@@ -102,7 +106,7 @@ export const BudgetsPage = () => {
             <CustomModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
-                title="Nuevo presupuesto"
+                title={t("budgets.newTitle")}
                 maxWidth="max-w-xl"
             >
                 <BudgetForm
@@ -142,11 +146,11 @@ export const BudgetsPage = () => {
 
         return (
             <CustomEmptyState
-                title={hasActiveFilters ? "Sin resultados" : "Sin presupuestos"}
+                title={hasActiveFilters ? t("budgets.noResults") : t("budgets.empty")}
                 description={
                     hasActiveFilters
-                        ? "Prueba ajustando la búsqueda o los filtros"
-                        : "Crea tu primer presupuesto para controlar tus gastos."
+                        ? t("budgets.noResultsHint")
+                        : t("budgets.emptyHint")
                 }
                 Icon={WalletCards}
             />

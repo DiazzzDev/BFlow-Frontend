@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
 
@@ -20,7 +21,9 @@ import { Button } from "@/components/controls/Button";
 import { TabFilter } from "@/components/controls/TabFilter";
 
 export const WalletsPage = () => {
+    const { t } = useTranslation();
     const page = useWalletsPage();
+    const walletTabs = WALLETS_TYPE_TABS.map((tab) => ({ ...tab, label: t(tab.value === "MINE" ? "wallets.mine" : "wallets.shared") }));
 
     return (
         <div className="flex h-full min-h-0 flex-col @3xl:flex-row">
@@ -29,11 +32,11 @@ export const WalletsPage = () => {
                     <div className="flex flex-1 flex-wrap items-center gap-5">
                         <SearchInput
                             id="txtSearch"
-                            placeholder="Buscar billetera..."
+                            placeholder={t("wallets.search")}
                             syncToParams
                         />
                         <TabFilter
-                            options={WALLETS_TYPE_TABS}
+                            options={walletTabs}
                             selected={page.walletType}
                             keyFilter="walletType"
                             responsive="stretch"
@@ -53,13 +56,13 @@ export const WalletsPage = () => {
                                 onClick={page.openHistory}
                                 className="w-full cursor-pointer rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 @3xl:hidden"
                             >
-                                Ver historial
+                                {t("wallets.history")}
                             </button>
 
                             <Button
                                 type="button"
                                 onClick={page.openCreateModal}
-                                text="Crear billetera"
+                                text={t("wallets.create")}
                                 className="w-full @3xl:w-auto"
                             />
                         </div>
@@ -101,7 +104,7 @@ export const WalletsPage = () => {
 
             <button
                 type="button"
-                aria-label="Cerrar historial"
+                aria-label={t("wallets.closeHistory")}
                 onClick={page.closeHistory}
                 className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity @3xl:hidden ${
                     page.isHistoryOpen
@@ -115,18 +118,18 @@ export const WalletsPage = () => {
                 }`}
             >
                 <div className="flex items-center justify-between border-b border-light-10 px-4 py-4">
-                    <h2 className="text-lg font-semibold text-light">Historial</h2>
+                    <h2 className="text-lg font-semibold text-light">{t("wallets.history")}</h2>
                     <div className="flex items-center gap-2">
                         <Link
                             to="/app/history"
                             className="text-sm font-medium text-primary transition-colors hover:opacity-80"
                         >
-                            Ver más
+                            {t("wallets.viewMore")}
                         </Link>
                         <button
                             type="button"
                             onClick={page.closeHistory}
-                            aria-label="Cerrar historial"
+                            aria-label={t("wallets.closeHistory")}
                             className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light"
                         >
                             <X className="h-5 w-5" />
@@ -147,7 +150,7 @@ export const WalletsPage = () => {
             <CustomModal
                 isModalOpen={page.isModalOpen}
                 setIsModalOpen={page.setIsModalOpen}
-                title="Nueva billetera"
+                title={t("wallets.newTitle")}
                 maxWidth="max-w-md"
             >
                 <WalletForm

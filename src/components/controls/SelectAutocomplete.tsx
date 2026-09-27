@@ -7,6 +7,7 @@ import {
     ComboboxOptions,
 } from "@headlessui/react";
 import { Check, ChevronDown, Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Label } from "./Label";
 
@@ -61,7 +62,7 @@ export const SelectAutoComplete = <T,>({
     idSelect,
     getKey,
     getLabel,
-    placeholder = "Buscar...",
+    placeholder,
     disabled = false,
     allowCreate = false,
     showSearchIcon = true,
@@ -70,6 +71,8 @@ export const SelectAutoComplete = <T,>({
     isOptionDisabled,
     renderOption,
 }: SelectAutoCompleteProps<T>) => {
+    const { t } = useTranslation();
+    const resolvedPlaceholder = placeholder ?? t("common.search");
     const selectedLabel = selectedItem ? getLabel(selectedItem) : "";
     const isEditingSelection = query.length > 0 && query !== selectedLabel;
     const comboboxValue = isEditingSelection ? null : selectedItem;
@@ -122,7 +125,7 @@ export const SelectAutoComplete = <T,>({
 
                 <ComboboxInput
                     id={idSelect}
-                    placeholder={placeholder}
+                    placeholder={resolvedPlaceholder}
                     displayValue={() => inputDisplayValue}
                     className={
                         showSearchIcon ? inputClassNameWithIcon : inputClassNameWithoutIcon
@@ -145,13 +148,13 @@ export const SelectAutoComplete = <T,>({
                             value={{ id: null, name: query } as T}
                             className={optionClassName}
                         >
-                            <span className="truncate">Crear “{query.trim()}”</span>
+                            <span className="truncate">{t("common.createOption", { value: query.trim() })}</span>
                         </ComboboxOption>
                     )}
 
                     {filteredData.length === 0 ? (
                         <div className="px-3 py-6 text-center text-sm text-helper">
-                            Sin resultados
+                            {t("common.noResults")}
                         </div>
                     ) : (
                         filteredData.map((item) => (
