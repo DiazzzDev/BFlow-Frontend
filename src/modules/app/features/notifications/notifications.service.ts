@@ -32,3 +32,25 @@ export const markNotificationAsRead = async (notificationId: string) => {
         "Error al marcar la notificación como leída",
     );
 };
+
+/** Registers or refreshes the browser's FCM token for the current user. */
+export const registerDeviceToken = async (token: string) => {
+    return await apiRequest<ApiResponse<void>>(
+        `${notificationsUrl}/devices`,
+        {
+            ...defaultApiOptions,
+            method: "POST",
+            body: JSON.stringify({ token, platform: "WEB" }),
+        },
+        "Error al registrar las notificaciones push",
+    );
+};
+
+/** Revokes a browser FCM token when the user explicitly disables push. */
+export const unregisterDeviceToken = async (token: string) => {
+    return await apiRequest<ApiResponse<void>>(
+        `${notificationsUrl}/devices?token=${encodeURIComponent(token)}`,
+        { ...defaultApiOptions, method: "DELETE" },
+        "Error al desactivar las notificaciones push",
+    );
+};

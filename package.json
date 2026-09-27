@@ -22,6 +22,7 @@
     "@tanstack/react-query-devtools": "^5.102.6",
     "aws-amplify": "^6.18.0",
     "date-fns": "^4.4.0",
+    "firebase": "^12.7.0",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.7.0",
     "react": "^19.2.4",
