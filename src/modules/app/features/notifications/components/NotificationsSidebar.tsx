@@ -1,13 +1,10 @@
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bell, X } from "lucide-react";
 
 import { useGetNotifications } from "../hooks/useGetNotifications";
 
 import { NotificationItem } from "./NotificationItem";
 
-import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 
 interface NotificationsSidebarProps {
@@ -28,18 +25,23 @@ export const NotificationsSidebar = ({
             return;
         }
 
-        const previousOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
 
         return () => {
-            document.body.style.overflow = previousOverflow;
+            document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
-    return createPortal(
+    return (
         <AnimatePresence>
             {isOpen ? (
-                <div className="fixed inset-0 z-50">
+                <>
                     <motion.button
                         type="button"
                         aria-label="Cerrar notificaciones"
@@ -48,61 +50,57 @@ export const NotificationsSidebar = ({
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-surface-hard/70 backdrop-blur-[1px]"
+                        className="fixed inset-0 z-40 cursor-default bg-transparent"
                     />
 
                     <motion.aside
-                        initial={{ x: "100%" }}
-                        animate={{ x: 0 }}
-                        exit={{ x: "100%" }}
-                        transition={{ type: "spring", damping: 28, stiffness: 260 }}
-                        className="absolute right-0 top-0 flex h-full w-full max-w-sm flex-col border-l border-light-10 bg-surface shadow-custom"
+                        role="dialog"
+                        aria-label="Notificaciones"
+                        initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                        transition={{ duration: 0.16, ease: "easeOut" }}
+                        className="absolute right-0 top-[calc(100%+0.75rem)] z-50 flex w-[min(20rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-xl border border-light-10 bg-surface-hard shadow-custom max-[420px]:fixed max-[420px]:left-2 max-[420px]:right-2 max-[420px]:top-16 max-[420px]:w-auto"
                     >
-                        <div className="flex items-start justify-between gap-3 border-b border-light-10 px-5 py-4">
+                        <div className="flex items-center justify-between gap-3 border-b border-light-10 px-4 py-3">
                             <div>
-                                <h2 className="text-base font-semibold text-light">
+                                <h2 className="text-sm font-semibold text-light">
                                     Notificaciones
                                 </h2>
-                                <p className="mt-0.5 text-xs text-helper">
-                                    {unreadCount > 0
-                                        ? `${unreadCount} sin leer`
-                                        : "Estás al día"}
-                                </p>
                             </div>
 
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                aria-label="Cerrar panel de notificaciones"
-                                className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
-                            >
-                                <X className="h-4 w-4" />
-                            </button>
+                            {unreadCount > 0 ? (
+                                <span className="text-[11px] text-helper">
+                                    {unreadCount} sin leer
+                                </span>
+                            ) : null}
                         </div>
 
-                        <div className="flex-1 overflow-y-auto px-4 py-4">
+                        <div className="min-h-0 max-h-[min(30rem,calc(100vh-8rem))] overscroll-contain overflow-y-auto">
                             {isLoading ? (
-                                <div className="space-y-3">
+                                <div className="space-y-1 px-4 py-3">
                                     {Array.from({ length: 4 }).map((_, index) => (
                                         <div
                                             key={index}
-                                            className="rounded-xl border border-light-10 p-4"
+                                            className="border-b border-light-10 py-3 last:border-b-0"
                                         >
-                                            <SkeletonText className="mb-2 h-4 w-2/3" />
+                                            <SkeletonText className="mb-2 h-3.5 w-2/3" />
                                             <SkeletonText className="mb-2 h-3 w-full" />
-                                            <SkeletonText className="h-3 w-1/3" />
+                                            <SkeletonText className="h-2.5 w-1/3" />
                                         </div>
                                     ))}
                                 </div>
                             ) : notifications.length === 0 ? (
-                                <CustomEmptyState
-                                    Icon={Bell}
-                                    title="Sin notificaciones"
-                                    description="Cuando tengas novedades, las verás aquí."
-                                    className="my-0!"
-                                />
+                                <div className="flex min-h-40 flex-col items-center justify-center px-6 py-8 text-center">
+                                    <p className="text-sm font-medium text-light">
+                                        No hay notificaciones
+                                    </p>
+                                    <p className="mt-1 text-xs text-helper">
+                                        Cuando tengas novedades, aparecerán aquí.
+                                    </p>
+                                </div>
                             ) : (
-                                <div className="space-y-3">
+                                <div>
                                     {notifications.map((notification) => (
                                         <NotificationItem
                                             key={notification.id}
@@ -113,9 +111,8 @@ export const NotificationsSidebar = ({
                             )}
                         </div>
                     </motion.aside>
-                </div>
+                </>
             ) : null}
-        </AnimatePresence>,
-        document.body,
+        </AnimatePresence>
     );
 };

@@ -6,9 +6,12 @@ import { Navbar } from "./components/Navbar.tsx";
 import { usePrefetchNotifications } from "./features/notifications/hooks/usePrefetchNotifications";
 import { useRegisterFcmDevice } from "./features/notifications/hooks/useRegisterFcmDevice";
 
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+
 export const AppLayout = () => {
     const [isNavOpen, setIsNavOpen] = useState(false);
 
+    useDocumentTitle();
     // Prefetch list + unread count for the whole authenticated shell
     usePrefetchNotifications();
     useRegisterFcmDevice();
