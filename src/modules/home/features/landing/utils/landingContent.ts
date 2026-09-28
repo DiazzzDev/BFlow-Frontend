@@ -11,6 +11,7 @@ import budgetsImage from "@/modules/home/assets/Budgets.png";
 import dashboardImage from "@/modules/home/assets/Dashboard.svg";
 import sharedWalletsImage from "@/modules/home/assets/Shared Wallets.png";
 import walletsImage from "@/modules/home/assets/Wallets.png";
+import { getDocsPath } from "@/modules/home/features/docs/utils/docsContent";
 
 // Auto-advance interval for the how-it-works step carousel
 export const LANDING_STEP_INTERVAL_MS = 4000;
@@ -40,8 +41,7 @@ export const HERO_PREVIEW = {
     currency: "USD",
 };
 
-// Placeholder until the modules page exists
-export const MODULES_PAGE_HREF = "#";
+export const MODULES_PAGE_HREF = getDocsPath("");
 
 export type SolutionId = "wallets" | "sharedWallets" | "budgets";
 
@@ -50,6 +50,7 @@ export const SOLUTION_STEPS: Array<{
     id: SolutionId;
     Icon: LucideIcon;
     path: string;
+    docsPath: string;
     image: string;
     focus: { origin: string; scale: number };
 }> = [
@@ -57,6 +58,7 @@ export const SOLUTION_STEPS: Array<{
             id: "wallets",
             Icon: Wallet,
             path: "/app/wallets",
+            docsPath: getDocsPath("wallets"),
             image: walletsImage,
             focus: { origin: "100% 0%", scale: 1.06 },
         },
@@ -64,6 +66,7 @@ export const SOLUTION_STEPS: Array<{
             id: "sharedWallets",
             Icon: Users,
             path: "/app/wallets/viewWallet",
+            docsPath: getDocsPath("shared-wallets"),
             image: sharedWalletsImage,
             focus: { origin: "30% 55%", scale: 1.15 },
         },
@@ -71,6 +74,7 @@ export const SOLUTION_STEPS: Array<{
             id: "budgets",
             Icon: ChartPie,
             path: "/app/budgets",
+            docsPath: getDocsPath("budgets"),
             image: budgetsImage,
             focus: { origin: "100% 40%", scale: 1.06 },
         },

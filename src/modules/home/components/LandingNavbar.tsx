@@ -17,6 +17,9 @@ const getNavTranslationKey = (id: string) => {
     if (id === "faq") {
         return "home.navFaq";
     }
+    if (id === "docs") {
+        return "home.navDocs";
+    }
     return "home.navContact";
 };
 

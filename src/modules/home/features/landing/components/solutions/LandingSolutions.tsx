@@ -14,9 +14,6 @@ export const LandingSolutions = () => {
     return (
         <section id="modules" className="px-8 pb-28 md:pb-36 w-full max-w-360">
             <div className="max-w-2xl">
-                <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-                    {t("home.solutions.eyebrow")}
-                </span>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight md:text-5xl">
                     {t("home.solutions.title")}
                 </h2>
@@ -25,8 +22,8 @@ export const LandingSolutions = () => {
                 </p>
             </div>
 
-            <div className="mt-6 grid gap-12 lg:mt-0 lg:grid-cols-[0.8fr_1.2fr]">
-                <div>
+            <div className="mt-20 grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+                <div className="flex flex-col gap-50 min-h-[90dvh]">
                     {SOLUTION_STEPS.map((step, index) => (
                         <SolutionStep
                             key={step.id}

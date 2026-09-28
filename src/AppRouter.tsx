@@ -26,6 +26,7 @@ import { TermsPage } from "./modules/home/features/terms/TermsPage.tsx";
 import { PrivacyPage } from "./modules/home/features/privacy/PrivacyPage.tsx";
 import { CookiesPage } from "./modules/home/features/cookies/CookiesPage.tsx";
 import { ContactPage } from "./modules/home/features/contact/ContactPage.tsx";
+import { DocsPage } from "./modules/home/features/docs/DocsPage.tsx";
 import { NotFoundPage } from "./modules/404Page.tsx";
 
 export const appRouter = createBrowserRouter([
@@ -39,6 +40,8 @@ export const appRouter = createBrowserRouter([
             { path: "privacy", element: <PrivacyPage /> },
             { path: "cookies", element: <CookiesPage /> },
             { path: "contact", element: <ContactPage /> },
+            { path: "docs", element: <DocsPage /> },
+            { path: "docs/:slug", element: <DocsPage /> },
         ],
     },
     // App
