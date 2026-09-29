@@ -5,6 +5,7 @@ import type {
     DashboardBalance,
     DashboardStatistics,
     RecentActivityItem,
+    StatisticsPeriod,
 } from "./interfaces/dashboard";
 
 import { apiRequest, type ApiResponse } from "@/utils/api";
@@ -41,14 +42,46 @@ export const getActivityBreakdown = async () => {
 };
 
 export interface GetStatisticsParams {
+    period?: StatisticsPeriod;
     year?: number;
+    month?: number;
+    week?: number;
+    startDate?: string;
+    endDate?: string;
 }
 
-export const getStatistics = async ({ year }: GetStatisticsParams = {}) => {
+export const getStatistics = async ({
+    period,
+    year,
+    month,
+    week,
+    startDate,
+    endDate,
+}: GetStatisticsParams = {}) => {
     const params = new URLSearchParams();
+
+    if (period) {
+        params.set("period", period);
+    }
 
     if (year) {
         params.set("year", String(year));
+    }
+
+    if (month) {
+        params.set("month", String(month));
+    }
+
+    if (week) {
+        params.set("week", String(week));
+    }
+
+    if (startDate) {
+        params.set("startDate", startDate);
+    }
+
+    if (endDate) {
+        params.set("endDate", endDate);
     }
 
     const query = params.toString();

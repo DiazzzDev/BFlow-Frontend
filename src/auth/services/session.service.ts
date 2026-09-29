@@ -43,6 +43,7 @@ type SyncAuthResponse = {
     profile?: UserProfile | null;
     language?: string | null;
     preferredLanguage?: string | null;
+    status?: string | null;
     message?: string;
 };
 
@@ -57,6 +58,10 @@ const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
         isNewUser: response.isNewUser,
         name: response.profile?.name ?? null,
         pictureUrl: response.profile?.pictureUrl ?? null,
+        status:
+            response.status === "DELETED" || response.profile?.status === "DELETED"
+                ? "DELETED"
+                : "ACTIVE",
         language:
             normalizeLanguage(
                 response.language ??

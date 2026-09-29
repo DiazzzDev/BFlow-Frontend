@@ -5,7 +5,11 @@ import type { InternalUser } from "./InternalUser";
 
 import { setActiveLanguage } from "@/i18n/i18n";
 
-export type AuthStatus = "checking" | "authenticated" | "not-authenticated";
+export type AuthStatus =
+    | "checking"
+    | "authenticated"
+    | "not-authenticated"
+    | "account-deleted";
 
 interface AuthState {
     user: InternalUser | null;
@@ -25,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
                 setActiveLanguage(user.language);
                 set({
                     user,
-                    authStatus: "authenticated",
+                    authStatus: user.status === "DELETED" ? "account-deleted" : "authenticated",
                 });
             },
 

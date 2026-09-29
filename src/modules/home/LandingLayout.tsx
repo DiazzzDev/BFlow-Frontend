@@ -4,8 +4,11 @@ import { LandingNavbar } from "./components/LandingNavbar";
 import { LandingFooter } from "./components/LandingFooter";
 import { useLandingHashScroll } from "./hooks/useLandingHashScroll";
 
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+
 export const LandingLayout = () => {
     useLandingHashScroll();
+    useDocumentTitle();
 
     return (
         <div className="flex flex-col min-h-screen bg-surface-hard text-light">

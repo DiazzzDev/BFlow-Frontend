@@ -64,6 +64,14 @@ export const patchProfileData = async (body: UpdateProfileData) => {
     );
 };
 
+export const deleteAccount = async () => {
+    return await apiRequest<ApiResponse<string>>(
+        `${profileUrl}/me`,
+        { method: "DELETE" },
+        "Error al eliminar la cuenta",
+    );
+};
+
 // --- /api/v1/subscriptions ---
 
 export const cancelSubscription = async (subscriptionId: string) => {

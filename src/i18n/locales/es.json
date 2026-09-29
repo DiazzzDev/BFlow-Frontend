@@ -29,7 +29,9 @@
         "closeMenu": "Cerrar menú",
         "notifications": "Notificaciones",
         "editProfile": "Editar perfil",
-        "user": "Usuario"
+        "user": "Usuario",
+        "hideWalletOptions": "Ocultar opciones de billeteras",
+        "showWalletOptions": "Mostrar opciones de billeteras"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -66,6 +68,25 @@
         "loggingOut": "Cerrando...",
         "logoutSuccess": "Sesión cerrada correctamente",
         "logoutError": "Error al cerrar sesión",
+        "personalAccount": "Cuenta personal",
+        "notificationsTitle": "Notificaciones del navegador",
+        "notificationsDescription": "Permite que BFlow te avise sobre actualizaciones importantes en este navegador.",
+        "enableNotifications": "Activar notificaciones",
+        "notificationsEnabling": "Activando...",
+        "notificationsEnabledShort": "Activadas",
+        "notificationsEnabled": "Notificaciones activadas",
+        "notificationsDisabled": "Notificaciones desactivadas",
+        "notificationsDisableError": "No se pudieron desactivar las notificaciones.",
+        "notificationsPermissionError": "No se pudieron activar las notificaciones en este navegador.",
+        "notificationsToggle": "Activar o desactivar las notificaciones del navegador",
+        "deleteAccount": "Eliminar cuenta",
+        "deleteAccountTitle": "Eliminar cuenta",
+        "deleteAccountDescription": "Esto desactivará tu cuenta y cerrará el acceso a tus datos.",
+        "deleteAccountSubscriptionWarning": "Si tienes una suscripción activa, cancélala primero según las condiciones de tu plan.",
+        "deleteAccountConfirmation": "Escribe {{word}} para confirmar.",
+        "deleteAccountLoading": "Eliminando cuenta...",
+        "deleteAccountSuccess": "Cuenta eliminada",
+        "deleteAccountError": "No se pudo eliminar la cuenta",
         "subscription": "Suscripción",
         "currentPlan": "Plan actual",
         "price": "Precio",
@@ -284,9 +305,6 @@
         "recurringIncome": "Ingreso recurrente",
         "pattern": "Patrón",
         "selectPattern": "Selecciona un patrón",
-        "taxDeductible": "Deducible de impuestos",
-        "reimbursable": "Reembolsable",
-        "taxable": "Gravable",
         "saving": "Guardando...",
         "saveChanges": "Guardar cambios",
         "createExpense": "Crear gasto",
@@ -410,12 +428,11 @@
     },
     "notifications": {
         "markLoading": "Marcando como leída...",
+        "markRead": "Marcar como leída",
         "markFallback": "Notificación marcada como leída",
         "close": "Cerrar notificaciones",
-        "closePanel": "Cerrar panel de notificaciones",
         "empty": "Sin notificaciones",
         "unread": "sin leer",
-        "upToDate": "Estás al día",
         "emptyHint": "Cuando tengas novedades, las verás aquí."
     },
     "profile": {
@@ -621,6 +638,24 @@
         "github": "Ver el proyecto en GitHub",
         "backHome": "Volver al inicio"
     },
+    "pageTitles": {
+        "home": "Inicio",
+        "terms": "Términos",
+        "privacy": "Privacidad",
+        "cookies": "Cookies",
+        "contact": "Contacto",
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "forgotPassword": "Recuperar contraseña",
+        "resetPassword": "Restablecer contraseña",
+        "verifyAccount": "Verificar cuenta",
+        "dashboard": "Dashboard",
+        "wallets": "Billeteras",
+        "history": "Historial",
+        "budgets": "Presupuestos",
+        "settings": "Ajustes",
+        "default": "BFlow"
+    },
     "auth": {
         "welcome": "Bienvenido",
         "loginLoading": "Iniciando sesión...",
@@ -677,6 +712,11 @@
         "validationNameRequired": "El nombre completo es requerido",
         "validationCodeRequired": "Código requerido",
         "validationPasswordsMatch": "Las contraseñas no coinciden",
-        "oauthLoading": "Iniciando sesión..."
+        "oauthLoading": "Iniciando sesión...",
+        "accountDeletedTitle": "Tu cuenta fue eliminada",
+        "accountDeletedDescription": "Tu cuenta de BFlow ya no está disponible y no puedes acceder a los datos asociados a ella.",
+        "accountDeletedCreateAccount": "Crear una nueva cuenta",
+        "accountDeletedLoggingOut": "Cerrando sesión...",
+        "accountDeletedLogout": "Cerrar sesión"
     }
 }

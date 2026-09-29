@@ -62,7 +62,9 @@ export const DashboardPage = () => {
                     />
                     <StatisticsCard
                         isLoading={page.isLoadingStatistics}
-                        months={page.months}
+                        points={page.statisticsPoints}
+                        period={page.statisticsPeriod}
+                        onPeriodChange={page.setStatisticsPeriod}
                         currency={page.currency}
                     />
                 </div>

@@ -39,8 +39,6 @@ const expenseSchema = z
         recurring: z.boolean(),
         recurrencePattern: z.enum(PERIODICITY_VALUES).nullable(),
         categoryId: z.string().uuid("Selecciona una categoría"),
-        taxDeductible: z.boolean(),
-        reimbursable: z.boolean(),
     })
     .superRefine((values, ctx) => {
         if (values.recurring && !values.recurrencePattern) {
@@ -62,8 +60,6 @@ const defaultFormValues: ExpenseFormValues = {
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
-    taxDeductible: false,
-    reimbursable: false,
 };
 
 interface ExpenseFormProps {
@@ -142,8 +138,6 @@ export const ExpenseForm = ({
             recurring: formData.recurring,
             recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
             categoryId: formData.categoryId,
-            taxDeductible: formData.taxDeductible,
-            reimbursable: formData.reimbursable,
         };
 
         const promise = isEditing
@@ -358,33 +352,6 @@ export const ExpenseForm = ({
                     </div>
                 )}
 
-                {/* Campos ocultos por el momento */}
-                <div className="hidden">
-                    <Controller
-                        name="taxDeductible"
-                        control={control}
-                        render={({ field }) => (
-                            <ToggleSwitch
-                                label={t("transactions.taxDeductible")}
-                                checked={field.value}
-                                disabled={isDisabled}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="reimbursable"
-                        control={control}
-                        render={({ field }) => (
-                            <ToggleSwitch
-                                label={t("transactions.reimbursable")}
-                                checked={field.value}
-                                disabled={isDisabled}
-                                onChange={field.onChange}
-                            />
-                        )}
-                    />
-                </div>
             </div>
 
             {!readOnly && (

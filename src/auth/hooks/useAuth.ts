@@ -14,5 +14,6 @@ export const useAuth = () => {
         isAuthenticated: authStatus === "authenticated",
         isChecking: authStatus === "checking",
         isUnauthenticated: authStatus === "not-authenticated",
+        isAccountDeleted: authStatus === "account-deleted",
     };
 };

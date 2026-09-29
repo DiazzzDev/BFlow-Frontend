@@ -1,5 +1,7 @@
 import type { LanguageCode } from "@/i18n/types";
 
+export type AccountStatus = "ACTIVE" | "DELETED";
+
 export type SubscriptionStatus =
     | "PENDING_ACTIVATION"
     | "ACTIVE"
@@ -36,6 +38,7 @@ export interface InternalUser {
     isNewUser: boolean;
     name: string | null;
     pictureUrl: string | null;
+    status: AccountStatus;
     language: LanguageCode;
     serverMessage?: string;
     subscription: UserSubscription;

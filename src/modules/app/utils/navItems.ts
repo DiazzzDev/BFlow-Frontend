@@ -1,6 +1,6 @@
 // Sidebar wallet submenu + path helpers for the app shell navbar
 export const WALLET_NAV_CHILDREN = [
-    { label: "Historial", to: "/app/history" },
+    { labelKey: "nav.history", to: "/app/history" },
 ] as const;
 
 export const isWalletsSectionPath = (pathname: string) =>

@@ -3,11 +3,19 @@ import { Toaster } from "sonner";
 
 import { appRouter } from "./AppRouter.tsx";
 import { AuthProvider } from "./auth/provider/AuthProvider.tsx";
+import { AccountDeleted } from "./auth/components/AccountDeleted.tsx";
+import { useAuthStore } from "./auth/authStore";
 
 function App() {
+    const authStatus = useAuthStore((state) => state.authStatus);
+
     return (
         <AuthProvider>
-            <RouterProvider router={appRouter} />
+            {authStatus === "account-deleted" ? (
+                <AccountDeleted />
+            ) : (
+                <RouterProvider router={appRouter} />
+            )}
             <Toaster />
         </AuthProvider>
     );

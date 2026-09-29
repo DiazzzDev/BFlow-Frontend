@@ -12,6 +12,7 @@ import { useGetBalance } from "./useGetBalance";
 import { useGetBudgetsHealth } from "./useGetBudgetsHealth";
 import { useGetRecentActivity } from "./useGetRecentActivity";
 import { useGetStatistics } from "./useGetStatistics";
+import type { StatisticsPeriod } from "../interfaces/dashboard";
 
 import { useAuthStore } from "@/auth/authStore";
 
@@ -27,8 +28,10 @@ export const useDashboardPage = () => {
         useGetAverages();
     const { isLoading: isLoadingBreakdown, data: breakdownData } =
         useGetActivityBreakdown();
+    const [statisticsPeriod, setStatisticsPeriod] =
+        useState<StatisticsPeriod>("WEEK");
     const { isLoading: isLoadingStatistics, data: statisticsData } =
-        useGetStatistics();
+        useGetStatistics(statisticsPeriod);
     const { isLoading: isLoadingBudgets, data: budgetsData } =
         useGetBudgetsHealth();
     const { isLoading: isLoadingActivity, data: activityData } =
@@ -37,7 +40,7 @@ export const useDashboardPage = () => {
     // Derived card props
     const balance = balanceData?.data;
     const averages = averagesData?.data;
-    const months = statisticsData?.data.months ?? [];
+    const statisticsPoints = statisticsData?.data.points ?? [];
     const budgets = budgetsData?.data ?? [];
     const activities = activityData?.data ?? [];
     const breakdown = breakdownData?.data;
@@ -64,7 +67,9 @@ export const useDashboardPage = () => {
         percentageChangeLastMonth: balance?.percentageChangeLastMonth ?? 0,
         averageIncome: averages?.averageIncome ?? 0,
         averageExpenses: averages?.averageExpenses ?? 0,
-        months,
+        statisticsPeriod,
+        setStatisticsPeriod,
+        statisticsPoints,
         budgets,
         breakdown,
         activities,

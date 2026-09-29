@@ -19,6 +19,11 @@ export const useGoogleLogin = () => {
             }
 
             setSession(user);
+
+            if (user.status === "DELETED") {
+                return;
+            }
+
             void navigate("/app/dashboard", { replace: true });
         },
     });

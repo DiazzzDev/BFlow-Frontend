@@ -10,7 +10,6 @@ export interface CreateIncomeData {
     recurring: boolean;
     recurrencePattern: Periodicity | null;
     categoryId: string;
-    taxable: boolean;
 }
 
 export interface Income extends CreateIncomeData {

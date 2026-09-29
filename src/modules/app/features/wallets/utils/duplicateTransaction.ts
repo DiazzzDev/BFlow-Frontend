@@ -22,8 +22,6 @@ export const buildDuplicateExpensePayload = (
     recurring: false,
     recurrencePattern: null,
     categoryId: transaction.categoryId,
-    taxDeductible: false,
-    reimbursable: false,
 });
 
 export const buildDuplicateIncomePayload = (
@@ -38,7 +36,6 @@ export const buildDuplicateIncomePayload = (
     recurring: false,
     recurrencePattern: null,
     categoryId: transaction.categoryId,
-    taxable: false,
 });
 
 export const buildDuplicateTransferPayload = (
