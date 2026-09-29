@@ -61,10 +61,7 @@ const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
         status:
             response.status === "DELETED" || response.profile?.status === "DELETED"
                 ? "DELETED"
-                : response.status === "PENDING_DELETION" ||
-                    response.profile?.status === "PENDING_DELETION"
-                  ? "PENDING_DELETION"
-                  : "ACTIVE",
+                : "ACTIVE",
         language:
             normalizeLanguage(
                 response.language ??

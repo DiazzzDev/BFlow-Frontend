@@ -166,18 +166,18 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                                     {user?.name || "BFlow"}
                                 </p>
                                 <p className="truncate text-xs text-helper">
-                                    {user?.email || "Cuenta personal"}
+                                    {user?.email || t("settings.personalAccount")}
                                 </p>
                             </div>
 
                             <div className="py-1">
-                                <MenuLink to="/app/settings" label="Profile" onClick={closeProfileMenu} />
+                                <MenuLink to="/app/settings" label={t("settings.profile")} onClick={closeProfileMenu} />
                             </div>
 
                             <div className="border-t border-light-10 py-1">
-                                <MenuLink to="/terms" label="Terms" onClick={closeProfileMenu} />
-                                <MenuLink to="/privacy" label="Privacy" onClick={closeProfileMenu} />
-                                <MenuLink to="/cookies" label="Cookies" onClick={closeProfileMenu} />
+                                <MenuLink to="/terms" label={t("home.termsTitle")} onClick={closeProfileMenu} />
+                                <MenuLink to="/privacy" label={t("home.privacyTitle")} onClick={closeProfileMenu} />
+                                <MenuLink to="/cookies" label={t("home.cookiesTitle")} onClick={closeProfileMenu} />
                             </div>
 
                             <div className="border-t border-light-10 pt-1">
@@ -192,7 +192,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                                     className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-danger transition-colors hover:bg-danger-sweet disabled:cursor-not-allowed disabled:opacity-60"
                                 >
                                     <LogOut className="h-4 w-4" />
-                                    {isLoggingOut ? "Logging out..." : "Log out"}
+                                    {isLoggingOut ? t("settings.loggingOut") : t("settings.logout")}
                                 </button>
                             </div>
                         </div>

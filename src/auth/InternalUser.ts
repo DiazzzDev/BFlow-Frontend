@@ -1,6 +1,6 @@
 import type { LanguageCode } from "@/i18n/types";
 
-export type AccountStatus = "ACTIVE" | "PENDING_DELETION" | "DELETED";
+export type AccountStatus = "ACTIVE" | "DELETED";
 
 export type SubscriptionStatus =
     | "PENDING_ACTIVATION"

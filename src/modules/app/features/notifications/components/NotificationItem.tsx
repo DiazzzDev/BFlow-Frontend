@@ -97,7 +97,7 @@ export const NotificationItem = ({ notification }: NotificationItemProps) => {
                             }}
                             className="mt-1.5 inline-flex rounded-md px-2 py-1 text-[11px] font-medium text-helper transition-colors hover:bg-primary-15 hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            {isMarking ? "Marcando..." : "Marcar como leída"}
+                            {isMarking ? t("notifications.markLoading") : t("notifications.markRead")}
                         </button>
                     ) : null}
                 </div>

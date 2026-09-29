@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
     ChartBarIcon,
     LayoutDashboard,
@@ -26,6 +27,7 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
+    const { t } = useTranslation();
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const isWalletsSectionActive = isWalletsSectionPath(pathname);
@@ -79,7 +81,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
         <>
             <button
                 type="button"
-                aria-label="Cerrar menú"
+                aria-label={t("a11y.closeMenu")}
                 onClick={onClose}
                 className={`fixed inset-0 z-40 bg-surface-hard/70 backdrop-blur-[2px] transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
                     }`}
@@ -96,14 +98,14 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         </div>
                         <div>
                             <p className="text-sm font-semibold leading-tight text-light">BFlow</p>
-                            <p className="text-[11px] leading-tight text-helper">Finance tool</p>
+                            <p className="text-[11px] leading-tight text-helper">{t("nav.financeTool")}</p>
                         </div>
                     </div>
 
                     <button
                         type="button"
                         onClick={onClose}
-                        aria-label="Cerrar menú"
+                        aria-label={t("a11y.closeMenu")}
                         className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer lg:hidden"
                     >
                         <X className="h-5 w-5" />
@@ -123,7 +125,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                 <span className={iconChipClassName(isActive)}>
                                     <LayoutDashboard size={15} />
                                 </span>
-                                Dashboard
+                                {t("nav.dashboard")}
                             </>
                         )}
                     </NavLink>
@@ -134,8 +136,8 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                             aria-expanded={walletsExpanded}
                             aria-label={
                                 walletsExpanded
-                                    ? "Ocultar opciones de billeteras"
-                                    : "Mostrar opciones de billeteras"
+                                    ? t("a11y.hideWalletOptions")
+                                    : t("a11y.showWalletOptions")
                             }
                             onClick={() => {
                                 setWalletsExpanded(true);
@@ -146,7 +148,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                 <span className={iconChipClassName(isWalletParentActive)}>
                                     <Wallet size={15} />
                                 </span>
-                                Billeteras
+                                {t("nav.wallets")}
                         </button>
 
                         <AnimatePresence initial={false}>
@@ -159,7 +161,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                     className="overflow-hidden"
                                 >
                                     <div className="relative ml-6 mt-1">
-                                        {WALLET_NAV_CHILDREN.map(({ label, to }) => (
+                                        {WALLET_NAV_CHILDREN.map(({ labelKey, to }) => (
                                                 <div
                                                     key={to}
                                                     className="relative py-2 pl-7"
@@ -173,7 +175,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                                             }`
                                                         }
                                                     >
-                                                        {label}
+                                                        {t(labelKey)}
                                                     </NavLink>
                                                 </div>
                                             ))}
@@ -193,7 +195,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                 <span className={iconChipClassName(isActive)}>
                                     <ChartBarIcon size={15} />
                                 </span>
-                                Presupuestos
+                                {t("nav.budgets")}
                             </>
                         )}
                     </NavLink>
@@ -208,7 +210,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                                 <span className={iconChipClassName(isActive)}>
                                     <Settings size={15} />
                                 </span>
-                                Ajustes
+                                {t("nav.settings")}
                             </>
                         )}
                     </NavLink>
@@ -225,7 +227,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-light-5 text-helper transition-colors duration-150 group-hover:text-light">
                             <LogOut size={15} />
                         </span>
-                        {isLoggingOut ? "Cerrando..." : "Cerrar sesión"}
+                        {isLoggingOut ? t("settings.loggingOut") : t("settings.logout")}
                     </button>
                 </div>
             </aside>

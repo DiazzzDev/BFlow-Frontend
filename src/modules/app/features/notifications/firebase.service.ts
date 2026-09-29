@@ -1,6 +1,6 @@
 import type { Messaging } from "firebase/messaging";
 
-import { registerDeviceToken } from "./notifications.service";
+import { registerDeviceToken, unregisterDeviceToken } from "./notifications.service";
 
 import { config } from "@/config/config";
 
@@ -48,17 +48,11 @@ const getServiceWorkerUrl = (): string => {
     return url.toString();
 };
 
-const registerFirebaseDeviceInternal = async (): Promise<boolean> => {
-    const messaging = await getMessagingClient();
-    if (!messaging) {
-        return false;
-    }
+type RegisterFirebaseDeviceOptions = {
+    requestPermission?: boolean;
+};
 
-    const permission = await Notification.requestPermission();
-    if (permission !== "granted") {
-        return false;
-    }
-
+const getFirebaseToken = async (messaging: Messaging): Promise<string | null> => {
     await navigator.serviceWorker.register(
         getServiceWorkerUrl(),
         { scope: "/" },
@@ -72,6 +66,28 @@ const registerFirebaseDeviceInternal = async (): Promise<boolean> => {
         serviceWorkerRegistration,
     });
 
+    return token || null;
+};
+
+const registerFirebaseDeviceInternal = async ({
+    requestPermission = true,
+}: RegisterFirebaseDeviceOptions = {}): Promise<boolean> => {
+    const messaging = await getMessagingClient();
+    if (!messaging) {
+        return false;
+    }
+
+    const permission =
+        Notification.permission === "granted"
+            ? "granted"
+            : requestPermission
+              ? await Notification.requestPermission()
+              : Notification.permission;
+    if (permission !== "granted") {
+        return false;
+    }
+
+    const token = await getFirebaseToken(messaging);
     if (!token) {
         return false;
     }
@@ -98,14 +114,48 @@ const registerFirebaseDeviceInternal = async (): Promise<boolean> => {
 };
 
 /** Registers the current browser with the backend for FCM delivery. */
-export const registerFirebaseDevice = (): Promise<boolean> => {
+export const registerFirebaseDevice = (
+    options: RegisterFirebaseDeviceOptions = {},
+): Promise<boolean> => {
     if (registrationInFlight) {
         return registrationInFlight;
     }
 
-    registrationInFlight = registerFirebaseDeviceInternal().finally(() => {
+    registrationInFlight = registerFirebaseDeviceInternal(options).finally(() => {
         registrationInFlight = null;
     });
 
     return registrationInFlight;
+};
+
+/** Removes the current browser token from the backend before signing out. */
+export const unregisterFirebaseDevice = async (): Promise<boolean> => {
+    if (typeof Notification === "undefined" || Notification.permission !== "granted") {
+        return false;
+    }
+
+    if (registrationInFlight) {
+        await registrationInFlight.catch(() => false);
+    }
+
+    const messaging = await getMessagingClient();
+    if (!messaging) {
+        return false;
+    }
+
+    const token = await getFirebaseToken(messaging);
+    if (!token) {
+        return false;
+    }
+
+    await unregisterDeviceToken(token);
+
+    try {
+        const { deleteToken } = await import("firebase/messaging");
+        await deleteToken(messaging);
+    } catch (error) {
+        console.warn("[FCM] No se pudo eliminar el token local", error);
+    }
+
+    return true;
 };

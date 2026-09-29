@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 
 import { authService } from "@/auth/services/authService";
 import { useAuthStore } from "@/auth/authStore";
+import { unregisterFirebaseDevice } from "@/modules/app/features/notifications/firebase.service";
 
 export const useLogout = () => {
     const clearSession = useAuthStore((state) => state.clearSession);
@@ -11,6 +12,11 @@ export const useLogout = () => {
 
     return useMutation({
         mutationFn: async () => {
+            try {
+                await unregisterFirebaseDevice();
+            } catch (error) {
+                console.warn("[FCM] No se pudo desvincular el dispositivo", error);
+            }
             await authService.logout();
         },
         onSettled: () => {

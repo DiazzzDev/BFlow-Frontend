@@ -29,7 +29,9 @@
         "closeMenu": "Close menu",
         "notifications": "Notifications",
         "editProfile": "Edit profile",
-        "user": "User"
+        "user": "User",
+        "hideWalletOptions": "Hide wallet options",
+        "showWalletOptions": "Show wallet options"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -66,6 +68,25 @@
         "loggingOut": "Signing out...",
         "logoutSuccess": "Signed out successfully",
         "logoutError": "Could not sign out",
+        "personalAccount": "Personal account",
+        "notificationsTitle": "Browser notifications",
+        "notificationsDescription": "Allow BFlow to notify you about important updates in this browser.",
+        "enableNotifications": "Enable notifications",
+        "notificationsEnabling": "Enabling...",
+        "notificationsEnabledShort": "Enabled",
+        "notificationsEnabled": "Notifications enabled",
+        "notificationsDisabled": "Notifications disabled",
+        "notificationsDisableError": "Notifications could not be disabled.",
+        "notificationsPermissionError": "Notifications could not be enabled in this browser.",
+        "notificationsToggle": "Toggle browser notifications",
+        "deleteAccount": "Delete account",
+        "deleteAccountTitle": "Delete account",
+        "deleteAccountDescription": "This will deactivate your account and close access to your data.",
+        "deleteAccountSubscriptionWarning": "If you have an active subscription, cancel it first according to your plan terms.",
+        "deleteAccountConfirmation": "Type {{word}} to confirm.",
+        "deleteAccountLoading": "Deleting account...",
+        "deleteAccountSuccess": "Account deleted",
+        "deleteAccountError": "Could not delete the account",
         "subscription": "Subscription",
         "currentPlan": "Current plan",
         "price": "Price",
@@ -282,9 +303,6 @@
         "recurringIncome": "Recurring income",
         "pattern": "Pattern",
         "selectPattern": "Select a pattern",
-        "taxDeductible": "Tax deductible",
-        "reimbursable": "Reimbursable",
-        "taxable": "Taxable",
         "saving": "Saving...",
         "saveChanges": "Save changes",
         "createExpense": "Create expense",
@@ -408,12 +426,11 @@
     },
     "notifications": {
         "markLoading": "Marking as read...",
+        "markRead": "Mark as read",
         "markFallback": "Notification marked as read",
         "close": "Close notifications",
-        "closePanel": "Close notifications panel",
         "empty": "No notifications",
         "unread": "unread",
-        "upToDate": "You are all caught up",
         "emptyHint": "You will see updates here when there is news."
     },
     "profile": {
@@ -619,6 +636,24 @@
         "github": "View the project on GitHub",
         "backHome": "Back to home"
     },
+    "pageTitles": {
+        "home": "Home",
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "cookies": "Cookies",
+        "contact": "Contact",
+        "login": "Sign in",
+        "register": "Sign up",
+        "forgotPassword": "Forgot password",
+        "resetPassword": "Reset password",
+        "verifyAccount": "Verify account",
+        "dashboard": "Dashboard",
+        "wallets": "Wallets",
+        "history": "History",
+        "budgets": "Budgets",
+        "settings": "Settings",
+        "default": "BFlow"
+    },
     "auth": {
         "welcome": "Welcome",
         "loginLoading": "Signing in...",
@@ -675,6 +710,11 @@
         "validationNameRequired": "Full name is required",
         "validationCodeRequired": "Code is required",
         "validationPasswordsMatch": "Passwords do not match",
-        "oauthLoading": "Signing in..."
+        "oauthLoading": "Signing in...",
+        "accountDeletedTitle": "Your account was deleted",
+        "accountDeletedDescription": "Your BFlow account is no longer available and you cannot access its associated data.",
+        "accountDeletedCreateAccount": "Create a new account",
+        "accountDeletedLoggingOut": "Signing out...",
+        "accountDeletedLogout": "Sign out"
     }
 }

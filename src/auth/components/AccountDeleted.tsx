@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { UserRoundX } from "lucide-react";
 
 import { authService } from "@/auth/services/authService";
 import { useAuthStore } from "@/auth/authStore";
 import { queryClient } from "@/queryClient";
+import { unregisterFirebaseDevice } from "@/modules/app/features/notifications/firebase.service";
 
 export const AccountDeleted = () => {
+    const { t } = useTranslation();
     const clearSession = useAuthStore((state) => state.clearSession);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -17,6 +20,11 @@ export const AccountDeleted = () => {
         setIsLoggingOut(true);
 
         try {
+            try {
+                await unregisterFirebaseDevice();
+            } catch (error) {
+                console.warn("[FCM] No se pudo desvincular el dispositivo", error);
+            }
             await authService.logout();
         } catch {
             // The local session must still be cleared if provider logout fails.
@@ -34,9 +42,9 @@ export const AccountDeleted = () => {
                     <UserRoundX className="h-7 w-7" aria-hidden="true" />
                 </div>
 
-                <h1 className="text-2xl font-semibold tracking-tight">Tu cuenta fue eliminada</h1>
+                <h1 className="text-2xl font-semibold tracking-tight">{t("auth.accountDeletedTitle")}</h1>
                 <p className="mt-3 text-sm leading-6 text-helper">
-                    Tu cuenta de BFlow ya no está disponible y no puedes acceder a los datos asociados a ella.
+                    {t("auth.accountDeletedDescription")}
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -48,7 +56,7 @@ export const AccountDeleted = () => {
                         }}
                         className="cursor-pointer rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-light transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        Crear una nueva cuenta
+                        {t("auth.accountDeletedCreateAccount")}
                     </button>
                     <button
                         type="button"
@@ -58,7 +66,7 @@ export const AccountDeleted = () => {
                         }}
                         className="cursor-pointer rounded-lg border border-light-10 px-5 py-2.5 text-sm font-medium text-light transition-colors hover:bg-light-5 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        {isLoggingOut ? "Cerrando sesión..." : "Cerrar sesión"}
+                        {isLoggingOut ? t("auth.accountDeletedLoggingOut") : t("auth.accountDeletedLogout")}
                     </button>
                 </div>
             </section>
