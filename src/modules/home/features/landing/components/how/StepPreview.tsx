@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 interface StepPreviewProps {
     src: string;
@@ -13,7 +12,6 @@ export const StepPreview = ({ src, alt, label, active }: StepPreviewProps) => {
         src: string;
         status: "loaded" | "failed";
     } | null>(null);
-    const { t } = useTranslation();
 
     // Preload the image so the fallback does not depend on events from a non-interactive element.
     useEffect(() => {
@@ -41,11 +39,10 @@ export const StepPreview = ({ src, alt, label, active }: StepPreviewProps) => {
 
     return (
         <div
-            className={`absolute inset-3 md:inset-4 transition-all duration-500 ease-out ${
-                active
-                    ? "opacity-100 translate-y-0 scale-100 z-10"
-                    : "opacity-0 translate-y-3 scale-[0.98] pointer-events-none z-0"
-            }`}
+            className={`absolute inset-3 md:inset-4 transition-all duration-500 ease-out ${active
+                ? "opacity-100 translate-y-0 scale-100 z-10"
+                : "opacity-0 translate-y-3 scale-[0.98] pointer-events-none z-0"
+                }`}
         >
             {currentImageState === "loaded" ? (
                 <img
@@ -61,7 +58,7 @@ export const StepPreview = ({ src, alt, label, active }: StepPreviewProps) => {
             ) : (
                 <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-light-25 bg-surface px-6 text-center">
                     <p className="text-sm font-medium text-helper">{label}</p>
-                    <p className="text-xs text-label">{t("home.stepImageFallback", { path: src })}</p>
+                    <p className="text-xs text-label">{src}</p>
                 </div>
             )}
         </div>

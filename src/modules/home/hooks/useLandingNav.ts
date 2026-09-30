@@ -29,5 +29,10 @@ export const useLandingNav = () => {
         }
     };
 
-    return { navLinks: LANDING_NAV_LINKS, handleNavClick };
+    const isLinkActive = (id: string) => {
+        const route = ROUTE_LINKS[id];
+        return route ? pathname.startsWith(route) : false;
+    };
+
+    return { navLinks: LANDING_NAV_LINKS, handleNavClick, isLinkActive };
 };

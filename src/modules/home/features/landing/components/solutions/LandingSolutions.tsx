@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { SolutionScreen } from "./SolutionScreen";
 import { SolutionStep } from "./SolutionStep";
+import { SolutionsExplore } from "./SolutionsExplore";
 
 import { SOLUTION_STEPS } from "../../utils/landingContent";
 
@@ -51,6 +52,8 @@ export const LandingSolutions = () => {
                     </div>
                 </div>
             </div>
+
+            <SolutionsExplore />
         </section>
     );
 };

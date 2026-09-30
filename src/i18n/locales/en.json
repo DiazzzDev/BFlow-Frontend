@@ -506,7 +506,9 @@
                     {
                         "id": "how-it-works",
                         "title": "How it is organized",
-                        "body": ["Everything in BFlow revolves around four connected pieces:"],
+                        "body": [
+                            "Everything in BFlow revolves around four connected pieces:"
+                        ],
                         "items": [
                             "Wallets: each account, card or cash balance you want to track.",
                             "Transactions: the income, expenses and transfers you record in a wallet.",
@@ -517,7 +519,9 @@
                     {
                         "id": "currency",
                         "title": "Currency",
-                        "body": ["For now, every wallet, transaction and budget is handled in US dollars (USD)."],
+                        "body": [
+                            "For now, every wallet, transaction and budget is handled in US dollars (USD)."
+                        ],
                         "note": "The currency is assigned automatically when you create a wallet and cannot be changed."
                     }
                 ]
@@ -529,7 +533,9 @@
                     {
                         "id": "personal",
                         "title": "Personal",
-                        "body": ["The free plan, designed to start organizing your finances at no cost."],
+                        "body": [
+                            "The free plan, designed to start organizing your finances at no cost."
+                        ],
                         "items": [
                             "Up to 2 wallets.",
                             "Up to 2 recurring transactions.",
@@ -540,7 +546,9 @@
                     {
                         "id": "pro",
                         "title": "BFlow Pro",
-                        "body": ["For people who manage several accounts or share their finances. It costs $9.99 per month or $99.99 per year."],
+                        "body": [
+                            "For people who manage several accounts or share their finances. It costs $9.99 per month or $99.99 per year."
+                        ],
                         "items": [
                             "Up to 100 wallets.",
                             "Up to 25 recurring transactions.",
@@ -552,7 +560,9 @@
                     {
                         "id": "payments",
                         "title": "Payments",
-                        "body": ["Plan payments are processed through Wompi. All prices are in USD; the final amount in local currency depends on your bank's exchange rate."],
+                        "body": [
+                            "Plan payments are processed through Wompi. All prices are in USD; the final amount in local currency depends on your bank's exchange rate."
+                        ],
                         "note": "You can review or cancel your subscription from Settings, in the Subscription section."
                     }
                 ]
@@ -564,12 +574,16 @@
                     {
                         "id": "overview",
                         "title": "Overview",
-                        "body": ["The dashboard is the first screen after you sign in. It greets you based on the time of day and shows how your money is doing right now."]
+                        "body": [
+                            "The dashboard is the first screen after you sign in. It greets you based on the time of day and shows how your money is doing right now."
+                        ]
                     },
                     {
                         "id": "widgets",
                         "title": "What it shows",
-                        "body": ["The screen is split into cards, each with part of your information:"],
+                        "body": [
+                            "The screen is split into cards, each with part of your information:"
+                        ],
                         "items": [
                             "Total balance, average income and average expense, compared with last month.",
                             "Statistics: a chart of income and expenses per month. Click a legend item to show only that series.",
@@ -581,7 +595,9 @@
                     {
                         "id": "budget-health",
                         "title": "Budget health",
-                        "body": ["Each budget shows a label based on how much of its limit you have spent:"],
+                        "body": [
+                            "Each budget shows a label based on how much of its limit you have spent:"
+                        ],
                         "items": [
                             "Healthy: you are below the alert threshold.",
                             "Warning: you passed the alert threshold.",
@@ -592,7 +608,9 @@
                     {
                         "id": "quick-actions",
                         "title": "Quick actions",
-                        "body": ["From the dashboard you can record a new transaction or schedule a recurring one without opening a wallet. Just pick the wallet in the form."],
+                        "body": [
+                            "From the dashboard you can record a new transaction or schedule a recurring one without opening a wallet. Just pick the wallet in the form."
+                        ],
                         "note": "From here you can only record income and expenses in your own wallets. Transfers are made from a wallet's detail page."
                     }
                 ]
@@ -604,7 +622,9 @@
                     {
                         "id": "create",
                         "title": "Create a wallet",
-                        "body": ["In Wallets, click Create wallet and fill in the form:"],
+                        "body": [
+                            "In Wallets, click Create wallet and fill in the form:"
+                        ],
                         "items": [
                             "Wallet name.",
                             "Description, for example \"Savings account\" or \"Everyday expenses\".",
@@ -623,7 +643,9 @@
                     {
                         "id": "detail",
                         "title": "Wallet detail",
-                        "body": ["When you open a wallet you will see its current balance and these tabs:"],
+                        "body": [
+                            "When you open a wallet you will see its current balance and these tabs:"
+                        ],
                         "items": [
                             "All transactions, Income and Expenses, with search and pagination.",
                             "Transfers, only in wallets with a single member.",
@@ -634,12 +656,16 @@
                     {
                         "id": "info-panel",
                         "title": "Information panel",
-                        "body": ["The side panel summarizes the last activity, the highest expense, the number of transactions and the initial value. It also lists upcoming scheduled transactions. You can hide it with Hide info."]
+                        "body": [
+                            "The side panel summarizes the last activity, the highest expense, the number of transactions and the initial value. It also lists upcoming scheduled transactions. You can hide it with Hide info."
+                        ]
                     },
                     {
                         "id": "settings",
                         "title": "Edit or delete",
-                        "body": ["In the Settings tab, the owner can change the name and description. Other members can see these details but cannot edit them."],
+                        "body": [
+                            "In the Settings tab, the owner can change the name and description. Other members can see these details but cannot edit them."
+                        ],
                         "note": "Deleting a wallet removes its history, budgets and members. This action cannot be undone."
                     }
                 ]
@@ -651,12 +677,16 @@
                     {
                         "id": "overview",
                         "title": "How they work",
-                        "body": ["A wallet becomes shared when you invite someone else. Every member sees the same balance and transactions, and each transaction shows who recorded it."]
+                        "body": [
+                            "A wallet becomes shared when you invite someone else. Every member sees the same balance and transactions, and each transaction shows who recorded it."
+                        ]
                     },
                     {
                         "id": "roles",
                         "title": "Roles",
-                        "body": ["Each member has a role in the wallet:"],
+                        "body": [
+                            "Each member has a role in the wallet:"
+                        ],
                         "items": [
                             "Owner: the person who created the wallet. They can invite and remove members, edit the details and delete it.",
                             "Member: takes part by recording and viewing transactions.",
@@ -666,7 +696,9 @@
                     {
                         "id": "invite",
                         "title": "Invite people",
-                        "body": ["From the Members tab, the owner clicks Invite and searches for the person by name or email (at least 2 characters). The invitation is sent by email. Each result shows whether the person can be invited:"],
+                        "body": [
+                            "From the Members tab, the owner clicks Invite and searches for the person by name or email (at least 2 characters). The invitation is sent by email. Each result shows whether the person can be invited:"
+                        ],
                         "items": [
                             "Available: the person can be invited.",
                             "Already a member: they already have access to the wallet.",
@@ -684,7 +716,9 @@
                     {
                         "id": "members",
                         "title": "Manage members",
-                        "body": ["The owner can remove any member from the Members tab, and that person loses access immediately. The owner cannot remove themselves."],
+                        "body": [
+                            "The owner can remove any member from the Members tab, and that person loses access immediately. The owner cannot remove themselves."
+                        ],
                         "note": "Transfers are not available in shared wallets. They can only be made in wallets with a single member."
                     }
                 ]
@@ -696,7 +730,9 @@
                     {
                         "id": "types",
                         "title": "Transaction types",
-                        "body": ["When you click New transaction you choose one of these types:"],
+                        "body": [
+                            "When you click New transaction you choose one of these types:"
+                        ],
                         "items": [
                             "Income: money coming into the wallet.",
                             "Expense: money leaving the wallet.",
@@ -706,7 +742,9 @@
                     {
                         "id": "fields",
                         "title": "Income and expense details",
-                        "body": ["Both forms ask for the same information:"],
+                        "body": [
+                            "Both forms ask for the same information:"
+                        ],
                         "items": [
                             "Title.",
                             "Description, required for expenses and optional for income.",
@@ -718,12 +756,16 @@
                     {
                         "id": "recurring",
                         "title": "Recurring income and expenses",
-                        "body": ["Turn on Recurring income or Recurring expense and choose a pattern: daily, weekly, monthly or yearly. If you need start and end dates, use Schedule transaction."]
+                        "body": [
+                            "Turn on Recurring income or Recurring expense and choose a pattern: daily, weekly, monthly or yearly. If you need start and end dates, use Schedule transaction."
+                        ]
                     },
                     {
                         "id": "transfers",
                         "title": "Transfers",
-                        "body": ["Choose the destination wallet (or the source, using the button that reverses the direction), the amount and the reason for the transfer. You can only transfer between your own wallets."],
+                        "body": [
+                            "Choose the destination wallet (or the source, using the button that reverses the direction), the amount and the reason for the transfer. You can only transfer between your own wallets."
+                        ],
                         "note": "Transfers are only available in wallets with a single member."
                     },
                     {
@@ -743,12 +785,16 @@
                     {
                         "id": "overview",
                         "title": "When to use them",
-                        "body": ["Schedule a transaction for payments or income that repeat, such as rent, a subscription or your salary. BFlow records them automatically on each date."]
+                        "body": [
+                            "Schedule a transaction for payments or income that repeat, such as rent, a subscription or your salary. BFlow records them automatically on each date."
+                        ]
                     },
                     {
                         "id": "create",
                         "title": "Schedule a transaction",
-                        "body": ["Click Schedule transaction from the dashboard or from a wallet's information panel, and fill in:"],
+                        "body": [
+                            "Click Schedule transaction from the dashboard or from a wallet's information panel, and fill in:"
+                        ],
                         "items": [
                             "Type: income or expense.",
                             "Title, description, amount and category.",
@@ -761,7 +807,9 @@
                     {
                         "id": "upcoming",
                         "title": "Upcoming transactions",
-                        "body": ["In each wallet's detail page, the Upcoming section lists the scheduled transactions about to be recorded."]
+                        "body": [
+                            "In each wallet's detail page, the Upcoming section lists the scheduled transactions about to be recorded."
+                        ]
                     }
                 ]
             },
@@ -772,17 +820,23 @@
                     {
                         "id": "overview",
                         "title": "Overview",
-                        "body": ["History brings together the transactions from all your wallets, grouped by day. You can reach it from Wallets › History or with See more in the history panel."]
+                        "body": [
+                            "History brings together the transactions from all your wallets, grouped by day. You can reach it from Wallets › History or with See more in the history panel."
+                        ]
                     },
                     {
                         "id": "filters",
                         "title": "Filters",
-                        "body": ["Search by text or filter by type: All, Income, Expenses or Transfers."]
+                        "body": [
+                            "Search by text or filter by type: All, Income, Expenses or Transfers."
+                        ]
                     },
                     {
                         "id": "details",
                         "title": "What each transaction shows",
-                        "body": ["Each card shows the title, wallet, category, amount and whether it was recorded manually or as a recurrence. Transfers also show the counterpart wallet."],
+                        "body": [
+                            "Each card shows the title, wallet, category, amount and whether it was recorded manually or as a recurrence. Transfers also show the counterpart wallet."
+                        ],
                         "note": "From history you can view the details or duplicate a transaction. To edit or delete it, open it from its wallet."
                     }
                 ]
@@ -794,7 +848,9 @@
                     {
                         "id": "scopes",
                         "title": "Scope",
-                        "body": ["A budget can track different groups of expenses:"],
+                        "body": [
+                            "A budget can track different groups of expenses:"
+                        ],
                         "items": [
                             "Wallet: every expense in a wallet.",
                             "Category: the expenses in a category across all your wallets.",
@@ -804,12 +860,16 @@
                     {
                         "id": "create",
                         "title": "Create a budget",
-                        "body": ["In Budgets, click Create budget, choose the scope and fill in the amount, the period (daily, weekly, monthly or yearly) and the start date."]
+                        "body": [
+                            "In Budgets, click Create budget, choose the scope and fill in the amount, the period (daily, weekly, monthly or yearly) and the start date."
+                        ]
                     },
                     {
                         "id": "thresholds",
                         "title": "Thresholds and statuses",
-                        "body": ["Each budget has two thresholds that define its status. By default, the alert is at 60% and the critical threshold at 90%; the critical threshold must always be higher than the alert."],
+                        "body": [
+                            "Each budget has two thresholds that define its status. By default, the alert is at 60% and the critical threshold at 90%; the critical threshold must always be higher than the alert."
+                        ],
                         "items": [
                             "Healthy: below the alert.",
                             "Warning: from the alert threshold.",
@@ -820,12 +880,16 @@
                     {
                         "id": "detail",
                         "title": "Tracking",
-                        "body": ["A budget's detail page shows how much is left and how many days remain, the amount spent with its daily average, a progress bar with the thresholds and the spending trend."]
+                        "body": [
+                            "A budget's detail page shows how much is left and how many days remain, the amount spent with its daily average, a progress bar with the thresholds and the spending trend."
+                        ]
                     },
                     {
                         "id": "settings",
                         "title": "Edit or delete",
-                        "body": ["In the Settings tab you can change the amount, period, start date and thresholds, or delete the budget."],
+                        "body": [
+                            "In the Settings tab you can change the amount, period, start date and thresholds, or delete the budget."
+                        ],
                         "note": "The wallet and category cannot be changed after the budget is created."
                     }
                 ]
@@ -837,12 +901,16 @@
                     {
                         "id": "overview",
                         "title": "What they are for",
-                        "body": ["Every income and expense has a category. Categories let you create category budgets and better understand your transactions."]
+                        "body": [
+                            "Every income and expense has a category. Categories let you create category budgets and better understand your transactions."
+                        ]
                     },
                     {
                         "id": "create",
                         "title": "Create a category",
-                        "body": ["Go to Settings › Categories › Manage and fill in:"],
+                        "body": [
+                            "Go to Settings › Categories › Manage and fill in:"
+                        ],
                         "items": [
                             "Name.",
                             "Type: expense or income.",
@@ -859,12 +927,16 @@
                     {
                         "id": "overview",
                         "title": "Where to find them",
-                        "body": ["Click the bell at the top of the app. The number shows how many unread notifications you have."]
+                        "body": [
+                            "Click the bell at the top of the app. The number shows how many unread notifications you have."
+                        ]
                     },
                     {
                         "id": "read",
                         "title": "Mark as read",
-                        "body": ["Each notification has a Mark as read option. When none are left, you will see the message You are all caught up."]
+                        "body": [
+                            "Each notification has a Mark as read option. When none are left, you will see the message You are all caught up."
+                        ]
                     }
                 ]
             },
@@ -875,22 +947,30 @@
                     {
                         "id": "profile",
                         "title": "Profile",
-                        "body": ["Click the pencil next to your name to change your name or photo (PNG, JPEG or WebP). Your email cannot be changed."]
+                        "body": [
+                            "Click the pencil next to your name to change your name or photo (PNG, JPEG or WebP). Your email cannot be changed."
+                        ]
                     },
                     {
                         "id": "language",
                         "title": "Language",
-                        "body": ["Choose between Spanish and English. Your preference is saved to your profile."]
+                        "body": [
+                            "Choose between Spanish and English. Your preference is saved to your profile."
+                        ]
                     },
                     {
                         "id": "subscription",
                         "title": "Subscription",
-                        "body": ["If you have a paid plan, you will see the current plan, its status, the price, the next billing date and how long it is valid. You can also cancel it from here."]
+                        "body": [
+                            "If you have a paid plan, you will see the current plan, its status, the price, the next billing date and how long it is valid. You can also cancel it from here."
+                        ]
                     },
                     {
                         "id": "session",
                         "title": "Sign out",
-                        "body": ["At the bottom of Settings you will find the button to sign out."]
+                        "body": [
+                            "At the bottom of Settings you will find the button to sign out."
+                        ]
                     }
                 ]
             },
@@ -901,12 +981,16 @@
                     {
                         "id": "overview",
                         "title": "What it is",
-                        "body": ["BFlow can be added to Claude as a custom connector. That way you can ask questions about your finances without opening the app."]
+                        "body": [
+                            "BFlow can be added to Claude as a custom connector. That way you can ask questions about your finances without opening the app."
+                        ]
                     },
                     {
                         "id": "connect",
                         "title": "How to connect it",
-                        "body": ["Connecting takes a few steps:"],
+                        "body": [
+                            "Connecting takes a few steps:"
+                        ],
                         "items": [
                             "Go to Settings and click Connect with Claude.",
                             "Claude will open with the BFlow connector already set up.",
@@ -916,7 +1000,9 @@
                     {
                         "id": "examples",
                         "title": "What you can ask",
-                        "body": ["Some examples:"],
+                        "body": [
+                            "Some examples:"
+                        ],
                         "items": [
                             "How much did I spend on food this month?",
                             "How are my budgets doing?",
@@ -972,6 +1058,12 @@
             "title": "Organize your money your way",
             "description": "Each module solves one part of your finances: from knowing where your money went to warning you before you go over budget.",
             "learnMore": "Learn more about {{module}}",
+            "more": {
+                "eyebrow": "And that's not all",
+                "title": "Discover everything BFlow can do for you",
+                "description": "Recurring transactions, history, categories, notifications and even a Claude connection. Get to know each module in detail.",
+                "cta": "Explore all modules"
+            },
             "items": {
                 "wallets": {
                     "label": "Wallets",
@@ -1068,7 +1160,6 @@
             "description": "Create your free account in less than a minute and keep your wallets, budgets and shared expenses in one place."
         },
         "wompiReference": "Visit Wompi",
-        "stepImageFallback": "Place the image at {{path}}",
         "month": "Month",
         "year": "Year",
         "plans": {
