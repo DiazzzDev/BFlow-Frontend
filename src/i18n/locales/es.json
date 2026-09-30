@@ -508,7 +508,9 @@
                     {
                         "id": "how-it-works",
                         "title": "Cómo se organiza",
-                        "body": ["Todo en BFlow gira alrededor de cuatro piezas que se conectan entre sí:"],
+                        "body": [
+                            "Todo en BFlow gira alrededor de cuatro piezas que se conectan entre sí:"
+                        ],
                         "items": [
                             "Billeteras: cada cuenta, tarjeta o efectivo que quieras controlar.",
                             "Transacciones: los ingresos, gastos y transferencias que registras en una billetera.",
@@ -519,7 +521,9 @@
                     {
                         "id": "currency",
                         "title": "Moneda",
-                        "body": ["Por ahora todas las billeteras, transacciones y presupuestos se manejan en dólares estadounidenses (USD)."],
+                        "body": [
+                            "Por ahora todas las billeteras, transacciones y presupuestos se manejan en dólares estadounidenses (USD)."
+                        ],
                         "note": "La moneda se asigna automáticamente al crear una billetera y no se puede cambiar."
                     }
                 ]
@@ -531,7 +535,9 @@
                     {
                         "id": "personal",
                         "title": "Personal",
-                        "body": ["El plan gratuito, pensado para empezar a ordenar tus finanzas sin costo."],
+                        "body": [
+                            "El plan gratuito, pensado para empezar a ordenar tus finanzas sin costo."
+                        ],
                         "items": [
                             "Hasta 2 billeteras.",
                             "Hasta 2 transacciones recurrentes.",
@@ -542,7 +548,9 @@
                     {
                         "id": "pro",
                         "title": "BFlow Pro",
-                        "body": ["Para quienes administran varias cuentas o comparten sus finanzas. Cuesta $9.99 al mes o $99.99 al año."],
+                        "body": [
+                            "Para quienes administran varias cuentas o comparten sus finanzas. Cuesta $9.99 al mes o $99.99 al año."
+                        ],
                         "items": [
                             "Hasta 100 billeteras.",
                             "Hasta 25 transacciones recurrentes.",
@@ -554,7 +562,9 @@
                     {
                         "id": "payments",
                         "title": "Pagos",
-                        "body": ["Los pagos de los planes se procesan con Wompi. Todos los precios están en USD; el monto final en moneda local depende del tipo de cambio de tu banco."],
+                        "body": [
+                            "Los pagos de los planes se procesan con Wompi. Todos los precios están en USD; el monto final en moneda local depende del tipo de cambio de tu banco."
+                        ],
                         "note": "Puedes revisar o cancelar tu suscripción desde Ajustes, en la sección Suscripción."
                     }
                 ]
@@ -566,12 +576,16 @@
                     {
                         "id": "overview",
                         "title": "Vista general",
-                        "body": ["El dashboard es la primera pantalla al iniciar sesión. Te saluda según la hora del día y muestra cómo está tu dinero en este momento."]
+                        "body": [
+                            "El dashboard es la primera pantalla al iniciar sesión. Te saluda según la hora del día y muestra cómo está tu dinero en este momento."
+                        ]
                     },
                     {
                         "id": "widgets",
                         "title": "Qué muestra",
-                        "body": ["La pantalla se divide en tarjetas, cada una con una parte de tu información:"],
+                        "body": [
+                            "La pantalla se divide en tarjetas, cada una con una parte de tu información:"
+                        ],
                         "items": [
                             "Balance total, ingreso promedio y gasto promedio, comparados con el mes pasado.",
                             "Estadísticas: un gráfico de ingresos y gastos por mes. Toca un elemento de la leyenda para ver solo esa serie.",
@@ -583,7 +597,9 @@
                     {
                         "id": "budget-health",
                         "title": "Salud de presupuestos",
-                        "body": ["Cada presupuesto muestra una etiqueta según cuánto has gastado de su límite:"],
+                        "body": [
+                            "Cada presupuesto muestra una etiqueta según cuánto has gastado de su límite:"
+                        ],
                         "items": [
                             "Saludable: vas por debajo del umbral de alerta.",
                             "Advertencia: superaste el umbral de alerta.",
@@ -594,7 +610,9 @@
                     {
                         "id": "quick-actions",
                         "title": "Acciones rápidas",
-                        "body": ["Desde el dashboard puedes registrar una nueva transacción o programar una recurrente sin entrar a una billetera. Solo elige la billetera en el formulario."],
+                        "body": [
+                            "Desde el dashboard puedes registrar una nueva transacción o programar una recurrente sin entrar a una billetera. Solo elige la billetera en el formulario."
+                        ],
                         "note": "Desde aquí solo puedes registrar ingresos y gastos en tus propias billeteras. Las transferencias se hacen desde el detalle de una billetera."
                     }
                 ]
@@ -606,7 +624,9 @@
                     {
                         "id": "create",
                         "title": "Crear una billetera",
-                        "body": ["Desde Billeteras, toca Crear billetera y completa el formulario:"],
+                        "body": [
+                            "Desde Billeteras, toca Crear billetera y completa el formulario:"
+                        ],
                         "items": [
                             "Nombre de la billetera.",
                             "Descripción, por ejemplo «Cuenta de ahorros» o «Gastos del día a día».",
@@ -625,7 +645,9 @@
                     {
                         "id": "detail",
                         "title": "Detalle de una billetera",
-                        "body": ["Al abrir una billetera verás su saldo actual y estas pestañas:"],
+                        "body": [
+                            "Al abrir una billetera verás su saldo actual y estas pestañas:"
+                        ],
                         "items": [
                             "Todas las transacciones, Ingresos y Gastos, con búsqueda y paginación.",
                             "Transferencias, solo en billeteras de un único miembro.",
@@ -636,12 +658,16 @@
                     {
                         "id": "info-panel",
                         "title": "Panel de información",
-                        "body": ["El panel lateral resume la última actividad, el gasto más alto, el número de transacciones y el valor inicial. También lista las próximas transacciones programadas. Puedes ocultarlo con Ocultar info."]
+                        "body": [
+                            "El panel lateral resume la última actividad, el gasto más alto, el número de transacciones y el valor inicial. También lista las próximas transacciones programadas. Puedes ocultarlo con Ocultar info."
+                        ]
                     },
                     {
                         "id": "settings",
                         "title": "Editar o eliminar",
-                        "body": ["En la pestaña Ajustes, el propietario puede cambiar el nombre y la descripción. Los demás miembros ven estos datos, pero no pueden editarlos."],
+                        "body": [
+                            "En la pestaña Ajustes, el propietario puede cambiar el nombre y la descripción. Los demás miembros ven estos datos, pero no pueden editarlos."
+                        ],
                         "note": "Eliminar una billetera borra su historial, presupuestos y miembros. Esta acción no se puede deshacer."
                     }
                 ]
@@ -653,12 +679,16 @@
                     {
                         "id": "overview",
                         "title": "Cómo funcionan",
-                        "body": ["Una billetera se vuelve compartida cuando invitas a otra persona. Todos los miembros ven el mismo saldo y las mismas transacciones, y cada movimiento indica quién lo registró."]
+                        "body": [
+                            "Una billetera se vuelve compartida cuando invitas a otra persona. Todos los miembros ven el mismo saldo y las mismas transacciones, y cada movimiento indica quién lo registró."
+                        ]
                     },
                     {
                         "id": "roles",
                         "title": "Roles",
-                        "body": ["Cada miembro tiene un rol dentro de la billetera:"],
+                        "body": [
+                            "Cada miembro tiene un rol dentro de la billetera:"
+                        ],
                         "items": [
                             "Propietario: quien creó la billetera. Puede invitar, quitar miembros, editar los datos y eliminarla.",
                             "Miembro: participa registrando y consultando transacciones.",
@@ -668,7 +698,9 @@
                     {
                         "id": "invite",
                         "title": "Invitar personas",
-                        "body": ["Desde la pestaña Miembros, el propietario toca Invitar y busca a la persona por nombre o correo (mínimo 2 caracteres). La invitación se envía por correo electrónico. Cada resultado indica si se le puede invitar:"],
+                        "body": [
+                            "Desde la pestaña Miembros, el propietario toca Invitar y busca a la persona por nombre o correo (mínimo 2 caracteres). La invitación se envía por correo electrónico. Cada resultado indica si se le puede invitar:"
+                        ],
                         "items": [
                             "Disponible: la persona puede ser invitada.",
                             "Ya es miembro: ya tiene acceso a la billetera.",
@@ -686,7 +718,9 @@
                     {
                         "id": "members",
                         "title": "Administrar miembros",
-                        "body": ["El propietario puede quitar a cualquier miembro desde la pestaña Miembros, y la persona pierde el acceso de inmediato. El propietario no puede quitarse a sí mismo."],
+                        "body": [
+                            "El propietario puede quitar a cualquier miembro desde la pestaña Miembros, y la persona pierde el acceso de inmediato. El propietario no puede quitarse a sí mismo."
+                        ],
                         "note": "Las transferencias no están disponibles en billeteras compartidas. Solo se pueden hacer en billeteras de un único miembro."
                     }
                 ]
@@ -698,7 +732,9 @@
                     {
                         "id": "types",
                         "title": "Tipos de transacción",
-                        "body": ["Al tocar Nueva transacción eliges uno de estos tipos:"],
+                        "body": [
+                            "Al tocar Nueva transacción eliges uno de estos tipos:"
+                        ],
                         "items": [
                             "Ingreso: dinero que entra a la billetera.",
                             "Gasto: dinero que sale de la billetera.",
@@ -708,7 +744,9 @@
                     {
                         "id": "fields",
                         "title": "Datos de un ingreso o gasto",
-                        "body": ["Ambos formularios piden la misma información:"],
+                        "body": [
+                            "Ambos formularios piden la misma información:"
+                        ],
                         "items": [
                             "Título.",
                             "Descripción, obligatoria en gastos y opcional en ingresos.",
@@ -720,12 +758,16 @@
                     {
                         "id": "recurring",
                         "title": "Ingresos y gastos recurrentes",
-                        "body": ["Activa Ingreso recurrente o Gasto recurrente y elige un patrón: diario, semanal, mensual o anual. Si necesitas definir fechas de inicio y fin, usa Programar transacción."]
+                        "body": [
+                            "Activa Ingreso recurrente o Gasto recurrente y elige un patrón: diario, semanal, mensual o anual. Si necesitas definir fechas de inicio y fin, usa Programar transacción."
+                        ]
                     },
                     {
                         "id": "transfers",
                         "title": "Transferencias",
-                        "body": ["Elige la billetera de destino (o de origen, con el botón para invertir la dirección), el monto y el motivo de la transferencia. Solo puedes transferir entre tus propias billeteras."],
+                        "body": [
+                            "Elige la billetera de destino (o de origen, con el botón para invertir la dirección), el monto y el motivo de la transferencia. Solo puedes transferir entre tus propias billeteras."
+                        ],
                         "note": "Las transferencias solo están disponibles en billeteras de un único miembro."
                     },
                     {
@@ -745,12 +787,16 @@
                     {
                         "id": "overview",
                         "title": "Cuándo usarlas",
-                        "body": ["Programa una transacción para pagos o ingresos que se repiten, como el alquiler, una suscripción o tu salario. BFlow los registra automáticamente en cada fecha."]
+                        "body": [
+                            "Programa una transacción para pagos o ingresos que se repiten, como el alquiler, una suscripción o tu salario. BFlow los registra automáticamente en cada fecha."
+                        ]
                     },
                     {
                         "id": "create",
                         "title": "Programar una transacción",
-                        "body": ["Toca Programar transacción desde el dashboard o desde el panel de información de una billetera, y completa:"],
+                        "body": [
+                            "Toca Programar transacción desde el dashboard o desde el panel de información de una billetera, y completa:"
+                        ],
                         "items": [
                             "Tipo: ingreso o gasto.",
                             "Título, descripción, monto y categoría.",
@@ -763,7 +809,9 @@
                     {
                         "id": "upcoming",
                         "title": "Próximas transacciones",
-                        "body": ["En el detalle de cada billetera, la sección Próximas lista las transacciones programadas que están por registrarse."]
+                        "body": [
+                            "En el detalle de cada billetera, la sección Próximas lista las transacciones programadas que están por registrarse."
+                        ]
                     }
                 ]
             },
@@ -774,17 +822,23 @@
                     {
                         "id": "overview",
                         "title": "Vista general",
-                        "body": ["El historial reúne las transacciones de todas tus billeteras, agrupadas por día. Llegas a él desde Billeteras › Historial o con Ver más en el panel de historial."]
+                        "body": [
+                            "El historial reúne las transacciones de todas tus billeteras, agrupadas por día. Llegas a él desde Billeteras › Historial o con Ver más en el panel de historial."
+                        ]
                     },
                     {
                         "id": "filters",
                         "title": "Filtros",
-                        "body": ["Busca por texto o filtra por tipo: Todas, Ingresos, Gastos o Transferencias."]
+                        "body": [
+                            "Busca por texto o filtra por tipo: Todas, Ingresos, Gastos o Transferencias."
+                        ]
                     },
                     {
                         "id": "details",
                         "title": "Qué muestra cada movimiento",
-                        "body": ["Cada tarjeta indica el título, la billetera, la categoría, el monto y si se registró de forma manual o recurrente. En las transferencias también verás la billetera contraparte."],
+                        "body": [
+                            "Cada tarjeta indica el título, la billetera, la categoría, el monto y si se registró de forma manual o recurrente. En las transferencias también verás la billetera contraparte."
+                        ],
                         "note": "Desde el historial puedes ver el detalle o duplicar una transacción. Para editarla o eliminarla, ábrela desde su billetera."
                     }
                 ]
@@ -796,7 +850,9 @@
                     {
                         "id": "scopes",
                         "title": "Alcance",
-                        "body": ["Un presupuesto puede controlar distintos grupos de gastos:"],
+                        "body": [
+                            "Un presupuesto puede controlar distintos grupos de gastos:"
+                        ],
                         "items": [
                             "Billetera: todos los gastos de una billetera.",
                             "Categoría: los gastos de una categoría en todas tus billeteras.",
@@ -806,12 +862,16 @@
                     {
                         "id": "create",
                         "title": "Crear un presupuesto",
-                        "body": ["Desde Presupuestos, toca Crear presupuesto, elige el alcance y completa el monto, el periodo (diario, semanal, mensual o anual) y la fecha de inicio."]
+                        "body": [
+                            "Desde Presupuestos, toca Crear presupuesto, elige el alcance y completa el monto, el periodo (diario, semanal, mensual o anual) y la fecha de inicio."
+                        ]
                     },
                     {
                         "id": "thresholds",
                         "title": "Umbrales y estados",
-                        "body": ["Cada presupuesto tiene dos umbrales que definen su estado. Por defecto, la alerta está en 60 % y el crítico en 90 %; el crítico siempre debe ser mayor que la alerta."],
+                        "body": [
+                            "Cada presupuesto tiene dos umbrales que definen su estado. Por defecto, la alerta está en 60 % y el crítico en 90 %; el crítico siempre debe ser mayor que la alerta."
+                        ],
                         "items": [
                             "Saludable: por debajo de la alerta.",
                             "Advertencia: desde el umbral de alerta.",
@@ -822,12 +882,16 @@
                     {
                         "id": "detail",
                         "title": "Seguimiento",
-                        "body": ["El detalle de un presupuesto muestra cuánto te queda y cuántos días faltan, lo gastado con su promedio diario, una barra de progreso con los umbrales y la tendencia de gasto."]
+                        "body": [
+                            "El detalle de un presupuesto muestra cuánto te queda y cuántos días faltan, lo gastado con su promedio diario, una barra de progreso con los umbrales y la tendencia de gasto."
+                        ]
                     },
                     {
                         "id": "settings",
                         "title": "Editar o eliminar",
-                        "body": ["En la pestaña Ajustes puedes cambiar el monto, el periodo, la fecha de inicio y los umbrales, o eliminar el presupuesto."],
+                        "body": [
+                            "En la pestaña Ajustes puedes cambiar el monto, el periodo, la fecha de inicio y los umbrales, o eliminar el presupuesto."
+                        ],
                         "note": "La billetera y la categoría no se pueden cambiar después de crear el presupuesto."
                     }
                 ]
@@ -839,12 +903,16 @@
                     {
                         "id": "overview",
                         "title": "Para qué sirven",
-                        "body": ["Cada ingreso y gasto lleva una categoría. Las categorías te permiten crear presupuestos por categoría y entender mejor tus movimientos."]
+                        "body": [
+                            "Cada ingreso y gasto lleva una categoría. Las categorías te permiten crear presupuestos por categoría y entender mejor tus movimientos."
+                        ]
                     },
                     {
                         "id": "create",
                         "title": "Crear una categoría",
-                        "body": ["Ve a Ajustes › Categorías › Gestionar y completa:"],
+                        "body": [
+                            "Ve a Ajustes › Categorías › Gestionar y completa:"
+                        ],
                         "items": [
                             "Nombre.",
                             "Tipo: gasto o ingreso.",
@@ -861,12 +929,16 @@
                     {
                         "id": "overview",
                         "title": "Dónde verlas",
-                        "body": ["Toca la campana en la parte superior de la app. El número indica cuántas notificaciones tienes sin leer."]
+                        "body": [
+                            "Toca la campana en la parte superior de la app. El número indica cuántas notificaciones tienes sin leer."
+                        ]
                     },
                     {
                         "id": "read",
                         "title": "Marcar como leídas",
-                        "body": ["Cada notificación tiene la opción Marcar como leída. Cuando no quede ninguna pendiente, verás el mensaje Estás al día."]
+                        "body": [
+                            "Cada notificación tiene la opción Marcar como leída. Cuando no quede ninguna pendiente, verás el mensaje Estás al día."
+                        ]
                     }
                 ]
             },
@@ -877,22 +949,30 @@
                     {
                         "id": "profile",
                         "title": "Perfil",
-                        "body": ["Toca el lápiz junto a tu nombre para cambiar tu nombre o tu foto (PNG, JPEG o WebP). El correo electrónico no se puede cambiar."]
+                        "body": [
+                            "Toca el lápiz junto a tu nombre para cambiar tu nombre o tu foto (PNG, JPEG o WebP). El correo electrónico no se puede cambiar."
+                        ]
                     },
                     {
                         "id": "language",
                         "title": "Idioma",
-                        "body": ["Elige entre español e inglés. La preferencia se guarda en tu perfil."]
+                        "body": [
+                            "Elige entre español e inglés. La preferencia se guarda en tu perfil."
+                        ]
                     },
                     {
                         "id": "subscription",
                         "title": "Suscripción",
-                        "body": ["Si tienes un plan de pago, verás el plan actual, su estado, el precio, la fecha del próximo cobro y hasta cuándo está vigente. Desde aquí también puedes cancelarla."]
+                        "body": [
+                            "Si tienes un plan de pago, verás el plan actual, su estado, el precio, la fecha del próximo cobro y hasta cuándo está vigente. Desde aquí también puedes cancelarla."
+                        ]
                     },
                     {
                         "id": "session",
                         "title": "Cerrar sesión",
-                        "body": ["Al final de Ajustes encontrarás el botón para cerrar sesión."]
+                        "body": [
+                            "Al final de Ajustes encontrarás el botón para cerrar sesión."
+                        ]
                     }
                 ]
             },
@@ -903,12 +983,16 @@
                     {
                         "id": "overview",
                         "title": "Qué es",
-                        "body": ["BFlow se puede añadir a Claude como un conector personalizado. Así puedes hacerle preguntas sobre tus finanzas sin abrir la app."]
+                        "body": [
+                            "BFlow se puede añadir a Claude como un conector personalizado. Así puedes hacerle preguntas sobre tus finanzas sin abrir la app."
+                        ]
                     },
                     {
                         "id": "connect",
                         "title": "Cómo conectarlo",
-                        "body": ["La conexión toma unos pocos pasos:"],
+                        "body": [
+                            "La conexión toma unos pocos pasos:"
+                        ],
                         "items": [
                             "Ve a Ajustes y toca Conectar con Claude.",
                             "Se abrirá Claude con el conector BFlow ya configurado.",
@@ -918,7 +1002,9 @@
                     {
                         "id": "examples",
                         "title": "Qué puedes preguntar",
-                        "body": ["Algunos ejemplos:"],
+                        "body": [
+                            "Algunos ejemplos:"
+                        ],
                         "items": [
                             "¿Cuánto gasté este mes en comida?",
                             "¿Cómo van mis presupuestos?",
@@ -974,6 +1060,12 @@
             "title": "Organiza tu dinero a tu manera",
             "description": "Cada módulo resuelve una parte de tus finanzas: desde saber a dónde se fue tu dinero hasta avisarte antes de pasarte del presupuesto.",
             "learnMore": "Conocer más sobre {{module}}",
+            "more": {
+                "eyebrow": "Y eso no es todo",
+                "title": "Descubre todo lo que BFlow puede hacer por ti",
+                "description": "Transacciones recurrentes, historial, categorías, notificaciones y hasta una conexión con Claude. Conoce cada módulo en detalle.",
+                "cta": "Explorar todos los módulos"
+            },
             "items": {
                 "wallets": {
                     "label": "Billeteras",
@@ -1070,7 +1162,6 @@
             "description": "Crea tu cuenta gratis en menos de un minuto y ten tus billeteras, presupuestos y gastos compartidos en un solo lugar."
         },
         "wompiReference": "Visita Wompi",
-        "stepImageFallback": "Pega la imagen en {{path}}",
         "month": "Mes",
         "year": "Año",
         "plans": {

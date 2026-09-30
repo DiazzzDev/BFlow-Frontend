@@ -11,7 +11,11 @@ import budgetsImage from "@/modules/home/assets/Budgets.png";
 import dashboardImage from "@/modules/home/assets/Dashboard.svg";
 import sharedWalletsImage from "@/modules/home/assets/Shared Wallets.png";
 import walletsImage from "@/modules/home/assets/Wallets.png";
-import { getDocsPath } from "@/modules/home/features/docs/utils/docsContent";
+import {
+    DOCS_PAGES,
+    getDocsPath,
+    type DocsPageId,
+} from "@/modules/home/features/docs/utils/docsContent";
 
 // Auto-advance interval for the how-it-works step carousel
 export const LANDING_STEP_INTERVAL_MS = 4000;
@@ -80,6 +84,18 @@ export const SOLUTION_STEPS: Array<{
         },
     ];
 
+// Modules not covered by the scroll tour, teased below it
+const MORE_MODULE_IDS: DocsPageId[] = [
+    "transactions",
+    "scheduledTransactions",
+    "history",
+    "categories",
+    "notifications",
+    "claude",
+];
+
+export const MORE_MODULES = DOCS_PAGES.filter(({ id }) => MORE_MODULE_IDS.includes(id));
+
 export type LandingModuleId = "dashboard" | "wallets" | "transactions" | "budgets";
 
 // Featured modules shown right below the hero
@@ -99,21 +115,21 @@ export const LANDING_STEPS = [
         number: "01",
         title: "Crea tu cuenta",
         desc: "Regístrate con tu email o Google en menos de 30 segundos. Sin tarjeta de crédito requerida.",
-        image: "/landing/step-register.png",
+        image: "Proximamente contenido animado",
         alt: "Pantalla de registro de BFlow",
     },
     {
         number: "02",
         title: "Agrega tus billeteras",
         desc: "Crea billeteras para cada cuenta bancaria, efectivo o tarjeta e invita miembros si quieres compartirlas.",
-        image: "/landing/step-wallet.png",
+        image: "Proximamente contenido animado",
         alt: "Pantalla para agregar una billetera",
     },
     {
         number: "03",
         title: "Controla tus finanzas",
         desc: "Registra movimientos, define presupuestos y visualiza tu situación financiera en tiempo real.",
-        image: "/landing/step-dashboard.png",
+        image: "Proximamente contenido animado",
         alt: "Dashboard de BFlow",
     },
 ];
