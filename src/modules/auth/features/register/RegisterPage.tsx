@@ -1,37 +1,35 @@
-import { RegisterHero } from "./components/RegisterHero";
 import { useTranslation } from "react-i18next";
+
 import { RegisterForm } from "./components/RegisterForm";
 import { useRegister } from "./hooks/useRegister";
 
-import { LeftPart } from "@/modules/auth/components/LeftPart";
-import { RightPart } from "@/modules/auth/components/RightPart";
+import { AuthCard } from "@/modules/auth/components/AuthCard";
+import { AuthDivider } from "@/modules/auth/components/AuthDivider";
+import { AuthSwitchLink } from "@/modules/auth/components/AuthSwitchLink";
+import { GoogleButton } from "@/modules/auth/components/GoogleButton";
 
 export const RegisterPage = () => {
     const { t } = useTranslation();
-    // Shared so RightPart can disable Google / back while register is pending
-    const { mutateAsync: registerUser, isPending: isRegisterPending } =
-        useRegister();
+    // Shared so Google and the login link are disabled while register is pending
+    const { mutateAsync: registerUser, isPending: isRegisterPending } = useRegister();
 
     return (
-        <main className="w-full h-screen flex gap-4">
-            <LeftPart
-                Body={<RegisterHero />}
-                title={t("auth.registerHeroTitle")}
-                focusTitle="BFlow"
-                subtitle={t("auth.registerHeroSubtitle")}
-            />
-            <RightPart
-                Body={
-                    <RegisterForm
-                        onRegisterUser={registerUser}
-                        isLoading={isRegisterPending}
-                    />
-                }
-                isLoading={isRegisterPending}
-                separatorText={t("auth.registerSeparator")}
-                title={t("auth.registerTitle")}
-                subtitle={t("auth.registerSubtitle")}
-            />
-        </main>
+        <AuthCard
+            title={t("auth.registerTitle")}
+            subtitle={t("auth.registerSubtitle")}
+            back={{ to: "/auth/login", label: t("auth.backToLogin"), disabled: isRegisterPending }}
+            footer={
+                <AuthSwitchLink
+                    text={t("auth.hasAccount")}
+                    linkLabel={t("auth.signIn")}
+                    to="/auth/login"
+                    disabled={isRegisterPending}
+                />
+            }
+        >
+            <GoogleButton disabled={isRegisterPending} />
+            <AuthDivider text={t("auth.registerSeparator")} />
+            <RegisterForm onRegisterUser={registerUser} isLoading={isRegisterPending} />
+        </AuthCard>
     );
 };

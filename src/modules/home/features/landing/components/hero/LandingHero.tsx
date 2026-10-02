@@ -17,7 +17,7 @@ export const LandingHero = () => {
                     className="absolute inset-x-0 top-9 -bottom-20 -z-10 rounded-[2.5rem] border border-light-5 bg-surface [mask-image:linear-gradient(to_bottom,black_35%,transparent)]"
                 />
 
-                <h1 className="max-w-4xl text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.08] tracking-tight mb-6">
+                <h1 className="max-w-4xl text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.08] tracking-tight mt-12">
                     {t("home.heroTitle")}{" "}
                     <span className="bg-linear-to-r from-primary via-primary to-warning bg-clip-text text-transparent">
                         {t("home.heroFocus")}

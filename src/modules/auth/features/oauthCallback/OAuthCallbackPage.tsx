@@ -1,14 +1,22 @@
+import { MotionConfig } from "framer-motion";
+
+import { CallbackAppSkeleton } from "./components/CallbackAppSkeleton";
+import { CallbackLoader } from "./components/CallbackLoader";
 import { useOAuthCallback } from "./hooks/useOAuthCallback";
-import { useTranslation } from "react-i18next";
 
 export const OAuthCallbackPage = () => {
-    const { t } = useTranslation();
     // Kick off OAuth session sync on mount
     useOAuthCallback();
 
     return (
-        <div className="flex h-screen items-center justify-center">
-            {t("auth.oauthLoading")}
-        </div>
+        <MotionConfig reducedMotion="user">
+            <div role="status" aria-live="polite" className="fixed inset-0 overflow-hidden bg-surface-hard text-light">
+                <CallbackAppSkeleton />
+
+                <div className="absolute inset-0 flex items-center justify-center bg-surface-hard/60 px-6">
+                    <CallbackLoader />
+                </div>
+            </div>
+        </MotionConfig>
     );
 };

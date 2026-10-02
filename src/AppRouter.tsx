@@ -74,12 +74,12 @@ export const appRouter = createBrowserRouter([
                 children: [
                     { path: "login", element: <LoginPage /> },
                     { path: "register", element: <RegisterPage /> },
+                    { path: "forgot-password", element: <ForgotPasswordPage /> },
+                    { path: "reset-password", element: <ResetPasswordPage /> },
+                    { path: "verify-account", element: <VerifyAccountPage /> },
                 ],
             },
-            { path: "callback", element: <OAuthCallbackPage /> },
-            { path: "forgot-password", element: <ForgotPasswordPage /> },
-            { path: "reset-password", element: <ResetPasswordPage /> },
-            { path: "verify-account", element: <VerifyAccountPage /> },
+            { path: "callback", element: <OAuthCallbackPage />, handle: { hideAuthChrome: true } }
         ],
     },
     {

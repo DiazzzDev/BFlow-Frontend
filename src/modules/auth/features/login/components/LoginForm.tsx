@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { AlertCircle, ArrowRight } from "lucide-react";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,15 @@ import { useTranslation } from "react-i18next";
 import { isUserNotConfirmedError } from "../login.service";
 
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
+import { PasswordInput } from "@/modules/auth/components/PasswordInput";
+import {
+    authErrorClass,
+    authFieldClass,
+    authInputClass,
+    authLabelClass,
+    authPrimaryButtonClass,
+    authTextLinkClass,
+} from "@/modules/auth/utils/authStyles";
 
 interface LoginCredentials {
     email: string;
@@ -17,9 +26,6 @@ interface LoginCredentials {
 }
 
 type LoginFormInputs = LoginCredentials;
-
-const inputClass =
-    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all duration-200";
 
 interface LoginFormProps {
     onSubmitLogin: (data: LoginCredentials) => Promise<unknown>;
@@ -36,7 +42,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
         password: z.string().min(1, t("auth.validationPasswordRequired")),
     });
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
+    const [params] = useSearchParams();
     const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
     const {
@@ -46,6 +52,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
     } = useForm<LoginFormInputs>({
         resolver: zodResolver(loginSchema),
         mode: "onSubmit",
+        defaultValues: { email: params.get("email") ?? "", password: "" },
     });
 
     const onInternalSubmit = async (data: LoginFormInputs) => {
@@ -77,14 +84,14 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
             onSubmit={(e) => {
                 void handleSubmit(onInternalSubmit)(e);
             }}
-            className="space-y-4"
+            className="flex flex-col gap-4"
         >
             {unverifiedEmail && (
-                <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-sm flex items-start gap-3 animate-in fade-in duration-300">
-                    <AlertCircle size={20} className="shrink-0 text-amber-400 mt-0.5" />
+                <div className="flex items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 p-3.5 text-sm">
+                    <AlertCircle size={18} className="mt-0.5 shrink-0 text-warning" />
                     <div className="flex-1">
-                        <p className="font-medium text-amber-200">Cuenta sin verificar</p>
-                        <p className="text-xs text-amber-300/80 mt-0.5">
+                        <p className="font-medium text-light">Cuenta sin verificar</p>
+                        <p className="mt-0.5 text-xs text-helper">
                             Tu cuenta ({unverifiedEmail}) requiere verificación de correo antes de ingresar.
                         </p>
                         <button
@@ -92,7 +99,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             onClick={() =>
                                 void navigate(`/auth/verify-account?email=${encodeURIComponent(unverifiedEmail)}`)
                             }
-                            className="mt-2 text-xs font-semibold text-amber-300 hover:text-amber-100 flex items-center gap-1 group cursor-pointer"
+                            className="group mt-2 flex cursor-pointer items-center gap-1 text-xs font-semibold text-warning transition-opacity hover:opacity-80"
                         >
                             Verificar correo ahora <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                         </button>
@@ -100,101 +107,49 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                 </div>
             )}
 
-            <div className="w-full max-w-md flex-col space-y-4">
-                <div className="space-y-2">
-                    <label className="text-sm font-medium text-label" htmlFor="txtEmail">
-                        {t("auth.email")}
-                    </label>
-
-                    <div className="relative">
-                        <Mail
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
-                        />
-                        <input
-                            id="txtEmail"
-                            disabled={isLoading}
-                            {...register("email")}
-                            placeholder={t("auth.email")}
-                            className={`${inputClass} pl-11`}
-                        />
-                    </div>
-                    {isSubmitted && errors.email && (
-                        <p className="text-sm text-danger mt-1">
-                            {errors.email.message}
-                        </p>
-                    )}
-                </div>
-
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                        <label
-                            className="text-sm font-medium text-label"
-                            htmlFor="txtPassword"
-                        >
-                            {t("auth.password")}
-                        </label>
-
-                        <Link
-                            to="/auth/forgot-password"
-                            className="text-sm font-medium text-primary hover:opacity-80 transition-opacity"
-                        >
-                            {t("auth.forgotPassword")}
-                        </Link>
-                    </div>
-
-                    <div className="relative">
-                        <Lock
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
-                        />
-
-                        <input
-                            id="txtPassword"
-                            disabled={isLoading}
-                            {...register("password")}
-                            type={showPassword ? "text" : "password"}
-                            placeholder="••••••••••"
-                            className={`${inputClass} px-11`}
-                        />
-
-                        <button
-                            type="button"
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light transition-colors"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                        </button>
-                    </div>
-                    {isSubmitted && errors.password && (
-                        <p className="text-sm text-danger mt-1">
-                            {errors.password.message}
-                        </p>
-                    )}
-                </div>
-
-                <button
-                    type="submit"
-                    className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtEmail">
+                    {t("auth.email")}
+                </label>
+                <input
+                    id="txtEmail"
+                    type="email"
+                    autoComplete="email"
                     disabled={isLoading}
-                >
-                    {isLoading ? t("auth.loginLoading") : t("auth.signInButton")}
-                </button>
+                    {...register("email")}
+                    placeholder={t("auth.emailPlaceholder")}
+                    className={authInputClass}
+                />
+                {isSubmitted && errors.email && (
+                    <p className={authErrorClass}>{errors.email.message}</p>
+                )}
             </div>
 
-            <p className="mt-8 text-center text-sm text-helper">
-                {t("auth.noAccount")} {" "}
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtPassword">
+                    {t("auth.password")}
+                </label>
+                <PasswordInput
+                    id="txtPassword"
+                    autoComplete="current-password"
+                    disabled={isLoading}
+                    {...register("password")}
+                    placeholder="••••••••"
+                />
+                {isSubmitted && errors.password && (
+                    <p className={authErrorClass}>{errors.password.message}</p>
+                )}
                 <Link
-                    to="/auth/register"
-                    className={`font-medium hover:opacity-80 transition-opacity ${
-                        isLoading
-                            ? "pointer-events-none text-helper"
-                            : "text-primary"
-                    }`}
+                    to="/auth/forgot-password"
+                    className={`self-end text-xs ${authTextLinkClass}`}
                 >
-                    {t("auth.createFree")}
+                    {t("auth.forgotPassword")}
                 </Link>
-            </p>
+            </div>
+
+            <button type="submit" className={`mt-2 ${authPrimaryButtonClass}`} disabled={isLoading}>
+                {isLoading ? t("auth.loginLoading") : t("auth.signInButton")}
+            </button>
         </form>
     );
 };
