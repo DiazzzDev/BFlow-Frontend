@@ -1,36 +1,34 @@
-import { LoginHero } from "./components/LoginHero";
 import { useTranslation } from "react-i18next";
+
 import { LoginForm } from "./components/LoginForm";
 import { useLogin } from "./hooks/useLogin";
 
-import { RightPart } from "@/modules/auth/components/RightPart";
-import { LeftPart } from "@/modules/auth/components/LeftPart";
+import { AuthCard } from "@/modules/auth/components/AuthCard";
+import { AuthDivider } from "@/modules/auth/components/AuthDivider";
+import { AuthSwitchLink } from "@/modules/auth/components/AuthSwitchLink";
+import { GoogleButton } from "@/modules/auth/components/GoogleButton";
 
 export const LoginPage = () => {
     const { t } = useTranslation();
-    // Shared so RightPart can disable Google / back while email login is pending
+    // Shared so Google and the register link are disabled while email login is pending
     const { mutateAsync: loginWithEmail, isPending: isEmailLoginPending } = useLogin();
 
     return (
-        <main className="w-full h-screen flex gap-4">
-            <LeftPart
-                Body={<LoginHero />}
-                title={t("auth.loginHeroTitle")}
-                focusTitle={t("auth.loginHeroFocus")}
-                subtitle={t("auth.loginHeroSubtitle")}
-            />
-            <RightPart
-                Body={
-                    <LoginForm
-                        onSubmitLogin={loginWithEmail}
-                        isLoading={isEmailLoginPending}
-                    />
-                }
-                isLoading={isEmailLoginPending}
-                separatorText={t("auth.loginSeparator")}
-                title={t("auth.loginTitle")}
-                subtitle={t("auth.loginSubtitle")}
-            />
-        </main>
+        <AuthCard
+            title={t("auth.loginTitle")}
+            subtitle={t("auth.loginSubtitle")}
+            footer={
+                <AuthSwitchLink
+                    text={t("auth.noAccount")}
+                    linkLabel={t("auth.createFree")}
+                    to="/auth/register"
+                    disabled={isEmailLoginPending}
+                />
+            }
+        >
+            <GoogleButton disabled={isEmailLoginPending} />
+            <AuthDivider text={t("auth.loginSeparator")} />
+            <LoginForm onSubmitLogin={loginWithEmail} isLoading={isEmailLoginPending} />
+        </AuthCard>
     );
 };

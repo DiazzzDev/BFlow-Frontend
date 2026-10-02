@@ -1,7 +1,7 @@
-// In-page section anchors used by navbar / footer
+// Navbar entries: section anchors on the landing or standalone routes
 export const LANDING_NAV_LINKS = [
-    { label: "Características", id: "how" },
-    { label: "Precios", id: "pricing" },
-    { label: "Preguntas frecuentes", id: "faq" },
-    { label: "Contacto", id: "contact" },
+    { id: "modules", labelKey: "home.navFeatures" },
+    { id: "pricing", labelKey: "home.navPricing" },
+    { id: "docs", labelKey: "home.navDocs" },
+    { id: "contact", labelKey: "home.navContact" },
 ] as const;
