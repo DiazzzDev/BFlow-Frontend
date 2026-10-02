@@ -3,10 +3,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 
-type FormData = { email: string };
+import {
+    authErrorClass,
+    authFieldClass,
+    authInputClass,
+    authLabelClass,
+    authPrimaryButtonClass,
+} from "@/modules/auth/utils/authStyles";
 
-const inputClass =
-    "h-10 w-full rounded-lg border border-light-10 bg-surface px-3 text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
+type FormData = { email: string };
 
 interface ForgotPasswordFormProps {
     onSubmit: (email: string) => Promise<unknown>;
@@ -29,33 +34,28 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
 
     return (
         <form
-            className="w-full max-w-md space-y-4"
+            className="flex flex-col gap-4"
             onSubmit={(e) => {
                 void handleSubmit((data) => onSubmit(data.email))(e);
             }}
         >
-            <h1 className="text-3xl font-semibold">{t("auth.forgotTitle")}</h1>
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtEmail">
+                    {t("auth.email")}
+                </label>
+                <input
+                    id="txtEmail"
+                    type="email"
+                    autoComplete="email"
+                    placeholder={t("auth.emailPlaceholder")}
+                    disabled={isLoading}
+                    className={authInputClass}
+                    {...register("email")}
+                />
+                {errors.email && <p className={authErrorClass}>{errors.email.message}</p>}
+            </div>
 
-            <p className="text-helper">
-                {t("auth.forgotDescription")}
-            </p>
-
-            <input
-                placeholder={t("auth.email")}
-                disabled={isLoading}
-                className={inputClass}
-                {...register("email")}
-            />
-
-            {errors.email && (
-                <p className="text-danger text-sm">{errors.email.message}</p>
-            )}
-
-            <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-10 rounded-lg bg-primary text-light font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
-            >
+            <button type="submit" disabled={isLoading} className={`mt-2 ${authPrimaryButtonClass}`}>
                 {isLoading ? t("auth.forgotLoading") : t("auth.forgotButton")}
             </button>
         </form>

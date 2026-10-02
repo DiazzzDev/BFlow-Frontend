@@ -3,10 +3,16 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 
-type ResetPasswordFormData = { code: string; password: string; confirmPassword: string };
+import { PasswordInput } from "@/modules/auth/components/PasswordInput";
+import {
+    authErrorClass,
+    authFieldClass,
+    authInputClass,
+    authLabelClass,
+    authPrimaryButtonClass,
+} from "@/modules/auth/utils/authStyles";
 
-const inputClass =
-    "h-10 w-full rounded-lg border border-light-10 bg-surface px-3 text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
+type ResetPasswordFormData = { code: string; password: string; confirmPassword: string };
 
 interface ResetPasswordFormProps {
     onSubmit: (data: { code: string; password: string }) => Promise<unknown>;
@@ -33,56 +39,60 @@ export const ResetPasswordForm = ({ onSubmit, isLoading }: ResetPasswordFormProp
 
     return (
         <form
-            className="w-full max-w-md space-y-4"
+            className="flex flex-col gap-4"
             onSubmit={(e) => {
                 void handleSubmit((data) =>
                     onSubmit({ code: data.code, password: data.password })
                 )(e);
             }}
         >
-            <h1 className="text-3xl font-semibold">{t("auth.resetTitle")}</h1>
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtCode">
+                    {t("auth.code")}
+                </label>
+                <input
+                    id="txtCode"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    placeholder="123456"
+                    disabled={isLoading}
+                    className={`${authInputClass} font-mono tracking-[0.3em]`}
+                    {...register("code")}
+                />
+                {errors.code && <p className={authErrorClass}>{errors.code.message}</p>}
+            </div>
 
-            <p className="text-helper">
-                {t("auth.resetDescription")}
-            </p>
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtNewPassword">
+                    {t("auth.newPassword")}
+                </label>
+                <PasswordInput
+                    id="txtNewPassword"
+                    autoComplete="new-password"
+                    placeholder={t("auth.passwordPlaceholder")}
+                    disabled={isLoading}
+                    {...register("password")}
+                />
+                {errors.password && <p className={authErrorClass}>{errors.password.message}</p>}
+            </div>
 
-            <input
-                placeholder={t("auth.code")}
-                disabled={isLoading}
-                className={inputClass}
-                {...register("code")}
-            />
-            {errors.code && (
-                <p className="text-danger text-sm">{errors.code.message}</p>
-            )}
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtConfirmPassword">
+                    {t("auth.confirmPassword")}
+                </label>
+                <PasswordInput
+                    id="txtConfirmPassword"
+                    autoComplete="new-password"
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                    {...register("confirmPassword")}
+                />
+                {errors.confirmPassword && (
+                    <p className={authErrorClass}>{errors.confirmPassword.message}</p>
+                )}
+            </div>
 
-            <input
-                type="password"
-                placeholder={t("auth.newPassword")}
-                disabled={isLoading}
-                className={inputClass}
-                {...register("password")}
-            />
-            {errors.password && (
-                <p className="text-danger text-sm">{errors.password.message}</p>
-            )}
-
-            <input
-                type="password"
-                placeholder={t("auth.confirmPassword")}
-                disabled={isLoading}
-                className={inputClass}
-                {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && (
-                <p className="text-danger text-sm">{errors.confirmPassword.message}</p>
-            )}
-
-            <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-10 rounded-lg bg-primary text-light font-medium hover:bg-primary-dark disabled:opacity-50 cursor-pointer"
-            >
+            <button type="submit" disabled={isLoading} className={`mt-2 ${authPrimaryButtonClass}`}>
                 {isLoading ? t("auth.resetLoading") : t("auth.resetButton")}
             </button>
         </form>

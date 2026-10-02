@@ -1,13 +1,20 @@
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
+import { PasswordInput } from "@/modules/auth/components/PasswordInput";
+import {
+    authErrorClass,
+    authFieldClass,
+    authHintClass,
+    authInputClass,
+    authLabelClass,
+    authPrimaryButtonClass,
+} from "@/modules/auth/utils/authStyles";
 
 interface RegisterCredentials {
     email: string;
@@ -38,9 +45,6 @@ const registerSchema = z.object({
 
 type RegisterFormInputs = z.infer<typeof registerSchema>;
 
-const inputClass =
-    "h-12 w-full rounded-xl border border-light-10 bg-surface text-light placeholder:text-placeholder outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 transition-all duration-200";
-
 interface RegisterFormProps {
     onRegisterUser: (data: RegisterCredentials) => Promise<unknown>;
     isLoading: boolean;
@@ -60,7 +64,6 @@ export const RegisterForm = ({
         mode: "onSubmit",
     });
 
-    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const onInternalSubmit = async (data: RegisterFormInputs) => {
@@ -90,132 +93,66 @@ export const RegisterForm = ({
             onSubmit={(e) => {
                 void handleSubmit(onInternalSubmit)(e);
             }}
+            className="flex flex-col gap-4"
         >
-            <div className="w-full max-w-md flex-col space-y-4">
-                <div className="space-y-2">
-                    <label
-                        className="text-sm font-medium text-label"
-                        htmlFor="txtFullName"
-                    >
-                        {t("auth.fullName")}
-                    </label>
-
-                    <div className="relative">
-                        <User
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
-                        />
-                        <input
-                            disabled={isLoading}
-                            {...register("fullName")}
-                            id="txtFullName"
-                            placeholder={t("auth.namePlaceholder")}
-                            className={`${inputClass} pl-11`}
-                        />
-                    </div>
-                    {isSubmitted && errors.fullName && (
-                        <p className="text-sm text-danger mt-1">
-                            {errors.fullName.message}
-                        </p>
-                    )}
-                </div>
-
-                <div className="space-y-2">
-                    <label
-                        className="text-sm font-medium text-label"
-                        htmlFor="txtEmail"
-                    >
-                        {t("auth.email")}
-                    </label>
-
-                    <div className="relative">
-                        <Mail
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
-                        />
-                        <input
-                            id="txtEmail"
-                            disabled={isLoading}
-                            {...register("email")}
-                            placeholder={t("auth.emailPlaceholder")}
-                            className={`${inputClass} pl-11`}
-                        />
-                    </div>
-                    {isSubmitted && errors.email && (
-                        <p className="text-sm text-danger mt-1">
-                            {errors.email.message}
-                        </p>
-                    )}
-                </div>
-
-                <div className="space-y-2">
-                    <label
-                        className="text-sm font-medium text-label"
-                        htmlFor="txtPassword"
-                    >
-                        {t("auth.password")}
-                    </label>
-
-                    <div className="relative">
-                        <Lock
-                            size={18}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 text-helper"
-                        />
-
-                        <input
-                            disabled={isLoading}
-                            {...register("password")}
-                            id="txtPassword"
-                            type={showPassword ? "text" : "password"}
-                            placeholder={t("auth.passwordPlaceholder")}
-                            className={`${inputClass} px-11`}
-                        />
-
-                        <button
-                            type="button"
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-helper hover:text-light transition-colors"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            {showPassword ? (
-                                <EyeOff size={18} />
-                            ) : (
-                                <Eye size={18} />
-                            )}
-                        </button>
-                    </div>
-                    {isSubmitted && errors.password ? (
-                        <p className="text-sm text-danger mt-1">
-                            {errors.password.message}
-                        </p>
-                    ) : (
-                        <p className="text-xs text-helper mt-1">
-                            Requisitos: mínimo 8 caracteres, al menos 1 letra mayúscula y 1 número o símbolo.
-                        </p>
-                    )}
-                </div>
-
-                <button
-                    type="submit"
-                    className="h-12 w-full rounded-xl font-medium bg-primary text-light hover:bg-primary-dark disabled:opacity-50 cursor-pointer transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtFullName">
+                    {t("auth.fullName")}
+                </label>
+                <input
+                    id="txtFullName"
+                    autoComplete="name"
                     disabled={isLoading}
-                >
-                    {isLoading ? t("auth.registerLoading") : t("auth.registerButton")}
-                </button>
+                    {...register("fullName")}
+                    placeholder={t("auth.namePlaceholder")}
+                    className={authInputClass}
+                />
+                {isSubmitted && errors.fullName && (
+                    <p className={authErrorClass}>{errors.fullName.message}</p>
+                )}
             </div>
 
-            <p className="mt-8 text-center text-sm text-helper">
-                {t("auth.hasAccount")} {" "}
-                <Link
-                    to="/auth/login"
-                    className={`font-medium hover:opacity-80 transition-opacity ${
-                        isLoading
-                            ? "pointer-events-none text-helper"
-                            : "text-primary"
-                    }`}
-                >
-                    {t("auth.signIn")}
-                </Link>
-            </p>
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtEmail">
+                    {t("auth.email")}
+                </label>
+                <input
+                    id="txtEmail"
+                    type="email"
+                    autoComplete="email"
+                    disabled={isLoading}
+                    {...register("email")}
+                    placeholder={t("auth.emailPlaceholder")}
+                    className={authInputClass}
+                />
+                {isSubmitted && errors.email && (
+                    <p className={authErrorClass}>{errors.email.message}</p>
+                )}
+            </div>
+
+            <div className={authFieldClass}>
+                <label className={authLabelClass} htmlFor="txtPassword">
+                    {t("auth.password")}
+                </label>
+                <PasswordInput
+                    id="txtPassword"
+                    autoComplete="new-password"
+                    disabled={isLoading}
+                    {...register("password")}
+                    placeholder={t("auth.passwordPlaceholder")}
+                />
+                {isSubmitted && errors.password ? (
+                    <p className={authErrorClass}>{errors.password.message}</p>
+                ) : (
+                    <p className={authHintClass}>
+                        Requisitos: mínimo 8 caracteres, al menos 1 letra mayúscula y 1 número o símbolo.
+                    </p>
+                )}
+            </div>
+
+            <button type="submit" className={`mt-2 ${authPrimaryButtonClass}`} disabled={isLoading}>
+                {isLoading ? t("auth.registerLoading") : t("auth.registerButton")}
+            </button>
         </form>
     );
 };

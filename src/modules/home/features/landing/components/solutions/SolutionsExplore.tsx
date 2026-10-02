@@ -12,9 +12,6 @@ export const SolutionsExplore = () => {
     return (
         <div className="mt-28 grid items-center gap-10 rounded-3xl border border-light-10 bg-surface p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:gap-16">
             <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-                    {t("home.solutions.more.eyebrow")}
-                </p>
                 <h3 className="mt-3 text-2xl font-semibold tracking-tight text-light md:text-3xl">
                     {t("home.solutions.more.title")}
                 </h3>
