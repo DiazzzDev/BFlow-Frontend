@@ -50,10 +50,18 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
 
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+        document.addEventListener("keydown", handleKeyDown);
+
         return () => {
             document.body.style.overflow = previousOverflow;
+            document.removeEventListener("keydown", handleKeyDown);
         };
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
     const linkClassName = ({ isActive }: { isActive: boolean }) =>
         `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-light transition-colors duration-150 ${isActive ? "bg-secondary font-medium" : "font-normal hover:bg-light-5"
@@ -67,12 +75,12 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                 type="button"
                 aria-label={t("a11y.closeMenu")}
                 onClick={onClose}
-                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
                     }`}
             />
 
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:static lg:z-0 lg:w-50 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">
@@ -85,7 +93,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         type="button"
                         onClick={onClose}
                         aria-label={t("a11y.closeMenu")}
-                        className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer lg:hidden"
+                        className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                     >
                         <X className="h-5 w-5" />
                     </button>
