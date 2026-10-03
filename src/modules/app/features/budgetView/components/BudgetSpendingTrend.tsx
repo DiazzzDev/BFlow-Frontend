@@ -12,8 +12,7 @@ import {
 
 import { formatAxisMoney } from "../utils/formatAxisMoney";
 
-import { BudgetCardEmpty } from "./BudgetCardEmpty";
-
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import type { BudgetSpendingTrendPoint } from "@/modules/app/interfaces/Budget";
 
 interface BudgetSpendingTrendProps {
@@ -70,7 +69,7 @@ export const BudgetSpendingTrend = ({
                 {isLoading ? (
                     <div className="h-full min-h-52 w-full animate-pulse rounded-xl bg-skeleton" />
                 ) : isEmpty ? (
-                    <BudgetCardEmpty
+                    <CustomEmptyState
                         Icon={TrendingUp}
                         title={t("budgetView.noTrend")}
                         description="Todavía no hay gasto en este periodo."

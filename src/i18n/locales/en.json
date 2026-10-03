@@ -28,8 +28,7 @@
         "openMenu": "Open menu",
         "closeMenu": "Close menu",
         "notifications": "Notifications",
-        "editProfile": "Edit profile",
-        "user": "User"
+        "editProfile": "Edit profile"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -40,6 +39,13 @@
         "financeTool": "Finance tool",
         "hideWalletOptions": "Hide wallet options",
         "showWalletOptions": "Show wallet options"
+    },
+    "userMenu": {
+        "open": "Open account menu",
+        "plan": "{{plan}} plan",
+        "active": "Active",
+        "resources": "Resources",
+        "opensInNewTab": "(opens in a new tab)"
     },
     "breadcrumbs": {
         "dashboard": "Dashboard",
@@ -407,14 +413,17 @@
         "perDay": "/day"
     },
     "notifications": {
-        "markLoading": "Marking as read...",
-        "markFallback": "Notification marked as read",
-        "close": "Close notifications",
-        "closePanel": "Close notifications panel",
+        "title": "Notifications",
+        "newCount": "{{count}} new",
+        "markAllRead": "Mark all as read",
+        "filterLabel": "Filter notifications",
+        "filterUnread": "Unread",
+        "filterAll": "All",
+        "nothingPending": "Nothing pending",
+        "nothingPendingHint": "You're all caught up. We'll let you know when there's something new.",
         "empty": "No notifications",
-        "unread": "unread",
-        "upToDate": "You are all caught up",
-        "emptyHint": "You will see updates here when there is news."
+        "emptyHint": "You will see updates here when there is news.",
+        "viewAll": "View all notifications"
     },
     "profile": {
         "updateLoading": "Updating profile...",

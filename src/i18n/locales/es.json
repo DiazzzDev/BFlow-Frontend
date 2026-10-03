@@ -28,8 +28,7 @@
         "openMenu": "Abrir menú",
         "closeMenu": "Cerrar menú",
         "notifications": "Notificaciones",
-        "editProfile": "Editar perfil",
-        "user": "Usuario"
+        "editProfile": "Editar perfil"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -40,6 +39,13 @@
         "financeTool": "Herramienta financiera",
         "hideWalletOptions": "Ocultar opciones de billeteras",
         "showWalletOptions": "Mostrar opciones de billeteras"
+    },
+    "userMenu": {
+        "open": "Abrir menú de la cuenta",
+        "plan": "Plan {{plan}}",
+        "active": "Activo",
+        "resources": "Recursos",
+        "opensInNewTab": "(se abre en una pestaña nueva)"
     },
     "breadcrumbs": {
         "dashboard": "Dashboard",
@@ -409,14 +415,17 @@
         "perDay": "/día"
     },
     "notifications": {
-        "markLoading": "Marcando como leída...",
-        "markFallback": "Notificación marcada como leída",
-        "close": "Cerrar notificaciones",
-        "closePanel": "Cerrar panel de notificaciones",
+        "title": "Notificaciones",
+        "newCount": "{{count}} nuevas",
+        "markAllRead": "Marcar todo como leído",
+        "filterLabel": "Filtrar notificaciones",
+        "filterUnread": "No leídas",
+        "filterAll": "Todas",
+        "nothingPending": "Nada pendiente",
+        "nothingPendingHint": "Estás al día. Te avisaremos cuando haya novedades.",
         "empty": "Sin notificaciones",
-        "unread": "sin leer",
-        "upToDate": "Estás al día",
-        "emptyHint": "Cuando tengas novedades, las verás aquí."
+        "emptyHint": "Cuando tengas novedades, las verás aquí.",
+        "viewAll": "Ver todas las notificaciones"
     },
     "profile": {
         "updateLoading": "Actualizando datos...",

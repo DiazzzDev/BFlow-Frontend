@@ -1,19 +1,16 @@
-import { motion } from "framer-motion";
-import { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from "lucide-react";
 
 import { Button } from "../controls/Button";
 
-
 interface CustomEmptyStateProps {
-    title: string,
-    description: string,
-    Icon?: LucideIcon,
-    buttonText?: string,
-    onButtonClick?: () => void,
-    secondaryButtonText?: string,
-    onSecondaryButtonClick?: () => void,
-    steps?: [string],
-    className?: string
+    title: string;
+    description: string;
+    Icon?: LucideIcon;
+    buttonText?: string;
+    onButtonClick?: () => void;
+    secondaryButtonText?: string;
+    onSecondaryButtonClick?: () => void;
+    className?: string;
 }
 
 export const CustomEmptyState = ({
@@ -24,99 +21,33 @@ export const CustomEmptyState = ({
     onButtonClick,
     secondaryButtonText,
     onSecondaryButtonClick,
-    steps,
-    className
+    className = "",
 }: CustomEmptyStateProps) => {
     return (
-        <motion.div
-            className={`flex flex-col items-center justify-center text-center p-8 border border-dashed border-light-25 rounded-2xl gap-2 w-full my-4 h-full flex-1 ${className || ''}`}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-            {/* Icon */}
-            {Icon && (
-                <div className="relative flex items-center justify-center w-28 h-28">
-                    <motion.div
-                        className="absolute inset-0 rounded-full border border-primary/20"
-                        animate={{ scale: [0.9, 1.05, 0.9], opacity: [0.5, 0.15, 0.5] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                    <motion.div
-                        className="absolute inset-4 rounded-full border border-primary/15"
-                        animate={{ scale: [0.9, 1.05, 0.9], opacity: [0.5, 0.15, 0.5] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                    />
-                    <motion.div
-                        className="relative z-10 bg-primary/8 rounded-full p-5 text-primary"
-                        animate={{ y: [0, -8, 0] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    >
-                        <Icon size={36} strokeWidth={1.5} />
-                    </motion.div>
-                </div>
-            )}
+        <div className={`flex w-full flex-1 flex-col items-center justify-center gap-1 py-8 text-center ${className}`}>
+            {Icon ? <Icon className="mb-2 h-7 w-7 text-helper" strokeWidth={1.5} aria-hidden="true" /> : null}
 
-            {/* optional steps */}
-            {steps && (
-                <motion.div
-                    className="flex items-center gap-2 text-xs text-light-50"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.4 }}
-                >
-                    {steps.map((step, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                            <motion.span
-                                className="flex items-center gap-1.5 bg-light-5 border border-light-10 rounded-full px-3 py-1"
-                                initial={{ opacity: 0, y: 6 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 + i * 0.1, duration: 0.3 }}
-                            >
-                                {step}
-                            </motion.span>
-                            {i < steps.length - 1 && <span className="text-light-25">›</span>}
-                        </div>
-                    ))}
-                </motion.div>
-            )}
+            <p className="text-sm font-medium text-light">{title}</p>
+            {description ? (
+                <p className="mt-0.5 max-w-64 text-xs leading-relaxed text-helper">{description}</p>
+            ) : null}
 
-            {/* Texts */}
-            <motion.div
-                className="flex flex-col gap-1 max-w-sm"
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.35 }}
-            >
-                <h3 className="text-light font-semibold text-lg">{title}</h3>
-                {description && <p className="text-light-75 text-sm">{description}</p>}
-            </motion.div>
-
-            {/* Buttons */}
-            {(buttonText || secondaryButtonText) && (
-                <motion.div
-                    className="flex items-center gap-3 mt-2"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.35, duration: 0.35 }}
-                >
-                    {buttonText && onButtonClick && (
-                        <Button
-                            text={buttonText}
-                            onClick={() => void onButtonClick()}
-                            className="px-6 py-2.5 text-sm"
-                        />
-                    )}
-                    {secondaryButtonText && (
+            {buttonText || secondaryButtonText ? (
+                <div className="mt-4 flex items-center gap-3">
+                    {buttonText && onButtonClick ? (
+                        <Button text={buttonText} onClick={onButtonClick} className="px-6 py-2.5 text-sm" />
+                    ) : null}
+                    {secondaryButtonText ? (
                         <button
+                            type="button"
                             onClick={onSecondaryButtonClick}
-                            className="text-sm text-primary border border-primary/30 rounded-lg px-4 py-2.5 hover:bg-primary/5 transition-colors"
+                            className="cursor-pointer rounded-lg border border-light-10 px-4 py-2.5 text-sm text-light transition-colors hover:bg-light-5"
                         >
                             {secondaryButtonText}
                         </button>
-                    )}
-                </motion.div>
-            )}
-        </motion.div>
+                    ) : null}
+                </div>
+            ) : null}
+        </div>
     );
 };
