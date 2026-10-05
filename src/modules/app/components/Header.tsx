@@ -2,6 +2,7 @@ import { useLocation, Link } from "react-router";
 import { Menu } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { HeaderNav } from "./HeaderNav";
 import { NotificationsMenu } from "./NotificationsMenu";
 import { UserMenu } from "./UserMenu";
 
@@ -20,12 +21,12 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
 
     return (
         <header className="flex items-center justify-between gap-3 border-b border-light-10 bg-surface-hard px-4 py-4 text-light sm:px-6 lg:px-8 lg:py-5">
-            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4 lg:gap-8">
                 <button
                     type="button"
                     onClick={onOpenNav}
                     aria-label={t("a11y.openMenu")}
-                    className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-25 bg-surface text-light transition-colors hover:border-light-50"
+                    className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-25 bg-surface text-light transition-colors hover:border-light-50 lg:hidden"
                 >
                     <Menu className="h-5 w-5" />
                 </button>
@@ -34,7 +35,9 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                     <img src={BflowLogo} alt="" className="h-7 w-auto" />
                 </Link>
 
-                <div className="flex min-w-0 items-center gap-2 text-base font-medium sm:text-lg">
+                <HeaderNav />
+
+                <div className="flex min-w-0 items-center gap-2 text-base font-medium sm:text-lg lg:hidden">
                     {crumbs.map((crumb, i) => {
                         const isLast = i === crumbs.length - 1;
 

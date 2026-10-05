@@ -19,6 +19,8 @@ import {
     WALLET_NAV_CHILDREN,
 } from "../utils/navItems";
 
+const DESKTOP_MEDIA_QUERY = "(min-width: 64rem)";
+
 interface NavbarProps {
     isOpen: boolean;
     onClose: () => void;
@@ -57,9 +59,19 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
         };
         document.addEventListener("keydown", handleKeyDown);
 
+        // The drawer is hidden from lg up, so it must not keep the body scroll locked there
+        const desktopQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
+        const handleDesktopChange = (event: MediaQueryListEvent) => {
+            if (event.matches) {
+                onClose();
+            }
+        };
+        desktopQuery.addEventListener("change", handleDesktopChange);
+
         return () => {
             document.body.style.overflow = previousOverflow;
             document.removeEventListener("keydown", handleKeyDown);
+            desktopQuery.removeEventListener("change", handleDesktopChange);
         };
     }, [isOpen, onClose]);
 
@@ -75,12 +87,12 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                 type="button"
                 aria-label={t("a11y.closeMenu")}
                 onClick={onClose}
-                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+                className={`fixed inset-0 z-40 bg-surface-hard/70 transition-opacity lg:hidden ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"
                     }`}
             />
 
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">

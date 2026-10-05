@@ -4,7 +4,7 @@ import { getBalance } from "../dashboard.service";
 
 export const useGetBalance = () => {
     return useQuery({
-        queryKey: ["dashboard-balance"],
+        queryKey: ["dashboard", "balance"],
         queryFn: getBalance,
         staleTime: 1000 * 60 * 5,
     });
