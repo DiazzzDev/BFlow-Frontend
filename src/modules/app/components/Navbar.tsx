@@ -19,6 +19,8 @@ import {
     WALLET_NAV_CHILDREN,
 } from "../utils/navItems";
 
+const DESKTOP_MEDIA_QUERY = "(min-width: 64rem)";
+
 interface NavbarProps {
     isOpen: boolean;
     onClose: () => void;
@@ -50,10 +52,28 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
         const previousOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
 
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+        document.addEventListener("keydown", handleKeyDown);
+
+        // The drawer is hidden from lg up, so it must not keep the body scroll locked there
+        const desktopQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
+        const handleDesktopChange = (event: MediaQueryListEvent) => {
+            if (event.matches) {
+                onClose();
+            }
+        };
+        desktopQuery.addEventListener("change", handleDesktopChange);
+
         return () => {
             document.body.style.overflow = previousOverflow;
+            document.removeEventListener("keydown", handleKeyDown);
+            desktopQuery.removeEventListener("change", handleDesktopChange);
         };
-    }, [isOpen]);
+    }, [isOpen, onClose]);
 
     const linkClassName = ({ isActive }: { isActive: boolean }) =>
         `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-light transition-colors duration-150 ${isActive ? "bg-secondary font-medium" : "font-normal hover:bg-light-5"
@@ -72,7 +92,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
             />
 
             <aside
-                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:static lg:z-0 lg:w-50 lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-10 bg-surface px-3 py-6 transition-transform duration-300 ease-out lg:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">
@@ -85,7 +105,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
                         type="button"
                         onClick={onClose}
                         aria-label={t("a11y.closeMenu")}
-                        className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer lg:hidden"
+                        className="rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light cursor-pointer"
                     >
                         <X className="h-5 w-5" />
                     </button>

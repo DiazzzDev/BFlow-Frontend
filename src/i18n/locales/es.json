@@ -26,10 +26,10 @@
     "a11y": {
         "loadingSession": "Cargando sesión",
         "openMenu": "Abrir menú",
+        "mainNavigation": "Navegación principal",
         "closeMenu": "Cerrar menú",
         "notifications": "Notificaciones",
-        "editProfile": "Editar perfil",
-        "user": "Usuario"
+        "editProfile": "Editar perfil"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -40,6 +40,13 @@
         "financeTool": "Herramienta financiera",
         "hideWalletOptions": "Ocultar opciones de billeteras",
         "showWalletOptions": "Mostrar opciones de billeteras"
+    },
+    "userMenu": {
+        "open": "Abrir menú de la cuenta",
+        "plan": "Plan {{plan}}",
+        "active": "Activo",
+        "resources": "Recursos",
+        "opensInNewTab": "(se abre en una pestaña nueva)"
     },
     "breadcrumbs": {
         "dashboard": "Dashboard",
@@ -66,6 +73,18 @@
         "loggingOut": "Cerrando...",
         "logoutSuccess": "Sesión cerrada correctamente",
         "logoutError": "Error al cerrar sesión",
+        "deleteAccountTitle": "Eliminar cuenta",
+        "deleteAccountDescription": "Tu cuenta se desactiva de inmediato y se elimina definitivamente después de {{days}} días.",
+        "deleteAccount": "Eliminar cuenta",
+        "deleteAccountModalTitle": "¿Eliminar tu cuenta?",
+        "deleteAccountGracePeriod": "Tienes {{days}} días para arrepentirte. Si inicias sesión en ese tiempo, podrás restaurar tu cuenta tal como la dejaste.",
+        "deleteAccountPermanent": "Pasados los {{days}} días, tus billeteras, transacciones, presupuestos y perfil se borran para siempre. Esto no se puede deshacer.",
+        "deleteAccountSubscriptionWarning": "Tienes una suscripción activa. Cancélala antes de eliminar tu cuenta para evitar cobros futuros.",
+        "deleteAccountConfirmation": "Escribe {{word}} para confirmar",
+        "deleteAccountWord": "ELIMINAR",
+        "deleteAccountLoading": "Eliminando cuenta...",
+        "deleteAccountSuccess": "Tu cuenta se eliminará en {{days}} días. Inicia sesión antes si quieres restaurarla.",
+        "deleteAccountError": "No se pudo eliminar la cuenta",
         "subscription": "Suscripción",
         "currentPlan": "Plan actual",
         "price": "Precio",
@@ -409,14 +428,17 @@
         "perDay": "/día"
     },
     "notifications": {
-        "markLoading": "Marcando como leída...",
-        "markFallback": "Notificación marcada como leída",
-        "close": "Cerrar notificaciones",
-        "closePanel": "Cerrar panel de notificaciones",
+        "title": "Notificaciones",
+        "newCount": "{{count}} nuevas",
+        "markAllRead": "Marcar todo como leído",
+        "filterLabel": "Filtrar notificaciones",
+        "filterUnread": "No leídas",
+        "filterAll": "Todas",
+        "nothingPending": "Nada pendiente",
+        "nothingPendingHint": "Estás al día. Te avisaremos cuando haya novedades.",
         "empty": "Sin notificaciones",
-        "unread": "sin leer",
-        "upToDate": "Estás al día",
-        "emptyHint": "Cuando tengas novedades, las verás aquí."
+        "emptyHint": "Cuando tengas novedades, las verás aquí.",
+        "viewAll": "Ver todas las notificaciones"
     },
     "profile": {
         "updateLoading": "Actualizando datos...",
@@ -438,6 +460,41 @@
         "afternoon": "Buenas tardes",
         "evening": "Buenas noches",
         "subtitle": "Así está tu dinero en este momento.",
+        "receiptUploading": "Subiendo recibo...",
+        "receiptUploaded": "Recibo subido correctamente",
+        "receiptUploadError": "No se pudo subir el recibo",
+        "receiptProcessing": "Procesando recibo...",
+        "receiptExtracted": "Datos del recibo listos para confirmar",
+        "receiptFallbackTitle": "Gasto desde recibo",
+        "receiptConfirming": "Confirmando recibo...",
+        "receiptConfirmed": "Gasto creado correctamente",
+        "receiptConfirmError": "No se pudo confirmar el recibo",
+        "receiptSelected": "Recibo seleccionado: {{file}}",
+        "receiptInvalidType": "Solo se permiten JPEG, PNG, WebP o PDF",
+        "receiptTooLarge": "El recibo no puede superar los 10 MB",
+        "walletLabel": "Billetera",
+        "currentWalletBalance": "Saldo actual",
+        "defaultWallet": "Billetera predeterminada",
+        "currentBalance": "Tienes ahora",
+        "allWallets": "Todas las wallets",
+        "monthlySummary": "Resumen este mes",
+        "noDefaultWallet": "Sin wallet predeterminada",
+        "quickRegisterWalletBalance": "Saldo disponible: {{balance}}",
+        "quickRegisterSaving": "Guardando...",
+        "quickRegisterSuccess": "Gasto registrado correctamente",
+        "quickRegisterError": "No se pudo registrar el gasto",
+        "quickRegister": "Registro rápido",
+        "amount": "Monto",
+        "amountPlaceholder": "$ 0.00",
+        "scanReceipt": "Escanear recibo",
+        "quickRegisterHint": "Escribe el monto o escanea un recibo.",
+        "saveExpense": "Guardar gasto",
+        "activityAll": "Todos",
+        "activitySearch": "Buscar",
+        "noMatchingActivity": "Sin coincidencias",
+        "noMatchingActivityHint": "Prueba con otro filtro o término de búsqueda.",
+        "budgetRemaining": "Te quedan {{remaining}} de {{limit}}",
+        "budgetSpent": "Has gastado {{spent}} de {{limit}}",
         "newTransaction": "Nueva transacción",
         "scheduleTransaction": "Programar transacción",
         "totalBalance": "Balance total",
@@ -477,10 +534,549 @@
         "upgradeTitle": "Mejora tu experiencia con BFlow Pro",
         "seeMore": "Ver más"
     },
+    "docs": {
+        "label": "Documentación",
+        "onThisPage": "En esta página",
+        "navigate": "Ir a una sección",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "groups": {
+            "gettingStarted": "Primeros pasos",
+            "modules": "Módulos",
+            "account": "Cuenta y ajustes"
+        },
+        "hub": {
+            "title": "Explora la documentación",
+            "description": "Cada módulo tiene su propia guía con lo que puedes hacer y las reglas que conviene conocer."
+        },
+        "pages": {
+            "introduction": {
+                "title": "Introducción",
+                "description": "Qué es BFlow y cómo se organiza tu dinero dentro de la app.",
+                "sections": [
+                    {
+                        "id": "what-is-bflow",
+                        "title": "¿Qué es BFlow?",
+                        "body": [
+                            "BFlow es una herramienta de finanzas personales y compartidas. Reúne tus ingresos, gastos, presupuestos y billeteras en un solo lugar para que sepas en todo momento cuánto tienes, en qué se va y cuánto te queda.",
+                            "Puedes usarla solo o invitar a tu pareja, familia o amigos a administrar una billetera en conjunto."
+                        ]
+                    },
+                    {
+                        "id": "how-it-works",
+                        "title": "Cómo se organiza",
+                        "body": [
+                            "Todo en BFlow gira alrededor de cuatro piezas que se conectan entre sí:"
+                        ],
+                        "items": [
+                            "Billeteras: cada cuenta, tarjeta o efectivo que quieras controlar.",
+                            "Transacciones: los ingresos, gastos y transferencias que registras en una billetera.",
+                            "Presupuestos: límites de gasto por billetera, por categoría o por ambas.",
+                            "Miembros: las personas con las que compartes una billetera."
+                        ]
+                    },
+                    {
+                        "id": "currency",
+                        "title": "Moneda",
+                        "body": [
+                            "Por ahora todas las billeteras, transacciones y presupuestos se manejan en dólares estadounidenses (USD)."
+                        ],
+                        "note": "La moneda se asigna automáticamente al crear una billetera y no se puede cambiar."
+                    }
+                ]
+            },
+            "plans": {
+                "title": "Planes y límites",
+                "description": "Qué incluye cada plan y cómo se procesan los pagos.",
+                "sections": [
+                    {
+                        "id": "personal",
+                        "title": "Personal",
+                        "body": [
+                            "El plan gratuito, pensado para empezar a ordenar tus finanzas sin costo."
+                        ],
+                        "items": [
+                            "Hasta 2 billeteras.",
+                            "Hasta 2 transacciones recurrentes.",
+                            "Hasta 3 presupuestos.",
+                            "Participar en una billetera compartida de hasta 3 personas."
+                        ]
+                    },
+                    {
+                        "id": "pro",
+                        "title": "BFlow Pro",
+                        "body": [
+                            "Para quienes administran varias cuentas o comparten sus finanzas. Cuesta $9.99 al mes o $99.99 al año."
+                        ],
+                        "items": [
+                            "Hasta 100 billeteras.",
+                            "Hasta 25 transacciones recurrentes.",
+                            "Hasta 100 presupuestos.",
+                            "Crear billeteras compartidas e invitar hasta 10 personas.",
+                            "Transferencias entre billeteras."
+                        ]
+                    },
+                    {
+                        "id": "payments",
+                        "title": "Pagos",
+                        "body": [
+                            "Los pagos de los planes se procesan con Wompi. Todos los precios están en USD; el monto final en moneda local depende del tipo de cambio de tu banco."
+                        ],
+                        "note": "Puedes revisar o cancelar tu suscripción desde Ajustes, en la sección Suscripción."
+                    }
+                ]
+            },
+            "dashboard": {
+                "title": "Dashboard",
+                "description": "Tu resumen financiero: balance, estadísticas, presupuestos y actividad reciente.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Vista general",
+                        "body": [
+                            "El dashboard es la primera pantalla al iniciar sesión. Te saluda según la hora del día y muestra cómo está tu dinero en este momento."
+                        ]
+                    },
+                    {
+                        "id": "widgets",
+                        "title": "Qué muestra",
+                        "body": [
+                            "La pantalla se divide en tarjetas, cada una con una parte de tu información:"
+                        ],
+                        "items": [
+                            "Balance total, ingreso promedio y gasto promedio, comparados con el mes pasado.",
+                            "Estadísticas: un gráfico de ingresos y gastos por mes. Toca un elemento de la leyenda para ver solo esa serie.",
+                            "Salud de presupuestos: el estado de cada presupuesto activo.",
+                            "Este mes: cómo se reparte tu actividad entre ingresos, gastos y transferencias.",
+                            "Actividad reciente: tus últimos movimientos."
+                        ]
+                    },
+                    {
+                        "id": "budget-health",
+                        "title": "Salud de presupuestos",
+                        "body": [
+                            "Cada presupuesto muestra una etiqueta según cuánto has gastado de su límite:"
+                        ],
+                        "items": [
+                            "Saludable: vas por debajo del umbral de alerta.",
+                            "Advertencia: superaste el umbral de alerta.",
+                            "Crítico: superaste el umbral crítico.",
+                            "Excedido: gastaste el 100 % o más del límite."
+                        ]
+                    },
+                    {
+                        "id": "quick-actions",
+                        "title": "Acciones rápidas",
+                        "body": [
+                            "Desde el dashboard puedes registrar una nueva transacción o programar una recurrente sin entrar a una billetera. Solo elige la billetera en el formulario."
+                        ],
+                        "note": "Desde aquí solo puedes registrar ingresos y gastos en tus propias billeteras. Las transferencias se hacen desde el detalle de una billetera."
+                    }
+                ]
+            },
+            "wallets": {
+                "title": "Billeteras",
+                "description": "Crea una billetera por cada cuenta, tarjeta o efectivo y consulta su saldo y movimientos.",
+                "sections": [
+                    {
+                        "id": "create",
+                        "title": "Crear una billetera",
+                        "body": [
+                            "Desde Billeteras, toca Crear billetera y completa el formulario:"
+                        ],
+                        "items": [
+                            "Nombre de la billetera.",
+                            "Descripción, por ejemplo «Cuenta de ahorros» o «Gastos del día a día».",
+                            "Balance inicial: el saldo con el que empiezas. Debe ser 0 o mayor."
+                        ],
+                        "note": "Todas las billeteras se crean en USD."
+                    },
+                    {
+                        "id": "list",
+                        "title": "Tus billeteras",
+                        "body": [
+                            "La lista tiene dos pestañas: Mis billeteras, con las que tú creaste, y Compartidas, con las billeteras de otras personas a las que te uniste. Puedes buscar por nombre y elegir cuántas se muestran por página.",
+                            "A la derecha verás el historial con tus últimos movimientos de todas las billeteras."
+                        ]
+                    },
+                    {
+                        "id": "detail",
+                        "title": "Detalle de una billetera",
+                        "body": [
+                            "Al abrir una billetera verás su saldo actual y estas pestañas:"
+                        ],
+                        "items": [
+                            "Todas las transacciones, Ingresos y Gastos, con búsqueda y paginación.",
+                            "Transferencias, solo en billeteras de un único miembro.",
+                            "Miembros, para ver y administrar quién tiene acceso.",
+                            "Ajustes, con los datos y opciones de la billetera."
+                        ]
+                    },
+                    {
+                        "id": "info-panel",
+                        "title": "Panel de información",
+                        "body": [
+                            "El panel lateral resume la última actividad, el gasto más alto, el número de transacciones y el valor inicial. También lista las próximas transacciones programadas. Puedes ocultarlo con Ocultar info."
+                        ]
+                    },
+                    {
+                        "id": "settings",
+                        "title": "Editar o eliminar",
+                        "body": [
+                            "En la pestaña Ajustes, el propietario puede cambiar el nombre y la descripción. Los demás miembros ven estos datos, pero no pueden editarlos."
+                        ],
+                        "note": "Eliminar una billetera borra su historial, presupuestos y miembros. Esta acción no se puede deshacer."
+                    }
+                ]
+            },
+            "sharedWallets": {
+                "title": "Billeteras compartidas",
+                "description": "Administra una billetera en equipo: invita personas, asigna roles y sabe quién registró cada movimiento.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Cómo funcionan",
+                        "body": [
+                            "Una billetera se vuelve compartida cuando invitas a otra persona. Todos los miembros ven el mismo saldo y las mismas transacciones, y cada movimiento indica quién lo registró."
+                        ]
+                    },
+                    {
+                        "id": "roles",
+                        "title": "Roles",
+                        "body": [
+                            "Cada miembro tiene un rol dentro de la billetera:"
+                        ],
+                        "items": [
+                            "Propietario: quien creó la billetera. Puede invitar, quitar miembros, editar los datos y eliminarla.",
+                            "Miembro: participa registrando y consultando transacciones.",
+                            "Solo lectura: puede consultar la información de la billetera."
+                        ]
+                    },
+                    {
+                        "id": "invite",
+                        "title": "Invitar personas",
+                        "body": [
+                            "Desde la pestaña Miembros, el propietario toca Invitar y busca a la persona por nombre o correo (mínimo 2 caracteres). La invitación se envía por correo electrónico. Cada resultado indica si se le puede invitar:"
+                        ],
+                        "items": [
+                            "Disponible: la persona puede ser invitada.",
+                            "Ya es miembro: ya tiene acceso a la billetera.",
+                            "Invitación pendiente: ya tiene una invitación sin responder."
+                        ]
+                    },
+                    {
+                        "id": "invitations",
+                        "title": "Responder una invitación",
+                        "body": [
+                            "Tus invitaciones aparecen en Billeteras, en el botón Invitaciones. Cada una muestra quién te invitó, la billetera y la fecha en que caduca. Puedes elegir Unirme o Rechazar.",
+                            "Las invitaciones vencidas ya no se pueden aceptar. El propietario puede cancelar las invitaciones pendientes desde Invitaciones enviadas."
+                        ]
+                    },
+                    {
+                        "id": "members",
+                        "title": "Administrar miembros",
+                        "body": [
+                            "El propietario puede quitar a cualquier miembro desde la pestaña Miembros, y la persona pierde el acceso de inmediato. El propietario no puede quitarse a sí mismo."
+                        ],
+                        "note": "Las transferencias no están disponibles en billeteras compartidas. Solo se pueden hacer en billeteras de un único miembro."
+                    }
+                ]
+            },
+            "transactions": {
+                "title": "Transacciones",
+                "description": "Registra ingresos, gastos y transferencias, y decide cuáles se repiten.",
+                "sections": [
+                    {
+                        "id": "types",
+                        "title": "Tipos de transacción",
+                        "body": [
+                            "Al tocar Nueva transacción eliges uno de estos tipos:"
+                        ],
+                        "items": [
+                            "Ingreso: dinero que entra a la billetera.",
+                            "Gasto: dinero que sale de la billetera.",
+                            "Transferencia: dinero que pasa de una de tus billeteras a otra."
+                        ]
+                    },
+                    {
+                        "id": "fields",
+                        "title": "Datos de un ingreso o gasto",
+                        "body": [
+                            "Ambos formularios piden la misma información:"
+                        ],
+                        "items": [
+                            "Título.",
+                            "Descripción, obligatoria en gastos y opcional en ingresos.",
+                            "Monto, mayor que 0.",
+                            "Fecha, por defecto la de hoy.",
+                            "Categoría, filtrada según el tipo."
+                        ]
+                    },
+                    {
+                        "id": "recurring",
+                        "title": "Ingresos y gastos recurrentes",
+                        "body": [
+                            "Activa Ingreso recurrente o Gasto recurrente y elige un patrón: diario, semanal, mensual o anual. Si necesitas definir fechas de inicio y fin, usa Programar transacción."
+                        ]
+                    },
+                    {
+                        "id": "transfers",
+                        "title": "Transferencias",
+                        "body": [
+                            "Elige la billetera de destino (o de origen, con el botón para invertir la dirección), el monto y el motivo de la transferencia. Solo puedes transferir entre tus propias billeteras."
+                        ],
+                        "note": "Las transferencias solo están disponibles en billeteras de un único miembro."
+                    },
+                    {
+                        "id": "actions",
+                        "title": "Editar, eliminar y duplicar",
+                        "body": [
+                            "Desde el menú de cada transacción puedes actualizar o eliminar ingresos y gastos. Las transferencias no se pueden editar ni eliminar.",
+                            "Duplicar crea una copia con la fecha de hoy, útil para gastos que se repiten sin una frecuencia fija."
+                        ]
+                    }
+                ]
+            },
+            "scheduledTransactions": {
+                "title": "Transacciones programadas",
+                "description": "Deja que los pagos e ingresos fijos se registren solos.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Cuándo usarlas",
+                        "body": [
+                            "Programa una transacción para pagos o ingresos que se repiten, como el alquiler, una suscripción o tu salario. BFlow los registra automáticamente en cada fecha."
+                        ]
+                    },
+                    {
+                        "id": "create",
+                        "title": "Programar una transacción",
+                        "body": [
+                            "Toca Programar transacción desde el dashboard o desde el panel de información de una billetera, y completa:"
+                        ],
+                        "items": [
+                            "Tipo: ingreso o gasto.",
+                            "Título, descripción, monto y categoría.",
+                            "Frecuencia: diaria, semanal, mensual o anual.",
+                            "Cada: cada cuántos días, semanas, meses o años se repite.",
+                            "Fecha de inicio y fecha de fin."
+                        ],
+                        "note": "La fecha de fin es obligatoria y debe ser igual o posterior a la fecha de inicio."
+                    },
+                    {
+                        "id": "upcoming",
+                        "title": "Próximas transacciones",
+                        "body": [
+                            "En el detalle de cada billetera, la sección Próximas lista las transacciones programadas que están por registrarse."
+                        ]
+                    }
+                ]
+            },
+            "history": {
+                "title": "Historial",
+                "description": "Todos tus movimientos agrupados por día, en todas tus billeteras.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Vista general",
+                        "body": [
+                            "El historial reúne las transacciones de todas tus billeteras, agrupadas por día. Llegas a él desde Billeteras › Historial o con Ver más en el panel de historial."
+                        ]
+                    },
+                    {
+                        "id": "filters",
+                        "title": "Filtros",
+                        "body": [
+                            "Busca por texto o filtra por tipo: Todas, Ingresos, Gastos o Transferencias."
+                        ]
+                    },
+                    {
+                        "id": "details",
+                        "title": "Qué muestra cada movimiento",
+                        "body": [
+                            "Cada tarjeta indica el título, la billetera, la categoría, el monto y si se registró de forma manual o recurrente. En las transferencias también verás la billetera contraparte."
+                        ],
+                        "note": "Desde el historial puedes ver el detalle o duplicar una transacción. Para editarla o eliminarla, ábrela desde su billetera."
+                    }
+                ]
+            },
+            "budgets": {
+                "title": "Presupuestos",
+                "description": "Pon un límite a tus gastos y recibe avisos antes de pasarte.",
+                "sections": [
+                    {
+                        "id": "scopes",
+                        "title": "Alcance",
+                        "body": [
+                            "Un presupuesto puede controlar distintos grupos de gastos:"
+                        ],
+                        "items": [
+                            "Billetera: todos los gastos de una billetera.",
+                            "Categoría: los gastos de una categoría en todas tus billeteras.",
+                            "Billetera + categoría: los gastos de una categoría dentro de una billetera."
+                        ]
+                    },
+                    {
+                        "id": "create",
+                        "title": "Crear un presupuesto",
+                        "body": [
+                            "Desde Presupuestos, toca Crear presupuesto, elige el alcance y completa el monto, el periodo (diario, semanal, mensual o anual) y la fecha de inicio."
+                        ]
+                    },
+                    {
+                        "id": "thresholds",
+                        "title": "Umbrales y estados",
+                        "body": [
+                            "Cada presupuesto tiene dos umbrales que definen su estado. Por defecto, la alerta está en 60 % y el crítico en 90 %; el crítico siempre debe ser mayor que la alerta."
+                        ],
+                        "items": [
+                            "Saludable: por debajo de la alerta.",
+                            "Advertencia: desde el umbral de alerta.",
+                            "Crítico: desde el umbral crítico.",
+                            "Excedido: desde el 100 % del límite."
+                        ]
+                    },
+                    {
+                        "id": "detail",
+                        "title": "Seguimiento",
+                        "body": [
+                            "El detalle de un presupuesto muestra cuánto te queda y cuántos días faltan, lo gastado con su promedio diario, una barra de progreso con los umbrales y la tendencia de gasto."
+                        ]
+                    },
+                    {
+                        "id": "settings",
+                        "title": "Editar o eliminar",
+                        "body": [
+                            "En la pestaña Ajustes puedes cambiar el monto, el periodo, la fecha de inicio y los umbrales, o eliminar el presupuesto."
+                        ],
+                        "note": "La billetera y la categoría no se pueden cambiar después de crear el presupuesto."
+                    }
+                ]
+            },
+            "categories": {
+                "title": "Categorías",
+                "description": "Clasifica tus ingresos y gastos para entender en qué se va tu dinero.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Para qué sirven",
+                        "body": [
+                            "Cada ingreso y gasto lleva una categoría. Las categorías te permiten crear presupuestos por categoría y entender mejor tus movimientos."
+                        ]
+                    },
+                    {
+                        "id": "create",
+                        "title": "Crear una categoría",
+                        "body": [
+                            "Ve a Ajustes › Categorías › Gestionar y completa:"
+                        ],
+                        "items": [
+                            "Nombre.",
+                            "Tipo: gasto o ingreso.",
+                            "Color e ícono, para reconocerla rápido."
+                        ],
+                        "note": "Por ahora no es posible editar ni eliminar categorías."
+                    }
+                ]
+            },
+            "notifications": {
+                "title": "Notificaciones",
+                "description": "Mantente al día con lo que pasa en tus billeteras y presupuestos.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Dónde verlas",
+                        "body": [
+                            "Toca la campana en la parte superior de la app. El número indica cuántas notificaciones tienes sin leer."
+                        ]
+                    },
+                    {
+                        "id": "read",
+                        "title": "Marcar como leídas",
+                        "body": [
+                            "Cada notificación tiene la opción Marcar como leída. Cuando no quede ninguna pendiente, verás el mensaje Estás al día."
+                        ]
+                    }
+                ]
+            },
+            "settings": {
+                "title": "Ajustes",
+                "description": "Administra tu perfil, idioma, suscripción y sesión.",
+                "sections": [
+                    {
+                        "id": "profile",
+                        "title": "Perfil",
+                        "body": [
+                            "Toca el lápiz junto a tu nombre para cambiar tu nombre o tu foto (PNG, JPEG o WebP). El correo electrónico no se puede cambiar."
+                        ]
+                    },
+                    {
+                        "id": "language",
+                        "title": "Idioma",
+                        "body": [
+                            "Elige entre español e inglés. La preferencia se guarda en tu perfil."
+                        ]
+                    },
+                    {
+                        "id": "subscription",
+                        "title": "Suscripción",
+                        "body": [
+                            "Si tienes un plan de pago, verás el plan actual, su estado, el precio, la fecha del próximo cobro y hasta cuándo está vigente. Desde aquí también puedes cancelarla."
+                        ]
+                    },
+                    {
+                        "id": "session",
+                        "title": "Cerrar sesión",
+                        "body": [
+                            "Al final de Ajustes encontrarás el botón para cerrar sesión."
+                        ]
+                    }
+                ]
+            },
+            "claude": {
+                "title": "Conexión con Claude",
+                "description": "Consulta tu información financiera en lenguaje natural desde Claude.",
+                "sections": [
+                    {
+                        "id": "overview",
+                        "title": "Qué es",
+                        "body": [
+                            "BFlow se puede añadir a Claude como un conector personalizado. Así puedes hacerle preguntas sobre tus finanzas sin abrir la app."
+                        ]
+                    },
+                    {
+                        "id": "connect",
+                        "title": "Cómo conectarlo",
+                        "body": [
+                            "La conexión toma unos pocos pasos:"
+                        ],
+                        "items": [
+                            "Ve a Ajustes y toca Conectar con Claude.",
+                            "Se abrirá Claude con el conector BFlow ya configurado.",
+                            "Confirma la conexión en Claude."
+                        ]
+                    },
+                    {
+                        "id": "examples",
+                        "title": "Qué puedes preguntar",
+                        "body": [
+                            "Algunos ejemplos:"
+                        ],
+                        "items": [
+                            "¿Cuánto gasté este mes en comida?",
+                            "¿Cómo van mis presupuestos?",
+                            "¿Cuál es el saldo de mi billetera de ahorros?"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
     "home": {
         "navFeatures": "Características",
         "navPricing": "Precios",
         "navFaq": "Preguntas frecuentes",
+        "navDocs": "Documentación",
         "navContact": "Contacto",
         "goDashboard": "Ir al dashboard",
         "signIn": "Iniciar sesión",
@@ -505,12 +1101,123 @@
         "heroTitle": "El control financiero que",
         "heroFocus": "siempre quisiste",
         "heroDescription": "Gestiona tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.",
+        "heroPreview": {
+            "sharedWallet": "Billetera compartida",
+            "members": "{{count}} miembros",
+            "budgetPeriod": "Presupuesto mensual",
+            "monthBalance": "Balance del mes",
+            "walletName": "Viaje en familia",
+            "personalWallet": "Billetera personal",
+            "personalWalletDescription": "Gastos del día a día",
+            "walletDescription": "Vacaciones de diciembre",
+            "availableBalance": "Saldo disponible",
+            "imageAlt": "Dashboard de BFlow con balance, estadísticas y salud de presupuestos"
+        },
+        "solutions": {
+            "title": "Organiza tu dinero a tu manera",
+            "description": "Cada módulo resuelve una parte de tus finanzas: desde saber a dónde se fue tu dinero hasta avisarte antes de pasarte del presupuesto.",
+            "learnMore": "Conocer más sobre {{module}}",
+            "more": {
+                "title": "Descubre todo lo que BFlow puede hacer por ti",
+                "description": "Transacciones recurrentes, historial, categorías, notificaciones y hasta una conexión con Claude. Conoce cada módulo en detalle.",
+                "cta": "Explorar todos los módulos"
+            },
+            "items": {
+                "wallets": {
+                    "label": "Billeteras",
+                    "title": "Cada cuenta en su lugar",
+                    "description": "Crea una billetera por cada banco, tarjeta o efectivo y mira cuánto tienes en cada una.",
+                    "highlights": [
+                        "Saldo por billetera",
+                        "Movimientos recientes a la mano"
+                    ]
+                },
+                "sharedWallets": {
+                    "label": "Billeteras compartidas",
+                    "title": "Finanzas en equipo, sin perder el control",
+                    "description": "Comparte billeteras con tu pareja, familia o amigos y define qué puede hacer cada quien.",
+                    "highlights": [
+                        "Roles por miembro",
+                        "Sabe quién registró cada movimiento"
+                    ]
+                },
+                "budgets": {
+                    "label": "Presupuestos",
+                    "title": "Te avisa antes de pasarte, no después",
+                    "description": "Ponle límite a una billetera o categoría y sigue su estado en todo momento.",
+                    "highlights": [
+                        "Límites por billetera o categoría",
+                        "Alertas antes de pasarte"
+                    ]
+                }
+            }
+        },
+        "modules": {
+            "title": "Módulos",
+            "description": "Las herramientas de BFlow para entender, organizar y controlar tu dinero, todas en un solo lugar.",
+            "viewModule": "Ver cómo funciona",
+            "more": {
+                "label": "Conocer más",
+                "description": "Descubre todo lo que BFlow puede hacer por ti"
+            },
+            "items": {
+                "dashboard": {
+                    "question": "¿A dónde se fue mi dinero este mes?",
+                    "name": "Dashboard",
+                    "tagline": "tu dinero de un vistazo",
+                    "answer": "Ve tu balance, lo que entra y lo que sale en una sola pantalla, sin hacer cuentas.",
+                    "highlights": [
+                        "Balance total al instante",
+                        "Ingresos vs. gastos mes a mes",
+                        "Comparación con el mes pasado"
+                    ]
+                },
+                "wallets": {
+                    "question": "¿Cómo llevo las cuentas con mi pareja o familia?",
+                    "name": "Billeteras",
+                    "tagline": "personales y compartidas",
+                    "answer": "Separa tu banco, tarjeta o efectivo y comparte las que quieras con quien quieras.",
+                    "highlights": [
+                        "Una billetera por cada cuenta",
+                        "Invita a otras personas",
+                        "Sabe quién registró cada gasto"
+                    ]
+                },
+                "transactions": {
+                    "question": "¿Y si se me olvida anotar un gasto?",
+                    "name": "Transacciones",
+                    "tagline": "cada movimiento en segundos",
+                    "answer": "Registra un movimiento en segundos y programa los que se repiten para no volver a pensar en ellos.",
+                    "highlights": [
+                        "Ingresos y gastos con categoría",
+                        "Salario, renta y suscripciones automáticas",
+                        "Transferencias entre billeteras"
+                    ]
+                },
+                "budgets": {
+                    "question": "¿Cómo sé si me estoy pasando?",
+                    "name": "Presupuestos",
+                    "tagline": "gasta sin pasarte",
+                    "answer": "Ponle un límite a lo que gastas y BFlow te avisa antes de que sea tarde.",
+                    "highlights": [
+                        "Límites por billetera o categoría",
+                        "Alertas cuando te acercas",
+                        "Estados claros de un vistazo"
+                    ]
+                }
+            }
+        },
         "howTitle": "Tres pasos para la paz financiera",
         "pricingTitle": "Mira nuestros planes",
         "pricingDescription": "Todos los precios están expresados en USD. El importe final en moneda local dependerá del tipo de cambio aplicado por su banco o entidad emisora.",
         "faqTitle": "Preguntas frecuentes",
+        "faqDescription": "Todo lo que necesitas saber antes de empezar. ¿Te quedó alguna duda?",
+        "faqContact": "Escríbenos",
+        "cta": {
+            "title": "Empieza a organizar tu dinero hoy",
+            "description": "Crea tu cuenta gratis en menos de un minuto y ten tus billeteras, presupuestos y gastos compartidos en un solo lugar."
+        },
         "wompiReference": "Visita Wompi",
-        "stepImageFallback": "Pega la imagen en {{path}}",
         "month": "Mes",
         "year": "Año",
         "plans": {
@@ -630,35 +1337,50 @@
         "registerError": "Error al crear la cuenta",
         "languageLoading": "Cargando idioma",
         "backHome": "Volver al inicio",
+        "back": "Volver",
         "continueGoogle": "Continuar con Google",
-        "loginTitle": "Bienvenido de vuelta",
-        "loginSubtitle": "Ingresa tus credenciales para continuar",
-        "loginSeparator": "O inicia sesión con tu email",
-        "loginHeroTitle": "Tu dinero bajo tu",
-        "loginHeroFocus": "control total",
-        "loginHeroSubtitle": "Gestiona ingresos, gastos y billeteras compartidas desde un solo lugar. Simple, seguro y diseñado para tu día a día.",
-        "registerTitle": "Crear cuenta",
-        "registerSubtitle": "Completa tus datos para empezar",
-        "registerSeparator": "O completa el formulario",
-        "registerHeroTitle": "Comienza gratis, crece con",
-        "registerHeroSubtitle": "Crea tu cuenta en segundos y toma el control de tus finanzas desde el primer día. Sin tarjeta de crédito requerida.",
+        "googleLoading": "Conectando con Google...",
+        "loginTitle": "Bienvenido de nuevo",
+        "loginSubtitle": "Gestiona tus finanzas personales y compartidas.",
+        "loginSeparator": "O con tu correo",
+        "registerTitle": "Crea tu cuenta",
+        "registerSubtitle": "Empieza a organizar tu dinero gratis.",
+        "registerSeparator": "O con tu correo",
         "email": "Correo electrónico",
         "password": "Contraseña",
         "fullName": "Nombre completo",
         "forgotPassword": "¿Olvidaste tu contraseña?",
-        "noAccount": "¿No tienes cuenta?",
-        "createFree": "Crea una gratis",
-        "hasAccount": "¿Ya tienes cuenta?",
+        "showPassword": "Mostrar contraseña",
+        "hidePassword": "Ocultar contraseña",
+        "noAccount": "¿No tienes una cuenta?",
+        "createFree": "Crear cuenta",
+        "hasAccount": "¿Ya tienes una cuenta?",
+        "rememberPassword": "¿Recordaste tu contraseña?",
+        "backToLogin": "Volver a iniciar sesión",
         "signIn": "Inicia sesión",
-        "signInButton": "Iniciar sesión →",
-        "registerButton": "Crear cuenta →",
+        "signInButton": "Iniciar sesión",
+        "registerButton": "Crear cuenta",
         "namePlaceholder": "Tu nombre completo",
         "emailPlaceholder": "tu@correo.com",
         "passwordPlaceholder": "Mínimo 8 caracteres",
-        "verifyTitle": "Verificar cuenta",
-        "verifyDescription": "Revisa tu correo e ingresa el código.",
+        "verifyTitle": "Verifica tu correo",
+        "verifyDescription": "Enviamos un código de 6 dígitos a",
         "verifyLoading": "Verificando...",
         "verifyButton": "Verificar cuenta",
+        "verifyCodeLabel": "Código de verificación",
+        "verifyDigitLabel": "Dígito {{index}} de {{total}}",
+        "verifyCodeIncomplete": "Ingresa los 6 dígitos del código",
+        "verifySuccess": "¡Cuenta verificada! Ya puedes iniciar sesión.",
+        "verifyError": "No pudimos verificar el código",
+        "verifyNoCode": "¿No recibiste el código?",
+        "verifyResend": "Reenviar código",
+        "verifyResendIn": "Reenviar en {{seconds}}s",
+        "verifyResending": "Reenviando...",
+        "verifyResendSuccess": "Te enviamos un código nuevo",
+        "verifyResendError": "No pudimos reenviar el código",
+        "verifySpamHint": "Revisa tu carpeta de spam o promociones si no lo encuentras en tu bandeja principal.",
+        "verifyWrongEmail": "¿No es tu correo?",
+        "registerAgain": "Regístrate de nuevo",
         "resetTitle": "Nueva contraseña",
         "resetDescription": "Revisa tu correo y pega el código recibido.",
         "resetLoading": "Actualizando...",
@@ -677,6 +1399,17 @@
         "validationNameRequired": "El nombre completo es requerido",
         "validationCodeRequired": "Código requerido",
         "validationPasswordsMatch": "Las contraseñas no coinciden",
-        "oauthLoading": "Iniciando sesión..."
+        "oauthSigningIn": "Iniciando sesión",
+        "oauthPreparing": "Estamos preparando tu espacio.",
+        "pendingDeletionTitle": "Tu cuenta está programada para eliminarse",
+        "pendingDeletionDescription": "Se eliminará definitivamente el {{date}}. Restáurala ahora y todo seguirá tal como lo dejaste.",
+        "pendingDeletionDescriptionWithDays": "Se eliminará definitivamente el {{date}}. Te quedan {{days}} días para restaurarla y conservar todo tal como lo dejaste.",
+        "pendingDeletionDescriptionNoDate": "Restáurala dentro de los {{days}} días desde tu solicitud y todo seguirá tal como lo dejaste.",
+        "pendingDeletionDaysLeft_one": "Queda {{count}} día",
+        "pendingDeletionDaysLeft_other": "Quedan {{count}} días",
+        "restoreAccount": "Restaurar mi cuenta",
+        "restoringAccount": "Restaurando...",
+        "restoreAccountSuccess": "Tu cuenta fue restaurada",
+        "restoreAccountError": "No se pudo restaurar la cuenta"
     }
 }

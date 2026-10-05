@@ -3,25 +3,14 @@ import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { LandingBrand } from "./LandingBrand";
+
 import { useLandingNav } from "../hooks/useLandingNav";
 
 import { useAuth } from "@/auth/hooks/useAuth";
 
-const getNavTranslationKey = (id: string) => {
-    if (id === "how") {
-        return "home.navFeatures";
-    }
-    if (id === "pricing") {
-        return "home.navPricing";
-    }
-    if (id === "faq") {
-        return "home.navFaq";
-    }
-    return "home.navContact";
-};
-
 export const LandingNavbar = () => {
-    const { navLinks, handleNavClick } = useLandingNav();
+    const { navLinks, handleNavClick, isLinkActive } = useLandingNav();
     const { isAuthenticated, isChecking } = useAuth();
     const { t } = useTranslation();
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -34,26 +23,26 @@ export const LandingNavbar = () => {
     return (
         <header className="sticky top-0 z-50 border-b border-light-10 bg-surface-hard/95 backdrop-blur-md">
             <nav className="mx-auto flex h-16 max-w-360 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center gap-8">
-                    <Link
-                        to="/"
-                        className="shrink-0 text-base font-semibold tracking-tight text-light"
-                        onClick={() => setMobileOpen(false)}
-                    >
-                        BFlow <span className="font-normal text-helper">Studio</span>
-                    </Link>
+                <div className="flex items-center gap-10">
+                    <LandingBrand onClick={() => setMobileOpen(false)} />
 
                     <div className="hidden items-center gap-1 md:flex">
-                        {navLinks.map(({ label, id }) => (
-                            <button
-                                key={id}
-                                type="button"
-                                onClick={() => onNavClick(id)}
-                                className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light"
-                            >
-                                {t(getNavTranslationKey(id), { defaultValue: label })}
-                            </button>
-                        ))}
+                        {navLinks.map(({ id, labelKey }) => {
+                            const isActive = isLinkActive(id);
+
+                            return (
+                                <button
+                                    key={id}
+                                    type="button"
+                                    onClick={() => onNavClick(id)}
+                                    aria-current={isActive ? "page" : undefined}
+                                    className={`cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-light-10 hover:text-light ${isActive ? "text-light" : "text-helper"
+                                        }`}
+                                >
+                                    {t(labelKey)}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -100,14 +89,16 @@ export const LandingNavbar = () => {
             {mobileOpen && (
                 <div className="border-t border-light-10 px-4 py-3 md:hidden">
                     <div className="flex flex-col gap-1">
-                        {navLinks.map(({ label, id }) => (
+                        {navLinks.map(({ id, labelKey }) => (
                             <button
                                 key={id}
                                 type="button"
                                 onClick={() => onNavClick(id)}
-                                className="cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium text-helper transition-colors hover:bg-light-10 hover:text-light"
+                                aria-current={isLinkActive(id) ? "page" : undefined}
+                                className={`cursor-pointer rounded-md px-3 py-2 text-left text-sm font-medium transition-colors hover:bg-light-10 hover:text-light ${isLinkActive(id) ? "text-light" : "text-helper"
+                                    }`}
                             >
-                                {t(getNavTranslationKey(id), { defaultValue: label })}
+                                {t(labelKey)}
                             </button>
                         ))}
                         {!isAuthenticated && !isChecking && (
