@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";

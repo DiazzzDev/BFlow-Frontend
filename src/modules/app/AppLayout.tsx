@@ -19,19 +19,19 @@ export const AppLayout = () => {
 
     const isPendingDeletion = user?.status === "PENDING_DELETION";
 
-    const documentTitle = useMemo(() => {
+    const documentTitle = useMemo((): string => {
         const walletMatch = pathname.match(/^\/app\/wallets\/([^/]+)/);
 
         if (walletMatch) {
             const wallet = user?.wallets.find((item) => item.id === walletMatch[1]);
-            return wallet?.name || t("breadcrumbs.wallets");
+            return wallet?.name || String(t("breadcrumbs.wallets"));
         }
 
         if (pathname.startsWith("/app/budgets/")) {
-            return t("breadcrumbs.budgets");
+            return String(t("breadcrumbs.budgets"));
         }
 
-        const pageTitleKeys: Record<string, string> = {
+        const pageTitleKeys: Record<string, "breadcrumbs.dashboard" | "breadcrumbs.wallets" | "breadcrumbs.history" | "breadcrumbs.budgets" | "breadcrumbs.settings"> = {
             "/app/dashboard": "breadcrumbs.dashboard",
             "/app/wallets": "breadcrumbs.wallets",
             "/app/history": "breadcrumbs.history",
@@ -39,7 +39,7 @@ export const AppLayout = () => {
             "/app/settings": "breadcrumbs.settings",
         };
 
-        return t(pageTitleKeys[pathname] ?? "breadcrumbs.dashboard");
+        return String(t(pageTitleKeys[pathname] ?? "breadcrumbs.dashboard"));
     }, [pathname, t, user?.wallets]);
 
     useDocumentTitle(documentTitle);
