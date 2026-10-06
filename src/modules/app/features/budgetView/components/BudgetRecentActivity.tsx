@@ -1,8 +1,7 @@
 import { Receipt } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { BudgetCardEmpty } from "./BudgetCardEmpty";
-
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import type { BudgetRecentActivityItem } from "@/modules/app/interfaces/Budget";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
@@ -41,7 +40,7 @@ export const BudgetRecentActivity = ({
                     ))}
                 </ul>
             ) : items.length === 0 ? (
-                <BudgetCardEmpty
+                <CustomEmptyState
                     Icon={Receipt}
                     title={t("budgetView.noHistory")}
                     description={t("budgetView.historyHint")}

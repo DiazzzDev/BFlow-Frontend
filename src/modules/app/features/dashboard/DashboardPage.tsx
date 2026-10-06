@@ -1,17 +1,12 @@
-import { Clock, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
-import { ScheduleTransactionModal } from "../scheduleTransaction/ScheduleTransactionModal";
+import { ConnectClaudeButton } from "../settings/components/ConnectClaudeButton";
 
 import { BalanceCard } from "./components/BalanceCard";
-import { ThisMonthCard } from "./components/ThisMonthCard";
 import { BudgetsHealthCard } from "./components/BudgetsHealthCard";
-import { StatisticsCard } from "./components/StatisticsCard";
+import { QuickRegisterCard } from "./components/QuickRegisterCard";
 import { RecentActivityCard } from "./components/RecentActivityCard";
 import { useDashboardPage } from "./hooks/useDashboardPage";
-
-import { Button } from "@/components/controls/Button";
 
 export const DashboardPage = () => {
     const { t } = useTranslation();
@@ -25,79 +20,44 @@ export const DashboardPage = () => {
                         {t(page.greetingKey)}
                         {page.firstName ? `, ${page.firstName}` : ""}
                     </h1>
-                    <p className="mt-1.5 text-sm text-helper">
-                        {t("dashboard.subtitle")}
-                    </p>
+                    <p className="mt-1.5 text-sm text-helper">{t("dashboard.subtitle")}</p>
                 </div>
-                <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:gap-4 lg:self-end">
-                    <Button
-                        type="button"
-                        onClick={() => page.setIsScheduleOpen(true)}
-                        text={t("dashboard.scheduleTransaction")}
-                        icon={<Clock className="h-4 w-4" />}
-                        variant="secondary"
-                        className="w-full px-3! sm:w-auto"
-                    />
-                    <Button
-                        type="button"
-                        onClick={() => page.setIsNewTransactionOpen(true)}
-                        text={t("dashboard.newTransaction")}
-                        icon={<Plus className="h-4 w-4" />}
-                        className="w-full shrink-0 sm:w-fit"
-                    />
-                </div>
+                <ConnectClaudeButton />
             </div>
 
-            <div className="flex flex-col gap-5 lg:flex-row">
-                <div className="flex min-w-0 flex-col gap-5 lg:flex-4">
+            <div className="grid min-w-0 grid-cols-1 gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]">
+                <div className="flex min-w-0 flex-col gap-5">
                     <BalanceCard
                         isLoading={page.isLoadingBalance}
                         total={page.balanceTotal}
                         currency={page.currency}
-                        percentageChangeLastMonth={
-                            page.percentageChangeLastMonth
-                        }
                         averageIncome={page.averageIncome}
                         averageExpenses={page.averageExpenses}
                     />
-                    <StatisticsCard
-                        isLoading={page.isLoadingStatistics}
-                        months={page.months}
-                        currency={page.currency}
-                    />
+                    <div className="min-w-0">
+                        <RecentActivityCard
+                            isLoading={page.isLoadingActivity}
+                            activities={page.activities}
+                            currency={page.currency}
+                            activityType={page.activityType}
+                            activityQuery={page.activityQuery}
+                            onActivityTypeChange={page.setActivityType}
+                            onActivityQueryChange={page.setActivityQuery}
+                        />
+                    </div>
                 </div>
 
-                <div className="flex min-w-0 flex-col gap-5 lg:flex-2">
-                    <BudgetsHealthCard
-                        isLoading={page.isLoadingBudgets}
-                        budgets={page.budgets}
-                    />
-                    <ThisMonthCard
-                        isLoading={page.isLoadingBreakdown}
-                        breakdown={page.breakdown}
-                    />
+                <div className="flex min-w-0 flex-col gap-5">
+                    <QuickRegisterCard />
+                    <div className="min-w-0 flex-1">
+                        <BudgetsHealthCard
+                            isLoading={page.isLoadingBudgets}
+                            budgets={page.budgets}
+                        />
+                    </div>
                 </div>
             </div>
 
-            <RecentActivityCard
-                isLoading={page.isLoadingActivity}
-                activities={page.activities}
-                currency={page.currency}
-            />
-
-            <NewTransactionModal
-                isModalOpen={page.isNewTransactionOpen}
-                setIsModalOpen={page.setIsNewTransactionOpen}
-                mode="create"
-                requireWalletSelect
-                allowedTypes={page.allowedTransactionTypes}
-            />
-
-            <ScheduleTransactionModal
-                isModalOpen={page.isScheduleOpen}
-                setIsModalOpen={page.setIsScheduleOpen}
-                requireWalletSelect
-            />
         </div>
     );
 };

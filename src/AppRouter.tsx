@@ -9,7 +9,7 @@ import { BudgetsPage } from "./modules/app/features/budgets/BudgetsPage.tsx";
 import { BudgetViewPage } from "./modules/app/features/budgetView/BudgetViewPage.tsx";
 import { HistoryPage } from "./modules/app/features/history/HistoryPage.tsx";
 import { ProtectedRoute } from "./modules/app/protectedRoute.tsx";
-import { AppLayout } from "./modules/app/appLayout.tsx";
+import { AppLayout } from "./modules/app/AppLayout.tsx";
 // Auth
 import { AuthLayout } from "./modules/auth/AuthLayout.tsx";
 import { GuestRoute } from "./modules/auth/guestRoute.tsx";
