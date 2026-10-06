@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +19,7 @@ export const NotificationsMenuItem = ({ notification }: NotificationsMenuItemPro
     const { icon: Icon, iconClassName } = getNotificationTypeStyle(notification.type);
     const isUnread = !notification.read;
 
-    const handleClick = async () => {
+    const handleMarkAsRead = async () => {
         if (!isUnread || markAsRead.isPending) {
             return;
         }
@@ -31,14 +32,11 @@ export const NotificationsMenuItem = ({ notification }: NotificationsMenuItemPro
 
     return (
         <li>
-            <button
-                type="button"
-                onClick={() => void handleClick()}
-                className={`flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${isUnread ? "cursor-pointer hover:bg-light-5" : "cursor-default"
-                    }`}
+            <div
+                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${isUnread ? "hover:bg-light-5" : ""}`}
             >
                 <span
-                    className={`relative mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-light-10 bg-surface-hard ${iconClassName}`}
+                    className={`relative self-start mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-light-10 bg-surface-hard ${iconClassName}`}
                 >
                     <Icon className="h-4 w-4" aria-hidden="true" />
                     {isUnread ? (
@@ -55,7 +53,19 @@ export const NotificationsMenuItem = ({ notification }: NotificationsMenuItemPro
                         {formatterDynamicDate(notification.createdAt)}
                     </span>
                 </span>
-            </button>
+                {isUnread ? (
+                    <button
+                        type="button"
+                        onClick={() => void handleMarkAsRead()}
+                        disabled={markAsRead.isPending}
+                        title={t("notifications.markAsRead")}
+                        aria-label={t("notifications.markAsRead")}
+                        className="mt-0.5 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-light-10 text-helper transition-colors hover:border-light-25 hover:text-light-25 hover:bg-secondary-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                    </button>
+                ) : null}
+            </div>
         </li>
     );
 };
