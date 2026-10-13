@@ -3,6 +3,7 @@ import {
     signOut,
     signUp,
     confirmSignUp,
+    autoSignIn,
     fetchAuthSession,
     getCurrentUser,
     resetPassword,
@@ -62,6 +63,9 @@ export const authService = {
                         email: cleanEmail,
                         name: cleanName,
                     },
+                    autoSignIn: {
+                        enabled: true,
+                    },
                 },
             });
         } catch (error) {
@@ -79,6 +83,9 @@ export const authService = {
                         userAttributes: {
                             email: cleanEmail,
                         },
+                        autoSignIn: {
+                            enabled: true,
+                        },
                     },
                 });
             } else {
@@ -91,10 +98,16 @@ export const authService = {
 
     async confirmRegister(email: string, code: string) {
         const cleanEmail = email.trim().toLowerCase();
-        return await confirmSignUp({
+        const result = await confirmSignUp({
             username: cleanEmail,
             confirmationCode: code.trim(),
         });
+
+        if (result.nextStep.signUpStep === "COMPLETE_AUTO_SIGN_IN") {
+            await autoSignIn();
+        }
+
+        return result;
     },
 
     async resendCode(email: string) {

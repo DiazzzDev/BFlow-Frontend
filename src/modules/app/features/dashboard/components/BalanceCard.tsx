@@ -1,10 +1,8 @@
 import { useTranslation } from "react-i18next";
 
-import {
-    dashboardCardClass,
-    dashboardLabelClass,
-} from "../utils/dashboardCard";
-import { formatPercentValue } from "../utils/formatPercent";
+import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
+
+import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 import { AmountDisplay } from "./AmountDisplay";
 
@@ -12,7 +10,6 @@ interface BalanceCardProps {
     isLoading: boolean;
     total: number;
     currency: string;
-    percentageChangeLastMonth: number;
     averageIncome: number;
     averageExpenses: number;
 }
@@ -21,92 +18,50 @@ export const BalanceCard = ({
     isLoading,
     total,
     currency,
-    percentageChangeLastMonth,
     averageIncome,
     averageExpenses,
 }: BalanceCardProps) => {
     const { t } = useTranslation();
 
-    // Shared % change label for the three balance columns
-    const changePercent = formatPercentValue(percentageChangeLastMonth);
-    const isPositive = percentageChangeLastMonth >= 0;
-
     return (
-        <div className={`${dashboardCardClass} grid grid-cols-1 gap-5 sm:grid-cols-3`}>
-            <div className="flex flex-col">
-                <p className={dashboardLabelClass}>
-                    {t("dashboard.totalBalance")}
-                </p>
+        <section className={dashboardCardClass}>
+            <div className="flex items-center justify-between gap-3">
+                <p className={dashboardLabelClass}>{t("dashboard.currentBalance")}</p>
+            </div>
 
-                {isLoading ? (
-                    <div className="mt-3 h-10 w-44 animate-pulse rounded-lg bg-skeleton" />
-                ) : (
+            {isLoading ? (
+                <div className="mt-5 h-14 w-56 animate-pulse rounded-lg bg-skeleton" />
+            ) : (
+                <div className="mt-4">
                     <AmountDisplay amount={total} currency={currency} />
-                )}
+                </div>
+            )}
 
-                {isLoading ? (
-                    <div className="mt-2 h-4 w-52 animate-pulse rounded-md bg-skeleton" />
-                ) : (
-                    <p className="mt-2 text-sm text-helper">
-                        <span
-                            className={
-                                isPositive ? "text-success" : "text-danger"
-                            }
-                        >
-                            {isPositive ? "+" : ""}
-                            {changePercent}%
-                        </span>{" "}
-                        {t("dashboard.vsLastMonth")}
-                    </p>
-                )}
+            <div className="my-5 border-t border-light-10" />
+
+            <p className="text-xs text-helper">{t("dashboard.monthlySummary")}</p>
+            <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:divide-x sm:divide-light-10">
+                <div className="flex items-center justify-between gap-3 sm:pr-4">
+                    <p className="text-sm text-light">{t("dashboard.income")}</p>
+                    {isLoading ? (
+                        <div className="mt-2 h-7 w-28 animate-pulse rounded-md bg-skeleton" />
+                    ) : (
+                        <p className="text-lg font-semibold tabular-nums text-info sm:text-xl">
+                            +{formatCurrency(averageIncome, currency)}
+                        </p>
+                    )}
+                </div>
+                <div className="flex items-center justify-between gap-3 sm:pl-4">
+                    <p className="text-sm text-light">{t("dashboard.expenses")}</p>
+                    {isLoading ? (
+                        <div className="mt-2 h-7 w-28 animate-pulse rounded-md bg-skeleton" />
+                    ) : (
+                        <p className="text-lg font-semibold tabular-nums text-danger sm:text-xl">
+                            -{formatCurrency(averageExpenses, currency)}
+                        </p>
+                    )}
+                </div>
             </div>
-
-            <div className="flex flex-col">
-                <p className={dashboardLabelClass}>
-                    {t("dashboard.averageIncome")}
-                </p>
-
-                {isLoading ? (
-                    <div className="mt-2 h-9 w-40 animate-pulse rounded-lg bg-skeleton" />
-                ) : (
-                    <AmountDisplay amount={averageIncome} currency={currency} />
-                )}
-
-                {!isLoading && (
-                    <p className="mt-1.5 text-sm text-helper">
-                        <span className="font-medium text-info">
-                            {isPositive ? "+" : ""}
-                            {changePercent}%
-                        </span>{" "}
-                        {t("dashboard.vsLastMonth")}
-                    </p>
-                )}
-            </div>
-
-            <div className="flex flex-col">
-                <p className={dashboardLabelClass}>
-                    {t("dashboard.averageExpense")}
-                </p>
-
-                {isLoading ? (
-                    <div className="mt-2 h-9 w-40 animate-pulse rounded-lg bg-skeleton" />
-                ) : (
-                    <AmountDisplay
-                        amount={averageExpenses}
-                        currency={currency}
-                    />
-                )}
-
-                {!isLoading && (
-                    <p className="mt-1.5 text-sm text-helper">
-                        <span className="font-medium text-danger">
-                            {isPositive ? "+" : ""}
-                            {changePercent}%
-                        </span>{" "}
-                        {t("dashboard.vsLastMonth")}
-                    </p>
-                )}
-            </div>
-        </div>
+        </section>
     );
 };

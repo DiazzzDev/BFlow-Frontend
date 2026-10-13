@@ -50,7 +50,7 @@ export const VerifyAccountForm = ({ email, onSubmit, onResendCode, isLoading, is
                 success: t("auth.verifySuccess"),
                 error: (err) => getCognitoErrorMessage(err, t("auth.verifyError")),
             }).unwrap();
-            void navigate(`/auth/login?email=${encodeURIComponent(email)}`);
+            void navigate("/app/dashboard", { replace: true });
         } catch {
             setCode("");
         }

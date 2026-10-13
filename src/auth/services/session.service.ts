@@ -4,8 +4,10 @@ import { authService } from "@/auth/services/authService";
 import type {
     InternalUser,
     SubscriptionStatus,
+    UserPlan,
     UserProfile,
 } from "@/auth/InternalUser";
+import { getDeletionScheduledAt } from "@/auth/utils/accountDeletion";
 import { getBrowserLanguage, normalizeLanguage } from "@/i18n/types";
 
 const AUTH_SYNC_URL = `${config.API_BASE_URL}/api/v1/auth/sync`;
@@ -20,7 +22,7 @@ export type CognitoSessionTokens = {
     email?: string;
 };
 
-type SyncAuthResponse = {
+export type SyncAuthResponse = {
     id: string;
     email: string;
     roles: string[];
@@ -31,38 +33,43 @@ type SyncAuthResponse = {
         status: SubscriptionStatus;
         billingAmount: number;
         startsAt: string;
-        endsAt: string;
-        nextBillingAt: string;
+        endsAt: string | null;
+        nextBillingAt: string | null;
     } | null;
-    plan?: {
-        planCode: string;
-        planName: string;
-        status: SubscriptionStatus;
-    } | null;
-    wallets?: unknown[];
+    plan?: UserPlan | null;
+    wallets?: InternalUser["wallets"] | null;
     profile?: UserProfile | null;
     language?: string | null;
     preferredLanguage?: string | null;
     message?: string;
+    status?: "ACTIVE" | "PENDING_DELETION" | "DELETED" | null;
+    accountPendingDeletion?: boolean;
+    deletionDaysRemaining?: number | null;
+    deletedAt?: string | null;
+    deletionScheduledAt?: string | null;
 };
 
 const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
     const subscription = response.subscription ?? null;
     const plan = response.plan ?? null;
+    const profile = response.profile ?? null;
+    const status = profile?.status ?? response.status ?? "ACTIVE";
+    const accountPendingDeletion =
+        response.accountPendingDeletion ?? status === "PENDING_DELETION";
 
     return {
         id: response.id,
         email: response.email,
         roles: response.roles,
         isNewUser: response.isNewUser,
-        name: response.profile?.name ?? null,
-        pictureUrl: response.profile?.pictureUrl ?? null,
+        name: profile?.name ?? null,
+        pictureUrl: profile?.pictureUrl ?? null,
         language:
             normalizeLanguage(
                 response.language ??
-                    response.preferredLanguage ??
-                    response.profile?.language ??
-                    response.profile?.preferredLanguage,
+                response.preferredLanguage ??
+                profile?.language ??
+                profile?.preferredLanguage,
             ) ?? getBrowserLanguage(),
         serverMessage: response.message,
         subscription: {
@@ -75,6 +82,16 @@ const mapSyncResponseToUser = (response: SyncAuthResponse): InternalUser => {
             endsAt: subscription?.endsAt ?? null,
             nextBillingAt: subscription?.nextBillingAt ?? null,
         },
+        plan,
+        wallets: response.wallets ?? [],
+        profile,
+        accountPendingDeletion,
+        deletionDaysRemaining: response.deletionDaysRemaining ?? null,
+        status,
+        deletionScheduledAt:
+            accountPendingDeletion || status === "DELETED"
+                ? getDeletionScheduledAt(response.deletionScheduledAt, response.deletedAt)
+                : null,
     };
 };
 

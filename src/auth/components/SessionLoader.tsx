@@ -5,7 +5,7 @@ import BflowLogo from "@/assets/BFlow logo.svg";
 
 const DOTS = 3;
 
-export const CallbackLoader = () => {
+export const SessionLoader = () => {
     const { t } = useTranslation();
 
     return (

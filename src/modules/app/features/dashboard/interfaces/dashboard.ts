@@ -1,22 +1,6 @@
 import type { CategoryIconKey } from "@/utils/categoryIcons";
 
-export interface MonthlyStatistic {
-    month: string;
-    income: number;
-    expense: number;
-}
-
-export interface DashboardStatistics {
-    months: MonthlyStatistic[];
-}
-
-export interface DashboardActivityBreakdown {
-    totalTransactions: number;
-    incomePercentage: number;
-    expensePercentage: number;
-    transferPercentage: number;
-    activityChangePercentage: number;
-}
+export type RecentActivityType = "ALL" | "INCOME" | "EXPENSE";
 
 export interface RecentActivityItem {
     type: string;
@@ -35,6 +19,11 @@ export interface BudgetHealth {
     displayName: string;
     updatedAt: string;
     status: BudgetHealthStatus;
+    budgetLimit?: number | null;
+    spent?: number | null;
+    remaining?: number | null;
+    percentage?: number | null;
+    color?: string | null;
 }
 
 export interface DashboardBalance {

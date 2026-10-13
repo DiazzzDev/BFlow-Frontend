@@ -4,7 +4,7 @@ import { getAverages } from "../dashboard.service";
 
 export const useGetAverages = () => {
     return useQuery({
-        queryKey: ["dashboard-averages"],
+        queryKey: ["dashboard", "averages"],
         queryFn: getAverages,
         staleTime: 1000 * 60 * 5,
     });
