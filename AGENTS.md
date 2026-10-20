@@ -14,16 +14,18 @@ Keep feature-specific components, hooks, services, and interfaces near their mod
 
 ## Build, Test, and Development Commands
 
-Run `npm ci` for a clean, lockfile-based install, then:
+This project uses **Bun** (see `packageManager` in `package.json`; a devcontainer with Bun and Trivy is in `.devcontainer/`). Run `bun install --frozen-lockfile` for a clean, lockfile-based install, then:
 
-- `npm run dev` starts the Vite development server with HMR.
-- `npm run build` creates the production bundle in `dist/`.
-- `npm run preview` serves the production bundle locally for verification.
-- `npm run lint` runs ESLint across the repository.
-- `npm run typecheck` runs TypeScript without emitting files.
-- `npm test` currently runs a placeholder and exits successfully; do not treat it as automated coverage.
+- `bun run dev` starts the Vite development server with HMR.
+- `bun run build` creates the production bundle in `dist/`.
+- `bun run preview` serves the production bundle locally for verification.
+- `bun run lint` runs ESLint across the repository.
+- `bun run typecheck` runs TypeScript without emitting files.
+- `bun run audit` runs `bun audit` (fails on high severity).
+- `bun run scan:cve` runs a local Trivy scan using `trivy.yaml` (Trivy is preinstalled in the devcontainer).
+- `bun run test` currently runs a placeholder and exits successfully; do not treat it as automated coverage.
 
-CI runs linting, type checking, and the build. The pre-commit hook runs `npm test`.
+CI runs linting, type checking, the build, and security scans. The pre-commit hook runs `bun run test` (not `bun test`, which would invoke Bun's own runner).
 
 ## Coding Style & Naming Conventions
 
@@ -31,7 +33,7 @@ Use TypeScript and existing four-space indentation. Follow ESLint, including ord
 
 ## Testing Guidelines
 
-No test framework or coverage threshold is configured yet. For changes, run `npm run lint`, `npm run typecheck`, and `npm run build`; manually verify affected flows with `npm run dev` and include regression tests when a test runner is introduced.
+No test framework or coverage threshold is configured yet. For changes, run `bun run lint`, `bun run typecheck`, and `bun run build`; manually verify affected flows with `bun run dev` and include regression tests when a test runner is introduced.
 
 ## Commit & Pull Request Guidelines
 
@@ -39,4 +41,4 @@ Use Conventional Commit messages, such as `feat: add wallet history` or `fix: co
 
 ## Security & Configuration Tips
 
-Do not commit secrets or credentials. Review configuration in `src/config/` and authentication changes carefully; CI runs Gitleaks, `npm audit --audit-level=high`, and CodeQL.
+Do not commit secrets or credentials. Review configuration in `src/config/` and authentication changes carefully; CI runs Gitleaks, `bun audit --audit-level=high`, Trivy (`.github/workflows/trivy.yml`, config in `trivy.yaml`), and CodeQL. Third-party GitHub Actions that handle security tooling are pinned to full commit SHAs.

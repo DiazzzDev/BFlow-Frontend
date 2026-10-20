@@ -19,6 +19,9 @@ jobs:
   security:
     uses: ./.github/workflows/security.yml
 
+  trivy:
+    uses: ./.github/workflows/trivy.yml
+
   quality:
-    needs: security
+    needs: [security, trivy]
     uses: ./.github/workflows/quality.yml
