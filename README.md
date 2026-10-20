@@ -19,6 +19,7 @@ Other useful scripts: `bun run lint`, `bun run typecheck`, `bun run build`, `bun
 ### Devcontainer
 
 Open the repo in VS Code / GitHub Codespaces and choose **Reopen in Container**. `.devcontainer/` provides Bun, Node 22 (some tooling still expects it), and the Trivy CLI; dependencies are installed automatically.
+Vite listens on all container interfaces so the forwarded port 5173 is reachable from your browser.
 
 ## Security scanning
 

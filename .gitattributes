@@ -1,0 +1,3 @@
+printf '* text=auto eol=lf\n.husky/* text eol=lf\n*.sh text eol=lf\n' > .gitattributes
+git add .gitattributes .husky
+git commit -m "chore: enforce LF line endings for husky hooks"
