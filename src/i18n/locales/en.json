@@ -429,6 +429,7 @@
         "title": "Notifications",
         "newCount": "{{count}} new",
         "markAllRead": "Mark all as read",
+        "markAsRead": "Mark as read",
         "filterLabel": "Filter notifications",
         "filterUnread": "Unread",
         "filterAll": "All",
