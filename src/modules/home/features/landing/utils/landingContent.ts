@@ -137,6 +137,7 @@ export const LANDING_STEPS = [
 // Pricing cards (USD copy; CTA routes to register by default)
 export const LANDING_PLANS: Array<{
     name: string;
+    idPlan: "personal" | "pro-monthly" | "pro-yearly";
     price: string;
     period: string;
     btnText: string;
@@ -146,6 +147,7 @@ export const LANDING_PLANS: Array<{
 }> = [
         {
             name: "Personal",
+            idPlan: "personal",
             price: "$0",
             period: "Mes",
             btnText: "Empezar gratis",
@@ -160,6 +162,7 @@ export const LANDING_PLANS: Array<{
         },
         {
             name: "BFlow Pro",
+            idPlan: "pro-monthly",
             price: "$9.99",
             period: "Mes",
             btnText: "Empezar con Pro",
@@ -177,6 +180,7 @@ export const LANDING_PLANS: Array<{
         },
         {
             name: "BFlow Pro anual",
+            idPlan: "pro-yearly",
             price: "$99.99",
             period: "Año",
             btnText: "Empezar con Pro anual",

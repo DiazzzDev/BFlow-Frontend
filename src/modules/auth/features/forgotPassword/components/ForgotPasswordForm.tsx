@@ -10,6 +10,9 @@ import {
     authLabelClass,
     authPrimaryButtonClass,
 } from "@/modules/auth/utils/authStyles";
+import { toast } from "sonner";
+import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
+import { useNavigate } from "react-router";
 
 type FormData = { email: string };
 
@@ -20,6 +23,7 @@ interface ForgotPasswordFormProps {
 
 export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const forgotPasswordSchema = z.object({
         email: z.string().min(1, t("auth.validationEmailRequired")).email(t("auth.validationEmailInvalid")),
     });
@@ -32,11 +36,29 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
         mode: "onSubmit",
     });
 
+    const handleSubmitEmail = async (email: string) => {
+        try {
+            await onSubmit(email);
+
+            toast.success(
+                "Hemos enviado un código de restablecimiento de contraseña a tu correo electrónico."
+            );
+            void navigate(`/auth/reset-password?email=${encodeURIComponent(email)}`);
+        } catch (err) {
+            toast.error(
+                getCognitoErrorMessage(
+                    err,
+                    "Error al enviar código de restablecimiento de contraseña. Por favor, inténtelo de nuevo."
+                )
+            );
+        }
+    };
+
     return (
         <form
             className="flex flex-col gap-4"
             onSubmit={(e) => {
-                void handleSubmit((data) => onSubmit(data.email))(e);
+                void handleSubmit((data) => handleSubmitEmail(data.email))(e);
             }}
         >
             <div className={authFieldClass}>

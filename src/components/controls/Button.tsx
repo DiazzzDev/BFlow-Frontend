@@ -33,7 +33,7 @@ const VARIANT_CLASSES: Record<
     },
     ghost: {
         enabled:
-            "bg-transparent text-helper hover:bg-light-5 hover:text-light active:scale-95",
+            "bg-transparent text-helper hover:text-light active:scale-95",
         disabled: "bg-transparent text-helper opacity-50",
     },
 };

@@ -1,4 +1,5 @@
-import { Link } from "react-router";
+import { useAuthStore } from "@/auth/authStore";
+import { useNavigate } from "react-router";
 
 const CheckIcon = () => (
     <svg
@@ -24,7 +25,7 @@ interface PricingCardProps {
     btnText: string;
     btnStyle: "outline" | "filled";
     featured?: boolean;
-    to?: string;
+    idPlan: "personal" | "pro-monthly" | "pro-yearly";
 }
 
 export const PricingCard = ({
@@ -34,8 +35,30 @@ export const PricingCard = ({
     features,
     btnText,
     btnStyle,
-    to = "/auth/register",
+    idPlan
 }: PricingCardProps) => {
+
+    const authStatus = useAuthStore((state) => state.authStatus);
+    const navigate = useNavigate();
+
+    const handleClick = (idPlanParam: string) => {
+        if (idPlanParam === "personal") {
+            void navigate("/auth/login");
+            return;
+        }
+
+        if (authStatus === "not-authenticated") {
+            void navigate(
+                `/auth/login?plan=${encodeURIComponent(idPlanParam)}`
+            );
+            return;
+        }
+
+        void navigate(
+            `/plan-details?plan=${encodeURIComponent(idPlanParam)}`
+        );
+    };
+
     return (
         <div
             className="relative h-full rounded-2xl p-px bg-linear-to-br from-light-25 to-transparent min-h-125!">
@@ -67,18 +90,16 @@ export const PricingCard = ({
                         ))}
                     </div>
 
-                    <Link to={to} className="mt-auto block">
-                        <button
-                            type="button"
-                            className={`w-full cursor-pointer rounded-xl py-3 text-sm font-medium transition-all ${
-                                btnStyle === "filled"
-                                    ? "bg-primary text-light hover:bg-primary-dark"
-                                    : "border border-light-25 bg-transparent text-light hover:border-light hover:bg-light-10"
+                    <button
+                        type="button"
+                        onClick={() => handleClick(idPlan)}
+                        className={`w-full cursor-pointer rounded-xl py-3 text-sm font-medium transition-all ${btnStyle === "filled"
+                            ? "bg-primary text-light hover:bg-primary-dark"
+                            : "border border-light-25 bg-transparent text-light hover:border-light hover:bg-light-10"
                             }`}
-                        >
-                            {btnText}
-                        </button>
-                    </Link>
+                    >
+                        {btnText}
+                    </button>
                 </div>
             </div>
         </div>

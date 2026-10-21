@@ -28,6 +28,7 @@ import { CookiesPage } from "./modules/home/features/cookies/CookiesPage.tsx";
 import { ContactPage } from "./modules/home/features/contact/ContactPage.tsx";
 import { DocsPage } from "./modules/home/features/docs/DocsPage.tsx";
 import { NotFoundPage } from "./modules/404Page.tsx";
+import { SubscriptionDetailsPage } from "./modules/home/features/subscription/SubscriptionDetailPage.tsx";
 
 export const appRouter = createBrowserRouter([
     // Landing
@@ -42,6 +43,7 @@ export const appRouter = createBrowserRouter([
             { path: "contact", element: <ContactPage /> },
             { path: "docs", element: <DocsPage /> },
             { path: "docs/:slug", element: <DocsPage /> },
+            { path: "plan-details", element: <SubscriptionDetailsPage /> },
         ],
     },
     // App
