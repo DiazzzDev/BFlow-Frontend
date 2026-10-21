@@ -25,7 +25,7 @@
 
 - [ ] <User-visible scenario that proves the feature works.>
 - [ ] <Edge case or failure scenario that works as intended.>
-- [ ] `npm run lint`, `npm run typecheck`, and `npm run build` pass.
+- [ ] `bun run lint`, `bun run typecheck`, and `bun run build` pass.
 
 ## Delivery log
 

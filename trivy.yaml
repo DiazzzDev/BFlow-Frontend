@@ -1,0 +1,23 @@
+# Trivy configuration: single source of truth for CI (trivy.yml),
+# the devcontainer and local runs (`bun run scan:cve`).
+format: table
+exit-code: 1
+severity:
+  - HIGH
+  - CRITICAL
+
+scan:
+  scanners:
+    - vuln
+    - misconfig
+  skip-dirs:
+    - node_modules
+    - dist
+    - .git
+
+vulnerability:
+  ignore-unfixed: true
+
+pkg:
+  # Build tooling (vite, eslint, ...) runs in CI, so scan it too.
+  include-dev-deps: true

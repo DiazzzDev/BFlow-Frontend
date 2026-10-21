@@ -1,20 +1,26 @@
-# React + Vite
+# BFlow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Trivy](https://github.com/DiazzzDev/BFlow-Frontend/actions/workflows/trivy.yml/badge.svg?branch=main)](https://github.com/DiazzzDev/BFlow-Frontend/actions/workflows/trivy.yml)
 
-Currently, two official plugins are available:
+React + Vite + TypeScript frontend for BFlow.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting started
 
-## React Compiler
+This project uses [Bun](https://bun.sh) as package manager and script runner.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+bun install --frozen-lockfile
+cp .env.example .env
+bun run dev
+```
 
-## Expanding the ESLint configuration
+Other useful scripts: `bun run lint`, `bun run typecheck`, `bun run build`, `bun run audit`, `bun run scan:cve`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Devcontainer
 
-## Project documentation
+Open the repo in VS Code / GitHub Codespaces and choose **Reopen in Container**. `.devcontainer/` provides Bun, Node 22 (some tooling still expects it), and the Trivy CLI; dependencies are installed automatically.
+Vite listens on all container interfaces so the forwarded port 5173 is reachable from your browser.
 
-Feature work follows the lightweight SDD workflow in [`docs/features/`](./docs/features/), including the [methodology](./docs/features/README.md), [feature template](./docs/features/TEMPLATE.md), and [tracker](./docs/features/INDEX.md).
+## Security scanning
+
+[Trivy](https://trivy.dev) scans `bun.lock` and the repo's IaC/config for known CVEs on every pull request, on pushes to `main`/`develop`, and weekly. Findings of HIGH/CRITICAL severity fail the pipeline and are published to the GitHub Security tab. Configuration lives in [`trivy.yaml`](./trivy.yaml); run it locally with `bun run scan:cve`.

@@ -1,7 +1,7 @@
 # .husky/commit-msg
 commit_msg=$(cat "$1")
 
-if ! npx --no-install commitlint --edit "$1"; then
+if ! bunx --no-install commitlint --edit "$1"; then
     echo ""
     echo "  Formato requerido: tipo: descripción"
     echo "  Ejemplos válidos:"
