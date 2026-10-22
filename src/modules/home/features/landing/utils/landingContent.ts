@@ -134,66 +134,6 @@ export const LANDING_STEPS = [
     },
 ];
 
-// Pricing cards (USD copy; CTA routes to register by default)
-export const LANDING_PLANS: Array<{
-    name: string;
-    price: string;
-    period: string;
-    btnText: string;
-    btnStyle: "outline" | "filled";
-    featured: boolean;
-    features: string[];
-}> = [
-        {
-            name: "Personal",
-            price: "$0",
-            period: "Mes",
-            btnText: "Empezar gratis",
-            btnStyle: "outline",
-            featured: false,
-            features: [
-                "Hasta 2 wallets",
-                "Hasta 2 Recurrencias",
-                "Hasta 3 presupuestos",
-                "Participar en una wallet con un máximo de 3 personas",
-            ],
-        },
-        {
-            name: "BFlow Pro",
-            price: "$9.99",
-            period: "Mes",
-            btnText: "Empezar con Pro",
-            btnStyle: "filled",
-            featured: true,
-            features: [
-                "Hasta un maximo de 100 wallets",
-                "Hasta un maximo de 25 Recurrencias",
-                "Hasta un maximo de 100 presupuestos",
-                "Crear wallets compartidas, invitar e administrar un máximo de 10 personas",
-                "Transacciones entre wallets",
-                "Personalización de dashboard",
-                "Autocompletado inteligente",
-            ],
-        },
-        {
-            name: "BFlow Pro anual",
-            price: "$99.99",
-            period: "Año",
-            btnText: "Empezar con Pro anual",
-            btnStyle: "outline",
-            featured: false,
-            features: [
-                "Hasta un maximo de 100 wallets",
-                "Hasta un maximo de 25 Recurrencias",
-                "Hasta un maximo de 100 presupuestos",
-                "Crear wallets compartidas, invitar e administrar un máximo de 10 personas",
-                "Transacciones entre wallets",
-                "Personalización de dashboard",
-                "Autocompletado inteligente",
-            ],
-        },
-    ];
-
 // FAQ accordion copy
 export const LANDING_FAQS = [
     {

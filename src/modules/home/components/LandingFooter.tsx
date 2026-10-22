@@ -85,14 +85,14 @@ export const LandingFooter = () => {
                                 onClick={() => handleNavClick("pricing")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                {t("home.plans.personal.name")}
+                                {t("home.plans.personal")}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handleNavClick("pricing")}
                                 className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
                             >
-                                {t("home.plans.pro.name")}
+                                {t("home.plans.pro")}
                             </button>
                         </div>
                     </div>

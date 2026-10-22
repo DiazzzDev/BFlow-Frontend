@@ -69,7 +69,7 @@ export const LandingNavbar = () => {
                                     type="button"
                                     className="cursor-pointer rounded-md bg-primary px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-primary-dark"
                                 >
-                                    {t("home.startFree")}
+                                    {t("home.plans.startFree")}
                                 </button>
                             </Link>
                         </>

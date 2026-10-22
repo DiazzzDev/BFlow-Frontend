@@ -18,9 +18,11 @@ import {
     authPrimaryButtonClass,
     authTextLinkClass,
 } from "@/modules/auth/utils/authStyles";
+import { getPostLoginPath } from "@/modules/auth/utils/postLoginRedirect";
 
 interface VerifyAccountFormProps {
     email: string;
+    planId: string | null;
     onSubmit: (args: { email: string; code: string }) => Promise<unknown>;
     onResendCode: (email: string) => Promise<unknown>;
     isLoading: boolean;
@@ -29,7 +31,7 @@ interface VerifyAccountFormProps {
 
 const CODE_LABEL_ID = "verify-code-label";
 
-export const VerifyAccountForm = ({ email, onSubmit, onResendCode, isLoading, isResending }: VerifyAccountFormProps) => {
+export const VerifyAccountForm = ({ email, planId, onSubmit, onResendCode, isLoading, isResending }: VerifyAccountFormProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [code, setCode] = useState("");
@@ -50,7 +52,7 @@ export const VerifyAccountForm = ({ email, onSubmit, onResendCode, isLoading, is
                 success: t("auth.verifySuccess"),
                 error: (err) => getCognitoErrorMessage(err, t("auth.verifyError")),
             }).unwrap();
-            void navigate("/app/dashboard", { replace: true });
+            void navigate(getPostLoginPath(planId), { replace: true });
         } catch {
             setCode("");
         }

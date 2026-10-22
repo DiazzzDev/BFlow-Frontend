@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router";
 
 import { RegisterForm } from "./components/RegisterForm";
 import { useRegister } from "./hooks/useRegister";
@@ -10,6 +11,11 @@ import { GoogleButton } from "@/modules/auth/components/GoogleButton";
 
 export const RegisterPage = () => {
     const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const planId = searchParams.get("plan");
+    const loginPath = planId
+        ? `/auth/login?plan=${encodeURIComponent(planId)}`
+        : "/auth/login";
     // Shared so Google and the login link are disabled while register is pending
     const { mutateAsync: registerUser, isPending: isRegisterPending } = useRegister();
 
@@ -17,12 +23,12 @@ export const RegisterPage = () => {
         <AuthCard
             title={t("auth.registerTitle")}
             subtitle={t("auth.registerSubtitle")}
-            back={{ to: "/auth/login", label: t("auth.backToLogin"), disabled: isRegisterPending }}
+            back={{ to: loginPath, label: t("auth.backToLogin"), disabled: isRegisterPending }}
             footer={
                 <AuthSwitchLink
                     text={t("auth.hasAccount")}
                     linkLabel={t("auth.signIn")}
-                    to="/auth/login"
+                    to={loginPath}
                     disabled={isRegisterPending}
                 />
             }

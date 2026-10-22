@@ -43,7 +43,7 @@ export const LandingCta = () => {
                                         type="button"
                                         className="bg-primary text-light text-sm font-medium px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors cursor-pointer"
                                     >
-                                        {t("home.startFree")}
+                                        {t("home.plans.startFree")}
                                     </button>
                                 </Link>
                             </>

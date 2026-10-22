@@ -54,6 +54,19 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
         mode: "onSubmit",
         defaultValues: { email: params.get("email") ?? "", password: "" },
     });
+    const forgotParams = new URLSearchParams();
+    const planId = params.get("plan");
+    const email = params.get("email");
+    if (planId) {
+        forgotParams.set("plan", planId);
+    }
+    if (email) {
+        forgotParams.set("email", email);
+    }
+    const forgotQuery = forgotParams.toString();
+    const forgotPasswordPath = forgotQuery
+        ? `/auth/forgot-password?${forgotQuery}`
+        : "/auth/forgot-password";
 
     const onInternalSubmit = async (data: LoginFormInputs) => {
         setUnverifiedEmail(null);
@@ -140,7 +153,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     <p className={authErrorClass}>{errors.password.message}</p>
                 )}
                 <Link
-                    to="/auth/forgot-password"
+                    to={forgotPasswordPath}
                     className={`self-end text-xs ${authTextLinkClass}`}
                 >
                     {t("auth.forgotPassword")}
