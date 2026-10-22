@@ -9,10 +9,10 @@ const defaultApiOptions: RequestInit = {
     headers: { "Content-Type": "application/json" },
 };
 
-export const getPlans = async () => {
+export const getPlans = async (errorMessage: string) => {
     return await apiRequest<ApiResponse<Plan[]>>(
         plansUrl,
         { ...defaultApiOptions, method: "GET" },
-        "Error al obtener los planes",
+        errorMessage,
     );
 };
