@@ -43,9 +43,7 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
         try {
             await onSubmit(email);
 
-            toast.success(
-                "Hemos enviado un código de restablecimiento de contraseña a tu correo electrónico."
-            );
+            toast.success(t("auth.forgotCodeSent"));
             const resetParams = new URLSearchParams({
                 email: email.trim().toLowerCase(),
             });
@@ -57,7 +55,7 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
             toast.error(
                 getCognitoErrorMessage(
                     err,
-                    "Error al enviar código de restablecimiento de contraseña. Por favor, inténtelo de nuevo."
+                    t("auth.forgotCodeError")
                 )
             );
         }
