@@ -1114,7 +1114,9 @@
             "detailsNotFoundActionsTitle": "Choose how to continue",
             "detailsNotFoundDescription": "The selected plan doesn't exist or is no longer available. Return to the plans list to choose another.",
             "backToPlans": "Back to plans",
-            "logInToGetMessage": "Create an account or sign in to continue with this plan"
+            "logInToGetMessage": "Create an account or sign in to continue with this plan",
+            "pro": "Pro",
+            "personal": "Personal"
         },
         "heroPreview": {
             "sharedWallet": "Shared wallet",

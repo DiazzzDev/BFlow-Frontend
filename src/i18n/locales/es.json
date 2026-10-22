@@ -1116,7 +1116,9 @@
             "detailsNotFoundActionsTitle": "Elige cómo continuar",
             "detailsNotFoundDescription": "El plan seleccionado no existe o ya no está disponible. Vuelve a la lista de planes para elegir otro.",
             "backToPlans": "Volver a los planes",
-            "logInToGetMessage": "Crea una cuenta o inicia sesión para continuar con este plan"
+            "logInToGetMessage": "Crea una cuenta o inicia sesión para continuar con este plan",
+            "pro": "Pro",
+            "personal": "Personal"
         },
         "heroPreview": {
             "sharedWallet": "Billetera compartida",
