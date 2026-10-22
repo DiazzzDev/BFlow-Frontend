@@ -1,39 +1,51 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { LANDING_PLANS } from "../../utils/landingContent";
-
 import { PricingCard } from "./PricingCard";
+import { PricingPlansSkeleton } from "./PricingPlansSkeleton";
+
+import { useGetPlans } from "@/modules/home/features/landing/hooks/useGetPlans";
+import { mapPlansToPricingViews } from "@/modules/home/features/landing/utils/planPresentation";
+import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
+import { WalletCards } from "lucide-react";
 
 export const LandingPricing = () => {
     const { t } = useTranslation();
-    const planKeys = ["personal", "pro", "annual"] as const;
-    const plans = LANDING_PLANS.map((plan, index) => {
-        const key = planKeys[index];
-        return {
-            ...plan,
-            name: t(`home.plans.${key}.name`, { defaultValue: plan.name }),
-            btnText: t(`home.plans.${key}.button`, { defaultValue: plan.btnText }),
-            period: t(plan.period === "Año" ? "home.year" : "home.month", { defaultValue: plan.period }),
-            features: t(`home.plans.${key}.features`, { returnObjects: true, defaultValue: plan.features }),
-        };
-    });
+    const { data: plansResponse, isLoading, isError, refetch } = useGetPlans();
+
+    const plans = useMemo(
+        () => mapPlansToPricingViews(plansResponse?.data ?? [], t),
+        [plansResponse?.data, t],
+    );
+
     return (
-        <section
-            id="pricing"
-            className="px-8 pb-28 md:pb-36 w-full max-w-360 mt-20"
-        >
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-5">
-                {t("home.pricingTitle")}
-            </h2>
-            <p className="text-sm md:text-base text-helper max-w-2xl mb-14 md:mb-16 leading-relaxed">
+        <section id="pricing" className="mt-20 w-full max-w-360 px-8 pb-28 md:pb-36">
+            <h2 className="mb-5 text-3xl font-bold tracking-tight md:text-5xl">{t("home.pricingTitle")}</h2>
+            <p className="mb-14 max-w-2xl text-sm leading-relaxed text-helper md:mb-16 md:text-base">
                 {t("home.pricingDescription")}
             </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch md:pt-2">
-                {plans.map((plan) => (
-                    <PricingCard key={plan.name} {...plan} />
-                ))}
-            </div>
+            {isLoading ? (
+                <PricingPlansSkeleton />
+            ) : isError ? (
+                <CustomEmptyState
+                    Icon={WalletCards}
+                    title={t("home.plans.errorTitle")}
+                    buttonText={t("home.plans.reloadBtnText")}
+                    onButtonClick={() => { void refetch() }}
+                />
+            ) : plans.length === 0 ? (
+                <CustomEmptyState
+                    Icon={WalletCards}
+                    title={t("home.plans.emptyTitle")}
+                    description={t("home.plans.emptyDescription")}
+                />
+            ) : (
+                <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-3 md:pt-2 lg:gap-6">
+                    {plans.map((plan) => (
+                        <PricingCard key={plan.id} {...plan} />
+                    ))}
+                </div>
+            )}
         </section>
     );
 };

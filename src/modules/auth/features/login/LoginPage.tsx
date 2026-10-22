@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router";
 
 import { LoginForm } from "./components/LoginForm";
 import { useLogin } from "./hooks/useLogin";
@@ -10,6 +11,11 @@ import { GoogleButton } from "@/modules/auth/components/GoogleButton";
 
 export const LoginPage = () => {
     const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const planId = searchParams.get("plan");
+    const registerPath = planId
+        ? `/auth/register?plan=${encodeURIComponent(planId)}`
+        : "/auth/register";
     // Shared so Google and the register link are disabled while email login is pending
     const { mutateAsync: loginWithEmail, isPending: isEmailLoginPending } = useLogin();
 
@@ -21,7 +27,7 @@ export const LoginPage = () => {
                 <AuthSwitchLink
                     text={t("auth.noAccount")}
                     linkLabel={t("auth.createFree")}
-                    to="/auth/register"
+                    to={registerPath}
                     disabled={isEmailLoginPending}
                 />
             }

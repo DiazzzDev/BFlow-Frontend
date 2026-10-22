@@ -1,7 +1,8 @@
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet, useSearchParams } from "react-router";
 
 import { AuthLoadingScreen } from "@/auth/components/AuthLoadingScreen";
 import { useAuthStore } from "@/auth/authStore";
+import { getPostLoginPath } from "@/modules/auth/utils/postLoginRedirect";
 
 /**
  * Rutas públicas de auth (login/register).
@@ -9,13 +10,14 @@ import { useAuthStore } from "@/auth/authStore";
  */
 export const GuestRoute = () => {
     const authStatus = useAuthStore((state) => state.authStatus);
+    const [searchParams] = useSearchParams();
 
     if (authStatus === "checking") {
         return <AuthLoadingScreen />;
     }
 
     if (authStatus === "authenticated") {
-        return <Navigate to="/app/dashboard" replace />;
+        return <Navigate to={getPostLoginPath(searchParams.get("plan"))} replace />;
     }
 
     return <Outlet />;

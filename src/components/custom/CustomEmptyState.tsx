@@ -4,7 +4,7 @@ import { Button } from "../controls/Button";
 
 interface CustomEmptyStateProps {
     title: string;
-    description: string;
+    description?: string;
     Icon?: LucideIcon;
     buttonText?: string;
     onButtonClick?: () => void;

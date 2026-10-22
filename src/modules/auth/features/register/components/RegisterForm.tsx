@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -65,6 +65,8 @@ export const RegisterForm = ({
     });
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const planId = searchParams.get("plan");
 
     const onInternalSubmit = async (data: RegisterFormInputs) => {
         try {
@@ -73,7 +75,13 @@ export const RegisterForm = ({
                 success: "Cuenta creada. Te enviamos un código a tu correo.",
                 error: (err) => getCognitoErrorMessage(err, "Error al crear la cuenta"),
             }).unwrap();
-            void navigate(`/auth/verify-account?email=${encodeURIComponent(data.email.trim().toLowerCase())}`);
+            const verifyParams = new URLSearchParams({
+                email: data.email.trim().toLowerCase(),
+            });
+            if (planId) {
+                verifyParams.set("plan", planId);
+            }
+            void navigate(`/auth/verify-account?${verifyParams.toString()}`);
         } catch (err) {
             // Check if user already exists
             if (
@@ -82,7 +90,13 @@ export const RegisterForm = ({
                 (err as { name?: string }).name === "UsernameExistsException"
             ) {
                 setTimeout(() => {
-                    void navigate(`/auth/login?email=${encodeURIComponent(data.email.trim().toLowerCase())}`);
+                    const loginParams = new URLSearchParams({
+                        email: data.email.trim().toLowerCase(),
+                    });
+                    if (planId) {
+                        loginParams.set("plan", planId);
+                    }
+                    void navigate(`/auth/login?${loginParams.toString()}`);
                 }, 1500);
             }
         }

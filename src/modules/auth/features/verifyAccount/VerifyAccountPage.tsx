@@ -11,6 +11,13 @@ export const VerifyAccountPage = () => {
     const { t } = useTranslation();
     const [params] = useSearchParams();
     const email = params.get("email")?.trim().toLowerCase() ?? "";
+    const planId = params.get("plan");
+    const loginPath = planId
+        ? `/auth/login?plan=${encodeURIComponent(planId)}`
+        : "/auth/login";
+    const registerPath = planId
+        ? `/auth/register?plan=${encodeURIComponent(planId)}`
+        : "/auth/register";
 
     const { mutateAsync: onSubmit, isPending: isLoading } = useVerifyAccount();
     const { mutateAsync: onResendCode, isPending: isResending } = useResendCode();
@@ -30,18 +37,19 @@ export const VerifyAccountPage = () => {
                     <span className="mt-1 block break-all font-semibold text-light">{email}</span>
                 </>
             }
-            back={{ to: "/auth/login", label: t("auth.backToLogin"), disabled: isBusy }}
+            back={{ to: loginPath, label: t("auth.backToLogin"), disabled: isBusy }}
             footer={
                 <AuthSwitchLink
                     text={t("auth.verifyWrongEmail")}
                     linkLabel={t("auth.registerAgain")}
-                    to="/auth/register"
+                    to={registerPath}
                     disabled={isBusy}
                 />
             }
         >
             <VerifyAccountForm
                 email={email}
+                planId={planId}
                 onSubmit={onSubmit}
                 onResendCode={onResendCode}
                 isLoading={isLoading}

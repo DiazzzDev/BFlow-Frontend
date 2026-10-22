@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import { PasswordInput } from "@/modules/auth/components/PasswordInput";
@@ -24,14 +23,15 @@ type ResetPasswordFormData = {
 interface ResetPasswordFormProps {
     onSubmit: (data: { code: string; password: string }) => Promise<unknown>;
     isLoading: boolean;
+    onSuccess: () => void;
 }
 
 export const ResetPasswordForm = ({
     onSubmit,
     isLoading,
+    onSuccess,
 }: ResetPasswordFormProps) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
     const resetPasswordSchema = z
         .object({
@@ -68,7 +68,7 @@ export const ResetPasswordForm = ({
         });
 
         await promise;
-        await navigate("/auth/login", { replace: true });
+        onSuccess();
     };
 
     return (

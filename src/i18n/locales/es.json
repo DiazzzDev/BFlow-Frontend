@@ -1081,7 +1081,6 @@
         "navContact": "Contacto",
         "goDashboard": "Ir al dashboard",
         "signIn": "Iniciar sesión",
-        "startFree": "Empezar gratis",
         "register": "Registrarse",
         "footerAbout": "Nosotros",
         "footerHome": "Inicio",
@@ -1102,6 +1101,23 @@
         "heroTitle": "El control financiero que",
         "heroFocus": "siempre quisiste",
         "heroDescription": "Gestiona tus ingresos, gastos y billeteras compartidas en un solo lugar. Simple, potente y diseñado para tu día a día.",
+        "plans": {
+            "startFree": "Empezar gratis",
+            "startMonth": "Empezar con Pro",
+            "startYear": "Empezar con Pro anual",
+            "emptyTitle": "No hay planes disponibles",
+            "emptyDescription": "En este momento no se pudieron cargar los planes de suscripción. Por favor, intenta de nuevo más tarde.",
+            "errorTitle": "Error al cargar los planes",
+            "reloadBtnText": "Recargar",
+            "detailsErrorTitle": "No se pudo cargar el plan",
+            "detailsErrorActionsTitle": "¿Qué puedes hacer?",
+            "detailsErrorDescription": "Ocurrió un problema al cargar los detalles del plan. Intenta nuevamente o vuelve a elegir un plan.",
+            "detailsNotFoundTitle": "Plan no disponible",
+            "detailsNotFoundActionsTitle": "Elige cómo continuar",
+            "detailsNotFoundDescription": "El plan seleccionado no existe o ya no está disponible. Vuelve a la lista de planes para elegir otro.",
+            "backToPlans": "Volver a los planes",
+            "logInToGetMessage": "Crea una cuenta o inicia sesión para continuar con este plan"
+        },
         "heroPreview": {
             "sharedWallet": "Billetera compartida",
             "members": "{{count}} miembros",
@@ -1221,44 +1237,6 @@
         "wompiReference": "Visita Wompi",
         "month": "Mes",
         "year": "Año",
-        "plans": {
-            "personal": {
-                "name": "Personal",
-                "button": "Empezar gratis",
-                "features": [
-                    "Hasta 2 wallets",
-                    "Hasta 2 Recurrencias",
-                    "Hasta 3 presupuestos",
-                    "Participar en una wallet con un máximo de 3 personas"
-                ]
-            },
-            "pro": {
-                "name": "BFlow Pro",
-                "button": "Empezar con Pro",
-                "features": [
-                    "Hasta un máximo de 100 wallets",
-                    "Hasta un máximo de 25 Recurrencias",
-                    "Hasta un máximo de 100 presupuestos",
-                    "Crear wallets compartidas, invitar y administrar un máximo de 10 personas",
-                    "Transacciones entre wallets",
-                    "Personalización de dashboard",
-                    "Autocompletado inteligente"
-                ]
-            },
-            "annual": {
-                "name": "BFlow Pro anual",
-                "button": "Empezar con Pro anual",
-                "features": [
-                    "Hasta un máximo de 100 wallets",
-                    "Hasta un máximo de 25 Recurrencias",
-                    "Hasta un máximo de 100 presupuestos",
-                    "Crear wallets compartidas, invitar y administrar un máximo de 10 personas",
-                    "Transacciones entre wallets",
-                    "Personalización de dashboard",
-                    "Autocompletado inteligente"
-                ]
-            }
-        },
         "steps": [
             {
                 "title": "Crea tu cuenta",

@@ -1079,7 +1079,6 @@
         "navContact": "Contact",
         "goDashboard": "Go to dashboard",
         "signIn": "Sign in",
-        "startFree": "Start free",
         "register": "Sign up",
         "footerAbout": "About us",
         "footerHome": "Home",
@@ -1100,6 +1099,23 @@
         "heroTitle": "The financial control you",
         "heroFocus": "always wanted",
         "heroDescription": "Manage your income, expenses and shared wallets in one place. Simple, powerful and designed for your everyday life.",
+        "plans": {
+            "startFree": "Start free",
+            "startMonth": "Start with Pro",
+            "startYear": "Start with Pro annual",
+            "emptyTitle": "No plans available",
+            "emptyDescription": "Subscription plans could not be loaded at this time. Please try again later.",
+            "errorTitle": "Error loading plans",
+            "reloadBtnText": "reload",
+            "detailsErrorTitle": "The plan couldn't be loaded",
+            "detailsErrorActionsTitle": "What can you do?",
+            "detailsErrorDescription": "There was a problem loading the plan details. Please try again or choose a plan again.",
+            "detailsNotFoundTitle": "Plan unavailable",
+            "detailsNotFoundActionsTitle": "Choose how to continue",
+            "detailsNotFoundDescription": "The selected plan doesn't exist or is no longer available. Return to the plans list to choose another.",
+            "backToPlans": "Back to plans",
+            "logInToGetMessage": "Create an account or sign in to continue with this plan"
+        },
         "heroPreview": {
             "sharedWallet": "Shared wallet",
             "members": "{{count}} members",
@@ -1219,44 +1235,6 @@
         "wompiReference": "Visit Wompi",
         "month": "Month",
         "year": "Year",
-        "plans": {
-            "personal": {
-                "name": "Personal",
-                "button": "Start free",
-                "features": [
-                    "Up to 2 wallets",
-                    "Up to 2 recurring transactions",
-                    "Up to 3 budgets",
-                    "Join one wallet with up to 3 people"
-                ]
-            },
-            "pro": {
-                "name": "BFlow Pro",
-                "button": "Start with Pro",
-                "features": [
-                    "Up to 100 wallets",
-                    "Up to 25 recurring transactions",
-                    "Up to 100 budgets",
-                    "Create shared wallets and manage up to 10 people",
-                    "Transfers between wallets",
-                    "Dashboard customization",
-                    "Smart autocomplete"
-                ]
-            },
-            "annual": {
-                "name": "BFlow Pro annual",
-                "button": "Start with Pro annual",
-                "features": [
-                    "Up to 100 wallets",
-                    "Up to 25 recurring transactions",
-                    "Up to 100 budgets",
-                    "Create shared wallets and manage up to 10 people",
-                    "Transfers between wallets",
-                    "Dashboard customization",
-                    "Smart autocomplete"
-                ]
-            }
-        },
         "steps": [
             {
                 "title": "Create your account",
