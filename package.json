@@ -26,7 +26,7 @@
     "@icons-pack/react-simple-icons": "^13.15.1",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-query": "^5.100.9",
-    "@tanstack/react-query-devtools": "^5.102.8",
+    "@tanstack/react-query-devtools": "^5.104.5",
     "aws-amplify": "^6.22.0",
     "date-fns": "^4.4.0",
     "framer-motion": "^12.42.2",
