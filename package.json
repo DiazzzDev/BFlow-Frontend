@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "packageManager": "bun@1.4.3",
+  "engines": {
+    "bun": ">=1.2.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +14,9 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "echo 'No hay tests instalados aún' && exit 0"
+    "test": "echo 'No hay tests instalados aún' && exit 0",
+    "audit": "bun audit --audit-level=high",
+    "scan:cve": "trivy fs --config trivy.yaml ."
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
@@ -38,7 +44,7 @@
     "remark-gfm": "^4.0.1",
     "sonner": "^2.0.8",
     "tailwindcss": "^4.2.2",
-    "zod": "^4.6.5",
+    "zod": "^4.6.6",
     "zustand": "^4.5.7"
   },
   "devDependencies": {

@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+
+# Trivy
+trivy-results.sarif

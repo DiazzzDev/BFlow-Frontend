@@ -6,6 +6,11 @@ import { useTranslation } from "react-i18next";
 import { completeOAuthLogin } from "../oauthCallback.service";
 
 import { useAuthStore } from "@/auth/authStore";
+import {
+    consumePendingPlan,
+    getPostLoginPath,
+    savePendingPlan,
+} from "@/modules/auth/utils/postLoginRedirect";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 export const useOAuthCallback = () => {
@@ -29,10 +34,11 @@ export const useOAuthCallback = () => {
                 const user = await completeOAuthLogin();
                 setSession(user);
                 toast.success(getApiMessage(user, t("auth.welcome")));
-                void navigate("/app/dashboard", { replace: true });
+                void navigate(getPostLoginPath(consumePendingPlan()), { replace: true });
             } catch (error) {
                 console.error(error);
                 clearSession();
+                savePendingPlan(null);
                 toast.error(getApiErrorMessage(error, t("auth.loginError")));
                 void navigate("/auth/login", { replace: true });
             }

@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Plus, WalletCards } from "lucide-react";
-
-import { BudgetOverview } from "./components/BudgetOverview";
 import { BudgetItem } from "./components/BudgetItem";
 import { BudgetItemSkeleton } from "./components/BudgetItemSkeleton";
 import { BudgetForm } from "./components/BudgetForm";
@@ -23,17 +21,12 @@ export const BudgetsPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { updateSearchParams } = useUpdateSearchParams();
-    const { budgets, isLoading, totalBudgets, totalPages, numberOfElements, totalLimit, hasActiveFilters, isModalOpen, setIsModalOpen, sort, periodParam } = useBudgetsPage();
+    const { budgets, isLoading, totalBudgets, totalPages, numberOfElements, hasActiveFilters, isModalOpen, setIsModalOpen, sort, periodParam } = useBudgetsPage();
     const periodTabs = BUDGET_PERIOD_TABS.map((tab) => ({ ...tab, label: t(`budgets.periods.${tab.value === "ALL" ? "all" : tab.value.toLowerCase()}`, { defaultValue: tab.label }) }));
     const sortOptions = BUDGET_SORT_OPTIONS.map((option) => ({ ...option, label: t(`budgets.sort.${option.value === "amount,desc" ? "amountDesc" : option.value === "amount,asc" ? "amountAsc" : option.value === "updatedAt,desc" ? "updated" : "start"}`, { defaultValue: option.label }) }));
 
     return (
         <div className="flex flex-col px-4 py-5 sm:px-6 pb-10 min-h-full">
-            <BudgetOverview
-                totalBudgets={totalBudgets}
-                totalLimit={totalLimit}
-                isLoading={isLoading}
-            />
 
             <section className="flex h-fit @xl:flex-1 flex-col">
                 <div className="mb-5 flex flex-col gap-3 @3xl:flex-row @xl:justify-between">

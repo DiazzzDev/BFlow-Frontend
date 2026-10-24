@@ -10,6 +10,9 @@ import {
     authLabelClass,
     authPrimaryButtonClass,
 } from "@/modules/auth/utils/authStyles";
+import { toast } from "sonner";
+import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
+import { useNavigate, useSearchParams } from "react-router";
 
 type FormData = { email: string };
 
@@ -20,6 +23,9 @@ interface ForgotPasswordFormProps {
 
 export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const planId = searchParams.get("plan");
     const forgotPasswordSchema = z.object({
         email: z.string().min(1, t("auth.validationEmailRequired")).email(t("auth.validationEmailInvalid")),
     });
@@ -30,13 +36,36 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
     } = useForm<FormData>({
         resolver: zodResolver(forgotPasswordSchema),
         mode: "onSubmit",
+        defaultValues: { email: searchParams.get("email") ?? "" },
     });
+
+    const handleSubmitEmail = async (email: string) => {
+        try {
+            await onSubmit(email);
+
+            toast.success(t("auth.forgotCodeSent"));
+            const resetParams = new URLSearchParams({
+                email: email.trim().toLowerCase(),
+            });
+            if (planId) {
+                resetParams.set("plan", planId);
+            }
+            void navigate(`/auth/reset-password?${resetParams.toString()}`);
+        } catch (err) {
+            toast.error(
+                getCognitoErrorMessage(
+                    err,
+                    t("auth.forgotCodeError")
+                )
+            );
+        }
+    };
 
     return (
         <form
             className="flex flex-col gap-4"
             onSubmit={(e) => {
-                void handleSubmit((data) => onSubmit(data.email))(e);
+                void handleSubmit((data) => handleSubmitEmail(data.email))(e);
             }}
         >
             <div className={authFieldClass}>

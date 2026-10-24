@@ -76,15 +76,6 @@ export const VerificationCodeInput = ({
         focusAt(pasted.length);
     };
 
-    // Digits stay contiguous, so focusing a box past the first empty one jumps back to it
-    const handleFocus = (index: number) => {
-        if (index > value.length) {
-            focusAt(value.length);
-            return;
-        }
-        inputsRef.current[index]?.select();
-    };
-
     return (
         <div role="group" aria-labelledby={labelledBy} className="grid grid-cols-6 gap-2 sm:gap-3">
             {digits.map((digit, index) => (
@@ -95,6 +86,7 @@ export const VerificationCodeInput = ({
                     }}
                     type="text"
                     inputMode="numeric"
+                    maxLength={1}
                     autoComplete={index === 0 ? "one-time-code" : "off"}
                     aria-label={t("auth.verifyDigitLabel", { index: index + 1, total: VERIFICATION_CODE_LENGTH })}
                     aria-invalid={invalid}
@@ -103,7 +95,6 @@ export const VerificationCodeInput = ({
                     onChange={(event) => handleChange(index, event.target.value)}
                     onKeyDown={(event) => handleKeyDown(index, event)}
                     onPaste={handlePaste}
-                    onFocus={() => handleFocus(index)}
                     className={`h-12 w-full rounded-lg border bg-surface-hard text-center font-mono text-xl font-semibold text-light caret-primary outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50 sm:h-14 sm:text-2xl ${
                         invalid ? "border-danger" : digit ? "border-light-25" : "border-light-10"
                     }`}

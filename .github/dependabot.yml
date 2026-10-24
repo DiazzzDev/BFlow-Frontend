@@ -1,12 +1,36 @@
 version: 2
 
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "weekly"
 
     open-pull-requests-limit: 5
+
+    commit-message:
+      prefix: "deps"
+
+    labels:
+      - "dependencies"
+
+  # Keeps the SHA-pinned actions (setup-bun, trivy-action, ...) up to date.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+    commit-message:
+      prefix: "deps"
+
+    labels:
+      - "dependencies"
+
+  # Bun / Trivy versions pinned in the devcontainer Dockerfile.
+  - package-ecosystem: "docker"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "weekly"
 
     commit-message:
       prefix: "deps"

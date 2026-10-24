@@ -1,0 +1,41 @@
+{
+  "name": "BFlow Frontend (Bun)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "BUN_VERSION": "1.4.3",
+      "TRIVY_VERSION": "0.69.3"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
+  "remoteUser": "vscode",
+  "forwardPorts": [5173],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite dev server",
+      "onAutoForward": "notify"
+    }
+  },
+  "onCreateCommand": "cp -n .env.example .env || true",
+  "postCreateCommand": "bun install --frozen-lockfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "oven.bun-vscode",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "aquasecurity.trivy-vulnerability-scanner"
+      ],
+      "settings": {
+        "editor.formatOnSave": false,
+        "eslint.useFlatConfig": true,
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
+  }
+}

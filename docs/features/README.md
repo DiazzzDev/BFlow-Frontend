@@ -7,7 +7,7 @@ This directory uses a lightweight Specification-Driven Development (SDD) workflo
 1. **Propose** — Add a row to [`INDEX.md`](./INDEX.md) with an owner, status, and expected outcome.
 2. **Specify** — Copy [`TEMPLATE.md`](./TEMPLATE.md) to `NNN-short-name.md`. Complete the requirements and acceptance criteria before implementation.
 3. **Build** — Link the specification in the pull request. Keep meaningful scope or implementation decisions in the specification.
-4. **Validate** — Run `npm run lint`, `npm run typecheck`, and `npm run build`; record any feature-specific manual checks.
+4. **Validate** — Run `bun run lint`, `bun run typecheck`, and `bun run build`; record any feature-specific manual checks.
 5. **Ship** — Mark a feature `shipped` after its acceptance criteria are met and any follow-up work is captured.
 
 ## Statuses
