@@ -1,7 +1,5 @@
 # .husky/commit-msg
-commit_msg=$(cat "$1")
-
-if ! bunx --no-install commitlint --edit "$1"; then
+if ! bun ./node_modules/@commitlint/cli/cli.js --edit "$1"; then
     echo ""
     echo "  Formato requerido: tipo: descripción"
     echo "  Ejemplos válidos:"
@@ -9,6 +7,6 @@ if ! bunx --no-install commitlint --edit "$1"; then
     echo "    fix: corregir error en hook useWallets"
     echo "    ui: mejorar empty state de billeteras"
     echo ""
-    echo "  Tipos permitidos: feat, fix, ui, refactor, chore, docs, test, perf, revert"
+    echo "  Tipos permitidos: feat, fix, ui, refactor, chore, docs, test, perf, revert, hotfix"
     exit 1
 fi
