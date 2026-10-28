@@ -16,7 +16,7 @@
         "aws-amplify": "^6.22.0",
         "date-fns": "^4.4.0",
         "framer-motion": "^12.42.2",
-        "i18next": "^26.4.2",
+        "i18next": "^26.5.10",
         "lucide-react": "^1.7.0",
         "react": "19.3.1",
         "react-dom": "19.3.1",
@@ -804,7 +804,7 @@
 
     "husky": ["husky@9.1.7", "", { "bin": "bin.js" }, "sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA=="],
 
-    "i18next": ["i18next@26.4.2", "", { "peerDependencies": { "typescript": "^5 || ^6 || ^7" }, "optionalPeers": ["typescript"] }, "sha512-RX+R0VLg13IbvRuJSxnqykUFS9vQZTl8wYpWPCIUDWVrSGjsQywB5Y+pjzrkboxGAuYfJZVH1InFTdgBdxq6ug=="],
+    "i18next": ["i18next@26.5.10", "", { "peerDependencies": { "typescript": "^5 || ^6 || ^7" }, "optionalPeers": ["typescript"] }, "sha512-YS4EiLQhhk0wGThm4Zy+BL2c9rBNIK+kAbksi4l/B+D6kVRQLIFZgu2b/MU2LibJJHwWNTYoOYR52T+jfV8kPQ=="],
 
     "idb": ["idb@5.0.6", "", {}, "sha512-/PFvOWPzRcEPmlDt5jEvzVZVs0wyd/EvGvkDIcbBpGuMMLQKrTPG0TxvE2UJtgZtCQCmOtM2QD7yQJBVEjKGOw=="],
 
