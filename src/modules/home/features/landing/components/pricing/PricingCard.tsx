@@ -83,7 +83,7 @@ export const PricingCard = ({
                                 className="flex items-start gap-3 text-sm leading-snug text-helper md:text-[15px]"
                             >
                                 <CheckIcon />
-                                {benefit.limit ?
+                                {benefit.limit !== undefined && benefit.limit !== null ?
                                     (
                                         <span>{benefit.defaultValue} ({benefit.limit})</span>
                                     ) : (

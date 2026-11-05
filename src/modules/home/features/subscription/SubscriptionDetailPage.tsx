@@ -19,7 +19,7 @@ export const SubscriptionDetailsPage = () => {
 
     const { data, isLoading, isError, refetch } = useGetPlan(planId ?? "");
 
-    const plan = data?.data;
+    const plan = data;
 
     const { mutateAsync, isPending } = useCreateWompiCheckout();
 
