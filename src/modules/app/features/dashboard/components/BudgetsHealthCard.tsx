@@ -13,6 +13,7 @@ import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { Button } from "@/components/controls/Button";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
+import { RolldownNumber } from "@/components/RolldownNumber";
 
 interface BudgetsHealthCardProps {
     isLoading: boolean;
@@ -81,7 +82,12 @@ export const BudgetsHealthCard = ({
                                         {budget.displayName}
                                     </p>
                                     {hasProgress ? (
-                                        <span className="shrink-0 text-xs font-semibold text-primary">{Math.round(percentage)}%</span>
+                                        <RolldownNumber
+                                            value={percentage}
+                                            formatValue={(value) => `${Math.round(value)}%`}
+                                            duration={0.8}
+                                            className="shrink-0 text-xs font-semibold text-primary"
+                                        />
                                     ) : (
                                         <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${getBudgetHealthStatusStyle(budget.status)}`}>
                                             {t(`budgets.status.${budget.status}`, { defaultValue: budget.status })}

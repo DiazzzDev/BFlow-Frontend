@@ -29,12 +29,13 @@ import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputVal
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
+import { setApiValidationErrors } from "@/utils/api";
 
 const recurringSchema = z
     .object({
         type: z.enum(CATEGORY_TYPE_VALUES),
         title: z.string().min(1, "El título es obligatorio"),
-        description: z.string().min(1, "La descripción es obligatoria"),
+        description: z.string(),
         amount: z
             .string()
             .min(1, "El monto es obligatorio")
@@ -97,6 +98,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
         handleSubmit,
         reset,
         setValue,
+        setError,
         formState: { errors },
     } = useForm<RecurringFormValues>({
         resolver: zodResolver(recurringSchema),
@@ -150,7 +152,13 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 getApiErrorMessage(error, t("common.operationError")),
         });
 
-        await promise;
+        try {
+            await promise;
+        } catch (error) {
+            setApiValidationErrors(error, setError);
+            return;
+        }
+
         reset({ ...defaultFormValues, startDate: formatTodayDateInputValue() });
         setSelectedCategory("auto");
         setCategoryQuery("");

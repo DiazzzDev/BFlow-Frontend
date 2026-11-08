@@ -6,6 +6,21 @@ export type ApiResponse<T> = {
     path?: string;
 };
 
+export interface ApiFieldError {
+    field: string;
+    code: string;
+    message: string;
+}
+
+export interface ApiErrorResponse {
+    success: false;
+    message: string;
+    code?: string;
+    errors?: ApiFieldError[];
+    timestamp?: string;
+    path?: string;
+}
+
 export interface PaginatedListResponse<T> {
     success: boolean;
     message: string;

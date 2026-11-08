@@ -25,6 +25,7 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
+import { setApiValidationErrors } from "@/utils/api";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 
 const transferSchema = z.object({
@@ -33,7 +34,7 @@ const transferSchema = z.object({
         .string()
         .min(1, "El monto es obligatorio")
         .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
-    description: z.string().min(1, "La descripción es obligatoria"),
+    description: z.string(),
 });
 
 type TransferFormValues = z.infer<typeof transferSchema>;
@@ -87,6 +88,7 @@ export const TransferForm = ({
         handleSubmit,
         reset,
         setValue,
+        setError,
         formState: { errors },
     } = useForm<TransferFormValues>({
         resolver: zodResolver(transferSchema),
@@ -146,7 +148,16 @@ export const TransferForm = ({
             error: (error) => getApiErrorMessage(error, t("common.operationError")),
         });
 
-        await promise;
+        try {
+            await promise;
+        } catch (error) {
+            setApiValidationErrors(error, setError, {
+                fromWalletId: "counterpartWalletId",
+                toWalletId: "counterpartWalletId",
+            });
+            return;
+        }
+
         reset(defaultFormValues);
         setSelectedWallet("auto");
         setWalletQuery("");

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
 
 interface CustomModalProps {
     isModalOpen: boolean;
@@ -47,36 +48,23 @@ export const CustomModal = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className={`relative z-10 mb-0 max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-surface p-6 font-sans text-light shadow-custom sm:mx-4 sm:mb-2 sm:mt-2 sm:rounded-2xl sm:p-10 ${maxWidth}`}
+                        className={`relative z-10 mb-0 max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-surface font-sans text-light shadow-custom sm:mx-4 sm:mb-2 sm:mt-2 sm:rounded-2xl ${maxWidth}`}
                     >
-                        <div className="mx-auto mb-5 h-1.5 w-12 rounded-full bg-light-25/20 sm:hidden" />
+                        <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-light-25/20 sm:hidden" />
 
-                        <button
-                            type="button"
-                            onClick={() => setIsModalOpen(false)}
-                            className="absolute right-6 top-6 cursor-pointer rounded-lg p-1 text-helper transition-colors hover:bg-light-10 hover:text-light active:scale-95 sm:right-8 sm:top-8"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={2.5}
-                                stroke="currentColor"
-                                className="h-6 w-6"
+                        <header className="mt-3 flex items-center justify-between border-b border-light-10 px-5 pb-4 sm:mt-0 sm:px-6 sm:py-4">
+                            <h2 className="pr-4 text-base font-semibold text-light">{title}</h2>
+                            <button
+                                type="button"
+                                aria-label="Cerrar modal"
+                                onClick={() => setIsModalOpen(false)}
+                                className="-mr-1 cursor-pointer rounded-md p-1.5 text-helper transition-colors hover:bg-light-10 hover:text-light active:scale-95"
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
+                                <X className="h-4 w-4" strokeWidth={2.25} />
+                            </button>
+                        </header>
 
-                        <h2 className="mb-6 pr-8 text-xl font-medium text-light sm:mb-8">
-                            {title}
-                        </h2>
-
-                        <div className="pb-5 sm:pb-0">{children}</div>
+                        <div className="p-5 pb-6 sm:p-6">{children}</div>
                     </motion.div>
                 </div>
             )}

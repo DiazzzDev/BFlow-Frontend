@@ -12,11 +12,9 @@ import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
-import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Textarea } from "@/components/controls/Textarea";
 import { ToggleSwitch } from "@/components/controls/ToggleSwitch";
 import { Button } from "@/components/controls/Button";
-import type { Category } from "@/modules/app/interfaces/Category";
 import {
     PERIODICITY_FORM_OPTIONS,
     PERIODICITY_VALUES,
@@ -26,6 +24,7 @@ import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputVal
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { useAutoSelect } from "@/hooks/useAutoSelect";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
+import { setApiValidationErrors } from "@/utils/api";
 
 const incomeSchema = z
     .object({
@@ -92,7 +91,6 @@ export const IncomeForm = ({
     const isDisabled = readOnly || isSaving;
 
     // Category search and income category list
-    const [categoryQuery, setCategoryQuery] = useState("");
     const { data: categoriesResponse, isLoading: isCategoriesLoading } = useGetCategories();
     const incomeCategories = categoriesResponse?.data.filter((category) => category.type === "INCOME");
 
@@ -102,6 +100,7 @@ export const IncomeForm = ({
         handleSubmit,
         reset,
         setValue,
+        setError,
         formState: { errors },
     } = useForm<IncomeFormValues>({
         resolver: zodResolver(incomeSchema),
@@ -163,11 +162,16 @@ export const IncomeForm = ({
                 ),
         });
 
-        await promise;
+        try {
+            await promise;
+        } catch (error) {
+            setApiValidationErrors(error, setError);
+            return;
+        }
+
         if (!isEditing) {
             reset({ ...defaultFormValues, date: formatTodayDateInputValue() });
             setSelectedCategory("auto");
-            setCategoryQuery("");
         }
         onSuccess?.();
     };
@@ -183,24 +187,59 @@ export const IncomeForm = ({
                 void handleSubmit(onSubmit)(e);
             }}
         >
-            <div className="flex flex-col gap-1">
-                <Label htmlFor="title">{t("transactions.title")}</Label>
-                <Controller
-                    name="title"
-                    control={control}
-                    render={({ field }) => (
-                        <Input
-                            id="title"
-                            placeholder="Ej. Salario"
-                            disabled={isDisabled}
-                            {...field}
-                        />
+            <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="flex flex-1 flex-col gap-1">
+                    <Label htmlFor="title">{t("transactions.title")}</Label>
+                    <Controller
+                        name="title"
+                        control={control}
+                        render={({ field }) => (
+                            <Input
+                                id="title"
+                                placeholder="Ej. Salario"
+                                disabled={isDisabled}
+                                {...field}
+                            />
+                        )}
+                    />
+                    {errors.title && (
+                        <span className="text-danger text-xs">{errors.title.message}</span>
                     )}
-                />
-                {errors.title && (
-                    <span className="text-danger text-xs">{errors.title.message}</span>
-                )}
+                </div>
+                <div className="flex flex-1 flex-col gap-1">
+                    <Label htmlFor="categoryId">{t("transactions.category")}</Label>
+                    <Controller
+                        name="categoryId"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                id="categoryId"
+                                value={field.value}
+                                disabled={isDisabled || isCategoriesLoading}
+                                onChange={(event) => {
+                                    const category = getCategory(
+                                        incomeCategories ?? [],
+                                        event.target.value,
+                                    );
+                                    setSelectedCategory(category ?? null);
+                                    field.onChange(event.target.value);
+                                }}
+                                onBlur={field.onBlur}
+                            >
+                                {(incomeCategories ?? []).map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </Select>
+                        )}
+                    />
+                    {errors.categoryId && (
+                        <span className="text-danger text-xs">{errors.categoryId.message}</span>
+                    )}
+                </div>
             </div>
+
 
             <div className="flex flex-col gap-1">
                 <Label htmlFor="description">{t("transactions.description")}</Label>
@@ -270,38 +309,6 @@ export const IncomeForm = ({
                         <span className="text-danger text-xs">{errors.date.message}</span>
                     )}
                 </div>
-            </div>
-
-            <div className="flex flex-col gap-1">
-                <Controller
-                    name="categoryId"
-                    control={control}
-                    render={({ field }) => (
-                        <SelectAutoComplete<Category>
-                            idSelect="categoryId"
-                            label={t("transactions.category")}
-                            placeholder={
-                                isCategoriesLoading
-                                    ? t("transactions.loadingCategories")
-                                    : t("transactions.searchCategory")
-                            }
-                            selectedItem={selectedCategory}
-                            setSelectedItem={(category) => {
-                                setSelectedCategory(category);
-                                field.onChange(category?.id ?? "");
-                            }}
-                            query={categoryQuery}
-                            setQuery={setCategoryQuery}
-                            data={incomeCategories ?? []}
-                            getKey={(category) => category.id}
-                            getLabel={(category) => category.name}
-                            disabled={isDisabled || isCategoriesLoading}
-                        />
-                    )}
-                />
-                {errors.categoryId && (
-                    <span className="text-danger text-xs">{errors.categoryId.message}</span>
-                )}
             </div>
 
             <div className="flex flex-col gap-4 rounded-2xl border border-light-10 bg-surface-hard/40 p-4">

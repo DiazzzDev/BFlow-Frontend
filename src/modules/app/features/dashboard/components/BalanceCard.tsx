@@ -2,8 +2,6 @@ import { useTranslation } from "react-i18next";
 
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 
-import { formatCurrency } from "@/utils/formatters/formatCurrency";
-
 import { AmountDisplay } from "./AmountDisplay";
 
 interface BalanceCardProps {
@@ -46,9 +44,15 @@ export const BalanceCard = ({
                     {isLoading ? (
                         <div className="mt-2 h-7 w-28 animate-pulse rounded-md bg-skeleton" />
                     ) : (
-                        <p className="text-lg font-semibold tabular-nums text-info sm:text-xl">
-                            +{formatCurrency(averageIncome, currency)}
-                        </p>
+                        <div className="flex items-baseline text-info">
+                            <span className="text-lg font-semibold sm:text-xl">+</span>
+                            <AmountDisplay
+                                amount={averageIncome}
+                                currency={currency}
+                                className="mt-0 text-lg text-info sm:text-xl"
+                                decimalClassName="text-info/75"
+                            />
+                        </div>
                     )}
                 </div>
                 <div className="flex items-center justify-between gap-3 sm:pl-4">
@@ -56,9 +60,15 @@ export const BalanceCard = ({
                     {isLoading ? (
                         <div className="mt-2 h-7 w-28 animate-pulse rounded-md bg-skeleton" />
                     ) : (
-                        <p className="text-lg font-semibold tabular-nums text-danger sm:text-xl">
-                            -{formatCurrency(averageExpenses, currency)}
-                        </p>
+                        <div className="flex items-baseline text-danger">
+                            <span className="text-lg font-semibold sm:text-xl">-</span>
+                            <AmountDisplay
+                                amount={averageExpenses}
+                                currency={currency}
+                                className="mt-0 text-lg text-danger sm:text-xl"
+                                decimalClassName="text-danger/75"
+                            />
+                        </div>
                     )}
                 </div>
             </div>
