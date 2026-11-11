@@ -10,8 +10,8 @@ import { ArrowRight } from "lucide-react";
 import { useMutateTransfers } from "../hooks/useMutateTransfers";
 import type { TransferDirection } from "../interfaces/Transfer";
 import { getWallet } from "../utils/getWallet";
-import { useGetWallets } from "../../wallets/hooks/useGetWallets";
-import { useGetWallet } from "../../walletView/hooks/useGetWallet";
+import { useGetWallets } from "../../../features/wallets/hooks/useGetWallets";
+import { useGetWallet } from "../../../features/walletView/hooks/useGetWallet";
 
 import { WalletTransferCard } from "./WalletTransferCard";
 
@@ -27,6 +27,7 @@ import { useAutoSelect } from "@/hooks/useAutoSelect";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { setApiValidationErrors } from "@/utils/api";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
+import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
 const transferSchema = z.object({
     counterpartWalletId: z.string().uuid("Selecciona una billetera"),
@@ -175,7 +176,7 @@ export const TransferForm = ({
                 void handleSubmit(onSubmit)(e);
             }}
         >
-            <div className="grid grid-cols-1 gap-x-3 gap-y-3 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+            <div className="relative grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="min-w-0">
                     {isCurrentWalletLoading || !currentWallet ? (
                         <div className="flex min-h-36 flex-col justify-between rounded-2xl border border-light-10 bg-surface-hard/50 p-4">
@@ -189,11 +190,12 @@ export const TransferForm = ({
                             wallet={currentWallet}
                             label={t("transactions.currentWallet")}
                             highlight
+                            showDescription={false}
                         />
                     )}
                 </div>
 
-                <div className="flex items-center justify-center py-1 sm:py-0">
+                <div className="absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:flex">
                     <motion.button
                         type="button"
                         onClick={toggleDirection}
@@ -215,39 +217,32 @@ export const TransferForm = ({
                     </motion.button>
                 </div>
 
-                <div className="min-w-0">
-                    {counterpartCardWallet ? (
-                        <WalletTransferCard
-                            wallet={counterpartCardWallet}
-                            label={isOutgoing ? t("transactions.destination") : t("transactions.origin")}
-                        />
-                    ) : (
-                        <div className="flex min-h-36 flex-col items-center justify-center rounded-2xl border border-dashed border-light-10 bg-surface-hard/30 px-4 text-center">
-                            <p className="text-sm font-medium text-light">
-                                {isOutgoing
-                                    ? t("transactions.chooseDestination")
-                                    : t("transactions.chooseOrigin")}
+                <div className="min-h-36 min-w-0 rounded-2xl border border-dashed border-light-10 bg-surface-hard/30 p-4">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                        <p className="text-xs font-medium uppercase tracking-wide text-helper">
+                            {isOutgoing ? t("transactions.destination") : t("transactions.origin")}
+                        </p>
+                        <span className="text-[11px] text-helper">Requerido</span>
+                    </div>
+
+                    {readOnly && counterpartCardWallet ? (
+                        <div className="rounded-xl bg-surface/60 px-3 py-2.5">
+                            <p className="truncate text-sm font-semibold text-light">
+                                {counterpartCardWallet.name}
                             </p>
                             <p className="mt-1 text-xs text-helper">
-                                {t("transactions.chooseWalletHint")}
+                                {counterpartCardWallet.description || t("transactions.chooseWalletHint")}
                             </p>
                         </div>
-                    )}
-                </div>
-
-                {!readOnly && (
-                    <div className="min-w-0 sm:col-start-3">
+                    ) : (
                         <Controller
                             name="counterpartWalletId"
                             control={control}
                             render={({ field }) => (
                                 <SelectAutoComplete<Wallet>
                                     idSelect="counterpartWalletId"
-                                    label={
-                                        isOutgoing
-                                            ? t("transactions.destination")
-                                            : t("transactions.origin")
-                                    }
+                                    label=""
+                                    compact
                                     placeholder={
                                         isWalletsFetching
                                             ? t("transactions.searchingWallets")
@@ -267,13 +262,26 @@ export const TransferForm = ({
                                 />
                             )}
                         />
-                        {errors.counterpartWalletId && (
-                            <span className="text-danger text-xs">
-                                {errors.counterpartWalletId.message}
+                    )}
+                    {!readOnly && (
+                        <p className="mt-2 text-xs text-helper">
+                            {t("transactions.chooseWalletHint")}
+                        </p>
+                    )}
+                    {!readOnly && selectedWallet && (
+                        <div className="mt-3 flex items-center justify-between border-t border-light-10 pt-3">
+                            <span className="text-xs text-helper">Saldo disponible</span>
+                            <span className="text-sm font-semibold tabular-nums text-light">
+                                {formatCurrency(selectedWallet.balance, selectedWallet.currency)}
                             </span>
-                        )}
-                    </div>
-                )}
+                        </div>
+                    )}
+                    {errors.counterpartWalletId && (
+                        <span className="mt-1 block text-xs text-danger">
+                            {errors.counterpartWalletId.message}
+                        </span>
+                    )}
+                </div>
             </div>
 
             {!readOnly && (

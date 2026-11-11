@@ -31,7 +31,7 @@ export const BudgetProgress = ({
                 </p>
             </div>
 
-            <div className="relative h-2.5 overflow-visible rounded-full bg-secondary">
+            <div className="relative h-2.5 overflow-visible rounded-full bg-progress-track">
                 <div className="h-2.5 overflow-hidden rounded-full">
                     <div
                         className={`h-full rounded-full transition-all ${fillClass}`}

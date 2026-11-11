@@ -5,7 +5,7 @@ interface SkeletonTextProps {
 export const SkeletonText = ({ className = "" }: SkeletonTextProps) => {
     return (
         <div
-            className={`animate-pulse rounded-full bg-secondary ${className}`}
+            className={`animate-pulse rounded-full bg-skeleton ${className}`}
         />
     );
 };

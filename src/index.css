@@ -69,15 +69,67 @@
     --color-info-25: #3b82f640;
 
     --color-item-nav: rgb(249 115 22 / 0.08);
-    --color-skeleton: #ffffff14;
+    --color-skeleton: #2a303a;
+    --color-progress-track: #2c333d;
+    --color-toggle-track: #2a303a;
+    --color-toggle-thumb: #d9e2ec;
 
     /* --- TIPOGRAFÍA / UI --- */
     --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
     --radius-base: 0.5rem;
     --container-sm: 30rem;
-    --shadow-custom: 0 2px 10px 0 rgb(0 0 0 / 0.25);
+    --shadow-custom: 0 2px 10px 0 rgb(0 0 0 / 0.32);
     --scrollbar-bg: var(--color-surface-hard);
     --scrollbar-thumb: var(--color-secondary);
+}
+
+[data-theme="light"] {
+    /* --- MARCA --- */
+    --color-primary: #f97316;
+    --color-primary-dark: #ea580c;
+    --color-primary-75: #f97316bf;
+    --color-primary-50: #f9731680;
+    --color-primary-25: #f9731640;
+    --color-primary-15: #f9731626;
+
+    --color-secondary: #d9e3ec;
+    --color-secondary-dark: #c7d2dd;
+    --color-secondary-75: #d9e3ecbf;
+    --color-secondary-50: #d9e3ec80;
+    --color-secondary-25: #d9e3ec40;
+    --color-secondary-15: #d9e3ec26;
+
+    /* --- TEXTO (tema claro: light = tinta principal) --- */
+    --color-light: #172235;
+    --color-light-75: #172235bf;
+    --color-light-50: #17223580;
+    --color-light-25: #17223540;
+    --color-light-10: #1722351a;
+    --color-light-5: #1722350d;
+
+    --color-helper: #64748b;
+    --color-label: #475569;
+    --color-placeholder: #94a3b8;
+
+    /* --- SUPERFICIES --- */
+    --color-surface: #f9fbfd;
+    --color-surface-hard: #eaf0f5;
+    --color-surface-95: #f9fbfdf2;
+    --color-surface-75: #f9fbfdbf;
+    --color-surface-50: #f9fbfd80;
+    --color-surface-30: #f9fbfd4d;
+    --color-surface-25: #f9fbfd40;
+    --color-surface-20: #f9fbfd33;
+    --color-surface-10: #f9fbfd1a;
+
+    --color-item-nav: rgb(249 115 22 / 0.1);
+    --color-skeleton: #e8eef4;
+    --color-progress-track: #dce5ed;
+    --color-toggle-track: #d5e0e9;
+    --color-toggle-thumb: #ffffff;
+    --shadow-custom: 0 2px 10px 0 rgb(31 52 73 / 0.12);
+    --scrollbar-bg: var(--color-surface-hard);
+    --scrollbar-thumb: #b8c5d1;
 }
 
 @theme {
@@ -148,6 +200,9 @@
 
     --color-item-nav: var(--color-item-nav);
     --color-skeleton: var(--color-skeleton);
+    --color-progress-track: var(--color-progress-track);
+    --color-toggle-track: var(--color-toggle-track);
+    --color-toggle-thumb: var(--color-toggle-thumb);
 
     --radius-base: var(--radius-base);
     --radius-md: calc(var(--radius-base) * 0.8);
@@ -192,6 +247,109 @@
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* Invierte el color negro a blanco */
   cursor: pointer;
+}
+
+[data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+}
+
+/* Ant Design DatePicker */
+.bflow-date-picker.ant-picker {
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid var(--color-light-10);
+    border-radius: var(--radius-base);
+    background: color-mix(in srgb, var(--color-surface-hard) 40%, transparent);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+    color: var(--color-light);
+    font-family: var(--font-sans);
+    padding: 0 0.75rem;
+    transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.bflow-date-picker.ant-picker:hover {
+    border-color: var(--color-light-25);
+    background: var(--color-surface);
+}
+
+.bflow-date-picker.ant-picker-focused {
+    border-color: var(--color-primary-75);
+    background: var(--color-surface);
+    box-shadow: 0 0 0 2px var(--color-primary-15);
+}
+
+.bflow-date-picker .ant-picker-input > input,
+.bflow-date-picker .ant-picker-input > input::placeholder,
+.bflow-date-picker .ant-picker-suffix,
+.bflow-date-picker .ant-picker-clear {
+    color: var(--color-light);
+}
+
+.bflow-date-picker .ant-picker-input > input::placeholder {
+    color: var(--color-placeholder);
+}
+
+.bflow-date-picker .ant-picker-suffix {
+    color: var(--color-helper);
+}
+
+.bflow-date-picker.ant-picker-disabled {
+    background: color-mix(in srgb, var(--color-surface-hard) 40%, transparent);
+    opacity: 0.5;
+}
+
+.bflow-date-picker--error.ant-picker,
+.bflow-date-picker--error.ant-picker:hover {
+    border-color: var(--color-danger);
+}
+
+.bflow-date-picker-popup .ant-picker-panel-container {
+    overflow: hidden;
+    border: 1px solid var(--color-light-10);
+    border-radius: 0.75rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-custom);
+    color: var(--color-light);
+    font-family: var(--font-sans);
+}
+
+.bflow-date-picker-popup .ant-picker-panel,
+.bflow-date-picker-popup .ant-picker-date-panel,
+.bflow-date-picker-popup .ant-picker-header,
+.bflow-date-picker-popup .ant-picker-footer {
+    border-color: var(--color-light-10);
+    background: var(--color-surface);
+}
+
+.bflow-date-picker-popup .ant-picker-header button,
+.bflow-date-picker-popup .ant-picker-content th,
+.bflow-date-picker-popup .ant-picker-cell,
+.bflow-date-picker-popup .ant-picker-cell-in-view {
+    color: var(--color-light);
+}
+
+.bflow-date-picker-popup .ant-picker-cell:not(.ant-picker-cell-in-view) {
+    color: var(--color-helper);
+}
+
+.bflow-date-picker-popup .ant-picker-cell-inner::before {
+    border-color: var(--color-primary);
+}
+
+.bflow-date-picker-popup .ant-picker-cell:hover .ant-picker-cell-inner,
+.bflow-date-picker-popup .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+    background: var(--color-primary-15);
+}
+
+.bflow-date-picker-popup .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+.bflow-date-picker-popup .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+.bflow-date-picker-popup .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.bflow-date-picker-popup .ant-picker-today-btn {
+    color: var(--color-primary);
 }
 
 /* Opción rápida con CSS moderno */

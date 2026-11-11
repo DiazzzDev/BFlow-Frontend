@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { ChevronLeft, PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
@@ -27,24 +28,36 @@ export const WalletViewHeader = ({
     onToggleDesktopInfo,
 }: WalletViewHeaderProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     return (
         <div className="mb-6 flex flex-col gap-3 px-4 sm:px-7 @md:flex-row @md:items-center @md:justify-between">
-            <div className="min-w-0">
-                {isLoading ? (
-                    <div className="space-y-2">
-                        <SkeletonText className="h-8 w-48" />
-                        <SkeletonText className="h-4 w-56" />
-                    </div>
-                ) : (
-                    <>
-                        <h1 className="truncate text-2xl font-semibold tracking-tight text-light sm:text-3xl">
-                            {name ?? t("walletView.wallet")}
-                        </h1>
-                        <p className="mt-1 text-sm text-helper">
-                            {formatCurrency(balance, currency)} {t("walletView.currentBalance")}
-                        </p>
-                    </>
-                )}
+            <div className="flex min-w-0 items-start gap-2">
+                <button
+                    type="button"
+                    aria-label="Volver a billeteras"
+                    title="Volver a billeteras"
+                    onClick={() => { void navigate("/app/wallets") }}
+                    className="mt-0.5 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-helper transition-colors hover:bg-light-10 hover:text-light active:scale-95"
+                >
+                    <ChevronLeft className="h-5 w-5" />
+                </button>
+                <div className="min-w-0">
+                    {isLoading ? (
+                        <div className="space-y-2">
+                            <SkeletonText className="h-8 w-48" />
+                            <SkeletonText className="h-4 w-56" />
+                        </div>
+                    ) : (
+                        <>
+                            <h1 className="truncate text-2xl font-semibold tracking-tight text-light sm:text-3xl">
+                                {name ?? t("walletView.wallet")}
+                            </h1>
+                            <p className="mt-1 text-sm text-helper">
+                                {formatCurrency(balance, currency)} {t("walletView.currentBalance")}
+                            </p>
+                        </>
+                    )}
+                </div>
             </div>
 
             {showInfoControls ? (

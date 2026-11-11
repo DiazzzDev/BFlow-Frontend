@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 import { UserAvatar } from "./UserAvatar";
 import { UserMenuLanguage } from "./UserMenuLanguage";
+import { UserMenuTheme } from "./UserMenuTheme";
 
 import { useDropdown } from "../hooks/useDropdown";
 import { USER_MENU_RESOURCE_LINKS } from "../utils/userMenuLinks";
@@ -95,6 +96,7 @@ export const UserMenu = () => {
                         </Link>
 
                         <UserMenuLanguage />
+                        <UserMenuTheme />
 
                         <hr className="my-1 border-light-10" />
 

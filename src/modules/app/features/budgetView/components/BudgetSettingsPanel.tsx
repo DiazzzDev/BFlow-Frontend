@@ -15,6 +15,7 @@ import {
 import { DeleteBudgetModal } from "./DeleteBudgetModal";
 
 import { Input } from "@/components/controls/Input";
+import { DatePicker } from "@/components/controls/DatePicker";
 import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { RangeSlider } from "@/components/controls/RangeSlider";
@@ -258,10 +259,8 @@ export const BudgetSettingsPanel = ({
                                 name="startDate"
                                 control={control}
                                 render={({ field }) => (
-                                    <Input
+                                    <DatePicker
                                         id="budgetSettingsStartDate"
-                                        type="date"
-                                        placeholder=""
                                         disabled={isSaving}
                                         {...field}
                                     />

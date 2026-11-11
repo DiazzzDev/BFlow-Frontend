@@ -8,7 +8,7 @@ import { UserMenu } from "./UserMenu";
 
 import { getBreadcrumbs } from "../utils/breadcrumbs";
 
-import BflowLogo from "@/assets/BFlow logo.svg";
+import { BflowLogo } from "@/components/brand/BflowLogo";
 
 interface HeaderProps {
     onOpenNav: () => void;
@@ -32,7 +32,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
                 </button>
 
                 <Link to="/app/dashboard" aria-label="BFlow Studio" className="shrink-0">
-                    <img src={BflowLogo} alt="" className="h-7 w-auto" />
+                    <BflowLogo className="h-7 w-auto" />
                 </Link>
 
                 <HeaderNav />

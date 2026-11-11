@@ -54,7 +54,7 @@ export const LandingModules = () => {
                         isActive={false}
                     />
                     <span className="flex flex-1 flex-col items-center justify-center gap-3 bg-surface px-5 py-8 text-center transition-colors group-hover:bg-primary-15">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full border border-light-25 text-light transition-all duration-300 group-hover:rotate-45 group-hover:border-primary group-hover:bg-primary">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-full border border-light-25 text-light transition-all duration-300 group-hover:rotate-45 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
                             <ArrowUpRight className="h-5 w-5" />
                         </span>
                         <span className="max-w-40 text-xs leading-relaxed text-helper transition-colors group-hover:text-label">

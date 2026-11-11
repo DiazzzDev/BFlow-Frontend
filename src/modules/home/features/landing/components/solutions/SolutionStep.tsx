@@ -64,7 +64,7 @@ export const SolutionStep = ({ step, index, isActive, onActivate }: SolutionStep
 
                 <Link
                     to={docsPath}
-                    className="group/link mt-7 inline-flex w-fit items-center gap-2 rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:border-primary hover:bg-primary"
+                    className="group/link mt-7 inline-flex w-fit items-center gap-2 rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:border-primary hover:bg-primary hover:text-white"
                 >
                     {t("home.solutions.learnMore", { module: label })}
                     <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />

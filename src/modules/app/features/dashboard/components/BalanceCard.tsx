@@ -31,7 +31,7 @@ export const BalanceCard = ({
                 <div className="mt-5 h-14 w-56 animate-pulse rounded-lg bg-skeleton" />
             ) : (
                 <div className="mt-4">
-                    <AmountDisplay amount={total} currency={currency} />
+                    <AmountDisplay amount={total} currency={currency} numberClassName="text-4xl" />
                 </div>
             )}
 

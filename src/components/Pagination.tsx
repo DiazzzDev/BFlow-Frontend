@@ -93,7 +93,7 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                             aria-current={isActive ? "page" : undefined}
                             className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
                                 isActive
-                                    ? "bg-primary text-light"
+                                    ? "bg-primary text-white"
                                     : "border border-light-10 bg-surface text-light hover:bg-light-5 active:scale-95"
                             }`}
                         >

@@ -6,6 +6,7 @@ interface AmountDisplayProps {
     currency: string;
     className?: string;
     decimalClassName?: string;
+    numberClassName?: string;
     duration?: number;
 }
 
@@ -15,6 +16,7 @@ export const AmountDisplay = ({
     currency,
     className = "text-light",
     decimalClassName = "text-light-75",
+    numberClassName = "",
     duration = 1,
 }: AmountDisplayProps) => {
     const formatted = formatCurrency(amount, currency);
@@ -44,7 +46,7 @@ export const AmountDisplay = ({
 
     return (
         <p className={amountClassName}>
-            <RolldownNumber value={amount} formatValue={formatWhole} duration={duration} />
+            <RolldownNumber value={amount} formatValue={formatWhole} duration={duration} className={numberClassName}/>
             <RolldownNumber
                 value={decimalValue}
                 formatValue={formatDecimals}

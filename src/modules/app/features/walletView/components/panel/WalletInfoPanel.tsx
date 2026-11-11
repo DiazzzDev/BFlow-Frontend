@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -8,27 +8,23 @@ import {
     type WalletViewSidebarProps,
 } from "../WalletViewSidebar";
 
-import { ScheduleTransactionModal } from "@/modules/app/features/scheduleTransaction/ScheduleTransactionModal";
 
 interface WalletInfoPanelProps {
-    walletId: string;
     isDesktopOpen: boolean;
     isMobileOpen: boolean;
     onCloseMobile: () => void;
+    onSchedule: () => void;
     sidebarProps: Omit<WalletViewSidebarProps, "className" | "onSchedule">;
 }
 
 export const WalletInfoPanel = ({
-    walletId,
     isDesktopOpen,
     isMobileOpen,
     onCloseMobile,
+    onSchedule,
     sidebarProps,
 }: WalletInfoPanelProps) => {
     const { t } = useTranslation();
-    // Schedule-transaction modal (opened from the sidebar CTA)
-    const [isScheduleOpen, setIsScheduleOpen] = useState(false);
-
     // Lock body scroll while the mobile info drawer is open
     useEffect(() => {
         if (!isMobileOpen) {
@@ -46,7 +42,7 @@ export const WalletInfoPanel = ({
     // Close the mobile drawer first so it does not sit over the schedule modal
     const handleSchedule = () => {
         onCloseMobile();
-        setIsScheduleOpen(true);
+        onSchedule();
     };
 
     return (
@@ -101,12 +97,6 @@ export const WalletInfoPanel = ({
                     />
                 </div>
             </div>
-
-            <ScheduleTransactionModal
-                isModalOpen={isScheduleOpen}
-                setIsModalOpen={setIsScheduleOpen}
-                walletId={walletId}
-            />
         </>
     );
 };

@@ -8,6 +8,7 @@ import "./i18n/i18n.ts";
 
 import App from './App.tsx'
 import './index.css'
+import { initializeTheme, ThemeProvider } from './theme/ThemeProvider.tsx'
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -18,11 +19,15 @@ const queryClient = new QueryClient({
 	},
 })
 
+initializeTheme()
+
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<QueryClientProvider client={queryClient}>
-			<App />
-			<ReactQueryDevtools initialIsOpen={false} />
-		</QueryClientProvider>
+		<ThemeProvider>
+			<QueryClientProvider client={queryClient}>
+				<App />
+				<ReactQueryDevtools initialIsOpen={false} />
+			</QueryClientProvider>
+		</ThemeProvider>
 	</StrictMode>,
 )

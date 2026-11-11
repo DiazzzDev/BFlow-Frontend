@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 
-import BflowLogo from "../../../assets/BFlow logo.svg";
+import { BflowLogo } from "@/components/brand/BflowLogo";
 import {
     isWalletParentPath,
     isWalletsSectionPath,
@@ -97,7 +97,7 @@ export const Navbar = ({ isOpen, onClose }: NavbarProps) => {
             >
                 <div className="mb-8 flex items-start justify-between gap-3 px-3">
                     <div>
-                        <img src={BflowLogo} alt="BFlow Studio" className="w-5 h-5" />
+                        <BflowLogo alt="BFlow Studio" className="h-5 w-5" />
                         <p className="mt-0.5 text-sm text-helper">{t("nav.financeTool")}</p>
                     </div>
 

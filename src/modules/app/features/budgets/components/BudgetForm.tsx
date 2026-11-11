@@ -11,6 +11,7 @@ import { useGetCategories } from "../../settings/hooks/useGetCategories";
 import { useGetWallets } from "../../wallets/hooks/useGetWallets";
 
 import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
+import { DatePicker } from "@/components/controls/DatePicker";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
@@ -323,10 +324,8 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                     name="startDate"
                     control={control}
                     render={({ field }) => (
-                        <Input
+                        <DatePicker
                             id="startDate"
-                            type="date"
-                            placeholder=""
                             disabled={createBudget.isPending}
                             {...field}
                         />

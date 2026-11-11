@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { CalendarClock, LogOut } from "lucide-react";
 
-import BflowLogo from "@/assets/BFlow logo.svg";
+import { BflowLogo } from "@/components/brand/BflowLogo";
 import { useAuthStore } from "@/auth/authStore";
 import { useLogout } from "@/auth/hooks/useLogout";
 import { useRestoreAccount } from "@/auth/hooks/useRestoreAccount";
@@ -39,7 +39,7 @@ export const AccountPendingDeletion = () => {
     return (
         <main className="flex min-h-dvh items-center justify-center px-4 py-12 text-light fixed inset-0 z-999 bg-light-90/80 backdrop-blur-sm">
             <section className="w-full max-w-md rounded-2xl border border-light-10 bg-surface p-8 text-center shadow-custom">
-                <img src={BflowLogo} alt="" className="mx-auto h-8 w-auto" />
+                <BflowLogo className="mx-auto h-8 w-auto" />
 
                 <h1 className="mt-6 text-xl font-bold tracking-tight">{t("auth.pendingDeletionTitle")}</h1>
                 <p className="mt-2 text-sm leading-relaxed text-helper">

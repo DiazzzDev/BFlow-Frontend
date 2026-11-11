@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
-import BflowLogo from "@/assets/BFlow logo.svg";
+import { BflowLogo } from "@/components/brand/BflowLogo";
 
 const DOTS = 3;
 
@@ -27,7 +27,7 @@ export const SessionLoader = () => {
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                     className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-light-10 bg-surface-hard"
                 >
-                    <img src={BflowLogo} alt="" className="h-8 w-auto" />
+                    <BflowLogo className="h-8 w-auto" />
                 </motion.div>
             </div>
 

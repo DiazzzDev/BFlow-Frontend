@@ -35,7 +35,7 @@ export const getApiValidationErrors = (error: unknown): ApiFieldError[] => {
             continue;
         }
 
-        const errors = (payload as Record<string, unknown>).errors;
+        const {errors} = (payload as Record<string, unknown>);
         if (!Array.isArray(errors)) {
             continue;
         }

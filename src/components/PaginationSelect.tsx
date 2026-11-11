@@ -99,7 +99,7 @@ export const PaginationSelect = ({
                                     onClick={() => handleOptionSelect(option)}
                                     className={`flex w-full cursor-pointer items-center justify-between gap-3 rounded-md px-3 py-2 text-left text-sm transition-all active:scale-[0.98] ${
                                         isSelected
-                                            ? "bg-primary text-light"
+                                            ? "bg-primary text-white"
                                             : "text-helper hover:bg-light-10 hover:text-light"
                                     }`}
                                 >

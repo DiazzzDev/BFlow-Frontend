@@ -33,15 +33,17 @@ interface SelectAutoCompleteProps<T> {
      * When false, the list stays in document flow and takes up space.
      */
     portal?: boolean;
+    /** Uses a slightly shorter control for dense layouts. */
+    compact?: boolean;
     isOptionDisabled?: (item: T) => boolean;
     renderOption?: (item: T) => ReactNode;
 }
 
 const inputClassNameWithIcon =
-    "h-11 w-full rounded-xl border border-light-10 bg-surface pl-10 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
+    "w-full rounded-xl border border-light-10 bg-surface pl-10 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
 
 const inputClassNameWithoutIcon =
-    "h-11 w-full rounded-xl border border-light-10 bg-surface px-4 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
+    "w-full rounded-xl border border-light-10 bg-surface px-4 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
 
 const floatingOptionsClassName =
     "z-50 mt-2 max-h-60 w-[var(--input-width)] overflow-auto rounded-xl border border-light-10 bg-surface-hard p-1.5 text-sm shadow-xl empty:invisible";
@@ -68,6 +70,7 @@ export const SelectAutoComplete = <T,>({
     showSearchIcon = true,
     filterLocally = true,
     portal = true,
+    compact = false,
     isOptionDisabled,
     renderOption,
 }: SelectAutoCompleteProps<T>) => {
@@ -127,9 +130,7 @@ export const SelectAutoComplete = <T,>({
                     id={idSelect}
                     placeholder={resolvedPlaceholder}
                     displayValue={() => inputDisplayValue}
-                    className={
-                        showSearchIcon ? inputClassNameWithIcon : inputClassNameWithoutIcon
-                    }
+                    className={`${compact ? "h-10" : "h-11"} ${showSearchIcon ? inputClassNameWithIcon : inputClassNameWithoutIcon}`}
                     onChange={handleInputChange}
                 />
 

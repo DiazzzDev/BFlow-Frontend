@@ -33,11 +33,3 @@ export const getTransactionModalContentKey = (
     isModalOpen
         ? `${mode}-${transactionId ?? "new"}-${initialType ?? "default"}`
         : "closed";
-
-export const getTransactionModalMaxWidth = (
-    visibleTypes: readonly TransactionType[],
-    headingType: TransactionType,
-) =>
-    visibleTypes.includes("TRANSFER") || headingType === "TRANSFER"
-        ? "max-w-3xl"
-        : "max-w-lg";

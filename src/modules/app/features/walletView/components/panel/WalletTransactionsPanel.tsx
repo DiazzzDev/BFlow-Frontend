@@ -1,12 +1,8 @@
-import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { NewTransactionModal } from "../../../newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
 import { TransactionsTable } from "../TransactionsTable";
-import { DeleteTransactionModal } from "../modal/DeleteTransactionModal";
-import { getWalletAllowedTransactionTypes } from "../../utils/tabs/walletViewTabs";
 
 import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
 import { Pagination } from "@/components/Pagination";
@@ -15,45 +11,38 @@ import { SearchInput } from "@/components/controls/SearchInput";
 import { Button } from "@/components/controls/Button";
 
 interface WalletTransactionsPanelProps {
-    walletId: string;
     query: string;
     transactions: Transaction[];
     isLoading: boolean;
     currency?: string;
     showCategory?: boolean;
     showRegisteredBy?: boolean;
-    initialType?: TransactionType | null;
     totalTransactions: number;
     numberOfElements: number;
     totalPages: number;
-    members: number;
+    onCreateTransaction: () => void;
+    onEditTransaction: (transaction: Transaction) => void;
+    onDeleteTransaction: (transaction: Transaction) => void;
 }
 
 export const WalletTransactionsPanel = ({
-    walletId,
     query,
     transactions,
     isLoading,
     currency,
     showCategory = true,
     showRegisteredBy = true,
-    initialType = null,
     totalTransactions,
     numberOfElements,
     totalPages,
-    members,
+    onCreateTransaction,
+    onEditTransaction,
+    onDeleteTransaction,
 }: WalletTransactionsPanelProps) => {
     const { t } = useTranslation();
     // Duplicate action (shared with wallets history)
     const { duplicateTransaction, isPending: isDuplicating } = useDuplicateTransaction();
     const actionsDisabled = isDuplicating;
-
-    // Create / edit / delete transaction modals
-    const [isNewTransactionOpen, setIsNewTransactionOpen] = useState(false);
-    const [editTransaction, setEditTransaction] = useState<Transaction | null>(null);
-    const [deleteTransaction, setDeleteTransaction] = useState<Transaction | null>(null);
-
-    const allowedTypes = getWalletAllowedTransactionTypes(members);
 
     return (
         <>
@@ -68,7 +57,7 @@ export const WalletTransactionsPanel = ({
                     type="button"
                     text={t("dashboard.newTransaction")}
                     icon={<Plus className="h-4 w-4" />}
-                    onClick={() => setIsNewTransactionOpen(true)}
+                    onClick={onCreateTransaction}
                     className="w-full shrink-0 @xl:w-auto"
                 />
             </div>
@@ -81,8 +70,8 @@ export const WalletTransactionsPanel = ({
                     currency={currency}
                     showCategory={showCategory}
                     showRegisteredBy={showRegisteredBy}
-                    onEdit={setEditTransaction}
-                    onDelete={setDeleteTransaction}
+                    onEdit={onEditTransaction}
+                    onDelete={onDeleteTransaction}
                     onDuplicate={(transaction) => {
                         void duplicateTransaction(transaction);
                     }}
@@ -99,30 +88,6 @@ export const WalletTransactionsPanel = ({
                     <Pagination totalPages={totalPages} />
                 </div>
             )}
-
-            <NewTransactionModal
-                isModalOpen={isNewTransactionOpen}
-                setIsModalOpen={setIsNewTransactionOpen}
-                walletId={walletId}
-                initialType={initialType}
-                allowedTypes={allowedTypes}
-            />
-
-            <NewTransactionModal
-                isModalOpen={Boolean(editTransaction)}
-                setIsModalOpen={(open) => {
-                    if (!open) {
-                        setEditTransaction(null);
-                    }
-                }}
-                mode="edit"
-                transaction={editTransaction}
-            />
-
-            <DeleteTransactionModal
-                transaction={deleteTransaction}
-                onClose={() => setDeleteTransaction(null)}
-            />
         </>
     );
 };

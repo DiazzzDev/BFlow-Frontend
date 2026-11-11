@@ -7,6 +7,7 @@ import {
     dashboardCardClass,
     dashboardLabelClass,
 } from "../utils/dashboardCard";
+import { groupRecentActivityByDay } from "../utils/groupRecentActivityByDay";
 
 import { ActivityFilters, type ActivityFilter } from "./ActivityFilters";
 import { RecentActivityRow } from "./RecentActivityRow";
@@ -38,6 +39,7 @@ export const RecentActivityCard = ({
     const navigate = useNavigate();
     const { t } = useTranslation();
     const hasActivityFilters = activityType !== "ALL" || activityQuery.trim().length > 0;
+    const activityGroups = groupRecentActivityByDay(activities);
 
     // Navigate to wallets history (or custom handler)
     const handleViewAll = () => {
@@ -116,15 +118,24 @@ export const RecentActivityCard = ({
             )}
 
             {!isLoading && activities.length > 0 && (
-                <ul className="flex flex-col">
-                    {activities.map((activity, index) => (
-                        <RecentActivityRow
-                            key={`${activity.name}-${activity.createdAt}-${index}`}
-                            activity={activity}
-                            currency={currency}
-                        />
+                <div className="flex flex-col gap-5">
+                    {activityGroups.map((group) => (
+                        <section key={group.dayKey}>
+                            <p className="mb-1 text-xs font-semibold capitalize text-helper">
+                                {group.label}
+                            </p>
+                            <ul className="flex flex-col">
+                                {group.activities.map((activity, index) => (
+                                    <RecentActivityRow
+                                        key={`${activity.name}-${activity.createdAt}-${index}`}
+                                        activity={activity}
+                                        currency={currency}
+                                    />
+                                ))}
+                            </ul>
+                        </section>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );

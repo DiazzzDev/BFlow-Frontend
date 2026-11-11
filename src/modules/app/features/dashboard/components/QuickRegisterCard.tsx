@@ -19,6 +19,7 @@ import { Input } from "@/components/controls/Input";
 import { AmountDisplay } from "./AmountDisplay";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { getApiErrorMessage } from "@/utils/api/apiMessage";
+import { Button } from "@/components/controls/Button";
 
 const quickRegisterSchema = z.object({
     amount: z
@@ -217,14 +218,13 @@ export const QuickRegisterCard = () => {
                 ) : (
                     <p className="mt-2 text-xs text-helper">{t("dashboard.quickRegisterHint")}</p>
                 )}
-                <button
+                <Button
                     type="submit"
                     disabled={isBusy}
-                    className="mt-4 h-11 w-full cursor-pointer rounded-lg bg-primary text-sm font-semibold text-light transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                    {isPending ? t("dashboard.quickRegisterSaving") : t("dashboard.saveExpense")}
-                </button>
+                    text={isPending ? t("dashboard.quickRegisterSaving") : t("dashboard.saveExpense")}
+                    className="w-full mt-2 py-3"
+                />
             </form>
         </section>
     );
-};
+}

@@ -30,7 +30,7 @@ export const NotificationsMenuFilters = ({ value, onChange, unreadCount }: Notif
                         type="button"
                         aria-pressed={isActive}
                         onClick={() => onChange(filter)}
-                        className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${isActive ? "bg-primary text-light" : "text-helper hover:text-light"
+                        className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${isActive ? "bg-primary text-white" : "text-helper hover:text-light"
                             }`}
                     >
                         {t(NOTIFICATIONS_FILTER_LABEL_KEYS[filter])}
