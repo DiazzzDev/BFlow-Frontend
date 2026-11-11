@@ -2,7 +2,6 @@ import {
     Children,
     forwardRef,
     isValidElement,
-    useCallback,
     useEffect,
     useRef,
     useState,
@@ -31,6 +30,21 @@ interface MenuPosition {
     top?: number;
     bottom?: number;
 }
+
+const getMenuPosition = (button: HTMLButtonElement | null, optionsCount: number): MenuPosition | null => {
+    const rect = button?.getBoundingClientRect();
+
+    if (!rect) {
+        return null;
+    }
+
+    const menuHeight = Math.min(optionsCount * 40 + 12, 224);
+    const openUp = window.innerHeight - rect.bottom < menuHeight && rect.top > menuHeight;
+
+    return openUp
+        ? { left: rect.left, width: rect.width, bottom: window.innerHeight - rect.top + 6 }
+        : { left: rect.left, width: rect.width, top: rect.bottom + 6 };
+};
 
 const getOptions = (children: ReactNode): SelectOption[] =>
     Children.toArray(children).flatMap((child) => {
@@ -100,26 +114,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             };
         }, []);
 
-        const updateMenuPosition = useCallback(() => {
-            const rect = buttonRef.current?.getBoundingClientRect();
-            if (!rect) {
-                return;
-            }
-
-            const menuHeight = Math.min(options.length * 40 + 12, 224);
-            const openUp = window.innerHeight - rect.bottom < menuHeight && rect.top > menuHeight;
-
-            setMenuPosition(
-                openUp
-                    ? { left: rect.left, width: rect.width, bottom: window.innerHeight - rect.top + 6 }
-                    : { left: rect.left, width: rect.width, top: rect.bottom + 6 },
-            );
-        }, [options.length]);
-
         useEffect(() => {
             if (!isOpen) {
                 return;
             }
+
+            const updateMenuPosition = () => {
+                setMenuPosition(getMenuPosition(buttonRef.current, options.length));
+            };
 
             window.addEventListener("resize", updateMenuPosition);
             window.addEventListener("scroll", updateMenuPosition, true);
@@ -128,7 +130,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 window.removeEventListener("resize", updateMenuPosition);
                 window.removeEventListener("scroll", updateMenuPosition, true);
             };
-        }, [isOpen, updateMenuPosition]);
+        }, [isOpen, options.length]);
+
+        const openMenu = () => {
+            setMenuPosition(getMenuPosition(buttonRef.current, options.length));
+            setIsOpen(true);
+        };
 
         const createChangeEvent = (nextValue: string) =>
             ({
@@ -186,17 +193,18 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     aria-expanded={isOpen}
                     ref={buttonRef}
                     onClick={() => {
-                        if (!isOpen) {
-                            updateMenuPosition();
+                        if (isOpen) {
+                            setIsOpen(false);
+                            return;
                         }
-                        setIsOpen((open) => !open);
+
+                        openMenu();
                     }}
                     onBlur={handleBlur}
                     onKeyDown={(event) => {
                         if (event.key === "ArrowDown" || event.key === "ArrowUp") {
                             event.preventDefault();
-                            updateMenuPosition();
-                            setIsOpen(true);
+                            openMenu();
                         }
                     }}
                     className="flex w-full cursor-pointer items-center justify-between rounded-lg border border-light-10 bg-surface-hard/40 px-3 py-2 text-left text-sm text-light shadow-sm transition-[border-color,box-shadow,background-color,transform] hover:border-light-25 focus:border-primary-75 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary-15 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
