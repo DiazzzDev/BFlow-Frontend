@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDuplicateTransaction } from "../../../wallets/hooks/useDuplicateTransaction";
 import { TransactionsTable } from "../TransactionsTable";
 
-import type { Transaction, TransactionType } from "@/modules/app/interfaces/Transaction";
+import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { Pagination } from "@/components/Pagination";
 import { PaginationSelect } from "@/components/PaginationSelect";
 import { SearchInput } from "@/components/controls/SearchInput";

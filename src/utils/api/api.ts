@@ -74,7 +74,7 @@ export const apiRequest = async <T>(
                                 typeof validationError === "object" && validationError !== null,
                         )
                         .map((validationError) => validationError.message)
-                        .filter((message): message is string => typeof message === "string" && message.trim());
+                        .filter((message): message is string => typeof message === "string" && message.trim().length > 0);
 
                     errorMessage =
                         (typeof dataObj.message === "string" && dataObj.message.trim())

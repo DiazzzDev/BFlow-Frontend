@@ -83,7 +83,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
         if (to && !disabled) {
             return (
-                <Link to={to} className={buttonClassName} {...props}>
+                <Link to={to} className={buttonClassName}>
                     {content}
                 </Link>
             );
