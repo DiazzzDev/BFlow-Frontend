@@ -28,7 +28,7 @@
     "@tanstack/react-query": "^5.100.9",
     "@tanstack/react-query-devtools": "^5.102.8",
     "antd": "^6.7.0",
-    "aws-amplify": "^6.22.0",
+    "aws-amplify": "^6.22.2",
     "date-fns": "^4.4.0",
     "dayjs": "^1.11.23",
     "framer-motion": "^12.42.2",
