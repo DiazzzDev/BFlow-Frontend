@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 import budgetsImage from "@/modules/home/assets/Budgets.png";
-import dashboardImage from "@/modules/home/assets/Dashboard.svg";
+import dashboardImage from "@/modules/home/assets/Dashboard.png";
 import sharedWalletsImage from "@/modules/home/assets/Shared Wallets.png";
 import walletsImage from "@/modules/home/assets/Wallets.png";
 import {

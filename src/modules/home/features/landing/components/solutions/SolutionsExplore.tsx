@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { MODULES_PAGE_HREF, MORE_MODULES } from "../../utils/landingContent";
 
 import { getDocsPath } from "@/modules/home/features/docs/utils/docsContent";
+import { Button } from "@/components/controls/Button";
 
 export const SolutionsExplore = () => {
     const { t } = useTranslation();
@@ -34,13 +35,12 @@ export const SolutionsExplore = () => {
                 </ul>
             </div>
 
-            <Link
+            <Button
                 to={MODULES_PAGE_HREF}
-                className="group inline-flex w-fit items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-light transition-colors hover:bg-primary-dark"
-            >
-                {t("home.solutions.more.cta")}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+                text={t("home.solutions.more.cta")}
+                icon={<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />}
+                className="group w-fit rounded-xl px-6 py-3"
+            />
         </div>
     );
 };

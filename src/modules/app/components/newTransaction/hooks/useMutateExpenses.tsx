@@ -2,17 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { deleteExpense, postExpense, putExpense } from "../newTransaction.service";
 import type { CreateExpenseData } from "../interfaces/Expense";
+import { invalidateFinancialQueries } from "@/utils/query/invalidateFinancialQueries";
 
 const invalidateExpenseQueries = (
     queryClient: ReturnType<typeof useQueryClient>,
     walletId: string,
 ) => {
-    void queryClient.invalidateQueries({ queryKey: ["wallet-overview", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["wallet-transactions", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["wallet", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["walletDetails", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["wallets"] });
-    void queryClient.invalidateQueries({ queryKey: ["history"] });
+    return invalidateFinancialQueries(queryClient, [walletId]);
 };
 
 export const usePostExpense = () => {
@@ -20,8 +16,8 @@ export const usePostExpense = () => {
 
     return useMutation({
         mutationFn: (expenseData: CreateExpenseData) => postExpense(expenseData),
-        onSuccess: (_data, variables) => {
-            invalidateExpenseQueries(queryClient, variables.walletId);
+        onSuccess: async (_data, variables) => {
+            await invalidateExpenseQueries(queryClient, variables.walletId);
         },
     });
 };
@@ -37,8 +33,8 @@ export const usePutExpense = () => {
             id: string;
             data: CreateExpenseData;
         }) => putExpense(id, data),
-        onSuccess: (_data, variables) => {
-            invalidateExpenseQueries(queryClient, variables.data.walletId);
+        onSuccess: async (_data, variables) => {
+            await invalidateExpenseQueries(queryClient, variables.data.walletId);
         },
     });
 };
@@ -48,8 +44,8 @@ export const useDeleteExpense = () => {
 
     return useMutation({
         mutationFn: ({ id }: { id: string; walletId: string }) => deleteExpense(id),
-        onSuccess: (_data, variables) => {
-            invalidateExpenseQueries(queryClient, variables.walletId);
+        onSuccess: async (_data, variables) => {
+            await invalidateExpenseQueries(queryClient, variables.walletId);
         },
     });
 };

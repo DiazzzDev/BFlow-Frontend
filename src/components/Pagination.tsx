@@ -58,7 +58,7 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page <= 1}
                 aria-label={t("common.previousPage")}
-                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-all hover:bg-light-5 hover:text-light active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:active:scale-100"
             >
                 <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />
             </button>
@@ -93,8 +93,8 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                             aria-current={isActive ? "page" : undefined}
                             className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
                                 isActive
-                                    ? "bg-primary text-light"
-                                    : "border border-light-10 bg-surface text-helper hover:bg-light-5 hover:text-light"
+                                    ? "bg-primary text-white"
+                                    : "border border-light-10 bg-surface text-light hover:bg-light-5 active:scale-95"
                             }`}
                         >
                             {item}
@@ -108,7 +108,7 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page >= safeTotalPages}
                 aria-label={t("common.nextPage")}
-                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-colors hover:bg-light-5 hover:text-light disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-all hover:bg-light-5 hover:text-light active:scale-95 disabled:cursor-not-allowed disabled:opacity-30 disabled:active:scale-100"
             >
                 <ChevronRight className="h-4 w-4" strokeWidth={2.5} />
             </button>

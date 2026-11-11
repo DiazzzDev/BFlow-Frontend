@@ -4,13 +4,13 @@ export interface PlanBenefit {
     code: string;
     name: string;
     limitable: boolean;
-    limit: number;
+    limit: number | null;
     enabled: boolean;
 }
 
 export interface PlanBenefitDom {
     defaultValue: string;
-    limit?: number;
+    limit?: number | null;
 }
 
 export interface Plan {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 
-import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
+import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
 import { useDuplicateTransaction } from "../wallets/hooks/useDuplicateTransaction";
 
 import { HistoryFilters } from "./components/HistoryFilters";

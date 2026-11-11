@@ -1,8 +1,8 @@
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
-import { useDeleteExpense } from "../../../newTransaction/hooks/useMutateExpenses";
-import { useDeleteIncome } from "../../../newTransaction/hooks/useMutateIncomes";
+import { useDeleteExpense } from "../../../../components/newTransaction/hooks/useMutateExpenses";
+import { useDeleteIncome } from "../../../../components/newTransaction/hooks/useMutateIncomes";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CustomModal } from "@/components/custom/CustomModal";

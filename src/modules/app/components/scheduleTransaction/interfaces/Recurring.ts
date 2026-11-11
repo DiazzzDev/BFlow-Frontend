@@ -3,15 +3,15 @@ import type { Periodicity } from "@/modules/app/interfaces/Periodicity";
 
 export interface CreateRecurringData {
     title: string;
-    description: string;
+    description?: string;
     amount: number;
     walletId: string;
-    categoryId: string;
+    categoryId?: string;
     type: CategoryType;
     frequency: Periodicity;
     intervalValue: number;
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 export interface Recurring extends CreateRecurringData {

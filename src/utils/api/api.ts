@@ -67,13 +67,19 @@ export const apiRequest = async <T>(
 
             if (data !== null && typeof data === "object") {
                 const dataObj = data as Record<string, unknown>;
-                if (dataObj.errors && typeof dataObj.errors === "object") {
-                    const errorsObj = dataObj.errors as Record<string, string>;
-                    const validationErrors = Object.values(errorsObj).join(". ");
+                if (Array.isArray(dataObj.errors)) {
+                    const validationMessages = dataObj.errors
+                        .filter(
+                            (validationError): validationError is Record<string, unknown> =>
+                                typeof validationError === "object" && validationError !== null,
+                        )
+                        .map((validationError) => validationError.message)
+                        .filter((message): message is string => typeof message === "string" && message.trim().length > 0);
+
                     errorMessage =
-                        validationErrors ||
-                        (dataObj.message as string) ||
-                        "Errores de validación";
+                        (typeof dataObj.message === "string" && dataObj.message.trim())
+                            ? dataObj.message
+                            : validationMessages.join(". ") || "Errores de validación";
                 } else if (dataObj.message || dataObj.error) {
                     errorMessage =
                         (dataObj.message as string) || (dataObj.error as string);
@@ -82,7 +88,7 @@ export const apiRequest = async <T>(
                 errorMessage = data.trim();
             }
 
-            throw new APIError(errorMessage, response.status, null, url);
+            throw new APIError(errorMessage, response.status, data, url);
         }
 
         return data as T;

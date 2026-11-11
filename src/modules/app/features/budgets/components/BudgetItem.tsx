@@ -33,7 +33,7 @@ export const BudgetItem = ({ budget, onClick }: BudgetItemProps) => {
         <button
             type="button"
             onClick={onClick}
-            className="flex w-full cursor-pointer items-start justify-between gap-3 border-b border-light-10 px-1 py-4 text-left transition-colors last:border-b-0 hover:bg-secondary/40 sm:items-center sm:gap-4 sm:py-5"
+            className="flex w-full cursor-pointer items-start justify-between gap-3 border-b border-light-10 px-1 py-4 text-left transition-colors last:border-b-0 hover:bg-light-5 sm:items-center sm:gap-4 sm:py-5"
         >
             <div className="min-w-0 flex-1">
                 <p className="truncate text-base font-semibold text-light">{name}</p>

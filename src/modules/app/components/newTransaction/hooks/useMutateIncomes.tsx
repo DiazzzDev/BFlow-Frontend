@@ -2,17 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { deleteIncome, postIncome, putIncome } from "../newTransaction.service";
 import type { CreateIncomeData } from "../interfaces/Income";
+import { invalidateFinancialQueries } from "@/utils/query/invalidateFinancialQueries";
 
 const invalidateIncomeQueries = (
     queryClient: ReturnType<typeof useQueryClient>,
     walletId: string,
 ) => {
-    void queryClient.invalidateQueries({ queryKey: ["wallet-overview", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["wallet-transactions", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["wallet", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["walletDetails", walletId] });
-    void queryClient.invalidateQueries({ queryKey: ["wallets"] });
-    void queryClient.invalidateQueries({ queryKey: ["history"] });
+    return invalidateFinancialQueries(queryClient, [walletId]);
 };
 
 export const usePostIncome = () => {
@@ -20,8 +16,8 @@ export const usePostIncome = () => {
 
     return useMutation({
         mutationFn: (incomeData: CreateIncomeData) => postIncome(incomeData),
-        onSuccess: (_data, variables) => {
-            invalidateIncomeQueries(queryClient, variables.walletId);
+        onSuccess: async (_data, variables) => {
+            await invalidateIncomeQueries(queryClient, variables.walletId);
         },
     });
 };
@@ -37,8 +33,8 @@ export const usePutIncome = () => {
             id: string;
             data: CreateIncomeData;
         }) => putIncome(id, data),
-        onSuccess: (_data, variables) => {
-            invalidateIncomeQueries(queryClient, variables.data.walletId);
+        onSuccess: async (_data, variables) => {
+            await invalidateIncomeQueries(queryClient, variables.data.walletId);
         },
     });
 };
@@ -48,8 +44,8 @@ export const useDeleteIncome = () => {
 
     return useMutation({
         mutationFn: ({ id }: { id: string; walletId: string }) => deleteIncome(id),
-        onSuccess: (_data, variables) => {
-            invalidateIncomeQueries(queryClient, variables.walletId);
+        onSuccess: async (_data, variables) => {
+            await invalidateIncomeQueries(queryClient, variables.walletId);
         },
     });
 };

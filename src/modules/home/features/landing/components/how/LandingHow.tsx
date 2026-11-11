@@ -53,7 +53,7 @@ export const LandingHow = () => {
     };
 
     return (
-        <section id="how" className="w-full max-w-360 px-8">
+        <section id="how" className="w-full max-w-360 px-8 hidden">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-12 md:mb-16 max-w-xl leading-tight">
                 {t("home.howTitle")}
             </h2>

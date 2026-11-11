@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -7,8 +6,6 @@ import { useGetWalletSentInvitations } from "../../hooks/useGetWalletSentInvitat
 import type { WalletMember } from "../../interfaces/WalletMember";
 import { WalletMembersList } from "../WalletMembersList";
 import { WalletSentInvitationsHistory } from "../WalletSentInvitationsHistory";
-import { InviteWalletMemberModal } from "../modal/InviteWalletMemberModal";
-import { RemoveWalletMemberModal } from "../modal/RemoveWalletMemberModal";
 import { isOwnerRole } from "../../utils/walletRole";
 
 import { SkeletonText } from "@/components/loaders/SkeletonText";
@@ -17,11 +14,15 @@ import type { Wallet } from "@/modules/app/interfaces/Wallet";
 interface WalletMembersPanelProps {
     wallet?: Wallet;
     isLoading: boolean;
+    onInviteMember: () => void;
+    onRemoveMember: (member: WalletMember) => void;
 }
 
 export const WalletMembersPanel = ({
     wallet,
     isLoading,
+    onInviteMember,
+    onRemoveMember,
 }: WalletMembersPanelProps) => {
     const { t } = useTranslation();
     const { data: membersResponse, isLoading: isMembersLoading } = useGetWalletMembers(
@@ -30,8 +31,6 @@ export const WalletMembersPanel = ({
     const isOwner = isOwnerRole(wallet?.role);
     const { data: sentInvitationsResponse, isLoading: isSentInvitationsLoading } =
         useGetWalletSentInvitations(isOwner ? (wallet?.id ?? "") : "");
-    const [isInviteOpen, setIsInviteOpen] = useState(false);
-    const [memberToRemove, setMemberToRemove] = useState<WalletMember | null>(null);
 
     const members = membersResponse?.data ?? [];
     const sentInvitations = sentInvitationsResponse?.data ?? [];
@@ -77,7 +76,7 @@ export const WalletMembersPanel = ({
                     {isOwner ? (
                         <button
                             type="button"
-                            onClick={() => setIsInviteOpen(true)}
+                            onClick={onInviteMember}
                             className="inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-light-10 px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5"
                         >
                             <UserPlus className="h-4 w-4" />
@@ -91,7 +90,7 @@ export const WalletMembersPanel = ({
                         members={members}
                         isLoading={isMembersLoading}
                         canManage={isOwner}
-                        onRemoveMember={setMemberToRemove}
+                        onRemoveMember={onRemoveMember}
                     />
                 </div>
             </section>
@@ -119,23 +118,6 @@ export const WalletMembersPanel = ({
                         />
                     </div>
                 </section>
-            ) : null}
-
-            {isOwner ? (
-                <>
-                    <InviteWalletMemberModal
-                        isOpen={isInviteOpen}
-                        walletId={wallet.id}
-                        walletName={wallet.name}
-                        onClose={() => setIsInviteOpen(false)}
-                    />
-                    <RemoveWalletMemberModal
-                        isOpen={!!memberToRemove}
-                        walletId={wallet.id}
-                        member={memberToRemove}
-                        onClose={() => setMemberToRemove(null)}
-                    />
-                </>
             ) : null}
         </div>
     );

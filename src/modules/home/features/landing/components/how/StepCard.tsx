@@ -20,7 +20,7 @@ export const StepCard = ({ number, title, desc, active = false, onSelect }: Step
             <div
                 className={`mb-3 inline-flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold ${
                     active
-                        ? "bg-primary text-light"
+                        ? "bg-primary text-white"
                         : "bg-primary-15 text-primary"
                 }`}
             >
