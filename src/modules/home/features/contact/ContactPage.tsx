@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { sendContactMessage, type ContactMessage } from "./contact.service";
 
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
+import { Button } from "@/components/controls/Button";
 
 const inputClass =
     "w-full rounded-xl border border-light-10 bg-surface px-4 py-3 text-sm text-light placeholder:text-placeholder outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50";
@@ -186,14 +187,13 @@ export const ContactPage = () => {
                             )}
                         </div>
 
-                        <button
+                        <Button
                             type="submit"
                             disabled={isSubmitting}
-                            className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-light shadow-lg shadow-primary/20 transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-                        >
-                            <Send className="h-4 w-4" />
-                            {isSubmitting ? t("contact.sending") : t("contact.send")}
-                        </button>
+                            text={isSubmitting ? t("contact.sending") : t("contact.send")}
+                            icon={<Send className="h-4 w-4" />}
+                            className="mt-6 h-12 w-full rounded-xl px-5 font-semibold shadow-lg shadow-primary/20 sm:w-auto"
+                        />
                     </form>
 
                     <aside className="flex flex-col rounded-2xl border border-light-10 bg-surface-hard p-5 sm:p-8">

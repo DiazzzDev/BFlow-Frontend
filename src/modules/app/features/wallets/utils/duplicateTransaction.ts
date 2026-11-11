@@ -1,6 +1,6 @@
-import type { CreateExpenseData } from "../../newTransaction/interfaces/Expense";
-import type { CreateIncomeData } from "../../newTransaction/interfaces/Income";
-import type { CreateTransferData } from "../../newTransaction/interfaces/Transfer";
+import type { CreateExpenseData } from "../../../components/newTransaction/interfaces/Expense";
+import type { CreateIncomeData } from "../../../components/newTransaction/interfaces/Income";
+import type { CreateTransferData } from "../../../components/newTransaction/interfaces/Transfer";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
@@ -22,8 +22,6 @@ export const buildDuplicateExpensePayload = (
     recurring: false,
     recurrencePattern: null,
     categoryId: transaction.categoryId,
-    taxDeductible: false,
-    reimbursable: false,
 });
 
 export const buildDuplicateIncomePayload = (
@@ -38,7 +36,6 @@ export const buildDuplicateIncomePayload = (
     recurring: false,
     recurrencePattern: null,
     categoryId: transaction.categoryId,
-    taxable: false,
 });
 
 export const buildDuplicateTransferPayload = (

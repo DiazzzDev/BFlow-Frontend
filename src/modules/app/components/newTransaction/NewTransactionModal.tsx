@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useGetWallets } from "../wallets/hooks/useGetWallets";
+import { useGetWallets } from "../../features/wallets/hooks/useGetWallets";
 
-import { ExpenseForm } from "./forms/ExpenseForm";
-import { IncomeForm } from "./forms/IncomeForm";
+import { TransactionForm } from "./forms/TransactionForm";
 import { TransferForm } from "./forms/TransferForm";
 import {
     getTransactionModalContentKey,
-    getTransactionModalMaxWidth,
     resolveInitialTransactionType,
 } from "./utils/transactionModal";
 import { getVisibleTransactionTypeTabs } from "./utils/tabs/transactionTypeTabs";
@@ -72,7 +70,7 @@ export const NewTransactionModal = ({
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             title={t(getTransactionModalTitle(mode, headingType), { defaultValue: getTransactionModalTitle(mode, headingType) })}
-            maxWidth={getTransactionModalMaxWidth(visibleTypes, headingType)}
+            maxWidth="max-w-2xl"
         >
             <NewTransactionModalContent
                 key={getTransactionModalContentKey(
@@ -150,7 +148,7 @@ const NewTransactionModalContent = ({
     const sharedInitialValues = lockType && transaction ? getTransactionFormInitialValues(transaction) : undefined;
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
             {needsWalletSelect && (
                 <SelectAutoComplete<Wallet>
                     idSelect="transactionWalletId"
@@ -185,37 +183,23 @@ const NewTransactionModalContent = ({
                 </p>
             )}
 
-            {canShowForms && activeType === "INCOME" && (
-                <IncomeForm
-                    key={
-                        lockType
-                            ? `${mode}-income-${transaction?.id}`
-                            : `income-form-${resolvedWalletId}`
-                    }
-                    walletId={resolvedWalletId}
-                    readOnly={isViewMode}
-                    transactionId={isEditMode ? transaction?.id : undefined}
-                    source={transaction?.source || "manual"}
-                    initialValues={sharedInitialValues}
-                    onSuccess={onClose}
-                />
-            )}
-
-            {canShowForms && activeType === "EXPENSE" && (
-                <ExpenseForm
-                    key={
-                        lockType
-                            ? `${mode}-expense-${transaction?.id}`
-                            : `expense-form-${resolvedWalletId}`
-                    }
-                    walletId={resolvedWalletId}
-                    readOnly={isViewMode}
-                    transactionId={isEditMode ? transaction?.id : undefined}
-                    source={transaction?.source || "manual"}
-                    initialValues={sharedInitialValues}
-                    onSuccess={onClose}
-                />
-            )}
+            {canShowForms &&
+                (activeType === "INCOME" || activeType === "EXPENSE") && (
+                    <TransactionForm
+                        key={
+                            lockType
+                                ? `${mode}-transaction-${transaction?.id}`
+                                : `transaction-form-${resolvedWalletId}`
+                        }
+                        type={activeType}
+                        walletId={resolvedWalletId}
+                        readOnly={isViewMode}
+                        transactionId={isEditMode ? transaction?.id : undefined}
+                        source={transaction?.source || "manual"}
+                        initialValues={sharedInitialValues}
+                        onSuccess={onClose}
+                    />
+                )}
 
             {canShowForms &&
                 activeType === "TRANSFER" &&

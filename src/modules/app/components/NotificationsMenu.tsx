@@ -55,7 +55,7 @@ export const NotificationsMenu = () => {
             >
                 <Bell className="h-5 w-5" />
                 {unreadCount > 0 ? (
-                    <span className="absolute right-1 top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-light">
+                    <span className="absolute right-1 top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold leading-none text-white">
                         {unreadCount > MAX_BADGE_COUNT ? `${MAX_BADGE_COUNT}+` : unreadCount}
                     </span>
                 ) : null}

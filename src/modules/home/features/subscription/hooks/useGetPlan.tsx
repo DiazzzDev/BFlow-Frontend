@@ -1,12 +1,10 @@
-import { useQuery } from "@tanstack/react-query"
-import { getPlanById } from "../subscription.service"
-
+import { useGetPlans } from "../../landing/hooks/useGetPlans";
 
 export const useGetPlan = (id: string) => {
-    return useQuery({
-        queryKey: ["plan", id],
-        queryFn: () => getPlanById(id),
-        enabled: Boolean(id),
-        staleTime: 1000 * 60 * 10
-    })
-}
+    const query = useGetPlans();
+
+    return {
+        ...query,
+        data: query.data?.data.find((plan) => plan.id === id),
+    };
+};

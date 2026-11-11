@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,6 @@ import {
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
 import { useGetWalletDetails } from "../../hooks/useGetWalletDetails";
 import { isOwnerRole, roleLabel } from "../../utils/walletRole";
-import { DeleteWalletModal } from "../modal/DeleteWalletModal";
 
 import type { Wallet as WalletType } from "@/modules/app/interfaces/Wallet";
 import { Input } from "@/components/controls/Input";
@@ -43,6 +42,7 @@ type SettingsFormValues = z.infer<typeof settingsSchema>;
 interface WalletSettingsPanelProps {
     wallet?: WalletType;
     isLoading: boolean;
+    onDeleteWallet: () => void;
 }
 
 const InfoRow = ({
@@ -66,15 +66,13 @@ const InfoRow = ({
 export const WalletSettingsPanel = ({
     wallet,
     isLoading,
+    onDeleteWallet,
 }: WalletSettingsPanelProps) => {
     const { t } = useTranslation();
     // Update mutation + wallet info stats (transaction count, etc.)
     const { updateWallet } = useMutateWallets();
     const { data: walletDetailsResponse } = useGetWalletDetails(wallet?.id ?? "");
     const transactionsCount = walletDetailsResponse?.data.transactions ?? 0;
-
-    // Delete confirmation modal (owners only)
-    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
     // Owner can edit; members see a read-only form
     const isOwner = isOwnerRole(wallet?.role);
@@ -285,7 +283,7 @@ export const WalletSettingsPanel = ({
                                         <button
                                             type="button"
                                             disabled={isSaving}
-                                            onClick={() => setIsDeleteOpen(true)}
+                                            onClick={onDeleteWallet}
                                             className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-danger-50 px-3.5 py-2 text-sm font-medium text-danger transition-colors hover:bg-danger-sweet disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             <Trash2 className="h-4 w-4" />
@@ -383,15 +381,6 @@ export const WalletSettingsPanel = ({
                     </aside>
                 </div>
             </div>
-
-            {isOwner ? (
-                <DeleteWalletModal
-                    isOpen={isDeleteOpen}
-                    walletId={wallet.id}
-                    walletName={wallet.name}
-                    onClose={() => setIsDeleteOpen(false)}
-                />
-            ) : null}
         </div>
     );
 };

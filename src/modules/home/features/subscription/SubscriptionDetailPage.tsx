@@ -19,7 +19,7 @@ export const SubscriptionDetailsPage = () => {
 
     const { data, isLoading, isError, refetch } = useGetPlan(planId ?? "");
 
-    const plan = data?.data;
+    const plan = data;
 
     const { mutateAsync, isPending } = useCreateWompiCheckout();
 
@@ -43,7 +43,7 @@ export const SubscriptionDetailsPage = () => {
 
 
     return (
-        <main className="min-h-screen bg-surface-hard px-4 py-8 text-light sm:px-6 lg:px-8">
+        <main className="bg-surface-hard px-4 py-8 text-light sm:px-6 lg:px-8">
             <div className="mx-auto w-full max-w-5xl" aria-busy={isLoading}>
                 <Button
                     onClick={() => { void navigate("/") }}

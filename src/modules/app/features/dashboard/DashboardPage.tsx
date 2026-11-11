@@ -46,7 +46,6 @@ export const DashboardPage = () => {
                         />
                     </div>
                 </div>
-
                 <div className="flex min-w-0 flex-col gap-5">
                     <QuickRegisterCard />
                     <div className="min-w-0 flex-1">

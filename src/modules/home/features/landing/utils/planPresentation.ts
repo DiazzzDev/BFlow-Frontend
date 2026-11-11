@@ -76,7 +76,7 @@ export const isFeaturedPlan = (plan: Plan, plans: Plan[]) => {
     }
 
     const featured = [...monthlyPaidPlans].sort((left, right) => left.price - right.price)[0];
-    return featured?.id === plan.id;
+    return featured.id === plan.id;
 };
 
 export const mapPlanToPricingView = (plan: Plan, plans: Plan[], t: TFunction): PricingPlanView => {

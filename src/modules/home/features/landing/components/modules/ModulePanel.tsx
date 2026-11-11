@@ -71,7 +71,7 @@ export const ModulePanel = ({
 
                         <a
                             href={href}
-                            className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-light px-4 py-2 text-sm font-medium text-surface-hard transition-colors hover:bg-primary hover:text-light lg:mt-auto"
+                            className="group/cta mt-6 inline-flex w-fit items-center gap-2 rounded-lg bg-light px-4 py-2 text-sm font-medium text-surface-hard transition-colors hover:bg-primary hover:text-white lg:mt-auto"
                         >
                             {t("home.modules.viewModule")}
                             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:translate-x-1" />

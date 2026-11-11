@@ -5,16 +5,18 @@ interface WalletTransferCardProps {
     wallet: Pick<Wallet, "name" | "balance" | "currency" | "description" | "role">;
     label: string;
     highlight?: boolean;
+    showDescription?: boolean;
 }
 
 export const WalletTransferCard = ({
     wallet,
     label,
     highlight = false,
+    showDescription = true,
 }: WalletTransferCardProps) => {
     return (
         <div
-            className={`flex min-h-36 w-full flex-col justify-between rounded-2xl border p-4 ${highlight
+            className={`flex h-full min-h-36 w-full flex-col justify-between rounded-2xl border p-4 ${highlight
                     ? "border-primary-25 bg-primary-15/30"
                     : "border-light-10 bg-surface-hard/50"
                 }`}
@@ -26,7 +28,7 @@ export const WalletTransferCard = ({
                 <h3 className="mt-2 truncate text-base font-semibold text-light">
                     {wallet.name}
                 </h3>
-                {wallet.description && (
+                {showDescription && wallet.description && (
                     <p className="mt-1 line-clamp-2 text-sm text-helper">
                         {wallet.description}
                     </p>

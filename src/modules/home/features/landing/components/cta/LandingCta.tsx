@@ -1,7 +1,7 @@
-import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/auth/hooks/useAuth";
+import { Button } from "@/components/controls/Button";
 
 export const LandingCta = () => {
     const { t } = useTranslation();
@@ -20,32 +20,11 @@ export const LandingCta = () => {
                 {!isChecking && (
                     <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
                         {isAuthenticated ? (
-                            <Link to="/app/dashboard">
-                                <button
-                                    type="button"
-                                    className="bg-primary text-light text-sm font-medium px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors cursor-pointer"
-                                >
-                                    {t("home.goDashboard")}
-                                </button>
-                            </Link>
+                            <Button to="/app/dashboard" text={t("home.goDashboard")} className="rounded-xl px-7 py-3" />
                         ) : (
                             <>
-                                <Link to="/auth/login">
-                                    <button
-                                        type="button"
-                                        className="border border-light-25 text-light text-sm font-medium px-7 py-3 rounded-xl hover:border-light hover:bg-light-10 transition-colors cursor-pointer"
-                                    >
-                                        {t("home.signIn")}
-                                    </button>
-                                </Link>
-                                <Link to="/auth/register">
-                                    <button
-                                        type="button"
-                                        className="bg-primary text-light text-sm font-medium px-7 py-3 rounded-xl hover:bg-primary-dark transition-colors cursor-pointer"
-                                    >
-                                        {t("home.plans.startFree")}
-                                    </button>
-                                </Link>
+                                <Button to="/auth/login" variant="outline" text={t("home.signIn")} className="rounded-xl border-light-25 px-7 py-3 hover:border-light" />
+                                <Button to="/auth/register" text={t("home.plans.startFree")} className="rounded-xl px-7 py-3" />
                             </>
                         )}
                     </div>

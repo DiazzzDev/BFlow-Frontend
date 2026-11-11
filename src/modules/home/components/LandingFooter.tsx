@@ -4,7 +4,7 @@ import { SiInstagram } from "@icons-pack/react-simple-icons";
 
 import { useLandingNav } from "../hooks/useLandingNav";
 
-import BflowLogo from "@/assets/BFlow logo.svg";
+import { BflowLogo } from "@/components/brand/BflowLogo";
 
 
 const GitHubIcon = () => (
@@ -23,7 +23,7 @@ export const LandingFooter = () => {
                 <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-10 mb-6 border-b border-light-10 pb-10">
                     <div className="flex flex-col items-start">
                         <div className="flex flex-col items-start gap-3 mb-3">
-                            <img src={BflowLogo} alt="BFlow Studio" className="w-8 h-8" />
+                            <BflowLogo alt="BFlow Studio" className="h-8 w-8" />
                             <span className="text-lg font-bold tracking-tight">BFlow <span className="text-light-75">Studio</span></span>
                         </div>
                         <p className="text-sm text-helper mb-5 max-w-xs">

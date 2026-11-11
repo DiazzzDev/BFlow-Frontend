@@ -133,7 +133,7 @@ export const HeroPreview = () => {
             <div className={`${walletCardClass} -right-28 bottom-16 z-10 rotate-6 border border-light-10 bg-secondary-dark`}>
                 <div className="flex items-start justify-between gap-3">
                     <div>
-                        <p className="text-sm font-semibold text-light">
+                        <p className="text-sm font-semibold text-white">
                             {t("home.heroPreview.personalWallet")}
                         </p>
                         <p className="text-xs text-helper">
@@ -163,18 +163,18 @@ export const HeroPreview = () => {
                         <p className="text-sm font-semibold text-light">
                             {t("home.heroPreview.walletName")}
                         </p>
-                        <p className="text-xs text-light-75">
+                        <p className="text-xs text-white/75">
                             {t("home.heroPreview.walletDescription")}
                         </p>
                     </div>
-                    <Wallet className="h-5 w-5 shrink-0 text-light" />
+                    <Wallet className="h-5 w-5 shrink-0 text-white" />
                 </div>
                 <div className="flex items-end justify-between gap-3">
                     <div>
-                        <p className="text-[11px] text-light-75">
+                        <p className="text-[11px] text-white/75">
                             {t("home.heroPreview.availableBalance")}
                         </p>
-                        <p className="text-lg font-semibold text-light">
+                        <p className="text-lg font-semibold text-white">
                             {formatCurrency(HERO_PREVIEW.walletBalance)}
                         </p>
                     </div>

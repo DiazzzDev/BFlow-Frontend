@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { NewTransactionModal } from "../newTransaction/NewTransactionModal";
+import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
 
 import { WalletForm } from "./components/WalletForm";
 import { WalletInvitationsButton } from "./components/WalletInvitationsButton";

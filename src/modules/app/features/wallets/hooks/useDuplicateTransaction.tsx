@@ -6,9 +6,9 @@ import {
     buildDuplicateIncomePayload,
     buildDuplicateTransferPayload,
 } from "../utils/duplicateTransaction";
-import { usePostExpense } from "../../newTransaction/hooks/useMutateExpenses";
-import { usePostIncome } from "../../newTransaction/hooks/useMutateIncomes";
-import { useMutateTransfers } from "../../newTransaction/hooks/useMutateTransfers";
+import { usePostExpense } from "../../../components/newTransaction/hooks/useMutateExpenses";
+import { usePostIncome } from "../../../components/newTransaction/hooks/useMutateIncomes";
+import { useMutateTransfers } from "../../../components/newTransaction/hooks/useMutateTransfers";
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";

@@ -8,6 +8,7 @@ import { LandingBrand } from "./LandingBrand";
 import { useLandingNav } from "../hooks/useLandingNav";
 
 import { useAuth } from "@/auth/hooks/useAuth";
+import { Button } from "@/components/controls/Button";
 
 export const LandingNavbar = () => {
     const { navLinks, handleNavClick, isLinkActive } = useLandingNav();
@@ -48,14 +49,7 @@ export const LandingNavbar = () => {
 
                 <div className="flex items-center gap-3">
                     {isChecking ? null : isAuthenticated ? (
-                        <Link to="/app/dashboard">
-                            <button
-                                type="button"
-                                className="cursor-pointer rounded-md bg-primary px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-primary-dark"
-                            >
-                                {t("home.goDashboard")}
-                            </button>
-                        </Link>
+                        <Button to="/app/dashboard" text={t("home.goDashboard")} className="rounded-md px-3 py-2" />
                     ) : (
                         <>
                             <Link
@@ -64,14 +58,7 @@ export const LandingNavbar = () => {
                             >
                                 {t("home.signIn")}
                             </Link>
-                            <Link to="/auth/register">
-                                <button
-                                    type="button"
-                                    className="cursor-pointer rounded-md bg-primary px-3 py-2 text-sm font-medium text-light transition-colors hover:bg-primary-dark"
-                                >
-                                    {t("home.plans.startFree")}
-                                </button>
-                            </Link>
+                            <Button to="/auth/register" text={t("home.plans.startFree")} className="rounded-md px-3 py-2" />
                         </>
                     )}
 

@@ -1,4 +1,5 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
+import { Link, type To } from "react-router";
 
 export type ButtonVariant =
     | "primary"
@@ -13,13 +14,13 @@ const VARIANT_CLASSES: Record<
 > = {
     primary: {
         enabled:
-            "bg-primary text-light shadow-sm hover:bg-primary-dark active:scale-95",
-        disabled: "bg-primary-75 text-light shadow-none",
+            "bg-primary text-white shadow-sm hover:bg-primary-dark active:scale-95",
+        disabled: "bg-primary-75 text-white shadow-none",
     },
     secondary: {
         enabled:
-            "bg-surface text-light shadow-sm hover:bg-surface/80 border border-light-5 active:scale-95",
-        disabled: "bg-surface-75 text-light shadow-none",
+            "border border-light-10 bg-surface text-light shadow-sm hover:bg-light-5 active:scale-95",
+        disabled: "border border-light-10 bg-surface-75 text-light shadow-none",
     },
     outline: {
         enabled:
@@ -28,8 +29,8 @@ const VARIANT_CLASSES: Record<
     },
     danger: {
         enabled:
-            "bg-danger text-light shadow-sm hover:bg-danger-dark active:scale-95",
-        disabled: "bg-danger-75 text-light shadow-none",
+            "bg-danger text-white shadow-sm hover:bg-danger-dark active:scale-95",
+        disabled: "bg-danger-75 text-white shadow-none",
     },
     ghost: {
         enabled:
@@ -45,6 +46,7 @@ export interface ButtonProps
     text: string;
     icon?: ReactNode;
     variant?: ButtonVariant;
+    to?: To;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -56,6 +58,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             disabled = false,
             text,
             icon,
+            to,
             className = "",
             ...props
         },
@@ -66,21 +69,36 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             ? `${variantClasses.disabled} cursor-not-allowed`
             : `${variantClasses.enabled} cursor-pointer`;
 
-        return (
-            <button
-                ref={ref}
-                type={type}
-                hidden={hidden}
-                disabled={disabled}
-                className={`flex items-center justify-center gap-2 rounded-lg px-6 py-2 font-sans text-sm font-medium transition-all ${stateClasses} ${className}`}
-                {...props}
-            >
+        const content = (
+            <>
                 {icon && (
                     <span className="relative text-xl font-light leading-none">
                         {icon}
                     </span>
                 )}
                 {text}
+            </>
+        );
+        const buttonClassName = `flex items-center justify-center gap-2 rounded-lg px-6 py-2 font-sans text-sm font-medium transition-all ${stateClasses} ${className}`;
+
+        if (to && !disabled) {
+            return (
+                <Link to={to} className={buttonClassName}>
+                    {content}
+                </Link>
+            );
+        }
+
+        return (
+            <button
+                ref={ref}
+                type={type}
+                hidden={hidden}
+                disabled={disabled}
+                className={buttonClassName}
+                {...props}
+            >
+                {content}
             </button>
         );
     },

@@ -29,7 +29,8 @@
         "mainNavigation": "Navegación principal",
         "closeMenu": "Cerrar menú",
         "notifications": "Notificaciones",
-        "editProfile": "Editar perfil"
+        "editProfile": "Editar perfil",
+        "selectDate": "Seleccionar fecha"
     },
     "nav": {
         "dashboard": "Dashboard",
@@ -47,6 +48,12 @@
         "active": "Activo",
         "resources": "Recursos",
         "opensInNewTab": "(se abre en una pestaña nueva)"
+    },
+    "theme": {
+        "title": "Apariencia",
+        "dark": "Modo oscuro",
+        "light": "Modo claro",
+        "toggle": "Cambiar a {{theme}}"
     },
     "breadcrumbs": {
         "dashboard": "Dashboard",

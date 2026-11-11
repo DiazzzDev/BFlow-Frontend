@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useGetWallets } from "../wallets/hooks/useGetWallets";
+import { useGetWallets } from "../../features/wallets/hooks/useGetWallets";
 
 import { RecurringForm } from "./forms/RecurringForm";
 

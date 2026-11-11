@@ -1,19 +1,17 @@
 import type { Periodicity } from "@/modules/app/interfaces/Periodicity";
 
-export interface CreateExpenseData {
+export interface CreateIncomeData {
     title: string;
-    description: string;
+    description?: string;
     amount: number;
-    date: string;
+    date?: string;
     walletId: string;
     source: string;
     recurring: boolean;
     recurrencePattern: Periodicity | null;
-    categoryId: string;
-    taxDeductible: boolean;
-    reimbursable: boolean;
+    categoryId?: string;
 }
 
-export interface Expense extends CreateExpenseData {
+export interface Income extends CreateIncomeData {
     id: string;
 }

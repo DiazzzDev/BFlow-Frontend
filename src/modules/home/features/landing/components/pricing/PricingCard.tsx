@@ -4,6 +4,7 @@ import { useAuthStore } from "@/auth/authStore";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { PlanBenefitDom } from "../../interfaces/Plan";
+import { Button } from "@/components/controls/Button";
 
 const CheckIcon = () => (
     <svg
@@ -83,7 +84,7 @@ export const PricingCard = ({
                                 className="flex items-start gap-3 text-sm leading-snug text-helper md:text-[15px]"
                             >
                                 <CheckIcon />
-                                {benefit.limit ?
+                                {benefit.limit !== undefined && benefit.limit !== null ?
                                     (
                                         <span>{benefit.defaultValue} ({benefit.limit})</span>
                                     ) : (
@@ -94,16 +95,13 @@ export const PricingCard = ({
                         ))}
                     </div>
 
-                    <button
+                    <Button
                         type="button"
                         onClick={handleClick}
-                        className={`w-full cursor-pointer rounded-xl py-3 text-sm font-medium transition-all ${btnStyle === "filled"
-                            ? "bg-primary text-light hover:bg-primary-dark"
-                            : "border border-light-25 bg-transparent text-light hover:border-light hover:bg-light-10"
-                            }`}
-                    >
-                        {btnText}
-                    </button>
+                        text={btnText}
+                        variant={btnStyle === "filled" ? "primary" : "outline"}
+                        className={`w-full rounded-xl py-3 ${btnStyle === "outline" ? "border-light-25 hover:border-light" : ""}`}
+                    />
                 </div>
             </div>
         </div>

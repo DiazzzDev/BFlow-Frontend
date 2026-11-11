@@ -9,6 +9,7 @@ import {
 
 import { useAuthStore } from "@/auth/authStore";
 import { resolveSession } from "@/auth/services/session.service";
+import { invalidateFinancialQueries } from "@/utils/query/invalidateFinancialQueries";
 
 export const useRegisterQuickTransaction = () => {
     const queryClient = useQueryClient();
@@ -25,7 +26,7 @@ export const useRegisterQuickTransaction = () => {
             } catch {
                 // The expense was already saved; keep the mutation successful if sync is temporarily unavailable.
             } finally {
-                await queryClient.invalidateQueries();
+                await invalidateFinancialQueries(queryClient);
             }
         },
     });
@@ -62,7 +63,7 @@ export const useConfirmReceipt = () => {
             } catch {
                 // The receipt was already confirmed; keep the mutation successful if sync is temporarily unavailable.
             } finally {
-                await queryClient.invalidateQueries();
+                await invalidateFinancialQueries(queryClient);
             }
         },
     });
