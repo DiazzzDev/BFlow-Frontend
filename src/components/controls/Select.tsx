@@ -2,6 +2,7 @@ import {
     Children,
     forwardRef,
     isValidElement,
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -99,7 +100,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             };
         }, []);
 
-        const updateMenuPosition = () => {
+        const updateMenuPosition = useCallback(() => {
             const rect = buttonRef.current?.getBoundingClientRect();
             if (!rect) {
                 return;
@@ -113,14 +114,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     ? { left: rect.left, width: rect.width, bottom: window.innerHeight - rect.top + 6 }
                     : { left: rect.left, width: rect.width, top: rect.bottom + 6 },
             );
-        };
+        }, [options.length]);
 
         useEffect(() => {
             if (!isOpen) {
                 return;
             }
 
-            updateMenuPosition();
             window.addEventListener("resize", updateMenuPosition);
             window.addEventListener("scroll", updateMenuPosition, true);
 
@@ -128,7 +128,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                 window.removeEventListener("resize", updateMenuPosition);
                 window.removeEventListener("scroll", updateMenuPosition, true);
             };
-        }, [isOpen]);
+        }, [isOpen, updateMenuPosition]);
 
         const createChangeEvent = (nextValue: string) =>
             ({
@@ -195,6 +195,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     onKeyDown={(event) => {
                         if (event.key === "ArrowDown" || event.key === "ArrowUp") {
                             event.preventDefault();
+                            updateMenuPosition();
                             setIsOpen(true);
                         }
                     }}
