@@ -7,8 +7,8 @@ export interface CreateExpenseData {
     date?: string;
     walletId: string;
     source: string;
-    recurring: boolean;
-    recurrencePattern: Periodicity | null;
+    recurring?: boolean;
+    recurrencePattern?: Periodicity | null;
     categoryId?: string;
 }
 

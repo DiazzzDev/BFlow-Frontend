@@ -27,6 +27,7 @@ import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import {
@@ -258,7 +259,8 @@ const CategoriesModalContent = () => {
                     </div>
                 </div>
 
-                <div className="mt-4 flex flex-wrap items-center justify-end gap-2">
+                <ModalActionFooter>
+                    <div className="flex flex-wrap items-center justify-end gap-2">
                     {editingCategory ? (
                         <button
                             type="button"
@@ -281,7 +283,8 @@ const CategoriesModalContent = () => {
                         }
                         className="w-fit"
                     />
-                </div>
+                    </div>
+                </ModalActionFooter>
             </form>
 
             <div className="flex flex-1 flex-col gap-3">

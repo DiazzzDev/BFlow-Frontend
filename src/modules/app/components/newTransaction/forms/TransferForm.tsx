@@ -27,18 +27,14 @@ import { useAutoSelect } from "@/hooks/useAutoSelect";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { setApiValidationErrors } from "@/utils/api";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
-const transferSchema = z.object({
-    counterpartWalletId: z.string().uuid("Selecciona una billetera"),
-    amount: z
-        .string()
-        .min(1, "El monto es obligatorio")
-        .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
-    description: z.string(),
-});
-
-type TransferFormValues = z.infer<typeof transferSchema>;
+interface TransferFormValues {
+    counterpartWalletId: string;
+    amount: string;
+    description: string;
+}
 
 const defaultFormValues: TransferFormValues = {
     counterpartWalletId: "",
@@ -63,6 +59,14 @@ export const TransferForm = ({
     initialValues,
 }: TransferFormProps) => {
     const { t } = useTranslation();
+    const transferSchema = z.object({
+        counterpartWalletId: z.string().uuid(t("transactions.selectWalletError")),
+        amount: z
+            .string()
+            .min(1, t("transactions.amountRequired"))
+            .refine((value) => Number(value) > 0, t("transactions.amountGreaterThanZero")),
+        description: z.string(),
+    });
     // Create mutation
     const { createTransfer } = useMutateTransfers();
 
@@ -117,7 +121,7 @@ export const TransferForm = ({
 
     // Card for the counterpart side (list item, or initialValues fallback while loading)
     const counterpartCardWallet = selectedWallet ?? (initialValues?.counterpartWalletId ? {
-        name: initialValues.counterpartWalletName || "Billetera",
+        name: initialValues.counterpartWalletName || t("transactions.walletFallback"),
         balance: 0,
         currency: currentWallet?.currency || "USD",
         description: "",
@@ -222,7 +226,7 @@ export const TransferForm = ({
                         <p className="text-xs font-medium uppercase tracking-wide text-helper">
                             {isOutgoing ? t("transactions.destination") : t("transactions.origin")}
                         </p>
-                        <span className="text-[11px] text-helper">Requerido</span>
+                        <span className="text-[11px] text-helper">{t("transactions.required")}</span>
                     </div>
 
                     {readOnly && counterpartCardWallet ? (
@@ -270,7 +274,7 @@ export const TransferForm = ({
                     )}
                     {!readOnly && selectedWallet && (
                         <div className="mt-3 flex items-center justify-between border-t border-light-10 pt-3">
-                            <span className="text-xs text-helper">Saldo disponible</span>
+                            <span className="text-xs text-helper">{t("transactions.availableBalance")}</span>
                             <span className="text-sm font-semibold tabular-nums text-light">
                                 {formatCurrency(selectedWallet.balance, selectedWallet.currency)}
                             </span>
@@ -339,14 +343,15 @@ export const TransferForm = ({
             </div>
 
             {!readOnly && (
-                <Button
-                    type="submit"
-                    disabled={createTransfer.isPending}
-                    text={
-                        createTransfer.isPending ? t("transactions.saving") : t("transactions.createTransfer")
-                    }
-                    className="self-end"
-                />
+                <ModalActionFooter>
+                    <Button
+                        type="submit"
+                        disabled={createTransfer.isPending}
+                        text={
+                            createTransfer.isPending ? t("transactions.saving") : t("transactions.createTransfer")
+                        }
+                    />
+                </ModalActionFooter>
             )}
         </form>
     );

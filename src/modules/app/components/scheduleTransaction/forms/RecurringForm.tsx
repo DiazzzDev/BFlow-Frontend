@@ -30,6 +30,7 @@ import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputVal
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { setApiValidationErrors } from "@/utils/api";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 
 const recurringSchema = z
     .object({
@@ -434,16 +435,17 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                 </AnimatePresence>
             </div>
 
-            <Button
-                type="submit"
-                disabled={createRecurring.isPending}
-                text={
-                    createRecurring.isPending
-                        ? "Programando..."
-                        : t("walletView.schedule")
-                }
-                className="self-end"
-            />
+            <ModalActionFooter>
+                <Button
+                    type="submit"
+                    disabled={createRecurring.isPending}
+                    text={
+                        createRecurring.isPending
+                            ? "Programando..."
+                            : t("walletView.schedule")
+                    }
+                />
+            </ModalActionFooter>
         </form>
     );
 };

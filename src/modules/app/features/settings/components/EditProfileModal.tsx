@@ -14,6 +14,7 @@ import { sanitizeImageUrl } from "../utils/sanitizeImageUrl";
 
 import { useAuthStore } from "@/auth/authStore";
 import { Button } from "@/components/controls/Button";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { CustomModal } from "@/components/custom/CustomModal";
@@ -249,14 +250,14 @@ const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
                 ) : null}
             </div>
 
-            <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <ModalActionFooter>
                 <Button
                     type="submit"
                     text={t("profile.update")}
                     className="w-full sm:w-auto"
                     disabled={isSubmitting}
                 />
-            </div>
+            </ModalActionFooter>
         </form>
     );
 };

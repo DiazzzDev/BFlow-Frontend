@@ -13,6 +13,7 @@ import { collaboratorStatusLabel } from "../../utils/collaboratorStatus";
 import { Button } from "@/components/controls/Button";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getInitials } from "@/utils/getInitials";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
@@ -237,14 +238,14 @@ const InviteWalletMemberModalContent = ({
                 ) : null}
             </div>
 
-            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <ModalActionFooter>
                 <Button
                     type="submit"
                     text={inviteMember.isPending ? t("wallets.inviteLoading") : t("walletView.invite")}
                     disabled={inviteMember.isPending}
                     className="w-full sm:w-auto"
                 />
-            </div>
+            </ModalActionFooter>
         </form>
     );
 };

@@ -17,6 +17,7 @@ import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Button } from "@/components/controls/Button";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { RangeSlider } from "@/components/controls/RangeSlider";
 import type { BudgetScope } from "@/modules/app/interfaces/Budget";
 import type { Category } from "@/modules/app/interfaces/Category";
@@ -390,12 +391,13 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                 )}
             </div>
 
-            <Button
-                type="submit"
-                disabled={createBudget.isPending}
-                text={createBudget.isPending ? t("budgets.saving") : t("budgets.create")}
-                className="self-end"
-            />
+            <ModalActionFooter>
+                <Button
+                    type="submit"
+                    disabled={createBudget.isPending}
+                    text={createBudget.isPending ? t("budgets.saving") : t("budgets.create")}
+                />
+            </ModalActionFooter>
         </form>
     );
 };

@@ -10,12 +10,14 @@ import { CategoryIcon } from "@/components/icons/CategoryIcon";
 interface RecentActivityRowProps {
     activity: RecentActivityItem;
     currency: string;
+    isToday: boolean;
 }
 
 export const RecentActivityRow = ({
     activity,
     currency,
-}: RecentActivityRowProps) => {
+    isToday,
+}: RecentActivityRowProps & { isToday: boolean }) => {
     const isIncome = activity.type.toUpperCase() === "INCOME";
 
     return (
@@ -43,10 +45,16 @@ export const RecentActivityRow = ({
                     <p className="truncate text-[11px] font-medium text-light-75">
                         {activity.walletName}
                     </p>
-                    <span className="truncate text-[9px] text-helper">•</span>
-                    <p className="truncate text-[11px] text-helper">
-                        {formatterDynamicDate(activity.createdAt)}
-                    </p>
+                    {
+                        isToday && (
+                            <>
+                                <span className="truncate text-[9px] text-helper">•</span>
+                                <p className="truncate text-[11px] text-helper">
+                                    {formatterDynamicDate(activity.createdAt)}
+                                </p>
+                            </>
+                        )
+                    }
                 </div>
             </div>
 

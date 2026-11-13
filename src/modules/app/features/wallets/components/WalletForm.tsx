@@ -11,6 +11,7 @@ import { Label } from "@/components/controls/Label";
 import { Textarea } from "@/components/controls/Textarea";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { Button } from "@/components/controls/Button";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const DEFAULT_CURRENCY = "USD";
@@ -149,12 +150,13 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
                 )}
             </div>
 
-            <Button
-                type="submit"
-                disabled={createWallet.isPending}
-                text={createWallet.isPending ? t("wallets.updateLoading") : t("wallets.create")}
-                className="self-end"
-            />
+            <ModalActionFooter>
+                <Button
+                    type="submit"
+                    disabled={createWallet.isPending}
+                    text={createWallet.isPending ? t("wallets.updateLoading") : t("wallets.create")}
+                />
+            </ModalActionFooter>
         </form>
     );
 };

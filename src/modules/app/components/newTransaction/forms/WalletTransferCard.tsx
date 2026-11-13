@@ -1,5 +1,6 @@
 import type { Wallet } from "@/modules/app/interfaces/Wallet";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
+import { useTranslation } from "react-i18next";
 
 interface WalletTransferCardProps {
     wallet: Pick<Wallet, "name" | "balance" | "currency" | "description" | "role">;
@@ -14,6 +15,7 @@ export const WalletTransferCard = ({
     highlight = false,
     showDescription = true,
 }: WalletTransferCardProps) => {
+    const { t } = useTranslation();
     return (
         <div
             className={`flex h-full min-h-36 w-full flex-col justify-between rounded-2xl border p-4 ${highlight
@@ -41,7 +43,7 @@ export const WalletTransferCard = ({
                 </p>
                 {wallet.role && (
                     <span className="rounded-md border border-light-10 px-2 py-0.5 text-[11px] text-helper">
-                        {wallet.role}
+                        {wallet.role === "OWNER" ? t("transactions.walletOwner") : wallet.role}
                     </span>
                 )}
             </div>

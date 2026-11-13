@@ -6,6 +6,7 @@ import { useDeleteIncome } from "../../../../components/newTransaction/hooks/use
 
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface DeleteTransactionModalProps {
@@ -69,7 +70,8 @@ export const DeleteTransactionModal = ({
                     </span>
                     ? Esta acción no se puede deshacer.
                 </p>
-                <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <ModalActionFooter>
+                    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <button
                         type="button"
                         disabled={isDeleting}
@@ -88,7 +90,8 @@ export const DeleteTransactionModal = ({
                     >
                         {isDeleting ? t("transactions.deleteLoading") : t("transactions.delete")}
                     </button>
-                </div>
+                    </div>
+                </ModalActionFooter>
             </div>
         </CustomModal>
     );

@@ -120,16 +120,17 @@ export const RecentActivityCard = ({
             {!isLoading && activities.length > 0 && (
                 <div className="flex flex-col gap-5">
                     {activityGroups.map((group) => (
-                        <section key={group.dayKey}>
+                        <section key={group.dayKey} className="border-b border-light-10 last:border-b-0">
                             <p className="mb-1 text-xs font-semibold capitalize text-helper">
                                 {group.label}
                             </p>
-                            <ul className="flex flex-col">
+                            <ul className="flex flex-col ">
                                 {group.activities.map((activity, index) => (
                                     <RecentActivityRow
                                         key={`${activity.name}-${activity.createdAt}-${index}`}
                                         activity={activity}
                                         currency={currency}
+                                        isToday={group.label === t("dates.today")}
                                     />
                                 ))}
                             </ul>
