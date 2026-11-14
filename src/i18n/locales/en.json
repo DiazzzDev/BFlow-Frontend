@@ -172,11 +172,14 @@
         "searchCategory": "Search category...",
         "alert": "Warning",
         "critical": "Critical",
+        "consumptionAlerts": "Consumption alerts",
+        "alertAt": "When spending $",
         "saving": "Saving...",
         "scopeLabel": "Budget scope",
         "periods": {
             "all": "All",
             "monthly": "Monthly",
+            "daily": "Daily",
             "weekly": "Weekly",
             "yearly": "Yearly"
         },
@@ -313,6 +316,7 @@
         "description": "Description",
         "amount": "Amount",
         "date": "Date",
+        "transactionDate": "Transaction date",
         "category": "Category",
         "loadingCategories": "Loading categories...",
         "searchCategory": "Search category...",
@@ -418,7 +422,8 @@
         "duplicate": "Duplicate",
         "duplicateTransaction": "Duplicate transaction",
         "manual": "Manual",
-        "recurring": "Recurring"
+        "recurring": "Recurring",
+        "source": "Source"
     },
     "budgetView": {
         "notFound": "Budget not found",

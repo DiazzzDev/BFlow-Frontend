@@ -26,6 +26,10 @@
     },
     "include": [
         "src",
+        "tests",
+        "vitest.config.ts",
+        "vitest.setup.ts",
+        "playwright.config.ts",
         "eslint.config.ts",
         "commitlint.config.cjs"
     ]

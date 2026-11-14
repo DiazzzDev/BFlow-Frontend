@@ -38,7 +38,6 @@ export const DashboardPage = () => {
                         <RecentActivityCard
                             isLoading={page.isLoadingActivity}
                             activities={page.activities}
-                            currency={page.currency}
                             activityType={page.activityType}
                             activityQuery={page.activityQuery}
                             onActivityTypeChange={page.setActivityType}

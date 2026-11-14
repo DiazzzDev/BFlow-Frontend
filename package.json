@@ -14,7 +14,12 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "echo 'No hay tests instalados aún' && exit 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "playwright:cli": "playwright-cli",
     "audit": "bun audit --audit-level=high",
     "scan:cve": "trivy fs --config trivy.yaml ."
   },
@@ -53,6 +58,12 @@
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "@eslint/js": "^9.39.4",
+    "@playwright/cli": "^0.1.24",
+    "@playwright/mcp": "^0.0.85",
+    "@playwright/test": "^1.65.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.10",
     "@types/eslint-plugin-jsx-a11y": "^6.10.1",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
@@ -60,6 +71,7 @@
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
     "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/coverage-v8": "^5.1.0",
     "eslint": "^9.39.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -68,9 +80,12 @@
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
+    "jsdom": "^31.0.1",
+    "playwright": "^1.65.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.0",
     "vite": "^8.0.1",
-    "vite-plugin-sitemap": "^0.8.2"
+    "vite-plugin-sitemap": "^0.8.2",
+    "vitest": "^5.1.0"
   }
 }

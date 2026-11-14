@@ -3,11 +3,16 @@ import type { CategoryIconKey } from "@/utils/categoryIcons";
 export type RecentActivityType = "ALL" | "INCOME" | "EXPENSE";
 
 export interface RecentActivityItem {
-    type: string;
+    id: string;
+    type: "INCOME" | "EXPENSE";
     name: string;
+    description: string | null;
     createdAt: string;
+    date: string;
     amount: number;
+    currency: string;
     walletName: string;
+    source: string;
     categoryColor: string;
     categoryIcon: CategoryIconKey;
 }

@@ -14,11 +14,9 @@ import { SegmentedTabs } from "@/components/controls/SegmentedTabs";
 import { DatePicker } from "@/components/controls/DatePicker";
 import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
-import { Select } from "@/components/controls/Select";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { Button } from "@/components/controls/Button";
 import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
-import { RangeSlider } from "@/components/controls/RangeSlider";
 import type { BudgetScope } from "@/modules/app/interfaces/Budget";
 import type { Category } from "@/modules/app/interfaces/Category";
 import {
@@ -117,6 +115,25 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
     });
     const thresholdWarning = useWatch({ control, name: "thresholdWarning" });
     const thresholdCritical = useWatch({ control, name: "thresholdCritical" });
+    const amount = useWatch({ control, name: "amount" });
+
+    const updateWarning = (value: number) => {
+        const nextWarning = Math.min(MAX_THRESHOLD - 1, Math.max(MIN_WARNING, value));
+        setValue("thresholdWarning", nextWarning, { shouldValidate: true });
+        if (thresholdCritical <= nextWarning) {
+            setValue("thresholdCritical", Math.min(MAX_THRESHOLD, nextWarning + 1), { shouldValidate: true });
+        }
+    };
+
+    const updateCritical = (value: number) => {
+        const minCritical = Math.max(MIN_CRITICAL, thresholdWarning + 1);
+        setValue("thresholdCritical", Math.min(MAX_THRESHOLD, Math.max(minCritical, value)), { shouldValidate: true });
+    };
+
+    const amountAt = (percentage: number) => {
+        const numericAmount = Number(amount) || 0;
+        return numericAmount * (percentage / 100);
+    };
 
     // Sync form ids: clear if field does not apply; seed default only while in "auto"
     useEffect(() => {
@@ -268,8 +285,8 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                 </div>
             )}
 
-            <div className="flex flex-col gap-4 sm:flex-row">
-                <div className="flex flex-1 flex-col gap-1">
+            <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-1">
                     <Label htmlFor="amount">{t("budgets.amount")}</Label>
                     <Controller
                         name="amount"
@@ -280,6 +297,7 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 type="text"
                                 inputMode="decimal"
                                 placeholder="0.00"
+                                className="h-14 border-primary text-2xl font-semibold"
                                 disabled={createBudget.isPending}
                                 name={field.name}
                                 value={field.value}
@@ -295,25 +313,35 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                     )}
                 </div>
 
-                <div className="flex flex-1 flex-col gap-1">
-                    <Label htmlFor="period">{t("budgets.period")}</Label>
+                <div className="flex flex-wrap gap-2">
+                    {["100", "250", "500", "1000"].map((preset) => (
+                        <button
+                            key={preset}
+                            type="button"
+                            disabled={createBudget.isPending}
+                            onClick={() => setValue("amount", preset, { shouldValidate: true })}
+                            className="rounded-full border border-light-10 px-3 py-1 text-xs text-light transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            ${Number(preset).toLocaleString("en-US")}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="flex flex-col gap-1">
+                    <span className="text-sm font-medium text-light">{t("budgets.period")}</span>
                     <Controller
                         name="period"
                         control={control}
                         render={({ field }) => (
-                            <Select
-                                id="period"
-                                value={field.value}
-                                disabled={createBudget.isPending}
-                                onChange={(event) => field.onChange(event.target.value)}
-                                onBlur={field.onBlur}
-                            >
-                                {PERIODICITY_FORM_OPTIONS.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {t(`budgets.periods.${option.value.toLowerCase()}`, { defaultValue: option.label })}
-                                    </option>
-                                ))}
-                            </Select>
+                            <SegmentedTabs
+                                tabs={PERIODICITY_FORM_OPTIONS.map((option) => ({
+                                    id: option.value,
+                                    label: t(`budgets.periods.${option.value.toLowerCase()}`, { defaultValue: option.label }),
+                                }))}
+                                selected={field.value}
+                                onChange={field.onChange}
+                                ariaLabel={t("budgets.period")}
+                            />
                         )}
                     />
                 </div>
@@ -337,58 +365,89 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                 )}
             </div>
 
-            <div className="flex flex-col gap-5">
-                <Controller
-                    name="thresholdWarning"
-                    control={control}
-                    render={({ field }) => (
-                        <RangeSlider
-                            id="thresholdWarning"
-                            label={t("budgets.alert")}
-                            tone="warning"
-                            min={MIN_WARNING}
-                            max={MAX_THRESHOLD - 1}
-                            value={field.value}
-                            disabled={createBudget.isPending}
-                            onChange={(nextWarning) => {
-                                field.onChange(nextWarning);
-                                if (thresholdCritical <= nextWarning) {
-                                    setValue(
-                                        "thresholdCritical",
-                                        Math.min(MAX_THRESHOLD, nextWarning + 1),
-                                    );
-                                }
-                            }}
-                        />
-                    )}
-                />
+            <div className="flex flex-col gap-3">
+                <span className="text-sm font-medium text-light">{t("budgets.consumptionAlerts")}</span>
+                <div className="relative h-7">
+                    <div className="absolute top-1/2 right-2 left-2 h-2 -translate-y-1/2 rounded-full bg-linear-to-r from-success via-success to-danger" />
+                    <input
+                        aria-label={t("budgets.alert")}
+                        type="range"
+                        min={MIN_WARNING}
+                        max={Math.max(MIN_WARNING, thresholdCritical - 1)}
+                        value={thresholdWarning}
+                        disabled={createBudget.isPending}
+                        onChange={(event) => updateWarning(Number(event.target.value))}
+                        className="budget-threshold-range budget-threshold-range--warning"
+                    />
+                    <input
+                        aria-label={t("budgets.critical")}
+                        type="range"
+                        min={Math.max(MIN_CRITICAL, thresholdWarning + 1)}
+                        max={MAX_THRESHOLD}
+                        value={thresholdCritical}
+                        disabled={createBudget.isPending}
+                        onChange={(event) => updateCritical(Number(event.target.value))}
+                        className="budget-threshold-range budget-threshold-range--critical"
+                    />
+                </div>
                 {errors.thresholdWarning && (
-                    <span className="-mt-3 text-xs text-danger">
+                    <span className="text-xs text-danger">
                         {errors.thresholdWarning.message}
                     </span>
                 )}
-
-                <Controller
-                    name="thresholdCritical"
-                    control={control}
-                    render={({ field }) => (
-                        <RangeSlider
-                            id="thresholdCritical"
-                            label={t("budgets.critical")}
-                            tone="danger"
-                            min={Math.max(MIN_CRITICAL, thresholdWarning + 1)}
-                            max={MAX_THRESHOLD}
-                            value={field.value}
-                            disabled={createBudget.isPending}
-                            onChange={field.onChange}
-                        />
-                    )}
-                />
                 {errors.thresholdCritical && (
-                    <span className="-mt-3 text-xs text-danger">
+                    <span className="text-xs text-danger">
                         {errors.thresholdCritical.message}
                     </span>
                 )}
+                <div className="grid gap-3 sm:grid-cols-2">
+                    <label className="rounded-xl border border-light-10 bg-surface-hard/40 p-3">
+                        <span className="block text-xs font-medium text-warning">{t("budgets.alert")} · {thresholdWarning}%</span>
+                        <span className="mt-1 flex items-center gap-1 text-base font-semibold text-light">
+                            {t("budgets.alertAt")}
+                            <Input
+                                id="thresholdWarningAmount"
+                                aria-label={`${t("budgets.alert")} amount`}
+                                type="number"
+                                placeholder="0.00"
+                                min={0}
+                                step="0.01"
+                                value={amountAt(thresholdWarning).toFixed(2)}
+                                onChange={(event) => {
+                                    const nextAmount = Number(event.target.value);
+                                    if (Number.isFinite(nextAmount)) {
+                                        const baseAmount = Number(amount) || 0;
+                                        if (baseAmount > 0) updateWarning(Math.round((nextAmount / baseAmount) * 100));
+                                    }
+                                }}
+                                className="h-7 w-24 border-0 bg-transparent px-1 text-right text-base font-semibold"
+                            />
+                        </span>
+                    </label>
+                    <label className="rounded-xl border border-light-10 bg-surface-hard/40 p-3">
+                        <span className="block text-xs font-medium text-danger">{t("budgets.critical")} · {thresholdCritical}%</span>
+                        <span className="mt-1 flex items-center gap-1 text-base font-semibold text-light">
+                            {t("budgets.alertAt")}
+                            <Input
+                                id="thresholdCriticalAmount"
+                                aria-label={`${t("budgets.critical")} amount`}
+                                type="number"
+                                placeholder="0.00"
+                                min={0}
+                                step="0.01"
+                                value={amountAt(thresholdCritical).toFixed(2)}
+                                onChange={(event) => {
+                                    const nextAmount = Number(event.target.value);
+                                    if (Number.isFinite(nextAmount)) {
+                                        const baseAmount = Number(amount) || 0;
+                                        if (baseAmount > 0) updateCritical(Math.round((nextAmount / baseAmount) * 100));
+                                    }
+                                }}
+                                className="h-7 w-24 border-0 bg-transparent px-1 text-right text-base font-semibold"
+                            />
+                        </span>
+                    </label>
+                </div>
             </div>
 
             <ModalActionFooter>

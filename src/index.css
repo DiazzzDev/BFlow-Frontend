@@ -356,3 +356,37 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 input[type="range"] {
   accent-color: #ff7a00; /* Sustituye este valor por el color hexadecimal que prefieras */
 }
+
+.budget-threshold-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.budget-threshold-range::-webkit-slider-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  appearance: none;
+  border: 3px solid var(--color-surface);
+  border-radius: 9999px;
+  background: var(--budget-threshold-color);
+  box-shadow: 0 0 0 1px var(--budget-threshold-color);
+  pointer-events: auto;
+}
+
+.budget-threshold-range::-moz-range-thumb {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 3px solid var(--color-surface);
+  border-radius: 9999px;
+  background: var(--budget-threshold-color);
+  box-shadow: 0 0 0 1px var(--budget-threshold-color);
+  pointer-events: auto;
+}
+
+.budget-threshold-range--warning { --budget-threshold-color: var(--color-warning); }
+.budget-threshold-range--critical { --budget-threshold-color: var(--color-danger); }

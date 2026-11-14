@@ -172,11 +172,14 @@
         "searchCategory": "Buscar categoría...",
         "alert": "Alerta",
         "critical": "Crítico",
+        "consumptionAlerts": "Avisos de consumo",
+        "alertAt": "Al gastar $",
         "saving": "Guardando...",
         "scopeLabel": "Alcance del presupuesto",
         "periods": {
             "all": "Todos",
             "monthly": "Mensual",
+            "daily": "Diario",
             "weekly": "Semanal",
             "yearly": "Anual"
         },
@@ -315,6 +318,7 @@
         "description": "Descripción",
         "amount": "Monto",
         "date": "Fecha",
+        "transactionDate": "Fecha de transacción",
         "category": "Categoría",
         "loadingCategories": "Cargando categorías...",
         "searchCategory": "Buscar categoría...",
@@ -420,7 +424,8 @@
         "duplicate": "Duplicar",
         "duplicateTransaction": "Duplicar transacción",
         "manual": "Manual",
-        "recurring": "Recurrente"
+        "recurring": "Recurrente",
+        "source": "Origen"
     },
     "budgetView": {
         "notFound": "Presupuesto no encontrado",

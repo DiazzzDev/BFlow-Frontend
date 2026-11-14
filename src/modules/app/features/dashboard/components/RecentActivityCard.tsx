@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ChevronRight, Receipt, Search } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -10,6 +11,7 @@ import {
 import { groupRecentActivityByDay } from "../utils/groupRecentActivityByDay";
 
 import { ActivityFilters, type ActivityFilter } from "./ActivityFilters";
+import { RecentActivityDetailsModal } from "./RecentActivityDetailsModal";
 import { RecentActivityRow } from "./RecentActivityRow";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
@@ -18,7 +20,6 @@ import { Input } from "@/components/controls/Input";
 interface RecentActivityCardProps {
     isLoading: boolean;
     activities: RecentActivityItem[];
-    currency: string;
     onViewAll?: () => void;
     activityType: ActivityFilter;
     activityQuery: string;
@@ -29,7 +30,6 @@ interface RecentActivityCardProps {
 export const RecentActivityCard = ({
     isLoading,
     activities,
-    currency,
     onViewAll,
     activityType,
     activityQuery,
@@ -38,6 +38,7 @@ export const RecentActivityCard = ({
 }: RecentActivityCardProps) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [selectedActivity, setSelectedActivity] = useState<RecentActivityItem | null>(null);
     const hasActivityFilters = activityType !== "ALL" || activityQuery.trim().length > 0;
     const activityGroups = groupRecentActivityByDay(activities);
 
@@ -125,12 +126,12 @@ export const RecentActivityCard = ({
                                 {group.label}
                             </p>
                             <ul className="flex flex-col ">
-                                {group.activities.map((activity, index) => (
+                                {group.activities.map((activity) => (
                                     <RecentActivityRow
-                                        key={`${activity.name}-${activity.createdAt}-${index}`}
+                                        key={activity.id}
                                         activity={activity}
-                                        currency={currency}
                                         isToday={group.label === t("dates.today")}
+                                        onClick={setSelectedActivity}
                                     />
                                 ))}
                             </ul>
@@ -138,6 +139,11 @@ export const RecentActivityCard = ({
                     ))}
                 </div>
             )}
+
+            <RecentActivityDetailsModal
+                activity={selectedActivity}
+                onClose={() => setSelectedActivity(null)}
+            />
         </div>
     );
 };

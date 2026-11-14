@@ -91,7 +91,7 @@ export const TransactionForm = ({
     initialValues,
 }: TransactionFormProps) => {
     const { t } = useTranslation();
-    const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(false);
+    const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(readOnly);
     const [datePreset, setDatePreset] = useState<DatePreset>(() => {
         if (initialValues?.date === getDateInputValue(-1)) {
             return "yesterday";

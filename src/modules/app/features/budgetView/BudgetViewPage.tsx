@@ -1,5 +1,5 @@
-import { WalletCards } from "lucide-react";
-import { useParams } from "react-router";
+import { ArrowLeft, WalletCards } from "lucide-react";
+import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { useBudgetViewPage } from "./hooks/useBudgetViewPage";
@@ -15,6 +15,7 @@ import { SkeletonText } from "@/components/loaders/SkeletonText";
 
 export const BudgetViewPage = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { id: budgetId } = useParams<{ id: string }>();
     const view = useBudgetViewPage(budgetId);
 
@@ -38,9 +39,19 @@ export const BudgetViewPage = () => {
                     </div>
                 ) : (
                     <div className="flex justify-between items-center gap-5">
-                        <h1 className="truncate text-2xl font-semibold tracking-tight text-light sm:text-3xl">
-                            {view.title}
-                        </h1>
+                        <div className="flex min-w-0 items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={() => void navigate("/app/budgets")}
+                                aria-label={t("auth.back")}
+                                className="shrink-0 cursor-pointer rounded-lg p-2 text-helper transition-colors hover:bg-light-5 hover:text-light"
+                            >
+                                <ArrowLeft className="h-5 w-5" />
+                            </button>
+                            <h1 className="truncate text-2xl font-semibold tracking-tight text-light sm:text-3xl">
+                                {view.title}
+                            </h1>
+                        </div>
                         <div className="mt-3 flex flex-wrap items-center gap-2">
                             <span className="inline-flex items-center rounded-full border border-light-10 bg-surface px-2.5 py-0.5 text-xs text-helper">
                                 {view.periodLabel}

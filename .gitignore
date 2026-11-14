@@ -15,6 +15,7 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/mcp.json
 .idea
 .DS_Store
 *.suo
@@ -27,3 +28,9 @@ dist-ssr
 
 # Trivy
 trivy-results.sarif
+
+# Test artifacts
+coverage
+playwright-report
+test-results
+.playwright
