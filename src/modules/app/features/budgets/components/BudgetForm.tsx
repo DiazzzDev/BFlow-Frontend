@@ -117,20 +117,41 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
     const thresholdWarning = useWatch({ control, name: "thresholdWarning" });
     const thresholdCritical = useWatch({ control, name: "thresholdCritical" });
     const amount = useWatch({ control, name: "amount" });
-    const [warningAmountInput, setWarningAmountInput] = useState("0.00");
-    const [criticalAmountInput, setCriticalAmountInput] = useState("0.00");
+    const formatThresholdAmount = (baseAmount: number, threshold: number) =>
+        (baseAmount * (threshold / 100)).toFixed(2);
+    const [warningAmountInput, setWarningAmountInput] = useState(() =>
+        formatThresholdAmount(Number(amount) || 0, thresholdWarning),
+    );
+    const [criticalAmountInput, setCriticalAmountInput] = useState(() =>
+        formatThresholdAmount(Number(amount) || 0, thresholdCritical),
+    );
+
+    const syncThresholdAmountInputs = (
+        baseAmount: number,
+        warningThreshold: number,
+        criticalThreshold: number,
+    ) => {
+        setWarningAmountInput(formatThresholdAmount(baseAmount, warningThreshold));
+        setCriticalAmountInput(formatThresholdAmount(baseAmount, criticalThreshold));
+    };
 
     const updateWarning = (value: number) => {
         const nextWarning = Math.min(MAX_THRESHOLD - 1, Math.max(MIN_WARNING, value));
+        const nextCritical = thresholdCritical <= nextWarning
+            ? Math.min(MAX_THRESHOLD, nextWarning + 1)
+            : thresholdCritical;
         setValue("thresholdWarning", nextWarning, { shouldValidate: true });
-        if (thresholdCritical <= nextWarning) {
-            setValue("thresholdCritical", Math.min(MAX_THRESHOLD, nextWarning + 1), { shouldValidate: true });
+        if (nextCritical !== thresholdCritical) {
+            setValue("thresholdCritical", nextCritical, { shouldValidate: true });
         }
+        syncThresholdAmountInputs(Number(amount) || 0, nextWarning, nextCritical);
     };
 
     const updateCritical = (value: number) => {
         const minCritical = Math.max(MIN_CRITICAL, thresholdWarning + 1);
-        setValue("thresholdCritical", Math.min(MAX_THRESHOLD, Math.max(minCritical, value)), { shouldValidate: true });
+        const nextCritical = Math.min(MAX_THRESHOLD, Math.max(minCritical, value));
+        setValue("thresholdCritical", nextCritical, { shouldValidate: true });
+        syncThresholdAmountInputs(Number(amount) || 0, thresholdWarning, nextCritical);
     };
 
     const updateThresholdFromAmount = (
@@ -146,12 +167,6 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
 
         updateThreshold(Math.round((thresholdAmount / baseAmount) * 100));
     };
-
-    useEffect(() => {
-        const baseAmount = Number(amount) || 0;
-        setWarningAmountInput((baseAmount * (thresholdWarning / 100)).toFixed(2));
-        setCriticalAmountInput((baseAmount * (thresholdCritical / 100)).toFixed(2));
-    }, [amount, thresholdWarning, thresholdCritical]);
 
     // Clear values that do not apply to the selected budget scope.
     useEffect(() => {
@@ -276,6 +291,11 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                     const formatted = formatterDecimal(event.target.value);
                                     if (formatted !== null) {
                                         field.onChange(formatted);
+                                        syncThresholdAmountInputs(
+                                            Number(formatted) || 0,
+                                            thresholdWarning,
+                                            thresholdCritical,
+                                        );
                                     }
                                 }}
                             />
@@ -290,7 +310,14 @@ export const BudgetForm = ({ onSuccess }: BudgetFormProps) => {
                                 key={preset}
                                 type="button"
                                 disabled={createBudget.isPending}
-                                onClick={() => setValue("amount", preset, { shouldValidate: true })}
+                                onClick={() => {
+                                    setValue("amount", preset, { shouldValidate: true });
+                                    syncThresholdAmountInputs(
+                                        Number(preset),
+                                        thresholdWarning,
+                                        thresholdCritical,
+                                    );
+                                }}
                                 className="rounded-full border border-light-10 px-3 py-1 text-xs text-light transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 ${Number(preset).toLocaleString("en-US")}

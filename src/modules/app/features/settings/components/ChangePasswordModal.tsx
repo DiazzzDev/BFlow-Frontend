@@ -120,24 +120,20 @@ const ChangePasswordForm = ({ onClose }: ChangePasswordFormProps) => {
         },
     });
 
-    const onSubmit = async (data: ChangePasswordFormValues) => {
+    const onSubmit = (data: ChangePasswordFormValues) => {
         const promise = changePassword({
             currentPassword: data.currentPassword,
             newPassword: data.newPassword,
         });
 
-        try {
-            await toast.promise(promise, {
-                loading: t("settings.account.passwordChangeLoading"),
-                success: () => {
-                    onClose();
-                    return t("settings.account.passwordChangeSuccess")
-                },
-                error: (error) => getChangePasswordErrorMessage(error, t),
-            });
-        } catch {
-            // The toast already communicates the Cognito error to the user.
-        }
+        toast.promise(promise, {
+            loading: t("settings.account.passwordChangeLoading"),
+            success: () => {
+                onClose();
+                return t("settings.account.passwordChangeSuccess");
+            },
+            error: (error) => getChangePasswordErrorMessage(error, t),
+        });
     };
 
     return (

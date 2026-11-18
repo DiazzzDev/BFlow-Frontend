@@ -59,13 +59,17 @@ describe("dashboard service requests", () => {
             date: "2026-11-13",
         });
 
-        const uploadOptions = apiRequestMock.mock.calls[0][1] as RequestInit;
+        const apiRequestCalls = apiRequestMock.mock.calls as unknown as [string, RequestInit][];
+        const [, uploadOptions] = apiRequestCalls[0]!;
         expect(uploadOptions.method).toBe("POST");
         expect(uploadOptions.body).toBeInstanceOf(FormData);
 
-        const [confirmUrl, confirmOptions] = apiRequestMock.mock.calls[1] as [string, RequestInit];
+        const [confirmUrl, confirmOptions] = apiRequestCalls[1]!;
         expect(confirmUrl).toContain("/api/v1/receipts/receipt-1/confirm");
-        expect(JSON.parse(String(confirmOptions.body))).toMatchObject({
+        if (typeof confirmOptions.body !== "string") {
+            throw new Error("The receipt confirmation body must be JSON.");
+        }
+        expect(JSON.parse(confirmOptions.body)).toMatchObject({
             title: "Coffee",
             description: "Team meeting",
         });

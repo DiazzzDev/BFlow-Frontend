@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { Input, type InputProps } from "./Input";
 
-export interface PasswordInputProps extends Omit<InputProps, "type"> {}
+export type PasswordInputProps = Omit<InputProps, "type">;
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     ({ className, disabled, ...props }, ref) => {
