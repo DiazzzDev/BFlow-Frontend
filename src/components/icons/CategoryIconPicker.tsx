@@ -1,4 +1,5 @@
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
     categoryIconKeys,
@@ -18,8 +19,18 @@ export const CategoryIconPicker = ({
     color = "#F97316",
 }: CategoryIconPickerProps) => {
     const { t } = useTranslation();
+    const selectedIconRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        selectedIconRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "nearest",
+        });
+    }, [value]);
+
     return (
-        <div className="grid max-h-44 grid-cols-6 gap-2 overflow-y-auto rounded-xl border border-light-10 bg-surface p-2 sm:grid-cols-8">
+        <div className="grid max-h-44 grid-cols-6 gap-2 overflow-y-auto rounded-xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-2 sm:grid-cols-8">
             {categoryIconKeys.map((iconKey) => {
                 const isSelected = value === iconKey;
 
@@ -27,6 +38,7 @@ export const CategoryIconPicker = ({
                     <button
                         key={iconKey}
                         type="button"
+                        ref={isSelected ? selectedIconRef : undefined}
                         onClick={() => onChange(iconKey)}
                         title={iconKey}
                         aria-label={t("common.selectIcon", { icon: iconKey })}

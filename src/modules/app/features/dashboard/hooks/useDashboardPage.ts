@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 import {
     DASHBOARD_DEFAULT_CURRENCY,
@@ -26,7 +27,12 @@ export const useDashboardPage = () => {
         useGetAverages();
     const { isLoading: isLoadingBudgets, data: budgetsData } =
         useGetBudgetsHealth();
-    const [activityType, setActivityType] = useState<RecentActivityType>("ALL");
+    const [searchParams] = useSearchParams();
+    const activityTypeParam = searchParams.get("activityType");
+    const activityType: RecentActivityType =
+        activityTypeParam === "INCOME" || activityTypeParam === "EXPENSE"
+            ? activityTypeParam
+            : "ALL";
     const [activityQuery, setActivityQuery] = useState("");
     const debouncedActivityQuery = useDebounce(activityQuery);
     const { isLoading: isLoadingActivity, data: activityData } =
@@ -57,7 +63,6 @@ export const useDashboardPage = () => {
         activities,
         activityType,
         activityQuery,
-        setActivityType,
         setActivityQuery,
     };
 };

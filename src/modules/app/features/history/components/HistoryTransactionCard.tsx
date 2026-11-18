@@ -50,7 +50,7 @@ export const HistoryTransactionCard = ({
     const TypeIcon = typeStyle.icon;
 
     return (
-        <article className="relative overflow-hidden rounded-xl border border-light-10 bg-surface transition-colors hover:border-light-25 hover:bg-surface-hard/80">
+        <article className="relative overflow-hidden rounded-xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] transition-colors hover:border-light-25 hover:bg-surface-hard/80">
             <span
                 aria-hidden="true"
                 className="absolute inset-y-0 left-0 w-1"

@@ -53,13 +53,13 @@ export const BudgetViewPage = () => {
                             </h1>
                         </div>
                         <div className="mt-3 flex flex-wrap items-center gap-2">
-                            <span className="inline-flex items-center rounded-full border border-light-10 bg-surface px-2.5 py-0.5 text-xs text-helper">
+                            <span className="inline-flex items-center rounded-full border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-2.5 py-0.5 text-xs text-helper">
                                 {view.periodLabel}
                             </span>
                             {view.scopeTags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="inline-flex items-center rounded-full border border-light-10 bg-surface px-2.5 py-0.5 text-xs text-helper"
+                                    className="inline-flex items-center rounded-full border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-2.5 py-0.5 text-xs text-helper"
                                 >
                                     {tag}
                                 </span>

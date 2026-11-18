@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import { getCognitoErrorMessage } from "@/auth/utils/cognitoErrors";
 import { PasswordInput } from "@/modules/auth/components/PasswordInput";
@@ -22,28 +23,28 @@ interface RegisterCredentials {
     fullName: string;
 }
 
-const registerSchema = z.object({
+const createRegisterSchema = (t: TFunction) => z.object({
     email: z
         .string()
-        .min(1, "El correo electrónico es requerido")
-        .email("El formato del correo no es válido"),
+        .min(1, t("validation.emailRequired"))
+        .email(t("validation.emailInvalid")),
     password: z
         .string()
-        .min(1, "La contraseña es requerida")
-        .min(8, "La contraseña debe tener al menos 8 caracteres")
+        .min(1, t("validation.passwordRequired"))
+        .min(8, t("validation.passwordMin", { min: 8 }))
         .refine((val) => /[A-Z]/.test(val), {
-            message: "La contraseña debe incluir al menos una letra mayúscula (ej: A, B, C)",
+            message: t("validation.passwordUppercase"),
         })
         .refine((val) => /[a-z]/.test(val), {
-            message: "La contraseña debe incluir al menos una letra minúscula (ej: a, b, c)",
+            message: t("validation.passwordLowercase"),
         })
         .refine((val) => /[0-9!@#$%^&*(),.?":{}|<>]/.test(val), {
-            message: "La contraseña debe incluir al menos un número o símbolo (ej: 1, 2, !@#)",
+            message: t("validation.passwordNumberOrSymbol"),
         }),
-    fullName: z.string().min(1, "El nombre completo es requerido"),
+    fullName: z.string().min(1, t("validation.fullNameRequired")),
 });
 
-type RegisterFormInputs = z.infer<typeof registerSchema>;
+type RegisterFormInputs = z.infer<ReturnType<typeof createRegisterSchema>>;
 
 interface RegisterFormProps {
     onRegisterUser: (data: RegisterCredentials) => Promise<unknown>;
@@ -55,6 +56,7 @@ export const RegisterForm = ({
     isLoading,
 }: RegisterFormProps) => {
     const { t } = useTranslation();
+    const registerSchema = createRegisterSchema(t);
     const {
         register,
         handleSubmit,
@@ -71,9 +73,9 @@ export const RegisterForm = ({
     const onInternalSubmit = async (data: RegisterFormInputs) => {
         try {
             await toast.promise(onRegisterUser(data), {
-                loading: "Creando cuenta en Bflow Studio...",
-                success: "Cuenta creada. Te enviamos un código a tu correo.",
-                error: (err) => getCognitoErrorMessage(err, "Error al crear la cuenta"),
+                loading: t("auth.registerLoading"),
+                success: t("auth.registerSuccess"),
+                error: (err) => getCognitoErrorMessage(err, t, "auth.registerError"),
             }).unwrap();
             const verifyParams = new URLSearchParams({
                 email: data.email.trim().toLowerCase(),
@@ -159,7 +161,7 @@ export const RegisterForm = ({
                     <p className={authErrorClass}>{errors.password.message}</p>
                 ) : (
                     <p className={authHintClass}>
-                        Requisitos: mínimo 8 caracteres, al menos 1 letra mayúscula y 1 número o símbolo.
+                        {t("auth.passwordRequirements")}
                     </p>
                 )}
             </div>

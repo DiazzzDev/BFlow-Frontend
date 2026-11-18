@@ -40,10 +40,10 @@ interface SelectAutoCompleteProps<T> {
 }
 
 const inputClassNameWithIcon =
-    "w-full rounded-xl border border-light-10 bg-surface pl-10 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
+    "w-full rounded-xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] pl-10 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
 
 const inputClassNameWithoutIcon =
-    "w-full rounded-xl border border-light-10 bg-surface px-4 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
+    "w-full rounded-xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-4 pr-10 text-sm text-light shadow-sm transition-colors placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50";
 
 const floatingOptionsClassName =
     "z-50 mt-2 max-h-60 w-[var(--input-width)] overflow-auto rounded-xl border border-light-10 bg-surface-hard p-1.5 text-sm shadow-xl empty:invisible";

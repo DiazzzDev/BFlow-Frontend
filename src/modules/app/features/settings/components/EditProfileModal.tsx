@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { Camera, User } from "lucide-react";
 
 import {
@@ -20,12 +21,12 @@ import { Label } from "@/components/controls/Label";
 import { CustomModal } from "@/components/custom/CustomModal";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
-const profileSchema = z.object({
-    name: z.string().min(1, "El nombre es obligatorio"),
-    email: z.string().email("Correo inválido"),
+const createProfileSchema = (t: TFunction) => z.object({
+    name: z.string().min(1, t("validation.nameRequired")),
+    email: z.string().email(t("validation.emailInvalid")),
 });
 
-type ProfileFormValues = z.infer<typeof profileSchema>;
+type ProfileFormValues = z.infer<ReturnType<typeof createProfileSchema>>;
 
 interface EditProfileModalProps {
     isOpen: boolean;
@@ -60,6 +61,7 @@ interface EditProfileModalContentProps {
 
 const EditProfileModalContent = ({ onClose }: EditProfileModalContentProps) => {
     const { t } = useTranslation();
+    const profileSchema = createProfileSchema(t);
     // Auth session (profile fields live on the user)
     const user = useAuthStore((state) => state.user);
     const setSession = useAuthStore((state) => state.setSession);

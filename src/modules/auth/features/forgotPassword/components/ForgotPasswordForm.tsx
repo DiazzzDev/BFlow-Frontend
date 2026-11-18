@@ -55,7 +55,8 @@ export const ForgotPasswordForm = ({ onSubmit, isLoading }: ForgotPasswordFormPr
             toast.error(
                 getCognitoErrorMessage(
                     err,
-                    t("auth.forgotCodeError")
+                    t,
+                    "auth.forgotCodeError"
                 )
             );
         }

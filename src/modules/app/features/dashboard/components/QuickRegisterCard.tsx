@@ -5,6 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useRef, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import type { TFunction } from "i18next";
 
 import {
     useConfirmReceipt,
@@ -21,14 +22,14 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { getApiErrorMessage } from "@/utils/api/apiMessage";
 import { Button } from "@/components/controls/Button";
 
-const quickRegisterSchema = z.object({
+const createQuickRegisterSchema = (t: TFunction) => z.object({
     amount: z
         .string()
-        .min(1, "El monto es obligatorio")
-        .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
+        .min(1, t("validation.amountRequired"))
+        .refine((value) => Number(value) > 0, t("validation.amountGreaterThanZero")),
 });
 
-type QuickRegisterFormValues = z.infer<typeof quickRegisterSchema>;
+type QuickRegisterFormValues = z.infer<ReturnType<typeof createQuickRegisterSchema>>;
 
 const defaultValues: QuickRegisterFormValues = {
     amount: "",
@@ -44,6 +45,7 @@ const RECEIPT_ACCEPTED_TYPES = [
 
 export const QuickRegisterCard = () => {
     const { t } = useTranslation();
+    const quickRegisterSchema = createQuickRegisterSchema(t);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const wallets = useAuthStore((state) => state.user?.wallets ?? []);
     const defaultWallet = wallets.find((wallet) => wallet.defaultWallet) ?? wallets[0] ?? null;

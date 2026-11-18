@@ -62,7 +62,7 @@ export const BudgetSpendingTrend = ({
     const domainMax = Math.max(dataMax, yMax, 1);
 
     return (
-        <article className="flex h-full min-h-80 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
+        <article className="flex h-full min-h-80 flex-col rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-6 shadow-custom">
             <p className="mb-4 text-base font-semibold text-light">{t("budgetView.trend")}</p>
 
             <div className="flex min-h-0 flex-1 items-center">

@@ -3,17 +3,17 @@ import { ChevronRight, Receipt, Search } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
-import type { RecentActivityItem } from "../interfaces/dashboard";
+import type { RecentActivityItem, RecentActivityType } from "../interfaces/dashboard";
 import {
     dashboardCardClass,
     dashboardLabelClass,
 } from "../utils/dashboardCard";
 import { groupRecentActivityByDay } from "../utils/groupRecentActivityByDay";
 
-import { ActivityFilters, type ActivityFilter } from "./ActivityFilters";
 import { RecentActivityDetailsModal } from "./RecentActivityDetailsModal";
 import { RecentActivityRow } from "./RecentActivityRow";
 
+import { TabFilter } from "@/components/controls/TabFilter";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { Input } from "@/components/controls/Input";
 
@@ -21,9 +21,8 @@ interface RecentActivityCardProps {
     isLoading: boolean;
     activities: RecentActivityItem[];
     onViewAll?: () => void;
-    activityType: ActivityFilter;
+    activityType: RecentActivityType;
     activityQuery: string;
-    onActivityTypeChange: (filter: ActivityFilter) => void;
     onActivityQueryChange: (query: string) => void;
 }
 
@@ -33,7 +32,6 @@ export const RecentActivityCard = ({
     onViewAll,
     activityType,
     activityQuery,
-    onActivityTypeChange,
     onActivityQueryChange,
 }: RecentActivityCardProps) => {
     const navigate = useNavigate();
@@ -79,7 +77,16 @@ export const RecentActivityCard = ({
                         className="h-9 rounded-full bg-surface-hard pl-8 pr-3 text-xs"
                     />
                 </label>
-                <ActivityFilters selected={activityType} onChange={onActivityTypeChange} />
+                <TabFilter
+                    options={[
+                        { value: "ALL", label: t("dashboard.activityAll") },
+                        { value: "INCOME", label: t("dashboard.income") },
+                        { value: "EXPENSE", label: t("dashboard.expenses") },
+                    ]}
+                    selected={activityType}
+                    keyFilter="activityType"
+                    layoutId="dashboardActivityType"
+                />
             </div>
 
             {!isLoading && activities.length === 0 && hasActivityFilters && (
@@ -121,11 +128,11 @@ export const RecentActivityCard = ({
             {!isLoading && activities.length > 0 && (
                 <div className="flex flex-col gap-5">
                     {activityGroups.map((group) => (
-                        <section key={group.dayKey} className="border-b border-light-10 last:border-b-0">
+                        <section key={group.dayKey}>
                             <p className="mb-1 text-xs font-semibold capitalize text-helper">
                                 {group.label}
                             </p>
-                            <ul className="flex flex-col ">
+                            <ul className="flex flex-col">
                                 {group.activities.map((activity) => (
                                     <RecentActivityRow
                                         key={activity.id}

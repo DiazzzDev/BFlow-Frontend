@@ -27,6 +27,20 @@ const formatSubscriptionDate = (date: string | null, language: string): string |
     }).format(parsedDate);
 };
 
+const getDaysRemaining = (date: string | null): number | null => {
+    if (!date) {
+        return null;
+    }
+
+    const targetDate = new Date(date);
+
+    if (Number.isNaN(targetDate.getTime())) {
+        return null;
+    }
+
+    return Math.max(0, Math.ceil((targetDate.getTime() - Date.now()) / 86_400_000));
+};
+
 const isFreePlan = (subscription: UserSubscription): boolean => {
     const planCode = subscription.planCode.trim().toUpperCase();
     const planName = subscription.planName.trim().toUpperCase();
@@ -91,6 +105,13 @@ export const useSettingsSubscription = () => {
         renewalDate: formatSubscriptionDate(
             subscription?.nextBillingAt ?? null,
             activeLanguage,
+        ),
+        endDate: formatSubscriptionDate(
+            subscription?.endsAt ?? subscription?.nextBillingAt ?? null,
+            activeLanguage,
+        ),
+        daysRemaining: getDaysRemaining(
+            subscription?.endsAt ?? subscription?.nextBillingAt ?? null,
         ),
         billingAmount:
             subscription?.billingAmount !== null &&

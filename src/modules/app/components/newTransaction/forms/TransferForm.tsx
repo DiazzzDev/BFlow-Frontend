@@ -206,7 +206,7 @@ export const TransferForm = ({
                         title={t("transactions.invertDirection")}
                         disabled={readOnly}
                         whileTap={readOnly ? undefined : { scale: 0.92 }}
-                        className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface text-primary transition-colors ${readOnly
+                        className={`flex h-12 w-12 items-center justify-center rounded-full border border-light-10 bg-surface [background-image:var(--surface-gradient)] text-primary transition-colors ${readOnly
                             ? "cursor-default opacity-70"
                             : "cursor-pointer hover:border-primary-25 hover:bg-primary-15"
                             }`}
@@ -230,7 +230,7 @@ export const TransferForm = ({
                     </div>
 
                     {readOnly && counterpartCardWallet ? (
-                        <div className="rounded-xl bg-surface/60 px-3 py-2.5">
+                        <div className="rounded-xl bg-surface [background-image:var(--surface-gradient)] px-3 py-2.5">
                             <p className="truncate text-sm font-semibold text-light">
                                 {counterpartCardWallet.name}
                             </p>

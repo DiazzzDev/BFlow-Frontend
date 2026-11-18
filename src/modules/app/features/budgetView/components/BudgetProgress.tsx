@@ -23,7 +23,7 @@ export const BudgetProgress = ({
     const fillClass = clamped >= critical ? "bg-danger" : clamped >= warning ? "bg-warning" : "bg-primary";
 
     return (
-        <article className="rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
+        <article className="rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-6 shadow-custom">
             <div className="mb-5 flex items-end justify-between gap-4">
                 <p className="text-base font-semibold text-light">{t("budgetView.progress")}</p>
                 <p className="shrink-0 text-3xl font-semibold tabular-nums tracking-tight text-light">

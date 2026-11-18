@@ -10,6 +10,7 @@ import {
     confirmResetPassword,
     signInWithRedirect,
     resendSignUpCode,
+    updatePassword,
 } from "aws-amplify/auth";
 
 export const authService = {
@@ -46,6 +47,13 @@ export const authService = {
             username: cleanEmail,
             confirmationCode: code.trim(),
             newPassword: password,
+        });
+    },
+
+    async changePassword(currentPassword: string, newPassword: string) {
+        await updatePassword({
+            oldPassword: currentPassword,
+            newPassword,
         });
     },
 

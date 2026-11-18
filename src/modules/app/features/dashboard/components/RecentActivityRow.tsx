@@ -21,12 +21,12 @@ export const RecentActivityRow = ({
     const isIncome = activity.type.toUpperCase() === "INCOME";
 
     return (
-        <li className="border-b border-light-10 last:border-b-0">
+        <li className="border-b border-light-10 hover:border-none">
             <button
                 type="button"
                 data-testid="recent-activity-row"
                 onClick={() => onClick(activity)}
-                className="flex w-full cursor-pointer items-center gap-2 py-3.5 text-left transition-colors hover:bg-light-5 sm:gap-3"
+                className="flex w-full cursor-pointer items-center gap-2 py-3.5 text-left transition-colors hover:bg-light-5 sm:gap-3 p-2 rounded-lg"
             >
                 <div
                     style={{

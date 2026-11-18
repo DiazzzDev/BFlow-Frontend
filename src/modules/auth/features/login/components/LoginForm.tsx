@@ -72,13 +72,13 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
         setUnverifiedEmail(null);
         try {
             await toast.promise(onSubmitLogin(data), {
-                loading: "Iniciando sesión...",
-                success: "¡Bienvenido de vuelta!",
+                loading: t("auth.loginLoading"),
+                success: t("auth.loginSuccess"),
                 error: (err) => {
                     if (isUserNotConfirmedError(err)) {
-                        return "Tu cuenta no ha sido verificada. Redirigiendo a verificación...";
+                        return t("auth.unverifiedRedirect");
                     }
-                    return getCognitoErrorMessage(err, "Error al iniciar sesión");
+                    return getCognitoErrorMessage(err, t, "auth.loginError");
                 },
             }).unwrap();
         } catch (err) {
@@ -103,9 +103,9 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                 <div className="flex items-start gap-3 rounded-lg border border-warning/30 bg-warning/10 p-3.5 text-sm">
                     <AlertCircle size={18} className="mt-0.5 shrink-0 text-warning" />
                     <div className="flex-1">
-                        <p className="font-medium text-light">Cuenta sin verificar</p>
+                        <p className="font-medium text-light">{t("auth.unverifiedAccountTitle")}</p>
                         <p className="mt-0.5 text-xs text-helper">
-                            Tu cuenta ({unverifiedEmail}) requiere verificación de correo antes de ingresar.
+                            {t("auth.unverifiedAccountDescription", { email: unverifiedEmail })}
                         </p>
                         <button
                             type="button"
@@ -114,7 +114,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                             }
                             className="group mt-2 flex cursor-pointer items-center gap-1 text-xs font-semibold text-warning transition-opacity hover:opacity-80"
                         >
-                            Verificar correo ahora <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                            {t("auth.verifyEmailNow")} <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                         </button>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ export const LoginForm = ({ onSubmitLogin, isLoading }: LoginFormProps) => {
                     autoComplete="current-password"
                     disabled={isLoading}
                     {...register("password")}
-                    placeholder="••••••••"
+                    placeholder={t("auth.passwordPlaceholder")}
                 />
                 {isSubmitted && errors.password && (
                     <p className={authErrorClass}>{errors.password.message}</p>

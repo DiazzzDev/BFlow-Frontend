@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 
@@ -32,25 +33,25 @@ import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { setApiValidationErrors } from "@/utils/api";
 import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 
-const recurringSchema = z
+const createRecurringSchema = (t: TFunction) => z
     .object({
         type: z.enum(CATEGORY_TYPE_VALUES),
-        title: z.string().min(1, "El título es obligatorio"),
+        title: z.string().min(1, t("validation.titleRequired")),
         description: z.string(),
         amount: z
             .string()
-            .min(1, "El monto es obligatorio")
-            .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
+            .min(1, t("validation.amountRequired"))
+            .refine((value) => Number(value) > 0, t("validation.amountGreaterThanZero")),
         categoryId: z.string(),
         frequency: z.enum(PERIODICITY_VALUES),
         intervalValue: z
             .string()
-            .min(1, "El intervalo es obligatorio")
+            .min(1, t("validation.intervalRequired"))
             .refine(
                 (value) => Number.isInteger(Number(value)) && Number(value) >= 1,
-                "Debe ser un entero mayor a 0",
+                t("validation.intervalPositiveInteger"),
             ),
-        startDate: z.string().min(1, "La fecha de inicio es obligatoria"),
+        startDate: z.string().min(1, t("validation.startDateRequired")),
         endDate: z.string(),
     })
     .superRefine((values, ctx) => {
@@ -58,12 +59,12 @@ const recurringSchema = z
             ctx.addIssue({
                 code: "custom",
                 path: ["endDate"],
-                message: "La fecha de fin debe ser posterior o igual al inicio",
+                message: t("validation.endDateAfterStart"),
             });
         }
     });
 
-type RecurringFormValues = z.infer<typeof recurringSchema>;
+type RecurringFormValues = z.infer<ReturnType<typeof createRecurringSchema>>;
 
 const defaultFormValues: RecurringFormValues = {
     type: "EXPENSE",
@@ -84,6 +85,7 @@ interface RecurringFormProps {
 
 export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
     const { t } = useTranslation();
+    const recurringSchema = createRecurringSchema(t);
     const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(false);
 
     // Create mutation

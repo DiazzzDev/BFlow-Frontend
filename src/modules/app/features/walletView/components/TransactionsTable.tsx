@@ -161,7 +161,7 @@ const TransactionActionsMenu = ({
 
             <MenuItems
                 anchor="bottom end"
-                className="z-50 w-48 rounded-xl border border-light-10 bg-surface p-1 shadow-custom focus:outline-none"
+                className="z-50 w-48 rounded-xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-1 shadow-custom focus:outline-none"
             >
                 {showManageActions && onEdit && (
                     <MenuItem>

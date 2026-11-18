@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import { usePostExpense, usePutExpense } from "../hooks/useMutateExpenses";
 import { usePostIncome, usePutIncome } from "../hooks/useMutateIncomes";
@@ -29,14 +30,14 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { setApiValidationErrors } from "@/utils/api";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
-const transactionSchema = z
+const createTransactionSchema = (t: TFunction) => z
     .object({
-        title: z.string().min(1, "El título es obligatorio"),
+        title: z.string().min(1, t("validation.titleRequired")),
         description: z.string(),
         amount: z
             .string()
-            .min(1, "El monto es obligatorio")
-            .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
+            .min(1, t("validation.amountRequired"))
+            .refine((value) => Number(value) > 0, t("validation.amountGreaterThanZero")),
         date: z.string(),
         recurring: z.boolean(),
         recurrencePattern: z.enum(PERIODICITY_VALUES).nullable(),
@@ -47,21 +48,20 @@ const transactionSchema = z
             context.addIssue({
                 code: "custom",
                 path: ["recurrencePattern"],
-                message: "Selecciona un patrón de recurrencia",
+                message: t("validation.recurrencePatternRequired"),
             });
         }
     });
 
-type TransactionFormValues = z.infer<typeof transactionSchema>;
+type TransactionFormValues = z.infer<ReturnType<typeof createTransactionSchema>>;
 type DatePreset = "today" | "yesterday" | "custom";
-
 const getDateInputValue = (daysOffset = 0) => {
     const date = new Date();
     date.setDate(date.getDate() + daysOffset);
     return date.toISOString().slice(0, 10);
 };
 
-const defaultFormValues: TransactionFormValues = {
+const getDefaultFormValues = (): TransactionFormValues => ({
     title: "",
     description: "",
     amount: "",
@@ -69,7 +69,7 @@ const defaultFormValues: TransactionFormValues = {
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
-};
+});
 
 interface TransactionFormProps {
     type: Extract<TransactionType, "INCOME" | "EXPENSE">;
@@ -91,13 +91,16 @@ export const TransactionForm = ({
     initialValues,
 }: TransactionFormProps) => {
     const { t } = useTranslation();
+    const transactionSchema = createTransactionSchema(t);
     const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(readOnly);
     const [datePreset, setDatePreset] = useState<DatePreset>(() => {
         if (initialValues?.date === getDateInputValue(-1)) {
             return "yesterday";
         }
 
-        return initialValues?.date && initialValues.date !== getDateInputValue() ? "custom" : "today";
+        return initialValues?.date && initialValues.date !== getDateInputValue()
+            ? "custom"
+            : "today";
     });
     const createIncome = usePostIncome();
     const updateIncome = usePutIncome();
@@ -122,7 +125,7 @@ export const TransactionForm = ({
         formState: { errors },
     } = useForm<TransactionFormValues>({
         resolver: zodResolver(transactionSchema),
-        defaultValues: { ...defaultFormValues, ...initialValues },
+        defaultValues: { ...getDefaultFormValues(), ...initialValues },
     });
     const recurring = useWatch({ control, name: "recurring" });
 
@@ -132,9 +135,9 @@ export const TransactionForm = ({
             amount: Number(formData.amount),
             walletId,
             source,
+            ...(formData.date ? { date: formData.date } : {}),
             ...(areAdvancedOptionsVisible && {
                 ...(formData.description.trim() ? { description: formData.description.trim() } : {}),
-                ...(formData.date ? { date: formData.date } : {}),
                 recurring: formData.recurring,
                 recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
                 ...(formData.categoryId ? { categoryId: formData.categoryId } : {}),
@@ -170,7 +173,7 @@ export const TransactionForm = ({
         }
 
         if (!isEditing) {
-            reset(defaultFormValues);
+            reset(getDefaultFormValues());
             setAreAdvancedOptionsVisible(false);
             setDatePreset("today");
         }
@@ -211,6 +214,47 @@ export const TransactionForm = ({
                 </div>
             </div>
 
+            <div className="flex flex-col gap-1">
+                <Label htmlFor={`${idPrefix}-date`}>{t("transactions.date")}</Label>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)]">
+                    <button
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => {
+                            setValue("date", getDateInputValue());
+                            setDatePreset("today");
+                        }}
+                        className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${datePreset === "today" ? "border-primary bg-primary-15 text-primary" : "border-light-10 text-helper hover:border-light-25 hover:text-light"}`}
+                    >
+                        {t("dates.today")}
+                    </button>
+                    <button
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => {
+                            setValue("date", getDateInputValue(-1));
+                            setDatePreset("yesterday");
+                        }}
+                        className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${datePreset === "yesterday" ? "border-primary bg-primary-15 text-primary" : "border-light-10 text-helper hover:border-light-25 hover:text-light"}`}
+                    >
+                        {t("dates.yesterday")}
+                    </button>
+                    <div className="col-span-2 min-w-0 sm:col-span-1">
+                        <Controller name="date" control={control} render={({ field }) => (
+                            <DatePicker
+                                id={`${idPrefix}-date`}
+                                disabled={isDisabled}
+                                {...field}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                    setDatePreset("custom");
+                                }}
+                            />
+                        )} />
+                    </div>
+                </div>
+            </div>
+
             <div className="border-t border-light-10 pt-4">
                 <button
                     type="button"
@@ -238,48 +282,6 @@ export const TransactionForm = ({
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="overflow-hidden">
                             <div className="flex flex-col gap-4 pt-4">
                                 <div className="flex flex-col gap-4">
-                                    <div className="flex flex-col gap-1">
-                                        <Label htmlFor={`${idPrefix}-date`}>{t("transactions.date")}</Label>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <button
-                                                    type="button"
-                                                    disabled={isDisabled}
-                                                    onClick={() => {
-                                                        setValue("date", getDateInputValue());
-                                                        setDatePreset("today");
-                                                    }}
-                                                    className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${datePreset === "today" ? "border-primary bg-primary-15 text-primary" : "border-light-10 text-helper hover:border-light-25 hover:text-light"}`}
-                                                >
-                                                    {t("dates.today")}
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    disabled={isDisabled}
-                                                    onClick={() => {
-                                                        setValue("date", getDateInputValue(-1));
-                                                        setDatePreset("yesterday");
-                                                    }}
-                                                    className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${datePreset === "yesterday" ? "border-primary bg-primary-15 text-primary" : "border-light-10 text-helper hover:border-light-25 hover:text-light"}`}
-                                                >
-                                                    {t("dates.yesterday")}
-                                                </button>
-                                            </div>
-                                            <div className="min-w-0">
-                                                <Controller name="date" control={control} render={({ field }) => (
-                                                    <DatePicker
-                                                        id={`${idPrefix}-date`}
-                                                        disabled={isDisabled}
-                                                        {...field}
-                                                        onChange={(value) => {
-                                                            field.onChange(value);
-                                                            setDatePreset("custom");
-                                                        }}
-                                                    />
-                                                )} />
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="grid gap-4 lg:grid-cols-2">
                                         <div className="flex flex-col gap-4">
                                             <div className="flex flex-col gap-1">

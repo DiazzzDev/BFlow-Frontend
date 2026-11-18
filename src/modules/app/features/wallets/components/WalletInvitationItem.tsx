@@ -75,7 +75,7 @@ export const WalletInvitationItem = ({ invitation }: WalletInvitationItemProps) 
     return (
         <article
             className={`overflow-hidden rounded-2xl border ${expired
-                    ? "border-light-10 bg-surface/40"
+                    ? "border-light-10 bg-surface [background-image:var(--surface-gradient)]"
                     : "border-primary/20 bg-primary/5"
                 }`}
         >
