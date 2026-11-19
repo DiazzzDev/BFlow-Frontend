@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -36,6 +37,20 @@ export const DocsSidebar = () => {
                         </ul>
                     </div>
                 ))}
+                <div>
+                    <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-widest text-helper">
+                        {t("home.apiReference")}
+                    </p>
+                    <a
+                        href="https://api.bflow-studio.com/swagger-ui/index.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm text-label transition-colors hover:bg-light-5 hover:text-light"
+                    >
+                        Swagger
+                        <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    </a>
+                </div>
             </nav>
         </aside>
     );

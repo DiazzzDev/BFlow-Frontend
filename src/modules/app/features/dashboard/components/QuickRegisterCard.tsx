@@ -21,6 +21,8 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { getApiErrorMessage } from "@/utils/api/apiMessage";
 import { Button } from "@/components/controls/Button";
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- Wallet state is nullable at runtime despite its narrower API type. */
+
 const quickRegisterSchema = z.object({
     amount: z
         .string()
@@ -42,10 +44,16 @@ const RECEIPT_ACCEPTED_TYPES = [
     "application/pdf",
 ];
 
-export const QuickRegisterCard = () => {
+interface QuickRegisterCardProps {
+    preview?: boolean;
+    allowPreviewActions?: boolean;
+}
+
+export const QuickRegisterCard = ({ preview = false, allowPreviewActions = false }: QuickRegisterCardProps) => {
     const { t } = useTranslation();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const wallets = useAuthStore((state) => state.user?.wallets ?? []);
+    const wallets = useAuthStore((state) => preview && !allowPreviewActions ? [] : state.user?.wallets ?? []);
+    const disableActions = preview && !allowPreviewActions;
     const defaultWallet = wallets.find((wallet) => wallet.defaultWallet) ?? wallets[0] ?? null;
     const {
         mutateAsync: registerQuickTransaction,
@@ -132,6 +140,10 @@ export const QuickRegisterCard = () => {
     };
 
     const onSubmit = async (values: QuickRegisterFormValues) => {
+        if (disableActions) {
+            return;
+        }
+
         const promise = registerQuickTransaction(Number(values.amount));
 
         toast.promise(promise, {
@@ -146,11 +158,11 @@ export const QuickRegisterCard = () => {
     };
 
     return (
-        <section className={dashboardCardClass}>
+        <section className={preview ? "flex w-full min-w-0 flex-col rounded-3xl border border-light-10 bg-surface/50 p-6 backdrop-blur-3xl sm:p-8" : dashboardCardClass}>
             <div className="flex items-start justify-between gap-3">
-                <p className={dashboardLabelClass}>{t("dashboard.quickRegister")}</p>
+                <p className={preview ? "text-2xl font-semibold tracking-tight text-light sm:text-3xl" : dashboardLabelClass}>{t("dashboard.quickRegister")}</p>
                 <p className="max-w-[55%] truncate text-xs text-helper">
-                    {t("dashboard.walletLabel")}: {defaultWallet?.name ?? t("dashboard.noDefaultWallet")}
+                    {t("dashboard.walletLabel")}: {preview && !allowPreviewActions ? t("home.productTour.exampleWallet") : defaultWallet?.name ?? t("dashboard.noDefaultWallet")}
                 </p>
             </div>
             {defaultWallet ? (
@@ -188,7 +200,7 @@ export const QuickRegisterCard = () => {
                                         field.onChange(formatted);
                                     }
                                 }}
-                                disabled={isBusy}
+                                disabled={isBusy || disableActions}
                                 className="h-11 min-w-0 flex-1 bg-surface-hard"
                             />
                         )}
@@ -205,7 +217,7 @@ export const QuickRegisterCard = () => {
                     />
                     <button
                         type="button"
-                        disabled={isBusy}
+                        disabled={isBusy || disableActions}
                         aria-label={t("dashboard.scanReceipt")}
                         onClick={() => fileInputRef.current?.click()}
                         className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-colors hover:border-light-25 disabled:cursor-not-allowed disabled:opacity-50"
@@ -220,9 +232,9 @@ export const QuickRegisterCard = () => {
                 )}
                 <Button
                     type="submit"
-                    disabled={isBusy}
+                    disabled={isBusy || disableActions}
                     text={isPending ? t("dashboard.quickRegisterSaving") : t("dashboard.saveExpense")}
-                    className="w-full mt-2 py-3"
+                    className="mt-4 h-11 w-full cursor-pointer rounded-lg bg-primary text-sm font-semibold text-light transition-colors hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-60"
                 />
             </form>
         </section>

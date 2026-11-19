@@ -3,12 +3,28 @@ import { useTranslation } from "react-i18next";
 
 import { config } from "@/config/config";
 
-export const ConnectClaudeButton = () => {
+interface ConnectClaudeButtonProps {
+    preview?: boolean;
+}
+
+export const ConnectClaudeButton = ({ preview = false }: ConnectClaudeButtonProps) => {
     const { t } = useTranslation();
     const mcpServerUrl = config.MCP_SERVER_URL;
 
-    if (!mcpServerUrl) {
+    if (!mcpServerUrl && !preview) {
         return null;
+    }
+
+    if (preview) {
+        return (
+            <span
+                aria-disabled="true"
+                className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-light-25 bg-transparent px-5 py-2.5 font-sans text-sm font-semibold text-light"
+            >
+                <SiClaude className="h-5 w-5 shrink-0 text-orange-600" aria-hidden="true" />
+                {t("settings.connectClaude")}
+            </span>
+        );
     }
 
     const claudeConnectorUrl =

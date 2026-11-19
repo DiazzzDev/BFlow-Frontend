@@ -19,9 +19,9 @@ export const LandingPricing = () => {
     );
 
     return (
-        <section id="pricing" className="mt-20 w-full max-w-360 px-8 pb-28 md:pb-36">
-            <h2 className="mb-5 text-3xl font-bold tracking-tight md:text-5xl">{t("home.pricingTitle")}</h2>
-            <p className="mb-14 max-w-2xl text-sm leading-relaxed text-helper md:mb-16 md:text-base">
+        <section id="pricing" className="w-full max-w-7xl px-4 pb-20 pt-10 sm:px-8 md:pb-28" aria-labelledby="pricing-title">
+            <h2 id="pricing-title" className="mb-4 text-3xl font-bold tracking-tight md:text-5xl">{t("home.pricingTitle")}</h2>
+            <p className="mb-10 max-w-2xl text-sm leading-relaxed text-helper md:mb-12 md:text-base">
                 {t("home.pricingDescription")}
             </p>
             {isLoading ? (

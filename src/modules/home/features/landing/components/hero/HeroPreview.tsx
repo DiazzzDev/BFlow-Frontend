@@ -61,6 +61,7 @@ export const HeroPreview = () => {
                 </div>
 
                 <div className="aspect-[2/1] bg-surface-hard/60">
+                    {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Hide broken preview assets without changing the surrounding display. */}
                     <img
                         src={HERO_PREVIEW.image}
                         alt={t("home.heroPreview.imageAlt")}
