@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 import { SOLUTION_STEPS } from "../../utils/landingContent";
@@ -10,6 +10,7 @@ interface SolutionScreenProps {
 
 export const SolutionScreen = ({ step, className = "" }: SolutionScreenProps) => {
     const { t } = useTranslation();
+    const reduceMotion = useReducedMotion() ?? false;
     const { id, path, image, focus } = step;
 
     return (
@@ -32,13 +33,10 @@ export const SolutionScreen = ({ step, className = "" }: SolutionScreenProps) =>
                                 src={image}
                                 alt={t(`home.solutions.items.${id}.title`)}
                                 loading="lazy"
-                                initial={{ opacity: 0, scale: 1 }}
+                                initial={reduceMotion ? false : { opacity: 0, scale: 1 }}
                                 animate={{ opacity: 1, scale: focus.scale }}
-                                exit={{ opacity: 0 }}
-                                transition={{
-                                    opacity: { duration: 0.4 },
-                                    scale: { duration: 1.2, ease: "easeOut", delay: 0.2 },
-                                }}
+                                exit={reduceMotion ? undefined : { opacity: 0 }}
+                                transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
                                 style={{ transformOrigin: focus.origin }}
                                 onError={(event) => {
                                     event.currentTarget.style.visibility = "hidden";

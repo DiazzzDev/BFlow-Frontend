@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -34,6 +35,15 @@ export const DocsMobileNav = ({ page }: DocsMobileNavProps) => {
                     </optgroup>
                 ))}
             </select>
+            <a
+                href="https://api.bflow-studio.com/swagger-ui/index.html"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-primary"
+            >
+                {t("home.apiReference")}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
         </div>
     );
 };

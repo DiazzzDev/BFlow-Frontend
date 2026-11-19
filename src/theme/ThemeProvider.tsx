@@ -3,29 +3,40 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 export const THEME_STORAGE_KEY = "bflow-theme";
 
 export type Theme = "dark" | "light";
+export type ThemePreference = Theme | "system";
 
 interface ThemeContextValue {
     theme: Theme;
-    setTheme: (theme: Theme) => void;
+    preference: ThemePreference;
+    setTheme: (theme: ThemePreference) => void;
     toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const isTheme = (value: unknown): value is Theme => value === "dark" || value === "light";
+const isThemePreference = (value: unknown): value is ThemePreference => isTheme(value) || value === "system";
 
-export const getStoredTheme = (): Theme => {
+const getSystemTheme = (): Theme =>
+    typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: light)").matches
+        ? "light"
+        : "dark";
+
+export const getStoredTheme = (): ThemePreference => {
     if (typeof window === "undefined") {
-        return "dark";
+        return "system";
     }
 
     try {
         const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-        return isTheme(storedTheme) ? storedTheme : "dark";
+        return isThemePreference(storedTheme) ? storedTheme : "system";
     } catch {
-        return "dark";
+        return "system";
     }
 };
+
+const resolveTheme = (preference: ThemePreference): Theme =>
+    preference === "system" ? getSystemTheme() : preference;
 
 export const applyTheme = (theme: Theme) => {
     document.documentElement.dataset.theme = theme;
@@ -34,19 +45,20 @@ export const applyTheme = (theme: Theme) => {
 
 export const initializeTheme = () => {
     if (typeof window !== "undefined") {
-        applyTheme(getStoredTheme());
+        applyTheme(resolveTheme(getStoredTheme()));
     }
 };
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
-    const [theme, setThemeState] = useState<Theme>(getStoredTheme);
+    const [preference, setPreference] = useState<ThemePreference>(getStoredTheme);
+    const [theme, setThemeState] = useState<Theme>(() => resolveTheme(getStoredTheme()));
 
-    const setTheme = useCallback((nextTheme: Theme) => {
-        setThemeState(nextTheme);
-        applyTheme(nextTheme);
+    const setTheme = useCallback((nextPreference: ThemePreference) => {
+        setPreference(nextPreference);
+        setThemeState(resolveTheme(nextPreference));
 
         try {
-            window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+            window.localStorage.setItem(THEME_STORAGE_KEY, nextPreference);
         } catch {
             // Storage can be unavailable in private browsing or embedded contexts.
         }
@@ -61,21 +73,35 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
     }, [theme]);
 
     useEffect(() => {
+        if (preference !== "system") {
+            return;
+        }
+
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
+        const syncSystemTheme = () => setThemeState(getSystemTheme());
+        mediaQuery.addEventListener("change", syncSystemTheme);
+        return () => mediaQuery.removeEventListener("change", syncSystemTheme);
+    }, [preference]);
+
+    useEffect(() => {
         const syncThemeAcrossTabs = (event: StorageEvent) => {
             if (event.key && event.key !== THEME_STORAGE_KEY) {
                 return;
             }
 
-            const nextTheme = isTheme(event.newValue) ? event.newValue : "dark";
-            setThemeState(nextTheme);
-            applyTheme(nextTheme);
+            const nextPreference = isThemePreference(event.newValue) ? event.newValue : "system";
+            setPreference(nextPreference);
+            setThemeState(resolveTheme(nextPreference));
         };
 
         window.addEventListener("storage", syncThemeAcrossTabs);
         return () => window.removeEventListener("storage", syncThemeAcrossTabs);
     }, []);
 
-    const value = useMemo(() => ({ theme, setTheme, toggleTheme }), [setTheme, theme, toggleTheme]);
+    const value = useMemo(
+        () => ({ theme, preference, setTheme, toggleTheme }),
+        [preference, setTheme, theme, toggleTheme],
+    );
 
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
