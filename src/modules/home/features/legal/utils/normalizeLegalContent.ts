@@ -1,11 +1,11 @@
 export const normalizeLegalContent = (content: string) => {
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const discardLeadingBlankLines = () => {
-    while (lines[0]?.trim() === "") lines.shift();
+    while (lines[0]?.trim() === "") {lines.shift();}
   };
 
   discardLeadingBlankLines();
-  if (lines[0]?.startsWith("# ")) lines.shift();
+  if (lines[0]?.startsWith("# ")) {lines.shift();}
   discardLeadingBlankLines();
 
   if (/^\*\*(Última actualización|Last updated)[:\s]/i.test(lines[0] ?? "")) {

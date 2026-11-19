@@ -21,6 +21,8 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { getApiErrorMessage } from "@/utils/api/apiMessage";
 import { Button } from "@/components/controls/Button";
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- Wallet state is nullable at runtime despite its narrower API type. */
+
 const quickRegisterSchema = z.object({
     amount: z
         .string()

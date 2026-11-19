@@ -164,8 +164,8 @@ const OptionWheel = ({
             }
 
             element.style.transform = `translate(${x.toFixed(2)}px, calc(${y.toFixed(2)}px - 50%)) rotate(${rotation.toFixed(3)}deg)`;
-            const fade = Math.max(cfg.minOpacity, Math.pow(Math.max(0, 1 - distance * cfg.fade), 1.45));
-            element.style.opacity = String(fade);
+            const opacity = Math.max(cfg.minOpacity, Math.pow(Math.max(0, 1 - distance * cfg.fade), 1.45));
+            element.style.opacity = String(opacity);
             element.style.filter = `blur(${(Math.min(distance, 2) * cfg.blur).toFixed(2)}px)`;
             element.style.setProperty("--ow-p", Math.max(0, 1 - Math.min(distance, 1)).toFixed(4));
         }

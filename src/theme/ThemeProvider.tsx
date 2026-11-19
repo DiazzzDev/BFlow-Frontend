@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 
+/* eslint-disable react-refresh/only-export-components, react/hook-use-state -- This module exposes theme helpers alongside its provider and uses React's lazy initializer. */
+
 export const THEME_STORAGE_KEY = "bflow-theme";
 
 export type Theme = "dark" | "light";

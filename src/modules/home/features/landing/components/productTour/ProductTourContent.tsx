@@ -16,6 +16,8 @@ import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { HERO_PREVIEW } from "../../utils/landingContent";
 import { useStartProCheckout } from "../../hooks/useStartProCheckout";
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- API payloads may omit nested budget fields. */
+
 const OPTION_KEYS = [
   "home.productTour.options.expense",
   "home.productTour.options.receipt",
@@ -322,7 +324,7 @@ const ProductTourContent = () => {
           id="product-tour-display"
           onFocusCapture={() => setIsProductTourEngaged(true)}
           onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            if (!event.currentTarget.contains(event.relatedTarget)) {
               setIsProductTourEngaged(false);
             }
           }}

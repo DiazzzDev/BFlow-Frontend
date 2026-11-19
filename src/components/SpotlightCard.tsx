@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 export type SpotlightShape = 'circle' | 'beam';
 
@@ -103,10 +103,10 @@ const SpotlightCard = ({
   const grainRef = useRef<HTMLSpanElement>(null);
   const edgeRef = useRef<HTMLSpanElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
-  const palette = THEMES[theme] ?? THEMES.dark;
+  const palette = THEMES[theme];
   const color = spotlightColor ?? palette.light;
   const form = SHAPES.includes(shape) ? shape : 'circle';
-  const settings: Settings = {
+  const settings: Settings = useMemo(() => ({
     shape: form,
     fill: falloff(color, softness),
     edge: falloff(color, 1),
@@ -118,9 +118,11 @@ const SpotlightCard = ({
     ambient,
     flare,
     grain: clamp(grain, 0, 1)
-  };
+  }), [form, color, softness, spotlightSize, intensity, palette.fill, borderGlow, palette.edge, proximity, smoothing, ambient, flare, grain]);
   const settingsRef = useRef(settings);
-  settingsRef.current = settings;
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
 
   useEffect(() => {
     wakeRef.current?.();
@@ -131,9 +133,9 @@ const SpotlightCard = ({
     const light = lightRef.current;
     const noise = grainRef.current;
     const edge = edgeRef.current;
-    if (!root || !light || !noise || !edge) return undefined;
+    if (!root || !light || !noise || !edge) {return undefined;}
 
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const state = { x: 0, y: 0, presence: 0, flare: 0, time: Math.random() * 60, pressed: false, visible: true };
     const pointer = { x: 0, y: 0, active: false };
     const drawn = { light: '', edge: '', noise: '' };
@@ -176,7 +178,7 @@ const SpotlightCard = ({
 
     const tick = (now: number) => {
       raf = 0;
-      if (!alive) return;
+      if (!alive) {return;}
       const s = settingsRef.current;
       const dt = Math.min(0.05, Math.max(0.001, (now - last) / 1000));
       last = now;
@@ -193,11 +195,11 @@ const SpotlightCard = ({
         tx = pointer.x - rect.left;
         ty = pointer.y - rect.top;
         const gap = Math.hypot(Math.max(0, -tx, tx - rect.width), Math.max(0, -ty, ty - rect.height));
-        if (gap === 0) target = 1;
-        else if (s.proximity > 0) target = Math.max(0, 1 - gap / s.proximity) ** 2;
+        if (gap === 0) {target = 1;}
+        else if (s.proximity > 0) {target = Math.max(0, 1 - gap / s.proximity) ** 2;}
       }
       if (target < 0.6 && s.ambient && state.visible) {
-        if (!reduce) state.time += dt;
+        if (!reduce) {state.time += dt;}
         const drift = 0.6 - target;
         tx += (rect.width * (0.5 + 0.34 * Math.sin(state.time * 0.43)) - tx) * (drift / 0.6);
         ty += (rect.height * (0.5 + 0.3 * Math.sin(state.time * 0.61 + 1.3)) - ty) * (drift / 0.6);
@@ -212,18 +214,18 @@ const SpotlightCard = ({
       state.y += (ty - state.y) * follow;
       const fade = reduce ? 1 : 1 - Math.exp(-dt / (target > state.presence ? 0.1 : 0.32));
       state.presence += (target - state.presence) * fade;
-      if (Math.abs(target - state.presence) < 0.002) state.presence = target;
+      if (Math.abs(target - state.presence) < 0.002) {state.presence = target;}
       const press = state.pressed && s.flare && !reduce ? 1 : 0;
       state.flare += (press - state.flare) * (1 - Math.exp(-dt / (press ? 0.05 : 0.28)));
-      if (Math.abs(press - state.flare) < 0.002) state.flare = press;
+      if (Math.abs(press - state.flare) < 0.002) {state.flare = press;}
       paint(s);
       const moving = Math.abs(tx - state.x) > 0.1 || Math.abs(ty - state.y) > 0.1;
       const settled = !moving && state.presence === target && state.flare === press;
-      if (!settled || (s.ambient && state.visible && !reduce)) raf = requestAnimationFrame(tick);
+      if (!settled || (s.ambient && state.visible && !reduce)) {raf = requestAnimationFrame(tick);}
     };
 
     const wake = () => {
-      if (raf || !alive) return;
+      if (raf || !alive) {return;}
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };
@@ -233,10 +235,10 @@ const SpotlightCard = ({
       pointer.x = event.clientX;
       pointer.y = event.clientY;
       pointer.active = true;
-      if (state.presence > 0 || settingsRef.current.proximity > 0 || root.contains(event.target as Node | null)) wake();
+      if (state.presence > 0 || settingsRef.current.proximity > 0 || root.contains(event.target as Node | null)) {wake();}
     };
     const onOut = (event: PointerEvent) => {
-      if (event.relatedTarget) return;
+      if (event.relatedTarget) {return;}
       pointer.active = false;
       wake();
     };
@@ -248,28 +250,28 @@ const SpotlightCard = ({
       wake();
     };
     const onUp = (event: PointerEvent) => {
-      if (event.pointerType !== 'mouse') pointer.active = false;
-      if (!state.pressed && event.pointerType === 'mouse') return;
+      if (event.pointerType !== 'mouse') {pointer.active = false;}
+      if (!state.pressed && event.pointerType === 'mouse') {return;}
       state.pressed = false;
       wake();
     };
     const onFocusIn = (event: FocusEvent) => {
-      if (!(event.target instanceof Element) || !event.target.matches(':focus-visible')) return;
+      if (!(event.target instanceof Element) || !event.target.matches(':focus-visible')) {return;}
       focus = event.target;
       wake();
     };
     const onFocusOut = (event: FocusEvent) => {
-      if (root.contains(event.relatedTarget as Node | null)) return;
+      if (root.contains(event.relatedTarget as Node | null)) {return;}
       focus = null;
       wake();
     };
     const onScroll = () => {
-      if (pointer.active || state.presence > 0) wake();
+      if (pointer.active || state.presence > 0) {wake();}
     };
 
     const observer = new IntersectionObserver(entries => {
       state.visible = entries.some(entry => entry.isIntersecting);
-      if (state.visible) wake();
+      if (state.visible) {wake();}
     });
     observer.observe(root);
     window.addEventListener('pointermove', onMove);

@@ -1,5 +1,5 @@
 import { Check, ChevronDown, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
 interface ThoughtLineProps {
@@ -13,8 +13,6 @@ interface ThoughtLineProps {
 export const ThoughtLine = ({ label, doneLabel, steps = [], working = true, className = "" }: ThoughtLineProps) => {
   const reduceMotion = useReducedMotion();
   const [open, setOpen] = useState(true);
-
-  useEffect(() => setOpen(true), [working]);
 
   return (
     <div className={`text-sm text-helper ${className}`}>

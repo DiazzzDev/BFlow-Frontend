@@ -28,7 +28,7 @@ const GitHubStarsLink = ({ mobile = false }: { mobile?: boolean }) => {
     const controller = new AbortController();
     void fetch(REPOSITORY_API_URL, { signal: controller.signal })
       .then(async (response) => {
-        if (!response.ok) return null;
+        if (!response.ok) {return null;}
         const data = (await response.json()) as { stargazers_count?: unknown };
         return typeof data.stargazers_count === "number"
           ? data.stargazers_count
