@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useAuth } from "@/auth/hooks/useAuth";
 import { useStartProCheckout } from "@/modules/home/features/landing/hooks/useStartProCheckout";
-import SpotlightCard from "@/components/SpotlightCard";
+import SpotlightCard from "../reactBits/SpotlightCard";
 import { useTheme } from "@/theme/ThemeProvider";
 
 export const LandingCta = () => {

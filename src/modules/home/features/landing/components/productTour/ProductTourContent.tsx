@@ -4,7 +4,7 @@ import { SiClaude } from "@icons-pack/react-simple-icons";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import OptionWheel from "@/components/OptionWheel";
+import OptionWheel from "../reactBits/OptionWheel";
 import { BudgetProgress } from "@/modules/app/features/budgetView/components/BudgetProgress";
 import { QuickRegisterCard } from "@/modules/app/features/dashboard/components/QuickRegisterCard";
 import { useGetBudgetsHealth } from "@/modules/app/features/dashboard/hooks/useGetBudgetsHealth";
@@ -291,7 +291,7 @@ const ProductTourContent = () => {
             className="text-4xl font-bold leading-[1.04] tracking-tight text-light sm:text-5xl lg:text-[3.25rem]"
           >
             <span className="block">{t("home.heroTitle")}</span>
-            <span className="block whitespace-nowrap text-[0.92em]">{t("home.heroFocus")}</span>
+            <span className="block text-[0.86em] sm:whitespace-nowrap sm:text-[0.92em]">{t("home.heroFocus")}</span>
           </h1>
           <p className="mt-6 max-w-lg text-base leading-relaxed text-helper md:text-lg">
             {t("home.heroDescription")}
@@ -330,7 +330,7 @@ const ProductTourContent = () => {
           }}
           onPointerEnter={() => setIsProductTourEngaged(true)}
           onPointerLeave={() => setIsProductTourEngaged(false)}
-          className="relative min-w-0 pb-48 pt-6 lg:translate-x-8 sm:pb-52"
+          className="relative min-w-0 pb-44 pt-6 sm:pb-52 lg:translate-x-8"
         >
           <div
             aria-hidden="true"
@@ -385,7 +385,7 @@ const ProductTourContent = () => {
               </AnimatePresence>
             </div>
           </div>
-          <div className="absolute -bottom-4 right-0 z-10 flex translate-x-3 flex-col items-end gap-4 sm:-bottom-5 sm:translate-x-5 lg:translate-x-12">
+          <div className="absolute -bottom-4 right-1 z-10 flex max-w-[calc(100%-0.5rem)] flex-col items-end gap-3 sm:-bottom-5 sm:right-0 sm:translate-x-5 sm:gap-4 lg:translate-x-12">
             <div className="flex translate-x-2 -rotate-2 items-center gap-3 rounded-2xl border border-light-10 bg-surface-75 py-3 pl-3 pr-5 shadow-custom backdrop-blur-xl">
               <div className="flex -space-x-2">
                 {HERO_PREVIEW.members.map(({ name, avatar }) => (
