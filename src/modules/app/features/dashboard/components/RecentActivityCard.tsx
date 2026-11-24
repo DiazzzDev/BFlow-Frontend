@@ -87,7 +87,9 @@ export const RecentActivityCard = ({
                     ]}
                     selected={activityType}
                     keyFilter="activityType"
-                    onChange={onActivityTypeChange}
+                    onChange={onActivityTypeChange
+                        ? (value) => onActivityTypeChange(value as RecentActivityType)
+                        : undefined}
                     layoutId="dashboardActivityType"
                     responsive="stretch"
                 />
