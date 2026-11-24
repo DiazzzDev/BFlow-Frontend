@@ -14,12 +14,7 @@ interface SettingsNavigationProps {
     onSectionChange: (section: SettingsSection) => void;
 }
 
-interface NavigationItem {
-    id: SettingsSection;
-    labelKey: string;
-}
-
-const navigationItems: NavigationItem[] = [
+const navigationItems = [
     { id: "account", labelKey: "settings.navigation.account" },
     { id: "preferences", labelKey: "settings.navigation.preferences" },
     { id: "categories", labelKey: "settings.navigation.categories" },
@@ -27,7 +22,7 @@ const navigationItems: NavigationItem[] = [
     { id: "subscription", labelKey: "settings.navigation.subscription" },
     { id: "legal", labelKey: "settings.navigation.legal" },
     { id: "documentation", labelKey: "settings.navigation.documentation" },
-];
+] as const satisfies ReadonlyArray<{ id: SettingsSection; labelKey: string }>;
 
 export const SettingsNavigation = ({
     activeSection,

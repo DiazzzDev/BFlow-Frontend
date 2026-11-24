@@ -76,7 +76,6 @@ export const CategoriesManager = () => {
         defaultValues,
     });
     const selectedColor = useWatch({ control, name: "color" });
-    const selectedIcon = useWatch({ control, name: "icon" });
 
     // Filtered list for the right-hand panel
     const filteredCategories = categories.filter((category) => category.type === typeFilter);

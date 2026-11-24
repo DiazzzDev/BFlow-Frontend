@@ -23,6 +23,7 @@ interface RecentActivityCardProps {
     onViewAll?: () => void;
     activityType: RecentActivityType;
     activityQuery: string;
+    onActivityTypeChange?: (type: RecentActivityType) => void;
     onActivityQueryChange: (query: string) => void;
 }
 
@@ -32,6 +33,7 @@ export const RecentActivityCard = ({
     onViewAll,
     activityType,
     activityQuery,
+    onActivityTypeChange,
     onActivityQueryChange,
 }: RecentActivityCardProps) => {
     const navigate = useNavigate();
@@ -85,6 +87,7 @@ export const RecentActivityCard = ({
                     ]}
                     selected={activityType}
                     keyFilter="activityType"
+                    onChange={onActivityTypeChange}
                     layoutId="dashboardActivityType"
                     responsive="stretch"
                 />

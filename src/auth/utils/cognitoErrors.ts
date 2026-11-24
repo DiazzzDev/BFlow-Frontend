@@ -12,7 +12,9 @@ export const getCognitoErrorMessage = (
     console.error("[Cognito Auth Error Detail]:", error);
 
     if (typeof error !== "object" || error === null) {
-        return typeof error === "string" ? error : t(fallbackKey);
+        return typeof error === "string"
+            ? error
+            : t(fallbackKey, { defaultValue: fallbackKey });
     }
 
     const errObj = error as { name?: string; code?: string; message?: string };
@@ -54,6 +56,6 @@ export const getCognitoErrorMessage = (
             if (message.includes("User is not confirmed")) {
                 return t("auth.errors.userNotConfirmed");
             }
-            return message || t(fallbackKey);
+            return message || t(fallbackKey, { defaultValue: fallbackKey });
     }
 };

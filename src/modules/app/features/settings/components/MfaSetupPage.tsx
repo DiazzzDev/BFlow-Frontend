@@ -36,7 +36,7 @@ export const MfaSetupPage = ({ onBack, onComplete }: MfaSetupPageProps) => {
     const setupDetails = setUp.data;
     const setupUri = setupDetails?.getSetupUri(
         t("settings.account.mfa.appName"),
-        user?.email ?? user?.name,
+        user?.email ?? user?.name ?? undefined,
     ).toString();
 
     const copySecret = async () => {
