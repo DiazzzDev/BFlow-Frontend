@@ -3,6 +3,7 @@ version: 2
 updates:
   - package-ecosystem: "bun"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
 
@@ -17,6 +18,7 @@ updates:
   # Keeps the SHA-pinned actions (setup-bun, trivy-action, ...) up to date.
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
 
@@ -29,6 +31,7 @@ updates:
   # Bun / Trivy versions pinned in the devcontainer Dockerfile.
   - package-ecosystem: "docker"
     directory: "/.devcontainer"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
 

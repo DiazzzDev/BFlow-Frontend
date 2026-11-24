@@ -65,7 +65,7 @@ export const WalletViewHeader = ({
                     <button
                         type="button"
                         onClick={onOpenMobileInfo}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-light-10 bg-surface px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 cursor-pointer @3xl:hidden"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 cursor-pointer @3xl:hidden"
                     >
                         <PanelRightOpen className="h-4 w-4" />
                         {t("walletView.viewInfo")}
@@ -74,7 +74,7 @@ export const WalletViewHeader = ({
                     <button
                         type="button"
                         onClick={onToggleDesktopInfo}
-                        className="hidden items-center justify-center gap-2 rounded-lg border border-light-10 bg-surface px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 cursor-pointer @3xl:inline-flex"
+                        className="hidden items-center justify-center gap-2 rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 cursor-pointer @3xl:inline-flex"
                     >
                         <motion.span
                             key={isInfoPanelOpen ? "close" : "open"}

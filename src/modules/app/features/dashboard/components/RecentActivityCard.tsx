@@ -1,35 +1,35 @@
+import { useState } from "react";
 import { ChevronRight, Receipt, Search } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
-import type { RecentActivityItem } from "../interfaces/dashboard";
+import type { RecentActivityItem, RecentActivityType } from "../interfaces/dashboard";
 import {
     dashboardCardClass,
     dashboardLabelClass,
 } from "../utils/dashboardCard";
 import { groupRecentActivityByDay } from "../utils/groupRecentActivityByDay";
 
-import { ActivityFilters, type ActivityFilter } from "./ActivityFilters";
+import { RecentActivityDetailsModal } from "./RecentActivityDetailsModal";
 import { RecentActivityRow } from "./RecentActivityRow";
 
+import { TabFilter } from "@/components/controls/TabFilter";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { Input } from "@/components/controls/Input";
 
 interface RecentActivityCardProps {
     isLoading: boolean;
     activities: RecentActivityItem[];
-    currency: string;
     onViewAll?: () => void;
-    activityType: ActivityFilter;
+    activityType: RecentActivityType;
     activityQuery: string;
-    onActivityTypeChange: (filter: ActivityFilter) => void;
+    onActivityTypeChange?: (type: RecentActivityType) => void;
     onActivityQueryChange: (query: string) => void;
 }
 
 export const RecentActivityCard = ({
     isLoading,
     activities,
-    currency,
     onViewAll,
     activityType,
     activityQuery,
@@ -38,6 +38,7 @@ export const RecentActivityCard = ({
 }: RecentActivityCardProps) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [selectedActivity, setSelectedActivity] = useState<RecentActivityItem | null>(null);
     const hasActivityFilters = activityType !== "ALL" || activityQuery.trim().length > 0;
     const activityGroups = groupRecentActivityByDay(activities);
 
@@ -78,7 +79,20 @@ export const RecentActivityCard = ({
                         className="h-9 rounded-full bg-surface-hard pl-8 pr-3 text-xs"
                     />
                 </label>
-                <ActivityFilters selected={activityType} onChange={onActivityTypeChange} />
+                <TabFilter
+                    options={[
+                        { value: "ALL", label: t("dashboard.activityAll") },
+                        { value: "INCOME", label: t("dashboard.income") },
+                        { value: "EXPENSE", label: t("dashboard.expenses") },
+                    ]}
+                    selected={activityType}
+                    keyFilter="activityType"
+                    onChange={onActivityTypeChange
+                        ? (value) => onActivityTypeChange(value as RecentActivityType)
+                        : undefined}
+                    layoutId="dashboardActivityType"
+                    responsive="stretch"
+                />
             </div>
 
             {!isLoading && activities.length === 0 && hasActivityFilters && (
@@ -125,11 +139,12 @@ export const RecentActivityCard = ({
                                 {group.label}
                             </p>
                             <ul className="flex flex-col">
-                                {group.activities.map((activity, index) => (
+                                {group.activities.map((activity) => (
                                     <RecentActivityRow
-                                        key={`${activity.name}-${activity.createdAt}-${index}`}
+                                        key={activity.id}
                                         activity={activity}
-                                        currency={currency}
+                                        isToday={group.label === t("dates.today")}
+                                        onClick={setSelectedActivity}
                                     />
                                 ))}
                             </ul>
@@ -137,6 +152,11 @@ export const RecentActivityCard = ({
                     ))}
                 </div>
             )}
+
+            <RecentActivityDetailsModal
+                activity={selectedActivity}
+                onClose={() => setSelectedActivity(null)}
+            />
         </div>
     );
 };

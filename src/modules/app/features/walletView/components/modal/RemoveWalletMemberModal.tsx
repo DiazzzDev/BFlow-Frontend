@@ -5,6 +5,7 @@ import type { WalletMember } from "../../interfaces/WalletMember";
 import { useMutateWalletMembers } from "../../hooks/useMutateWalletMembers";
 
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface RemoveWalletMemberModalProps {
@@ -70,7 +71,8 @@ export const RemoveWalletMemberModal = ({
                     <span className="font-medium text-light">{displayName}</span> de
                     esta billetera? Perderá el acceso de inmediato.
                 </p>
-                <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <ModalActionFooter>
+                    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <button
                         type="button"
                         disabled={isRemoving}
@@ -89,7 +91,8 @@ export const RemoveWalletMemberModal = ({
                     >
                         {isRemoving ? t("wallets.removeMemberLoading") : t("wallets.memberDeleteConfirm")}
                     </button>
-                </div>
+                    </div>
+                </ModalActionFooter>
             </div>
         </CustomModal>
     );

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import { useMutateBudgets } from "../../budgets/hooks/useMutateBudgets";
 import {
@@ -35,34 +36,34 @@ const MIN_WARNING = 1;
 const MIN_CRITICAL = 2;
 const MAX_THRESHOLD = 100;
 
-const settingsSchema = z
+const createSettingsSchema = (t: TFunction) => z
     .object({
         amount: z
             .string()
-            .min(1, "El monto es obligatorio")
-            .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
+            .min(1, t("budgets.validation.amountRequired"))
+            .refine((value) => Number(value) > 0, t("budgets.validation.amountGreaterThanZero")),
         period: z.enum(PERIODICITY_VALUES),
-        startDate: z.string().min(1, "La fecha es obligatoria"),
+        startDate: z.string().min(1, t("budgets.validation.startDateRequired")),
         thresholdWarning: z
             .number()
-            .min(MIN_WARNING, `El mínimo es ${MIN_WARNING}%`)
-            .max(MAX_THRESHOLD - 1, "La alerta debe ser menor a 100%"),
+            .min(MIN_WARNING, t("budgets.validation.warningMinimum", { min: MIN_WARNING }))
+            .max(MAX_THRESHOLD - 1, t("budgets.validation.warningMaximum", { max: MAX_THRESHOLD })),
         thresholdCritical: z
             .number()
-            .min(MIN_CRITICAL, `El mínimo es ${MIN_CRITICAL}%`)
-            .max(MAX_THRESHOLD, "El máximo es 100%"),
+            .min(MIN_CRITICAL, t("budgets.validation.criticalMinimum", { min: MIN_CRITICAL }))
+            .max(MAX_THRESHOLD, t("budgets.validation.criticalMaximum", { max: MAX_THRESHOLD })),
     })
     .superRefine((values, ctx) => {
         if (values.thresholdCritical <= values.thresholdWarning) {
             ctx.addIssue({
                 code: "custom",
                 path: ["thresholdCritical"],
-                message: "El crítico debe ser mayor que la alerta",
+                message: t("budgets.validation.criticalAfterWarning"),
             });
         }
     });
 
-type SettingsFormValues = z.infer<typeof settingsSchema>;
+type SettingsFormValues = z.infer<ReturnType<typeof createSettingsSchema>>;
 
 interface BudgetSettingsPanelProps {
     budget?: BudgetDetail;
@@ -74,6 +75,7 @@ export const BudgetSettingsPanel = ({
     isLoading,
 }: BudgetSettingsPanelProps) => {
     const { t } = useTranslation();
+    const settingsSchema = createSettingsSchema(t);
     const navigate = useNavigate();
 
     // Update / delete mutations

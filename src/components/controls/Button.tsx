@@ -19,7 +19,7 @@ const VARIANT_CLASSES: Record<
     },
     secondary: {
         enabled:
-            "border border-light-10 bg-surface text-light shadow-sm hover:bg-light-5 active:scale-95",
+            "border border-light-10 bg-surface [background-image:var(--surface-gradient)] text-light shadow-sm hover:bg-light-5 active:scale-95",
         disabled: "border border-light-10 bg-surface-75 text-light shadow-none",
     },
     outline: {
@@ -45,8 +45,12 @@ export interface ButtonProps
     extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
     text: string;
     icon?: ReactNode;
+    iconPosition?: "start" | "end";
     variant?: ButtonVariant;
     to?: To;
+    href?: string;
+    target?: "_blank" | "_self" | "_parent" | "_top";
+    rel?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -58,7 +62,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             disabled = false,
             text,
             icon,
+            iconPosition = "start",
             to,
+            href,
+            target,
+            rel,
             className = "",
             ...props
         },
@@ -71,12 +79,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
         const content = (
             <>
-                {icon && (
+                {icon && iconPosition === "start" && (
                     <span className="relative text-xl font-light leading-none">
                         {icon}
                     </span>
                 )}
                 {text}
+                {icon && iconPosition === "end" && (
+                    <span className="relative text-xl font-light leading-none">
+                        {icon}
+                    </span>
+                )}
             </>
         );
         const buttonClassName = `flex items-center justify-center gap-2 rounded-lg px-6 py-2 font-sans text-sm font-medium transition-all ${stateClasses} ${className}`;
@@ -86,6 +99,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 <Link to={to} className={buttonClassName}>
                     {content}
                 </Link>
+            );
+        }
+
+        if (href && !disabled) {
+            return (
+                <a
+                    href={href}
+                    target={target}
+                    rel={rel}
+                    className={buttonClassName}
+                >
+                    {content}
+                </a>
             );
         }
 

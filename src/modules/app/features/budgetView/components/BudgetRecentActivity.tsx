@@ -21,7 +21,7 @@ export const BudgetRecentActivity = ({
 }: BudgetRecentActivityProps) => {
     const { t } = useTranslation();
     return (
-        <article className="flex min-h-64 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
+        <article className="flex min-h-64 flex-col rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-6 shadow-custom">
             <p className="mb-4 text-base font-semibold text-light">{title ?? t("budgetView.recentActivity")}</p>
 
             {isLoading ? (

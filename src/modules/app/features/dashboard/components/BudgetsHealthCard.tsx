@@ -44,7 +44,7 @@ export const BudgetsHealthCard = ({
 
     return (
         <div className={`${dashboardCardClass} flex-1`}>
-            <p className={dashboardLabelClass}>{t("dashboard.budgetHealth")}</p>
+            <p className={dashboardLabelClass}>{t("dashboard.budgets")}</p>
 
             <div className="mt-4 flex flex-1 flex-col gap-1">
                 {isLoading &&

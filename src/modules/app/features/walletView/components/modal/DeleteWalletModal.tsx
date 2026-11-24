@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useMutateWallets } from "../../../wallets/hooks/useMutateWallets";
 
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 interface DeleteWalletModalProps {
@@ -61,7 +62,8 @@ export const DeleteWalletModal = ({
                     </span>
                     ? Se perderán sus transacciones y esta acción no se puede deshacer.
                 </p>
-                <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <ModalActionFooter>
+                    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <button
                         type="button"
                         disabled={isDeleting}
@@ -80,7 +82,8 @@ export const DeleteWalletModal = ({
                     >
                         {isDeleting ? t("wallets.deleteLoading") : t("wallets.deleteConfirm")}
                     </button>
-                </div>
+                    </div>
+                </ModalActionFooter>
             </div>
         </CustomModal>
     );

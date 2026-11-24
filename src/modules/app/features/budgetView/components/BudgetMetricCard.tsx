@@ -22,7 +22,7 @@ export const BudgetMetricCard = ({
     const cents = decimalIndex === -1 ? "" : formatted.slice(decimalIndex);
 
     return (
-        <article className="flex min-w-0 flex-col rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
+        <article className="flex min-w-0 flex-col rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-6 shadow-custom">
             <p className="text-base font-semibold text-light">{title}</p>
             {isLoading ? (
                 <SkeletonText className="mt-3 h-9 w-36" />

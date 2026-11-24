@@ -58,12 +58,13 @@ export const ResetPasswordForm = ({
             password: data.password,
         });
         toast.promise(promise, {
-            loading: "Restableciendo contraseña...",
-            success: "Tu contraseña se ha restablecido correctamente.",
+            loading: t("auth.resetLoading"),
+            success: t("auth.resetSuccess"),
             error: (err) =>
                 getCognitoErrorMessage(
                     err,
-                    "No se pudo restablecer la contraseña. Inténtalo de nuevo."
+                    t,
+                    "auth.resetError"
                 ),
         });
 
@@ -86,7 +87,7 @@ export const ResetPasswordForm = ({
                     id="txtCode"
                     inputMode="numeric"
                     autoComplete="one-time-code"
-                    placeholder="123456"
+                    placeholder={t("auth.codePlaceholder")}
                     disabled={isLoading}
                     className={`${authInputClass} font-mono tracking-[0.3em]`}
                     {...register("code")}
@@ -119,7 +120,7 @@ export const ResetPasswordForm = ({
                 <PasswordInput
                     id="txtConfirmPassword"
                     autoComplete="new-password"
-                    placeholder="••••••••"
+                    placeholder={t("auth.passwordPlaceholder")}
                     disabled={isLoading}
                     {...register("confirmPassword")}
                 />

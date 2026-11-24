@@ -54,7 +54,7 @@ export const SegmentedTabs = <T extends string>({
                             <motion.span
                                 layoutId={`segmented-tabs-indicator-${indicatorId}`}
                                 transition={{ type: "spring", stiffness: 420, damping: 32 }}
-                                className="absolute inset-0 -z-10 rounded-lg border border-light-10 bg-surface shadow-sm"
+                                className="absolute inset-0 -z-10 rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] shadow-sm"
                             />
                         )}
                         <span className="relative">{tab.label}</span>

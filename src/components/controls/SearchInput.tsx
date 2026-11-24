@@ -48,7 +48,7 @@ export const SearchInput = ({
                 id={id}
                 type="text"
                 placeholder={placeholder}
-                className={`h-10 text-sm rounded-xl border-light-10 bg-surface w-full px-11 ${className || ""}`}
+                className={`h-10 text-sm rounded-xl border-light-10 bg-surface [background-image:var(--surface-gradient)] w-full px-11 ${className || ""}`}
                 value={syncToParams ? paramValue : value}
                 onChange={handleChange}
                 {...props}

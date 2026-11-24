@@ -21,9 +21,12 @@ This project uses **Bun** (see `packageManager` in `package.json`; a devcontaine
 - `bun run preview` serves the production bundle locally for verification.
 - `bun run lint` runs ESLint across the repository.
 - `bun run typecheck` runs TypeScript without emitting files.
+- `bun run test` runs unit, component, and integration tests with Vitest.
+- `bun run test:coverage` runs Vitest with a 70% threshold for lines, functions, branches, and statements.
+- `bun run test:e2e` runs browser tests with Playwright Test (install Chromium with `bunx playwright install chromium` when needed).
+- `bun run playwright:cli --help` shows the Playwright CLI commands for browser automation.
 - `bun run audit` runs `bun audit` (fails on high severity).
 - `bun run scan:cve` runs a local Trivy scan using `trivy.yaml` (Trivy is preinstalled in the devcontainer).
-- `bun run test` currently runs a placeholder and exits successfully; do not treat it as automated coverage.
 
 CI runs linting, type checking, the build, and security scans. The pre-commit hook runs `bun run test` (not `bun test`, which would invoke Bun's own runner).
 
@@ -33,7 +36,7 @@ Use TypeScript and existing four-space indentation. Follow ESLint, including ord
 
 ## Testing Guidelines
 
-No test framework or coverage threshold is configured yet. For changes, run `bun run lint`, `bun run typecheck`, and `bun run build`; manually verify affected flows with `bun run dev` and include regression tests when a test runner is introduced.
+Keep feature tests under `tests/modules/` with the same feature and subfolder layout as `src/modules/` (for example, `tests/modules/app/features/wallets/components/`). Use React Testing Library for component behavior and keep tests accessible through roles and labels. Browser tests belong in `tests/e2e/`; shared test data and API mocks belong in `tests/fixtures/` and `tests/mocks/`. Maintain at least 70% line, function, branch, and statement coverage.
 
 ## Commit & Pull Request Guidelines
 
