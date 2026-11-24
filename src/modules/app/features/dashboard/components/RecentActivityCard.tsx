@@ -86,6 +86,7 @@ export const RecentActivityCard = ({
                     selected={activityType}
                     keyFilter="activityType"
                     layoutId="dashboardActivityType"
+                    responsive="stretch"
                 />
             </div>
 

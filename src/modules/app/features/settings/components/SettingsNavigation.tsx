@@ -38,7 +38,7 @@ export const SettingsNavigation = ({
     return (
         <nav
             aria-label={t("settings.navigation.label")}
-            className="flex gap-1 overflow-x-auto pb-1 lg:sticky lg:top-5 lg:self-start lg:flex-col lg:overflow-visible"
+            className="flex flex-col gap-1 lg:sticky lg:top-5 lg:self-start"
         >
             {navigationItems.map(({ id, labelKey }) => {
                 const isActive = activeSection === id;

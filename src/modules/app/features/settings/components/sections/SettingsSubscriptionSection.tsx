@@ -7,7 +7,13 @@ import { SettingsContentCard } from "./SettingsContentCard";
 
 import { Button } from "@/components/controls/Button";
 
-export const SettingsSubscriptionSection = () => {
+interface SettingsSubscriptionSectionProps {
+    onCancelSubscription: () => void;
+}
+
+export const SettingsSubscriptionSection = ({
+    onCancelSubscription,
+}: SettingsSubscriptionSectionProps) => {
     const { t } = useTranslation();
     const {
         subscription,
@@ -15,8 +21,6 @@ export const SettingsSubscriptionSection = () => {
         endDate,
         daysRemaining,
         canCancel,
-        isCancelling,
-        cancel,
     } = useSettingsSubscription();
 
     return (
@@ -109,9 +113,8 @@ export const SettingsSubscriptionSection = () => {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    text={isCancelling ? t("subscription.cancelling") : t("subscription.cancel")}
-                                    disabled={isCancelling}
-                                    onClick={cancel}
+                                    text={t("subscription.cancel")}
+                                    onClick={onCancelSubscription}
                                     className="w-full sm:w-auto"
                                 />
                             </div>

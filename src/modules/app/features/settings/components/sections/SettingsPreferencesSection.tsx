@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { SettingsContentCard } from "./SettingsContentCard";
@@ -8,12 +7,18 @@ import { ToggleSwitch } from "@/components/controls/ToggleSwitch";
 import { useChangeLanguage } from "@/modules/app/hooks/useChangeLanguage";
 import { SUPPORTED_LANGUAGES, type LanguageCode } from "@/i18n/types";
 import { useTheme, type Theme } from "@/theme/ThemeProvider";
+import { useAiReceiptConfirmationStore } from "../../aiReceiptConfirmationStore";
 
 export const SettingsPreferencesSection = () => {
     const { t } = useTranslation();
     const { activeLanguage, changeLanguage, isPending } = useChangeLanguage();
     const { theme, setTheme } = useTheme();
-    const [shouldConfirmAiDetection, setShouldConfirmAiDetection] = useState(true);
+    const shouldConfirmAiReceipt = useAiReceiptConfirmationStore(
+        (state) => state.shouldConfirmAiReceipt,
+    );
+    const setShouldConfirmAiReceipt = useAiReceiptConfirmationStore(
+        (state) => state.setShouldConfirmAiReceipt,
+    );
 
     return (
         <div className="flex flex-col gap-5">
@@ -67,8 +72,8 @@ export const SettingsPreferencesSection = () => {
                         {t("settings.preferences.aiConfirmationDescription")}
                     </p>
                     <ToggleSwitch
-                        checked={shouldConfirmAiDetection}
-                        onChange={setShouldConfirmAiDetection}
+                        checked={shouldConfirmAiReceipt}
+                        onChange={setShouldConfirmAiReceipt}
                         aria-label={t("settings.preferences.aiConfirmationTitle")}
                     />
                 </div>

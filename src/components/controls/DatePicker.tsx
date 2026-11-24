@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import "dayjs/locale/es";
 import enUS from "antd/es/date-picker/locale/en_US";
 import esES from "antd/es/date-picker/locale/es_ES";
-import { CalendarDays } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const API_DATE_FORMAT = "YYYY-MM-DD";
@@ -63,7 +62,6 @@ export const DatePicker = ({
             locale={isSpanish ? esES : enUS}
             placeholder={isSpanish ? "dd/mm/aaaa" : "dd/mm/yyyy"}
             inputReadOnly
-            suffixIcon={<CalendarDays className="h-4 w-4" aria-hidden="true" />}
             className={`${DATE_PICKER_CLASSES} ${error ? "!border-danger hover:!border-danger" : ""} ${className ?? ""}`}
             classNames={{
                 popup: {

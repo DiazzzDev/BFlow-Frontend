@@ -1,7 +1,7 @@
 import { config } from "@/config/config";
 
 export const getClaudeConnectorUrl = () => {
-    const mcpServerUrl = config.MCP_SERVER_URL;
+    const mcpServerUrl = getMcpServerUrl();
 
     if (!mcpServerUrl) {
         return null;
@@ -14,3 +14,5 @@ export const getClaudeConnectorUrl = () => {
         `&connectorUrl=${encodeURIComponent(mcpServerUrl)}`
     );
 };
+
+export const getMcpServerUrl = () => config.MCP_SERVER_URL || null;

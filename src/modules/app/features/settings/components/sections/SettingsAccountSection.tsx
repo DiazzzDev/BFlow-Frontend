@@ -2,6 +2,7 @@ import { LogOut, Pencil, Trash2, UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { SettingsContentCard } from "./SettingsContentCard";
+import { useMfaSetup } from "../../hooks/useMfaSetup";
 
 import { useAuthStore } from "@/auth/authStore";
 import { Button } from "@/components/controls/Button";
@@ -11,6 +12,7 @@ interface SettingsAccountSectionProps {
     isLoggingOut: boolean;
     onEditProfile: () => void;
     onChangePassword: () => void;
+    onEnableMfa: () => void;
     onLogout: () => void;
     onDeleteAccount: () => void;
 }
@@ -19,11 +21,13 @@ export const SettingsAccountSection = ({
     isLoggingOut,
     onEditProfile,
     onChangePassword,
+    onEnableMfa,
     onLogout,
     onDeleteAccount,
 }: SettingsAccountSectionProps) => {
     const { t } = useTranslation();
     const user = useAuthStore((state) => state.user);
+    const { isMfaEnabled, isMfaStatusLoading } = useMfaSetup();
     const displayName = user?.name?.trim() || t("settings.profile");
 
     return (
@@ -110,15 +114,23 @@ export const SettingsAccountSection = ({
                                 </p>
                             </div>
                             <div className="flex items-center gap-2">
-                                <span className="rounded-full bg-light-5 px-2.5 py-1 text-xs font-medium text-helper">
-                                    {t("settings.account.disabled")}
+                                <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${isMfaEnabled ? "bg-success-10 text-success" : "bg-light-5 text-helper"}`}>
+                                    {isMfaStatusLoading
+                                        ? t("common.loading")
+                                        : isMfaEnabled
+                                            ? t("settings.account.enabled")
+                                            : t("settings.account.disabled")}
                                 </span>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    text={t("settings.account.enable")}
-                                    className="w-full sm:w-auto"
-                                />
+                                {!isMfaEnabled ? (
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        text={t("settings.account.enable")}
+                                        onClick={onEnableMfa}
+                                        disabled={isMfaStatusLoading}
+                                        className="w-full sm:w-auto"
+                                    />
+                                ) : null}
                             </div>
                         </div>
                     </div>

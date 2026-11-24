@@ -1,4 +1,4 @@
-import { CalendarDays, PenLine, Repeat2, Wallet } from "lucide-react";
+import { AlignLeft, CalendarDays, PenLine, Repeat2, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import type { RecentActivityItem } from "../interfaces/dashboard";
@@ -21,6 +21,7 @@ export const RecentActivityDetailsModal = ({
     const { t } = useTranslation();
 
     const isIncome = activity?.type === "INCOME";
+    const categoryColor = activity?.categoryColor ?? "#64748B";
     const isRecurring = activity?.source.toLowerCase() === "recurring";
     const sourceKey = isRecurring
         ? "history.recurring"
@@ -44,8 +45,8 @@ export const RecentActivityDetailsModal = ({
                         <div
                             className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
                             style={{
-                                backgroundColor: `${activity.categoryColor}22`,
-                                color: activity.categoryColor,
+                                backgroundColor: `${categoryColor}22`,
+                                color: categoryColor,
                             }}
                         >
                             <CategoryIcon icon={activity.categoryIcon} className="h-5 w-5" />
@@ -57,11 +58,6 @@ export const RecentActivityDetailsModal = ({
                             <p className="mt-1 text-sm text-helper">
                                 {t(isIncome ? "history.income" : "history.expense")}
                             </p>
-                            {activity.description ? (
-                                <p className="mt-2 text-sm text-helper">
-                                    {activity.description}
-                                </p>
-                            ) : null}
                         </div>
                         <p
                             className={`mt-3 text-3xl font-semibold tabular-nums ${getTransactionAmountClassName(activity.type, activity.amount)}`}
@@ -93,6 +89,19 @@ export const RecentActivityDetailsModal = ({
                                 {t(sourceKey)}
                             </dd>
                         </div>
+                        {activity.description?.trim() ? (
+                            <div className="flex items-start gap-3 px-4 py-3">
+                                <AlignLeft className="mt-0.5 h-4 w-4 shrink-0 text-helper" aria-hidden="true" />
+                                <div className="min-w-0 flex-1">
+                                    <dt className="text-sm text-helper">
+                                        {t("transactions.description")}
+                                    </dt>
+                                    <dd className="mt-1 whitespace-pre-wrap break-words text-sm font-medium text-light">
+                                        {activity.description.trim()}
+                                    </dd>
+                                </div>
+                            </div>
+                        ) : null}
                     </dl>
                 </>
             )}

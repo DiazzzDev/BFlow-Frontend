@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch, type FieldErrors } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -92,7 +92,9 @@ export const TransactionForm = ({
 }: TransactionFormProps) => {
     const { t } = useTranslation();
     const transactionSchema = createTransactionSchema(t);
-    const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(readOnly);
+    const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(
+        readOnly || Boolean(transactionId),
+    );
     const [datePreset, setDatePreset] = useState<DatePreset>(() => {
         if (initialValues?.date === getDateInputValue(-1)) {
             return "yesterday";
@@ -130,13 +132,14 @@ export const TransactionForm = ({
     const recurring = useWatch({ control, name: "recurring" });
 
     const onSubmit = async (formData: TransactionFormValues) => {
+        const shouldIncludeAdvancedFields = isEditing || areAdvancedOptionsVisible;
         const payload = {
             title: formData.title,
             amount: Number(formData.amount),
             walletId,
             source,
             ...(formData.date ? { date: formData.date } : {}),
-            ...(areAdvancedOptionsVisible && {
+            ...(shouldIncludeAdvancedFields && {
                 ...(formData.description.trim() ? { description: formData.description.trim() } : {}),
                 recurring: formData.recurring,
                 recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
@@ -180,8 +183,21 @@ export const TransactionForm = ({
         onSuccess?.();
     };
 
+    const onInvalid = (formErrors: FieldErrors<TransactionFormValues>) => {
+        if (formErrors.description || formErrors.categoryId || formErrors.recurrencePattern) {
+            setAreAdvancedOptionsVisible(true);
+        }
+
+        toast.error(t("transactions.formValidationError"));
+    };
+
     return (
-        <form className="flex flex-col gap-5" onSubmit={(event) => { event.preventDefault(); if (!readOnly) { void handleSubmit(onSubmit)(event); } }}>
+        <form
+            className="flex flex-col gap-5"
+            onSubmit={readOnly ? undefined : (event) => {
+                void handleSubmit(onSubmit, onInvalid)(event);
+            }}
+        >
             <div className="flex gap-4">
                 <div className="flex flex-col gap-1 flex-1">
                     <Label htmlFor={`${idPrefix}-title`}>{t("transactions.title")}</Label>

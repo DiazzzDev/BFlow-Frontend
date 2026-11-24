@@ -1,3 +1,4 @@
+
 import { ChevronRight } from "lucide-react";
 
 import type { RecentActivityItem } from "../interfaces/dashboard";
@@ -19,19 +20,21 @@ export const RecentActivityRow = ({
     onClick,
 }: RecentActivityRowProps) => {
     const isIncome = activity.type.toUpperCase() === "INCOME";
+    const categoryColor = activity.categoryColor ?? "#64748B";
 
     return (
-        <li className="border-b border-light-10 hover:border-none">
+        <li className="border-b border-light-10 last:border-b-0">
             <button
                 type="button"
                 data-testid="recent-activity-row"
                 onClick={() => onClick(activity)}
-                className="flex w-full cursor-pointer items-center gap-2 py-3.5 text-left transition-colors hover:bg-light-5 sm:gap-3 p-2 rounded-lg"
+                className="flex w-full min-w-0 items-center gap-2 rounded-lg p-2.5 text-left transition-colors hover:bg-light-5 sm:gap-3 sm:px-2"
             >
+                {/* Category icon */}
                 <div
                     style={{
-                        backgroundColor: `${activity.categoryColor}33`,
-                        color: activity.categoryColor,
+                        backgroundColor: `${categoryColor}33`,
+                        color: categoryColor,
                     }}
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm"
                 >
@@ -41,40 +44,45 @@ export const RecentActivityRow = ({
                     />
                 </div>
 
-                <div className="flex min-w-0 flex-1 flex-col">
-                    <div className="flex flex-col gap-1">
-                        <p className="truncate text-sm font-medium text-light">
-                            {activity.name}
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <p className="truncate text-[11px] font-medium text-light-75">
+                {/* Activity information */}
+                <div className="min-w-0 flex-1">
+                    <p className="break-words text-xs sm:text-sm font-medium text-light sm:truncate">
+                        {activity.name}
+                    </p>
+
+                    <div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
+                        <p className="max-w-full break-words text-[11px] font-medium text-light-75 sm:truncate">
                             {activity.walletName}
                         </p>
-                        {
-                            isToday && (
-                                <>
-                                    <span className="truncate text-[9px] text-helper">•</span>
-                                    <p className="truncate text-[11px] text-helper">
-                                        {formatterDynamicDate(activity.createdAt)}
-                                    </p>
-                                </>
-                            )
-                        }
+
+                        {isToday && (
+                            <>
+                                <span className="text-[9px] text-helper">•</span>
+                                <p className="text-[11px] text-helper">
+                                    {formatterDynamicDate(activity.createdAt)}
+                                </p>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                <p
-                    className={`max-w-[35%] shrink-0 truncate text-right text-sm font-semibold tabular-nums ${getTransactionAmountClassName(
-                        activity.type,
-                        activity.amount,
-                    )}`}
-                >
-                    {isIncome ? "+ " : "- "}
-                    {formatCurrency(Math.abs(activity.amount), activity.currency)}
-                </p>
+                {/* Transaction amount and navigation */}
+                <div className="ml-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+                    <p
+                        className={`whitespace-nowrap text-right text-xs font-semibold tabular-nums min-[360px]:text-sm ${getTransactionAmountClassName(
+                            activity.type,
+                            activity.amount,
+                        )}`}
+                    >
+                        {isIncome ? "+ " : "- "}
+                        {formatCurrency(
+                            Math.abs(activity.amount),
+                            activity.currency,
+                        )}
+                    </p>
 
-                <ChevronRight className="h-4 w-4 shrink-0 text-helper" />
+                    <ChevronRight className="h-4 w-4 shrink-0 text-helper" />
+                </div>
             </button>
         </li>
     );
