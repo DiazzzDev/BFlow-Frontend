@@ -56,7 +56,7 @@ export const WalletViewSidebar = ({
                     <div className="flex flex-col gap-4">
                         {infoSkeletonRows.map((row) => (
                             <div
-                                key={row.labelClassName}
+                                key={`${row.labelClassName}-${row.valueClassName}`}
                                 className="flex items-center justify-between gap-3"
                             >
                                 <SkeletonText className={row.labelClassName} />

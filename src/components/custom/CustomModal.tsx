@@ -48,7 +48,7 @@ export const CustomModal = ({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className={`relative z-10 mb-0 max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-surface font-sans text-light shadow-custom sm:mx-4 sm:mb-2 sm:mt-2 sm:rounded-2xl ${maxWidth}`}
+                        className={`relative z-10 mb-0 max-h-[90vh] w-full overflow-y-auto rounded-t-3xl bg-surface [background-image:var(--surface-gradient)] font-sans text-light shadow-custom sm:mx-4 sm:mb-2 sm:mt-2 sm:rounded-2xl ${maxWidth}`}
                     >
                         <div className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-light-25/20 sm:hidden" />
 

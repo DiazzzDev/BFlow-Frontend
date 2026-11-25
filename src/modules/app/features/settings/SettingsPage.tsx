@@ -1,28 +1,36 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { FolderOpen, LogOut, Trash2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
-import { CategoriesModal } from "./components/CategoriesModal";
-import { ConnectClaudeButton } from "./components/ConnectClaudeButton";
 import { DeleteAccountModal } from "./components/DeleteAccountModal";
+import { CancelSubscriptionModal } from "./components/CancelSubscriptionModal";
+import { ChangePasswordModal } from "./components/ChangePasswordModal";
 import { EditProfileModal } from "./components/EditProfileModal";
-import { SettingsProfileSection } from "./components/SettingsProfileSection";
-import { SettingsSectionCard } from "./components/SettingsSectionCard";
-import { SettingsSubscriptionSection } from "./components/SettingsSubscriptionSection";
-import { LanguageSettingsSection } from "./components/LanguageSettingsSection";
-
+import { MfaSetupPage } from "./components/MfaSetupPage";
+import { SettingsAccountSection } from "./components/sections/SettingsAccountSection";
+import { SettingsCategoriesSection } from "./components/sections/SettingsCategoriesSection";
+import { SettingsConnectorsSection } from "./components/sections/SettingsConnectorsSection";
+import {
+    SettingsNavigation,
+    type SettingsSection,
+} from "./components/SettingsNavigation";
+import { SettingsPreferencesSection } from "./components/sections/SettingsPreferencesSection";
+import { SettingsSubscriptionSection } from "./components/sections/SettingsSubscriptionSection";
+import { SettingsLegalSection } from "./components/sections/SettingsLegalSection";
+import { SettingsDocumentationSection } from "./components/sections/SettingsDocumentationSection";
 
 import { useLogout } from "@/auth/hooks/useLogout";
-import { ACCOUNT_DELETION_GRACE_DAYS } from "@/auth/utils/accountDeletion";
-import { Button } from "@/components/controls/Button";
-import { config } from "@/config/config";
 
 export const SettingsPage = () => {
     const { t } = useTranslation();
+    const [activeSection, setActiveSection] = useState<SettingsSection>("account");
+    const [isMobileSectionOpen, setIsMobileSectionOpen] = useState(false);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
     const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+    const [isCancelSubscriptionModalOpen, setIsCancelSubscriptionModalOpen] = useState(false);
+    const [isMfaSetupOpen, setIsMfaSetupOpen] = useState(false);
     const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
 
     const handleLogout = async () => {
@@ -35,89 +43,97 @@ export const SettingsPage = () => {
         }
     };
 
+    const sectionContent = {
+        account: (
+            <SettingsAccountSection
+                isLoggingOut={isLoggingOut}
+                onEditProfile={() => setIsProfileModalOpen(true)}
+                onChangePassword={() => setIsChangePasswordModalOpen(true)}
+                onEnableMfa={() => setIsMfaSetupOpen(true)}
+                onLogout={() => {
+                    void handleLogout();
+                }}
+                onDeleteAccount={() => setIsDeleteAccountModalOpen(true)}
+            />
+        ),
+        preferences: <SettingsPreferencesSection />,
+        categories: <SettingsCategoriesSection />,
+        connectors: <SettingsConnectorsSection />,
+        subscription: (
+            <SettingsSubscriptionSection
+                onCancelSubscription={() => setIsCancelSubscriptionModalOpen(true)}
+            />
+        ),
+        legal: <SettingsLegalSection />,
+        documentation: <SettingsDocumentationSection />,
+    } satisfies Record<SettingsSection, ReactNode>;
+
+    if (isMfaSetupOpen) {
+        return (
+            <MfaSetupPage
+                onBack={() => setIsMfaSetupOpen(false)}
+                onComplete={() => setIsMfaSetupOpen(false)}
+            />
+        );
+    }
+
     return (
-        <div className="h-full min-h-0 overflow-y-auto px-4 py-5 sm:px-7 ">
+        <div className="h-full min-h-0 overflow-y-auto px-4 py-5 sm:px-6 lg:px-8">
+            <div className="mx-auto flex w-full max-w-270 flex-col gap-7 pb-8">
+                <header className={isMobileSectionOpen ? "hidden lg:block" : ""}>
+                    <h1 className="text-2xl font-semibold tracking-tight text-light sm:text-3xl">
+                        {t("settings.pageTitle")}
+                    </h1>
+                    <p className="mt-1.5 text-sm text-helper sm:text-base">
+                        {t("settings.pageDescription")}
+                    </p>
+                </header>
 
-            <div className="max-w-300 mx-auto flex flex-col gap-5 h-full min-h-0">
-                <div className="flex flex-col gap-4 pb-6 ">
-                    <SettingsProfileSection onEdit={() => setIsProfileModalOpen(true)} />
-
-                    <SettingsSubscriptionSection />
-
-                    <LanguageSettingsSection />
-
-                    {config.MCP_SERVER_URL ? (
-                        <SettingsSectionCard
-                            title={t("settings.claudeTitle")}
-                            description={t("settings.claudeDescription")}
-                            action={<ConnectClaudeButton />}
+                <div className="grid gap-5 lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start">
+                    <div className={isMobileSectionOpen ? "hidden lg:block" : "block"}>
+                        <SettingsNavigation
+                            activeSection={activeSection}
+                            onSectionChange={(section) => {
+                                setActiveSection(section);
+                                setIsMobileSectionOpen(true);
+                            }}
                         />
-                    ) : null}
-
-                    <SettingsSectionCard
-                        title={t("settings.categoriesTitle")}
-                        description={t("settings.categoriesDescription")}
-                        action={
-                            <Button
-                                type="button"
-                                text={t("common.manage")}
-                                icon={<FolderOpen className="h-4 w-4" />}
-                                onClick={() => setIsCategoryModalOpen(true)}
-                                className="w-fit"
-                            />
-                        }
-                    />
-
-                    <SettingsSectionCard
-                        title={t("settings.logoutTitle")}
-                        description={t("settings.logoutDescription")}
-                        titleClassName="text-danger"
-                        action={
+                    </div>
+                    <main className={`min-w-0 ${isMobileSectionOpen ? "block" : "hidden lg:block"}`}>
+                        <div className="mb-5 flex items-center gap-3 lg:hidden">
                             <button
                                 type="button"
-                                disabled={isLoggingOut}
-                                onClick={() => {
-                                    void handleLogout();
-                                }}
-                                className="flex cursor-pointer items-center gap-2 rounded-lg border border-danger/40 px-5 py-2 text-sm font-medium text-danger transition-colors hover:bg-danger-sweet disabled:cursor-not-allowed disabled:opacity-50"
+                                onClick={() => setIsMobileSectionOpen(false)}
+                                aria-label={t("settings.navigation.back")}
+                                className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-light-10 text-helper transition-colors hover:bg-light-5 hover:text-light"
                             >
-                                <LogOut className="h-4 w-4" />
-                                {isLoggingOut ? t("settings.loggingOut") : t("settings.logout")}
+                                <ArrowLeft className="h-4 w-4" />
                             </button>
-                        }
-                    />
-
-                    <SettingsSectionCard
-                        title={t("settings.deleteAccountTitle")}
-                        description={t("settings.deleteAccountDescription", { days: ACCOUNT_DELETION_GRACE_DAYS })}
-                        titleClassName="text-danger"
-                        action={
-                            <button
-                                type="button"
-                                onClick={() => setIsDeleteAccountModalOpen(true)}
-                                className="flex cursor-pointer items-center gap-2 rounded-lg bg-danger px-5 py-2 text-sm font-medium text-light transition-opacity hover:opacity-90"
-                            >
-                                <Trash2 className="h-4 w-4" />
-                                {t("settings.deleteAccount")}
-                            </button>
-                        }
-                    />
+                            <h2 className="text-xl font-semibold tracking-tight text-light">
+                                {t(`settings.navigation.${activeSection}`)}
+                            </h2>
+                        </div>
+                        {sectionContent[activeSection]}
+                    </main>
                 </div>
 
                 <EditProfileModal
                     isOpen={isProfileModalOpen}
                     onClose={() => setIsProfileModalOpen(false)}
                 />
-                <CategoriesModal
-                    isOpen={isCategoryModalOpen}
-                    onClose={() => setIsCategoryModalOpen(false)}
+                <ChangePasswordModal
+                    isOpen={isChangePasswordModalOpen}
+                    onClose={() => setIsChangePasswordModalOpen(false)}
                 />
                 <DeleteAccountModal
                     isOpen={isDeleteAccountModalOpen}
                     onClose={() => setIsDeleteAccountModalOpen(false)}
                 />
+                <CancelSubscriptionModal
+                    isOpen={isCancelSubscriptionModalOpen}
+                    onClose={() => setIsCancelSubscriptionModalOpen(false)}
+                />
             </div>
-
         </div>
     );
 };

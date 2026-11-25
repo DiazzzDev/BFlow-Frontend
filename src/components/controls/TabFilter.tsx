@@ -14,6 +14,7 @@ interface TabFilterProps {
     options: option[];
     selected: string;
     keyFilter: string;
+    onChange?: (value: string) => void;
     /** stretch = full width on mobile; scroll = horizontal scroll + edge fades */
     responsive?: TabFilterResponsive;
     /** @deprecated Use responsive="stretch" */
@@ -25,6 +26,7 @@ export const TabFilter = ({
     options,
     selected,
     keyFilter,
+    onChange,
     responsive,
     fullWidthMobile = false,
     layoutId = "activeTabIndicator",
@@ -32,11 +34,16 @@ export const TabFilter = ({
     const { params, updateSearchParams } = useUpdateSearchParams();
 
     const urlValue = keyFilter ? params.get(keyFilter) : null;
-    const selectedOption = urlValue ?? selected;
+    const selectedOption = onChange ? selected : (urlValue ?? selected);
     const mode: TabFilterResponsive | undefined =
         responsive ?? (fullWidthMobile ? "stretch" : undefined);
 
     const handelSearch = (value: string) => {
+        if (onChange) {
+            onChange(value);
+            return;
+        }
+
         updateSearchParams(
             { [keyFilter]: value || null },
             { resetPage: true, replace: false },
@@ -57,11 +64,11 @@ export const TabFilter = ({
                     }`}
                 onClick={() => handelSearch(option.value)}
             >
-                {option.label}
+                <span className="relative z-10">{option.label}</span>
                 {isActive && (
                     <motion.div
                         layoutId={layoutId}
-                        className="absolute inset-0 -z-10 rounded-full border border-surface bg-linear-to-b from-surface to-surface-25 backdrop-blur-sm"
+                        className="absolute inset-0 z-0 rounded-full border border-surface bg-linear-to-b from-surface to-surface-25 backdrop-blur-sm"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                 )}
@@ -71,7 +78,7 @@ export const TabFilter = ({
 
     if (mode === "scroll") {
         return (
-            <div className="relative min-w-0 max-w-full">
+            <div className="relative min-w-0 max-w-full bg-surface-hard">
                 <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     <div className="relative flex w-max items-center gap-1 rounded-full border border-light-25/50 p-0.5">
                         {tabs}
@@ -85,7 +92,7 @@ export const TabFilter = ({
 
     return (
         <div
-            className={`relative flex items-center gap-1 rounded-full border border-light-25/50 p-0.5 ${mode === "stretch" ? "w-full sm:w-max" : "w-max"
+            className={`bg-surface-hard relative flex items-center gap-1 rounded-full border border-light-25/50 p-0.5 ${mode === "stretch" ? "w-full sm:w-max" : "w-max"
                 }`}
         >
             {tabs}

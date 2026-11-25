@@ -1,6 +1,5 @@
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { useTranslation } from "react-i18next";
-
 interface BudgetProgressProps {
     percent: number;
     warning?: number;
@@ -8,6 +7,7 @@ interface BudgetProgressProps {
     spent?: number;
     budgetLimit?: number;
     currency?: string;
+    animateProgress?: boolean;
 }
 
 export const BudgetProgress = ({
@@ -17,13 +17,14 @@ export const BudgetProgress = ({
     spent = 0,
     budgetLimit = 0,
     currency,
+    animateProgress = true,
 }: BudgetProgressProps) => {
     const { t } = useTranslation();
     const clamped = Math.min(Math.max(percent, 0), 100);
     const fillClass = clamped >= critical ? "bg-danger" : clamped >= warning ? "bg-warning" : "bg-primary";
 
     return (
-        <article className="rounded-2xl border border-light-10 bg-surface p-6 shadow-custom">
+        <article className="rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-6 shadow-custom">
             <div className="mb-5 flex items-end justify-between gap-4">
                 <p className="text-base font-semibold text-light">{t("budgetView.progress")}</p>
                 <p className="shrink-0 text-3xl font-semibold tabular-nums tracking-tight text-light">
@@ -34,8 +35,8 @@ export const BudgetProgress = ({
             <div className="relative h-2.5 overflow-visible rounded-full bg-progress-track">
                 <div className="h-2.5 overflow-hidden rounded-full">
                     <div
-                        className={`h-full rounded-full transition-all ${fillClass}`}
-                        style={{ width: `${clamped}%` }}
+                        className={`h-full w-full origin-left rounded-full ${animateProgress ? "transition-transform duration-200 ease-out motion-reduce:transition-none" : ""} ${fillClass}`}
+                        style={{ transform: `scaleX(${clamped / 100})` }}
                     />
                 </div>
                 <span

@@ -20,7 +20,7 @@ export const Header = ({ onOpenNav }: HeaderProps) => {
     const crumbs = getBreadcrumbs(pathname);
 
     return (
-        <header className="flex items-center justify-between gap-3 border-b border-light-10 bg-surface-hard px-4 py-4 text-light sm:px-6 lg:px-8 lg:py-5">
+        <header className="flex items-center justify-between gap-3 border-b border-light-10 bg-surface px-4 py-4 text-light sm:px-6 lg:px-8 lg:py-5">
             <div className="flex min-w-0 items-center gap-3 sm:gap-4 lg:gap-8">
                 <button
                     type="button"

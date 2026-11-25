@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm, useWatch, type FieldErrors } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import { usePostExpense, usePutExpense } from "../hooks/useMutateExpenses";
 import { usePostIncome, usePutIncome } from "../hooks/useMutateIncomes";
@@ -18,6 +19,7 @@ import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { Textarea } from "@/components/controls/Textarea";
 import { ToggleSwitch } from "@/components/controls/ToggleSwitch";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import type { TransactionType } from "@/modules/app/interfaces/Transaction";
 import {
     PERIODICITY_FORM_OPTIONS,
@@ -28,14 +30,14 @@ import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { setApiValidationErrors } from "@/utils/api";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
-const transactionSchema = z
+const createTransactionSchema = (t: TFunction) => z
     .object({
-        title: z.string().min(1, "El título es obligatorio"),
+        title: z.string().min(1, t("validation.titleRequired")),
         description: z.string(),
         amount: z
             .string()
-            .min(1, "El monto es obligatorio")
-            .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
+            .min(1, t("validation.amountRequired"))
+            .refine((value) => Number(value) > 0, t("validation.amountGreaterThanZero")),
         date: z.string(),
         recurring: z.boolean(),
         recurrencePattern: z.enum(PERIODICITY_VALUES).nullable(),
@@ -46,22 +48,28 @@ const transactionSchema = z
             context.addIssue({
                 code: "custom",
                 path: ["recurrencePattern"],
-                message: "Selecciona un patrón de recurrencia",
+                message: t("validation.recurrencePatternRequired"),
             });
         }
     });
 
-type TransactionFormValues = z.infer<typeof transactionSchema>;
+type TransactionFormValues = z.infer<ReturnType<typeof createTransactionSchema>>;
+type DatePreset = "today" | "yesterday" | "custom";
+const getDateInputValue = (daysOffset = 0) => {
+    const date = new Date();
+    date.setDate(date.getDate() + daysOffset);
+    return date.toISOString().slice(0, 10);
+};
 
-const defaultFormValues: TransactionFormValues = {
+const getDefaultFormValues = (): TransactionFormValues => ({
     title: "",
     description: "",
     amount: "",
-    date: new Date().toISOString().split("T")[0],
+    date: getDateInputValue(),
     recurring: false,
     recurrencePattern: null,
     categoryId: "",
-};
+});
 
 interface TransactionFormProps {
     type: Extract<TransactionType, "INCOME" | "EXPENSE">;
@@ -83,7 +91,19 @@ export const TransactionForm = ({
     initialValues,
 }: TransactionFormProps) => {
     const { t } = useTranslation();
-    const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(false);
+    const transactionSchema = createTransactionSchema(t);
+    const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(
+        readOnly || Boolean(transactionId),
+    );
+    const [datePreset, setDatePreset] = useState<DatePreset>(() => {
+        if (initialValues?.date === getDateInputValue(-1)) {
+            return "yesterday";
+        }
+
+        return initialValues?.date && initialValues.date !== getDateInputValue()
+            ? "custom"
+            : "today";
+    });
     const createIncome = usePostIncome();
     const updateIncome = usePutIncome();
     const createExpense = usePostExpense();
@@ -107,21 +127,24 @@ export const TransactionForm = ({
         formState: { errors },
     } = useForm<TransactionFormValues>({
         resolver: zodResolver(transactionSchema),
-        defaultValues: { ...defaultFormValues, ...initialValues },
+        defaultValues: { ...getDefaultFormValues(), ...initialValues },
     });
     const recurring = useWatch({ control, name: "recurring" });
 
     const onSubmit = async (formData: TransactionFormValues) => {
+        const shouldIncludeAdvancedFields = isEditing || areAdvancedOptionsVisible;
         const payload = {
             title: formData.title,
-            ...(formData.description.trim() ? { description: formData.description.trim() } : {}),
             amount: Number(formData.amount),
-            ...(formData.date ? { date: formData.date } : {}),
             walletId,
             source,
-            recurring: formData.recurring,
-            recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
-            ...(formData.categoryId ? { categoryId: formData.categoryId } : {}),
+            ...(formData.date ? { date: formData.date } : {}),
+            ...(shouldIncludeAdvancedFields && {
+                ...(formData.description.trim() ? { description: formData.description.trim() } : {}),
+                recurring: formData.recurring,
+                recurrencePattern: formData.recurring ? formData.recurrencePattern : null,
+                ...(formData.categoryId ? { categoryId: formData.categoryId } : {}),
+            }),
         };
 
         const promise = isIncome
@@ -153,19 +176,33 @@ export const TransactionForm = ({
         }
 
         if (!isEditing) {
-            reset(defaultFormValues);
+            reset(getDefaultFormValues());
             setAreAdvancedOptionsVisible(false);
+            setDatePreset("today");
         }
         onSuccess?.();
     };
 
+    const onInvalid = (formErrors: FieldErrors<TransactionFormValues>) => {
+        if (formErrors.description || formErrors.categoryId || formErrors.recurrencePattern) {
+            setAreAdvancedOptionsVisible(true);
+        }
+
+        toast.error(t("transactions.formValidationError"));
+    };
+
     return (
-        <form className="flex flex-col gap-5" onSubmit={(event) => { event.preventDefault(); if (!readOnly) { void handleSubmit(onSubmit)(event); } }}>
+        <form
+            className="flex flex-col gap-5"
+            onSubmit={readOnly ? undefined : (event) => {
+                void handleSubmit(onSubmit, onInvalid)(event);
+            }}
+        >
             <div className="flex gap-4">
                 <div className="flex flex-col gap-1 flex-1">
                     <Label htmlFor={`${idPrefix}-title`}>{t("transactions.title")}</Label>
                     <Controller name="title" control={control} render={({ field }) => (
-                        <Input id={`${idPrefix}-title`} placeholder={isIncome ? "Ej. Salario" : "Ej. Almuerzo"} disabled={isDisabled} {...field} />
+                        <Input id={`${idPrefix}-title`} placeholder={t(isIncome ? "transactions.incomeTitlePlaceholder" : "transactions.expenseTitlePlaceholder")} disabled={isDisabled} {...field} />
                     )} />
                     {errors.title && <span className="text-xs text-danger">{errors.title.message}</span>}
                 </div>
@@ -193,6 +230,47 @@ export const TransactionForm = ({
                 </div>
             </div>
 
+            <div className="flex flex-col gap-1">
+                <Label htmlFor={`${idPrefix}-date`}>{t("transactions.date")}</Label>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)]">
+                    <button
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => {
+                            setValue("date", getDateInputValue());
+                            setDatePreset("today");
+                        }}
+                        className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${datePreset === "today" ? "border-primary bg-primary-15 text-primary" : "border-light-10 text-helper hover:border-light-25 hover:text-light"}`}
+                    >
+                        {t("dates.today")}
+                    </button>
+                    <button
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => {
+                            setValue("date", getDateInputValue(-1));
+                            setDatePreset("yesterday");
+                        }}
+                        className={`cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${datePreset === "yesterday" ? "border-primary bg-primary-15 text-primary" : "border-light-10 text-helper hover:border-light-25 hover:text-light"}`}
+                    >
+                        {t("dates.yesterday")}
+                    </button>
+                    <div className="col-span-2 min-w-0 sm:col-span-1">
+                        <Controller name="date" control={control} render={({ field }) => (
+                            <DatePicker
+                                id={`${idPrefix}-date`}
+                                disabled={isDisabled}
+                                {...field}
+                                onChange={(value) => {
+                                    field.onChange(value);
+                                    setDatePreset("custom");
+                                }}
+                            />
+                        )} />
+                    </div>
+                </div>
+            </div>
+
             <div className="border-t border-light-10 pt-4">
                 <button
                     type="button"
@@ -208,7 +286,7 @@ export const TransactionForm = ({
                 >
                     <span className="flex items-center gap-2 text-sm font-medium text-light-75 transition-colors group-hover:text-light">
                         <SlidersHorizontal className="h-4 w-4 text-helper transition-colors group-hover:text-primary" />
-                        Opciones avanzadas
+                        {t("transactions.advancedOptions")}
                     </span>
                     <motion.span animate={{ rotate: areAdvancedOptionsVisible ? 180 : 0 }} transition={{ duration: 0.18, ease: "easeOut" }} className="text-helper">
                         <ChevronDown className="h-4 w-4" />
@@ -219,69 +297,52 @@ export const TransactionForm = ({
                     {areAdvancedOptionsVisible && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="overflow-hidden">
                             <div className="flex flex-col gap-4 pt-4">
-                                <div className="flex flex-col gap-4 sm:flex-row">
-                                    <div className="flex flex-1 flex-col gap-1">
-                                        <Label htmlFor={`${idPrefix}-date`}>{t("transactions.date")}</Label>
-                                        <Controller name="date" control={control} render={({ field }) => (
-                                            <DatePicker id={`${idPrefix}-date`} disabled={isDisabled} {...field} />
-                                        )} />
-                                    </div>
-                                    <div className="flex flex-col gap-1 flex-1">
-                                        <Label htmlFor={`${idPrefix}-category`}>{t("transactions.category")}</Label>
-                                        <Controller name="categoryId" control={control} render={({ field }) => (
-                                            <Select id={`${idPrefix}-category`} value={field.value} disabled={isDisabled || isCategoriesLoading} onChange={(event) => field.onChange(event.target.value)} onBlur={field.onBlur}>
-                                                <option value="">Sin categoría</option>
-                                                {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-                                            </Select>
-                                        )} />
-                                    </div>
-                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <div className="grid gap-4 lg:grid-cols-2">
+                                        <div className="flex flex-col gap-4">
+                                            <div className="flex flex-col gap-1">
+                                                <Label htmlFor={`${idPrefix}-category`}>{t("transactions.category")}</Label>
+                                                <Controller name="categoryId" control={control} render={({ field }) => (
+                                                    <Select id={`${idPrefix}-category`} value={field.value} disabled={isDisabled || isCategoriesLoading} onChange={(event) => field.onChange(event.target.value)} onBlur={field.onBlur}>
+                                                    <option value="">{t("transactions.noCategory")}</option>
+                                                        {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
+                                                    </Select>
+                                                )} />
+                                            </div>
+                                            <div className="flex flex-col gap-1.5">
+                                            <Label htmlFor={`${idPrefix}-recurrence-pattern`} className={`transition-opacity ${recurring ? "" : "opacity-50"}`}>
+                                                {typeLabel}
+                                            </Label>
+                                            <div className="flex items-center gap-2">
+                                                <Controller name="recurrencePattern" control={control} render={({ field }) => (
+                                                    <Select
+                                                        id={`${idPrefix}-recurrence-pattern`}
+                                                        value={field.value ?? ""}
+                                                        disabled={isDisabled || !recurring}
+                                                        onChange={(event) => field.onChange(event.target.value ? event.target.value as Periodicity : null)}
+                                                        onBlur={field.onBlur}
+                                                        className="flex-1"
+                                                    >
+                                                        <option value="">{t("transactions.selectPattern")}</option>
+                                                        {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => <option key={value} value={value}>{t(`budgets.periods.${value.toLowerCase()}`, { defaultValue: label })}</option>)}
+                                                    </Select>
+                                                )} />
+                                                <Controller name="recurring" control={control} render={({ field }) => (
+                                                    <ToggleSwitch aria-label={typeLabel} checked={field.value} disabled={isDisabled} onChange={field.onChange} />
+                                                )} />
+                                            </div>
+                                            {recurring && <p className="text-xs text-helper">{t("transactions.recurrenceHelper")}</p>}
+                                                {errors.recurrencePattern && <span className="text-xs text-danger">{errors.recurrencePattern.message}</span>}
+                                            </div>
+                                        </div>
 
-                                <div className="flex flex-col gap-1">
-                                    <Label htmlFor={`${idPrefix}-description`}>{t("transactions.description")}</Label>
-                                    <Controller name="description" control={control} render={({ field }) => (
-                                        <Textarea id={`${idPrefix}-description`} placeholder={isIncome ? "Detalle del ingreso" : t("transactions.expenseDetail")} rows={3} disabled={isDisabled} {...field} />
-                                    )} />
-                                </div>
-
-                                <div className="flex flex-col gap-1.5 flex-1 max-w-[60%]">
-                                    <div className="flex items-center justify-between gap-4 sm:max-w-72">
-                                        <Label
-                                            htmlFor={`${idPrefix}-recurrence-pattern`}
-                                            className={`transition-opacity ${recurring ? "" : "opacity-50"}`}
-                                        >
-                                            {typeLabel}
-                                        </Label>
+                                        <div className="flex flex-col gap-1">
+                                            <Label htmlFor={`${idPrefix}-description`}>{t("transactions.description")}</Label>
+                                            <Controller name="description" control={control} render={({ field }) => (
+                                            <Textarea id={`${idPrefix}-description`} placeholder={t(isIncome ? "transactions.incomeDetail" : "transactions.expenseDetail")} rows={5} disabled={isDisabled} {...field} />
+                                            )} />
+                                        </div>
                                     </div>
-                                    <div className="flex gap-5 items-center">
-                                        <Controller name="recurrencePattern" control={control} render={({ field }) => (
-                                            <Select
-                                                id={`${idPrefix}-recurrence-pattern`}
-                                                value={field.value ?? ""}
-                                                disabled={isDisabled || !recurring}
-                                                onChange={(event) => field.onChange(event.target.value ? event.target.value as Periodicity : null)}
-                                                onBlur={field.onBlur}
-                                                className="sm:max-w-100"
-                                            >
-                                                <option value="">{t("transactions.selectPattern")}</option>
-                                                {PERIODICITY_FORM_OPTIONS.map(({ value, label }) => <option key={value} value={value}>{t(`budgets.periods.${value.toLowerCase()}`, { defaultValue: label })}</option>)}
-                                            </Select>
-                                        )} />
-                                        <Controller name="recurring" control={control} render={({ field }) => (
-                                            <ToggleSwitch
-                                                aria-label={typeLabel}
-                                                checked={field.value}
-                                                disabled={isDisabled}
-                                                onChange={field.onChange}
-                                            />
-                                        )} />
-                                    </div>
-                                    {recurring && (
-                                        <p className="text-xs text-helper">
-                                            Se creará una transacción automáticamente según el patrón seleccionado.
-                                        </p>
-                                    )}
-                                    {errors.recurrencePattern && <span className="text-xs text-danger">{errors.recurrencePattern.message}</span>}
                                 </div>
                             </div>
                         </motion.div>
@@ -290,12 +351,13 @@ export const TransactionForm = ({
             </div>
 
             {!readOnly && (
-                <Button
-                    type="submit"
-                    disabled={isSaving}
-                    text={isSaving ? t("transactions.saving") : isEditing ? t("transactions.saveChanges") : isIncome ? t("transactions.createIncome") : t("transactions.createExpense")}
-                    className="self-end"
-                />
+                <ModalActionFooter>
+                    <Button
+                        type="submit"
+                        disabled={isSaving}
+                        text={isSaving ? t("transactions.saving") : isEditing ? t("transactions.saveChanges") : isIncome ? t("transactions.createIncome") : t("transactions.createExpense")}
+                    />
+                </ModalActionFooter>
             )}
         </form>
     );

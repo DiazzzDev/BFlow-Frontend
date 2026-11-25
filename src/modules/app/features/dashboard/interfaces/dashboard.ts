@@ -1,15 +1,18 @@
-import type { CategoryIconKey } from "@/utils/categoryIcons";
-
 export type RecentActivityType = "ALL" | "INCOME" | "EXPENSE";
 
 export interface RecentActivityItem {
-    type: string;
+    id: string;
+    type: "INCOME" | "EXPENSE";
     name: string;
+    description: string | null;
     createdAt: string;
+    date: string;
     amount: number;
+    currency: string;
     walletName: string;
-    categoryColor: string;
-    categoryIcon: CategoryIconKey;
+    source: string;
+    categoryColor: string | null;
+    categoryIcon: string | null;
 }
 
 export type BudgetHealthStatus = "OK" | "WARNING" | "CRITICAL" | "EXCEEDED";

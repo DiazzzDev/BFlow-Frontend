@@ -7,11 +7,11 @@ export const BUDGET_PERIOD_TABS: Array<{ label: string; value: string }> = [
     { label: "Anual", value: "YEARLY" },
 ];
 
-export const BUDGET_SCOPE_TABS: Array<{ id: BudgetScope; label: string }> = [
-    { id: "WALLET", label: "Billetera" },
-    { id: "CATEGORY_GLOBAL", label: "Categoría" },
-    { id: "WALLET_CATEGORY", label: "Billetera + categoría" },
-];
+export const BUDGET_SCOPE_TABS = [
+    { id: "WALLET", labelKey: "budgets.scopes.wallet" },
+    { id: "CATEGORY_GLOBAL", labelKey: "budgets.scopes.category" },
+    { id: "WALLET_CATEGORY", labelKey: "budgets.scopes.walletCategory" },
+] as const satisfies ReadonlyArray<{ id: BudgetScope; labelKey: string }>;
 
 export const BUDGET_SORT_OPTIONS: Array<{ label: string; value: string }> = [
     { value: "amount,desc", label: "Mayor monto" },

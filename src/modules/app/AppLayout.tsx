@@ -45,7 +45,7 @@ export const AppLayout = () => {
     useDocumentTitle(documentTitle);
 
     return (
-        <div className="flex h-dvh overflow-hidden">
+        <div className="flex h-dvh overflow-hidden bg-surface-hard bg-[linear-gradient(135deg,var(--color-secondary-15)_0%,var(--color-surface-hard)_38%,var(--color-surface-hard)_100%)]">
             <Navbar isOpen={isNavOpen} onClose={() => setIsNavOpen(false)} />
             <section className="flex min-w-0 flex-1 flex-col">
                 <Header onOpenNav={() => setIsNavOpen(true)} />

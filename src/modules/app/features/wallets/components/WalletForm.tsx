@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import { useMutateWallets } from "../hooks/useMutateWallets";
 
@@ -11,20 +12,21 @@ import { Label } from "@/components/controls/Label";
 import { Textarea } from "@/components/controls/Textarea";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { Button } from "@/components/controls/Button";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
 const DEFAULT_CURRENCY = "USD";
 
-const walletSchema = z.object({
-    name: z.string().min(1, "El nombre es obligatorio"),
-    description: z.string().min(1, "La descripción es obligatoria"),
+const createWalletSchema = (t: TFunction) => z.object({
+    name: z.string().min(1, t("validation.nameRequired")),
+    description: z.string().min(1, t("validation.descriptionRequired")),
     initialValue: z
         .string()
-        .min(1, "El balance inicial es obligatorio")
-        .refine((value) => Number(value) >= 0, "El balance inicial debe ser 0 o mayor"),
+        .min(1, t("validation.initialBalanceRequired"))
+        .refine((value) => Number(value) >= 0, t("validation.initialBalanceNonNegative")),
 });
 
-type WalletFormValues = z.infer<typeof walletSchema>;
+type WalletFormValues = z.infer<ReturnType<typeof createWalletSchema>>;
 
 const defaultFormValues: WalletFormValues = {
     name: "",
@@ -38,6 +40,7 @@ interface WalletFormProps {
 
 export const WalletForm = ({ onSuccess }: WalletFormProps) => {
     const { t } = useTranslation();
+    const walletSchema = createWalletSchema(t);
     // Create mutation
     const { createWallet } = useMutateWallets();
 
@@ -149,12 +152,13 @@ export const WalletForm = ({ onSuccess }: WalletFormProps) => {
                 )}
             </div>
 
-            <Button
-                type="submit"
-                disabled={createWallet.isPending}
-                text={createWallet.isPending ? t("wallets.updateLoading") : t("wallets.create")}
-                className="self-end"
-            />
+            <ModalActionFooter>
+                <Button
+                    type="submit"
+                    disabled={createWallet.isPending}
+                    text={createWallet.isPending ? t("wallets.updateLoading") : t("wallets.create")}
+                />
+            </ModalActionFooter>
         </form>
     );
 };

@@ -1,4 +1,5 @@
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { useTranslation } from "react-i18next";
 
 interface DeleteBudgetModalProps {
@@ -36,7 +37,8 @@ export const DeleteBudgetModal = ({
                     </span>
                     ? Esta acción no se puede deshacer.
                 </p>
-                <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <ModalActionFooter>
+                    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <button
                         type="button"
                         disabled={isDeleting}
@@ -55,7 +57,8 @@ export const DeleteBudgetModal = ({
                     >
                         {isDeleting ? t("budgets.deleteLoading") : t("transactions.delete")}
                     </button>
-                </div>
+                    </div>
+                </ModalActionFooter>
             </div>
         </CustomModal>
     );

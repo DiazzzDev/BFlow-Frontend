@@ -23,6 +23,33 @@
         "yesterday": "Yesterday",
         "invalid": "Invalid date"
     },
+    "validation": {
+        "titleRequired": "Title is required",
+        "amountRequired": "Amount is required",
+        "amountGreaterThanZero": "Amount must be greater than 0",
+        "nameRequired": "Name is required",
+        "descriptionRequired": "Description is required",
+        "colorRequired": "Color is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email address",
+        "fullNameRequired": "Full name is required",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must have at least {{min}} characters",
+        "passwordUppercase": "Password must include at least one uppercase letter",
+        "passwordLowercase": "Password must include at least one lowercase letter",
+        "passwordNumberOrSymbol": "Password must include at least one number or symbol",
+        "passwordMustDiffer": "The new password must be different from the current password",
+        "passwordsMatch": "Passwords do not match",
+        "initialBalanceRequired": "Initial balance is required",
+        "initialBalanceNonNegative": "Initial balance must be 0 or greater",
+        "intervalRequired": "Interval is required",
+        "intervalPositiveInteger": "Must be a whole number greater than 0",
+        "startDateRequired": "Start date is required",
+        "endDateAfterStart": "End date must be on or after the start date",
+        "recurrencePatternRequired": "Select a recurrence pattern",
+        "walletRequired": "Select a wallet",
+        "categoryRequired": "Select a category"
+    },
     "a11y": {
         "loadingSession": "Loading session",
         "openMenu": "Open menu",
@@ -51,6 +78,7 @@
     },
     "theme": {
         "title": "Appearance",
+        "system": "System",
         "dark": "Dark mode",
         "light": "Light mode",
         "toggle": "Switch to {{theme}}"
@@ -67,13 +95,160 @@
         "title": "Language",
         "description": "Choose the language for BFlow and server messages.",
         "label": "Application language",
+        "spanish": "Spanish",
+        "english": "English",
         "saving": "Saving language...",
         "saved": "Language updated",
         "error": "Could not update the language"
     },
     "settings": {
+        "pageTitle": "Settings",
+        "pageDescription": "Manage your account, preferences, categories, connectors, and subscription.",
+        "navigation": {
+            "label": "Settings sections",
+            "account": "Account",
+            "preferences": "Preferences",
+            "categories": "Categories",
+            "connectors": "Connectors",
+            "subscription": "Subscription",
+            "legal": "Legal",
+            "documentation": "Documentation",
+            "back": "Back to settings"
+        },
+        "account": {
+            "title": "Account",
+            "deleteHint": "Your profile and all data will be deleted. This action cannot be undone.",
+            "profileLabel": "User profile",
+            "security": "Security",
+            "passwordTitle": "Password",
+            "passwordDescription": "Change it regularly to keep your account secure.",
+            "changePassword": "Change password",
+            "changePasswordTitle": "Change password",
+            "changePasswordHint": "Enter your current password and set a new secure password.",
+            "currentPassword": "Current password",
+            "currentPasswordPlaceholder": "Enter your current password",
+            "newPassword": "New password",
+            "confirmNewPassword": "Confirm new password",
+            "confirmNewPasswordPlaceholder": "Repeat your new password",
+            "passwordChangeLoading": "Updating password...",
+            "passwordChangeSuccess": "Your password was updated successfully.",
+            "passwordChangeError": "We could not update your password. Please try again.",
+            "passwordCurrentIncorrect": "Your current password is incorrect.",
+            "passwordMissingScope": "Your session does not have the required permission. Sign out and sign in again.",
+            "passwordPolicyError": "The new password does not meet the security policy.",
+            "passwordTooManyAttempts": "Too many attempts. Please wait a few minutes before trying again.",
+            "twoFactorTitle": "Two-step verification",
+            "twoFactorDescription": "Ask for a code from your authenticator app each time you sign in.",
+            "disabled": "Disabled",
+            "enabled": "Enabled",
+            "enable": "Enable",
+            "mfa": {
+                "appName": "BFlow",
+                "title": "Enable two-step verification",
+                "description": "Whenever you sign in, we will ask for a code from your authenticator app.",
+                "stepOneTitle": "Install an authenticator app",
+                "stepOneDescription": "For example Google Authenticator, Microsoft Authenticator, Authy, or 1Password.",
+                "stepTwoTitle": "Scan the QR code",
+                "stepTwoDescription": "Open it from your authenticator app.",
+                "secretHint": "Can't scan it? Enter this key in your app.",
+                "showSecret": "Show",
+                "hideSecret": "Hide",
+                "copySecret": "Copy",
+                "secretCopied": "The setup key was copied.",
+                "copyError": "The key could not be copied. Please try again.",
+                "setupError": "We could not generate your MFA setup. Go back and try again.",
+                "stepThreeTitle": "Enter the verification code",
+                "stepThreeDescription": "Enter the code from your app to confirm it was configured.",
+                "codeLabel": "6-digit code",
+                "codePlaceholder": "000000",
+                "codeHint": "The code changes every 30 seconds.",
+                "verifying": "Verifying…",
+                "verifyAndEnable": "Verify and enable",
+                "verified": "Two-step verification was enabled successfully.",
+                "verifyError": "The code could not be verified. Check your app and try again.",
+                "securityNotice": "Save the setup key in a secure place. If you lose access to your authenticator app, you will need help from BFlow support."
+            }
+        },
+        "preferences": {
+            "title": "Preferences",
+            "description": "Customize how BFlow looks and communicates.",
+            "themeDescription": "Choose how you want to view BFlow.",
+            "aiConfirmationTitle": "Confirm what AI detects",
+            "aiConfirmationDescription": "When you upload a receipt, AI detects the amount, date and merchant. When active, you review them before saving; when disabled, they are saved automatically."
+        },
+        "integrations": {
+            "title": "Integrations",
+            "description": "Connect BFlow with your AI assistants and financial services.",
+            "claudeTitle": "Claude",
+            "claudeDescription": "Add BFlow to Claude as a custom connector to consult your financial information.",
+            "chatGptTitle": "ChatGPT",
+            "chatGptDescription": "Open ChatGPT plugins and add BFlow by pasting the MCP URL manually.",
+            "chatGptRequirement": "Requires an OpenAI PRO plan.",
+            "connectChatGpt": "Connect with ChatGPT",
+            "chatGptManualSetup": "Copy this URL and paste it when creating the plugin in ChatGPT.",
+            "copyMcpUrl": "Copy URL",
+            "mcpUrlCopied": "The MCP URL was copied.",
+            "mcpUrlCopyError": "The MCP URL could not be copied. Please try again.",
+            "gmailTitle": "Gmail",
+            "gmailDescription": "Connect Gmail to securely import transactions detected in your receipts and transactional emails.",
+            "gmailConnected": "Connected",
+            "gmailConnect": "Connect Gmail",
+            "gmailConnecting": "Connecting Gmail…",
+            "gmailRedirecting": "Redirecting to Google…",
+            "gmailSync": "Sync now",
+            "gmailSyncing": "Syncing Gmail…",
+            "gmailSyncSuccess": "{{count}} imports were queued.",
+            "gmailDisconnect": "Disconnect",
+            "gmailDisconnecting": "Disconnecting Gmail…",
+            "gmailDisconnected": "Gmail was disconnected."
+        },
+        "legal": {
+            "title": "Legal",
+            "description": "Review the documents that govern the use of BFlow.",
+            "viewDocument": "View document",
+            "terms": {
+                "title": "Terms and conditions",
+                "description": "Learn about the platform terms of use."
+            },
+            "privacy": {
+                "title": "Privacy policy",
+                "description": "Review how we protect and handle your data."
+            },
+            "cookies": {
+                "title": "Cookie policy",
+                "description": "Learn how we use cookies in BFlow."
+            }
+        },
+        "documentation": {
+            "title": "Documentation",
+            "description": "Guides and resources to make the most of BFlow.",
+            "manualTitle": "User guide",
+            "manualDescription": "Learn to manage your finances, wallets, and budgets.",
+            "openManual": "Open documentation"
+        },
+        "connectors": {
+            "title": "Connectors",
+            "description": "Connect BFlow with assistants to consult your financial information.",
+            "unavailable": "Unavailable in this environment.",
+            "moreSoon": "More connectors will be available soon."
+        },
+        "subscriptionDescription": "Review details and manage your current plan.",
+        "subscriptionEndsAt": "Ends on {{date}}.",
+        "subscriptionDays": "{{count}} days",
+        "subscriptionDaysHint": "until it ends",
+        "subscriptionPlansAndPayments": "Plans and payments",
+        "subscriptionPlansAndPaymentsDescription": "Compare the available plans and change yours.",
+        "subscriptionViewPlans": "View plans",
+        "subscriptionHistory": "Previous subscriptions",
+        "subscriptionHistoryDescription": "Review your previous subscriptions and payments.",
+        "subscriptionViewHistory": "View history",
+        "subscriptionCancelDescription": "Cancel your current subscription.",
+        "noSubscription": "You do not have an active subscription.",
+        "categoriesManageHint": "Organize the categories you use to classify your transactions.",
         "categoriesTitle": "Categories",
         "categoriesDescription": "Create, edit and delete your transaction categories.",
+        "categoriesListTitle": "Your categories",
+        "categoriesListDescription": "Expense and income categories are managed separately.",
         "logoutTitle": "Sign out",
         "logoutDescription": "Sign out of your account on this device.",
         "logout": "Sign out",
@@ -137,7 +312,10 @@
         "cancelling": "Canceling...",
         "cancel": "Cancel subscription",
         "cancelSuccess": "Subscription canceled successfully",
-        "cancelError": "Could not cancel the subscription"
+        "cancelError": "Could not cancel the subscription",
+        "cancelModalTitle": "Cancel subscription",
+        "cancelModalDescription": "Do you want to cancel your {{planName}} subscription?",
+        "cancelModalHint": "This action will be sent immediately to cancel your current subscription."
     },
     "budgets": {
         "createLoading": "Creating budget...",
@@ -172,11 +350,26 @@
         "searchCategory": "Search category...",
         "alert": "Warning",
         "critical": "Critical",
+        "consumptionAlerts": "Consumption alerts",
+        "alertAt": "When spending $",
         "saving": "Saving...",
         "scopeLabel": "Budget scope",
+        "validation": {
+            "amountRequired": "Amount is required",
+            "amountGreaterThanZero": "Amount must be greater than 0",
+            "startDateRequired": "Start date is required",
+            "warningMinimum": "Warning must be at least {{min}}%",
+            "warningMaximum": "Warning must be below {{max}}%",
+            "criticalMinimum": "Critical value must be at least {{min}}%",
+            "criticalMaximum": "Critical value cannot exceed {{max}}%",
+            "criticalAfterWarning": "Critical value must be greater than the warning",
+            "walletRequired": "Select a wallet",
+            "categoryRequired": "Select a category"
+        },
         "periods": {
             "all": "All",
             "monthly": "Monthly",
+            "daily": "Daily",
             "weekly": "Weekly",
             "yearly": "Yearly"
         },
@@ -288,6 +481,19 @@
         "actions": "Transaction actions",
         "deleteLoading": "Deleting transaction...",
         "new": "New transaction",
+        "required": "Required",
+        "walletFallback": "Wallet",
+        "walletOwner": "Owner",
+        "availableBalance": "Available balance",
+        "selectWalletError": "Select a wallet",
+        "amountRequired": "Amount is required",
+        "amountGreaterThanZero": "Amount must be greater than zero",
+        "formValidationError": "Review the highlighted fields before saving your changes.",
+        "advancedOptions": "Advanced options",
+        "incomeTitlePlaceholder": "E.g. Salary",
+        "expenseTitlePlaceholder": "E.g. Lunch",
+        "noCategory": "No category",
+        "recurrenceHelper": "A transaction will be created automatically using the selected pattern.",
         "incomeDetail": "Income details",
         "expenseDetail": "Expense details",
         "transferDetail": "Transfer details",
@@ -301,6 +507,7 @@
         "description": "Description",
         "amount": "Amount",
         "date": "Date",
+        "transactionDate": "Transaction date",
         "category": "Category",
         "loadingCategories": "Loading categories...",
         "searchCategory": "Search category...",
@@ -406,7 +613,8 @@
         "duplicate": "Duplicate",
         "duplicateTransaction": "Duplicate transaction",
         "manual": "Manual",
-        "recurring": "Recurring"
+        "recurring": "Recurring",
+        "source": "Source"
     },
     "budgetView": {
         "notFound": "Budget not found",
@@ -494,6 +702,11 @@
         "amountPlaceholder": "$ 0.00",
         "scanReceipt": "Scan receipt",
         "quickRegisterHint": "Type the amount or scan a receipt.",
+        "receiptReviewTitle": "Review receipt",
+        "receiptReviewDescription": "AI extracted these details. Review or edit them before recording the transaction.",
+        "receiptTypeLabel": "Receipt transaction type",
+        "receiptDescriptionPlaceholder": "Add an optional description",
+        "receiptSave": "Record transaction",
         "saveExpense": "Save expense",
         "activityAll": "All",
         "activitySearch": "Search",
@@ -506,6 +719,7 @@
         "totalBalance": "Total balance",
         "vsLastMonth": "vs. last month",
         "budgetHealth": "Budget health",
+        "budgets": "Budgets",
         "noBudgets": "No budgets",
         "createBudgetHint": "Create a budget to see its health here.",
         "updated": "Updated {{date}}",
@@ -542,6 +756,7 @@
     },
     "docs": {
         "label": "Documentation",
+        "lastUpdated": "Reviewed November 18, 2026",
         "onThisPage": "On this page",
         "navigate": "Go to a section",
         "previous": "Previous",
@@ -593,33 +808,20 @@
             },
             "plans": {
                 "title": "Plans and limits",
-                "description": "What each plan includes and how payments are processed.",
+                "description": "Compare the available options and learn how to complete a subscription.",
                 "sections": [
                     {
                         "id": "personal",
                         "title": "Personal",
                         "body": [
-                            "The free plan, designed to start organizing your finances at no cost."
-                        ],
-                        "items": [
-                            "Up to 2 wallets.",
-                            "Up to 2 recurring transactions.",
-                            "Up to 3 budgets.",
-                            "Join one shared wallet with up to 3 people."
+                            "Start organizing your finances with the features available in the Personal plan. See the pricing page for current limits."
                         ]
                     },
                     {
                         "id": "pro",
                         "title": "BFlow Pro",
                         "body": [
-                            "For people who manage several accounts or share their finances. It costs $9.99 per month or $99.99 per year."
-                        ],
-                        "items": [
-                            "Up to 100 wallets.",
-                            "Up to 25 recurring transactions.",
-                            "Up to 100 budgets.",
-                            "Create shared wallets and invite up to 10 people.",
-                            "Transfers between wallets."
+                            "Increase available limits and access Pro features such as creating shared wallets and customizing the dashboard. The pricing page shows current options and terms."
                         ]
                     },
                     {
@@ -634,49 +836,42 @@
             },
             "dashboard": {
                 "title": "Dashboard",
-                "description": "Your financial summary: balance, statistics, budgets and recent activity.",
+                "description": "Check your balance, review recent activity and record an expense from one place.",
                 "sections": [
                     {
                         "id": "overview",
                         "title": "Overview",
                         "body": [
-                            "The dashboard is the first screen after you sign in. It greets you based on the time of day and shows how your money is doing right now."
+                            "After you sign in, the dashboard brings together your wallet balance and shortcuts for reviewing activity and budgets."
                         ]
                     },
                     {
                         "id": "widgets",
-                        "title": "What it shows",
+                        "title": "Your summary",
                         "body": [
-                            "The screen is split into cards, each with part of your information:"
+                            "From the dashboard you can check:"
                         ],
                         "items": [
-                            "Total balance, average income and average expense, compared with last month.",
-                            "Statistics: a chart of income and expenses per month. Click a legend item to show only that series.",
-                            "Budget health: the status of each active budget.",
-                            "This month: how your activity splits between income, expenses and transfers.",
-                            "Recent activity: your latest transactions."
+                            "Your total balance and this month's income and expenses summary.",
+                            "Recent transactions, with search and filters by type.",
+                            "Your budgets' progress; open one to see its details.",
+                            "A quick action to record an expense in your default wallet."
                         ]
                     },
                     {
                         "id": "budget-health",
-                        "title": "Budget health",
+                        "title": "Review budgets",
                         "body": [
-                            "Each budget shows a label based on how much of its limit you have spent:"
-                        ],
-                        "items": [
-                            "Healthy: you are below the alert threshold.",
-                            "Warning: you passed the alert threshold.",
-                            "Critical: you passed the critical threshold.",
-                            "Exceeded: you spent 100% or more of the limit."
+                            "The dashboard shows each budget's name, how much you have used and how much remains. Select one to open its details."
                         ]
                     },
                     {
                         "id": "quick-actions",
                         "title": "Quick actions",
                         "body": [
-                            "From the dashboard you can record a new transaction or schedule a recurring one without opening a wallet. Just pick the wallet in the form."
+                            "Enter an amount to record an expense in your default wallet. You can also upload a receipt; BFlow processes its information and creates a transaction from the recognized details."
                         ],
-                        "note": "From here you can only record income and expenses in your own wallets. Transfers are made from a wallet's detail page."
+                        "note": "To use another wallet, record the transaction from that wallet. Transfers are made from a wallet's detail page."
                     }
                 ]
             },
@@ -858,16 +1053,16 @@
                         "id": "create",
                         "title": "Schedule a transaction",
                         "body": [
-                            "Click Schedule transaction from the dashboard or from a wallet's information panel, and fill in:"
+                            "From a wallet's detail page, open Schedule transaction and fill in the transaction details:"
                         ],
                         "items": [
                             "Type: income or expense.",
                             "Title, description, amount and category.",
                             "Frequency: daily, weekly, monthly or yearly.",
                             "Every: how many days, weeks, months or years between repetitions.",
-                            "Start date and end date."
+                            "A start date and, if the recurrence has a limit, an end date."
                         ],
-                        "note": "The end date is required and must be the same as or later than the start date."
+                        "note": "Leave the end date empty for a recurrence with no set end. If you add one, it must be the same as or later than the start date."
                     },
                     {
                         "id": "upcoming",
@@ -1085,6 +1280,48 @@
         "navDocs": "Docs",
         "navContact": "Contact",
         "goDashboard": "Go to dashboard",
+        "dashboard": "Dashboard",
+        "heroStartFree": "Start free",
+        "productTour": {
+            "title": "See BFlow in action",
+            "description": "Choose an action and see the screen that goes with it.",
+            "wheelLabel": "BFlow feature tour",
+            "receiptLabel": "Receipt",
+            "receiptTitle": "Receipt processing",
+            "options": {
+                "expense": "Log an expense",
+                "receipt": "Upload a receipt",
+                "budgets": "Review your budgets",
+                "claude": "Connect Claude",
+                "sharedWallet": "Share a wallet",
+                "scheduled": "Schedule transactions"
+            },
+            "exampleWallet": "Everyday expenses",
+            "exampleBudget": "Example budget",
+            "claudeProductDescription": "Ask simple questions about your transactions and budgets. Ask Claude to find spending by category or check how much room remains in a budget.",
+            "stepComplete": "Done",
+            "receiptStages": {
+                "received": "Receipt received",
+                "processing": "Analyzing its details",
+                "extracted": "Details ready to review",
+                "confirmed": "Expense confirmed"
+            },
+            "receiptDetail": "BFlow checks the receipt status while it processes its details.",
+            "sharedWalletTitle": "Shared wallet",
+            "sharedWalletDescription": "Invite people and organize transactions in the same wallet together.",
+            "scheduledTitle": "Scheduled transactions",
+            "scheduledDescription": "Schedule recurring transactions to keep them in view when they are due.",
+            "scheduledName": "Name",
+            "scheduledNameValue": "Gym",
+            "scheduledSecondValue": "Salary",
+            "scheduledThirdValue": "Internet",
+            "scheduledFrequency": "Frequency",
+            "scheduledFrequencyValue": "Monthly",
+            "scheduledMonthly": "Monthly",
+            "scheduledExpense": "Expense",
+            "scheduledIncome": "Income",
+            "remaining": "You have {{remaining}} of {{limit}} left"
+        },
         "signIn": "Sign in",
         "register": "Sign up",
         "footerAbout": "About us",
@@ -1092,6 +1329,9 @@
         "footerContact": "Contact",
         "footerPlans": "Plans",
         "footerLegal": "Legal",
+        "footerCopyright": "© 2026 BFlow Studio. All rights reserved.",
+        "footerOrigin": "Made from El Salvador.",
+        "apiReference": "API reference",
         "legalLabel": "Legal",
         "legalUpdated": "Updated on {{date}}",
         "contents": "Contents",
@@ -1103,13 +1343,50 @@
         "privacyDescription": "How we collect, use and protect your personal information at BFlow.",
         "cookiesTitle": "Cookie Policy",
         "cookiesDescription": "Information about the cookies and tracking technologies used by BFlow.",
-        "heroTitle": "The financial control you",
-        "heroFocus": "always wanted",
-        "heroDescription": "Manage your income, expenses and shared wallets in one place. Simple, powerful and designed for your everyday life.",
+        "heroTitle": "Feel calm",
+        "heroFocus": "with your money again",
+        "heroDescription": "A few simple steps to clearer finances and calmer decisions.",
+        "heroExplorePro": "Explore Pro",
+        "routines": {
+            "title": "Your accounts follow the rhythm of your life",
+            "description": "BFlow brings together what you record today, what you share, and what you want to schedule.",
+            "ai": {
+                "context": {
+                    "label": "BFlow prepares the context",
+                    "done": "Ready to talk",
+                    "description": "Your information comes together so you can understand it without hunting for it."
+                },
+                "answer": {
+                    "label": "BFlow connects your questions",
+                    "done": "Answer prepared",
+                    "description": "Ask in your own words and review your finances like a conversation."
+                },
+                "steps": {
+                    "transactions": "Transactions from your wallets",
+                    "budgets": "Budgets and limits",
+                    "receipts": "Receipts you have saved"
+                }
+            },
+            "items": {
+                "today": {
+                    "title": "Today",
+                    "description": "Log an expense or keep its receipt when you need it."
+                },
+                "together": {
+                    "title": "Shared",
+                    "description": "Keep a common wallet with the people who take part."
+                },
+                "ahead": {
+                    "title": "What comes next",
+                    "description": "Schedule transactions and check your budgets before deciding."
+                }
+            }
+        },
         "plans": {
             "startFree": "Start free",
             "startMonth": "Start with Pro",
             "startYear": "Start with Pro annual",
+            "footerYear": "Annual Pro",
             "emptyTitle": "No plans available",
             "emptyDescription": "Subscription plans could not be loaded at this time. Please try again later.",
             "errorTitle": "Error loading plans",
@@ -1126,6 +1403,24 @@
             "pro": "Pro",
             "personal": "Personal"
         },
+        "subscription": {
+            "back": "Back to the home page",
+            "title": "Complete your subscription",
+            "description": "Review what your plan includes, then continue to secure payment with Wompi.",
+            "includedTitle": "What is included",
+            "includedDescription": "Benefits in the {{plan}} plan",
+            "selectedPlan": "Selected plan",
+            "checkoutDescription": "You will continue to Wompi to complete your subscription payment.",
+            "continue": "Continue",
+            "comparisonTitle": "Choose how you want to transform your finances",
+            "comparisonDescription": "Monthly Pro brings together the tools for managing your finances with more freedom.",
+            "benefit": "Benefit",
+            "monthlyPro": "Monthly Pro",
+            "included": "Included",
+            "morePlansTitle": "Choose the plan that fits you",
+            "morePlansDescription": "Compare the options and select the one you need.",
+            "selectPlan": "Select plan"
+        },
         "heroPreview": {
             "sharedWallet": "Shared wallet",
             "members": "{{count}} members",
@@ -1139,8 +1434,8 @@
             "imageAlt": "BFlow dashboard with balance, statistics and budget health"
         },
         "solutions": {
-            "title": "Organize your money your way",
-            "description": "Each module solves one part of your finances: from knowing where your money went to warning you before you go over budget.",
+            "title": "Connected to the way you manage your money",
+            "description": "Separate your wallets, share the ones you manage with someone else, and follow your budgets with a clear view.",
             "learnMore": "Learn more about {{module}}",
             "more": {
                 "title": "Discover everything BFlow can do for you",
@@ -1233,14 +1528,35 @@
             }
         },
         "howTitle": "Three steps to financial peace",
-        "pricingTitle": "Explore our plans",
+        "pricingTitle": "Choose a plan that fits",
         "pricingDescription": "All prices are expressed in USD. The final amount in local currency depends on the exchange rate applied by your bank or issuer.",
-        "faqTitle": "Frequently asked questions",
-        "faqDescription": "Everything you need to know before you start. Still have questions?",
+        "openSource": {
+            "title": "Open so you always understand how it works",
+            "description": "We believe financial tools should be transparent and remain under your control. Explore how BFlow works, contribute to the project, and follow its evolution. You should always understand the tool organizing your finances.",
+            "action": "View on GitHub",
+            "points": {
+                "code": "Open source",
+                "inspect": "Inspect the engine",
+                "evolve": "Follow its evolution"
+            }
+        },
+        "integrations": {
+            "title": "Your finances, on autopilot",
+            "description": "Connect Gmail, Excel, Claude or ChatGPT and leave manual work behind.",
+            "visualLabel": "Tools that connect to BFlow",
+            "items": { "gmail": "Gmail", "excel": "Excel", "claude": "Claude", "chatgpt": "ChatGPT" }
+        },
+        "faqTitle": "Before you begin",
+        "faqDescription": "Practical details about how BFlow works. If you need help with your situation, send us a message.",
         "faqContact": "Write to us",
         "cta": {
-            "title": "Start organizing your money today",
-            "description": "Create your free account in less than a minute and keep your wallets, budgets and shared expenses in one place."
+            "title": "Make room for a clearer relationship with your money.",
+            "description": "Open BFlow to continue with your finances, review Pro options or contact us if you need a hand.",
+            "enterApp": "Open BFlow",
+            "proTitle": "Choose Pro",
+            "proDescription": "Review the benefits and choose the option you need.",
+            "supportTitle": "Contact support",
+            "supportDescription": "Tell us what you need and we will help you work through it."
         },
         "wompiReference": "Visit Wompi",
         "month": "Month",
@@ -1264,24 +1580,32 @@
         ],
         "faq": [
             {
-                "question": "Why use BFlow?",
-                "answer": "BFlow brings your income, expenses, budgets and wallets together so you can understand your money every day."
+                "question": "Can I separate personal spending from a business or trip?",
+                "answer": "Record income and expenses, sort them by category and wallet, review transactions, and manage budgets in one place."
             },
             {
-                "question": "Can I share my wallets?",
-                "answer": "Yes. You can create shared wallets and invite the people you manage your finances with."
+                "question": "How do I upload a receipt or invoice to review its details?",
+                "answer": "Upload an image or PDF of a receipt. BFlow analyzes its details and lets you review them before confirming the expense."
             },
             {
-                "question": "Which payment gateway does BFlow use?",
-                "answer": "Premium plan payments are processed through Wompi, an online payment platform."
+                "question": "Can I share a wallet with my partner, family or team?",
+                "answer": "Yes. Invite members to a shared wallet and assign them a role to organize expenses together."
             },
             {
-                "question": "Is my data safe?",
-                "answer": "Yes. We protect your information with secure authentication and good practices so your financial data remains private."
+                "question": "What happens if I go over the budget I set?",
+                "answer": "Set a limit for a wallet or category and follow its progress with a bar and alert markers."
             },
             {
-                "question": "Can I change or cancel my plan?",
-                "answer": "Yes. You can review, change or cancel your plan from your account settings, according to the current terms."
+                "question": "What financial analysis can I ask Claude for?",
+                "answer": "Connect BFlow to Claude as a custom connector to ask questions about your finances from Claude."
+            },
+            {
+                "question": "How do payments, renewals or refunds work?",
+                "answer": "Plan payments are processed through Wompi. For questions related to payments or refunds, see its help center."
+            },
+            {
+                "question": "Which plan fits if I am just getting started?",
+                "answer": "Review the plans and benefits in the pricing section. When you choose a plan, BFlow guides you through signing in and the next purchase steps."
             }
         ]
     },
@@ -1318,6 +1642,7 @@
     "auth": {
         "welcome": "Welcome",
         "loginLoading": "Signing in...",
+        "loginSuccess": "Welcome back!",
         "loginError": "Could not sign in",
         "registerLoading": "Creating account...",
         "registerSuccess": "Account created successfully",
@@ -1350,6 +1675,11 @@
         "namePlaceholder": "Your full name",
         "emailPlaceholder": "you@email.com",
         "passwordPlaceholder": "Minimum 8 characters",
+        "passwordRequirements": "At least 8 characters, one uppercase letter, and one number or symbol.",
+        "unverifiedRedirect": "Your account has not been verified. Redirecting to verification...",
+        "unverifiedAccountTitle": "Unverified account",
+        "unverifiedAccountDescription": "Your account ({{email}}) requires email verification before you can sign in.",
+        "verifyEmailNow": "Verify email now",
         "verifyTitle": "Verify your email",
         "verifyDescription": "We sent a 6-digit code to",
         "verifyLoading": "Verifying...",
@@ -1371,6 +1701,9 @@
         "resetTitle": "New password",
         "resetDescription": "Check your email and paste the code you received.",
         "resetLoading": "Updating...",
+        "resetSuccess": "Your password was reset successfully.",
+        "resetError": "We could not reset your password. Please try again.",
+        "resetEmailMissing": "No email was provided to reset the password.",
         "resetButton": "Update password",
         "forgotTitle": "Recover password",
         "forgotDescription": "We will send you a recovery code.",
@@ -1379,6 +1712,7 @@
         "forgotCodeSent": "We sent a password reset code to your email address.",
         "forgotCodeError": "We couldn't send the password reset code. Please try again.",
         "code": "Code",
+        "codePlaceholder": "123456",
         "newPassword": "New password",
         "confirmPassword": "Confirm password",
         "validationEmailRequired": "Email is required",
@@ -1400,5 +1734,19 @@
         "restoringAccount": "Restoring...",
         "restoreAccountSuccess": "Your account has been restored",
         "restoreAccountError": "Could not restore the account"
+        ,"errors": {
+            "unexpected": "An unexpected error occurred.",
+            "emailAlreadyRegistered": "This email address is already registered. Please sign in.",
+            "passwordPolicy": "The password does not meet the security policy.",
+            "invalidEmail": "The email address format is invalid.",
+            "invalidData": "The entered information does not meet the requirements.",
+            "invalidVerificationCode": "The verification code is incorrect.",
+            "expiredVerificationCode": "The verification code expired. Request a new one.",
+            "tooManyAttempts": "Too many attempts. Please wait a few minutes before trying again.",
+            "userNotFound": "There is no account associated with this email address.",
+            "userNotConfirmed": "Your account has not been verified yet.",
+            "invalidCredentials": "Incorrect email or password.",
+            "codeDeliveryFailed": "We could not deliver the email. Check the address you entered."
+        }
     }
 }

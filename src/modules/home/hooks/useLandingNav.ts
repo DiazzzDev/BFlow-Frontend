@@ -4,6 +4,7 @@ import { LANDING_NAV_LINKS } from "../features/landing/utils/landingNav";
 import { DOCS_BASE_PATH } from "../features/docs/utils/docsContent";
 
 const ROUTE_LINKS: Partial<Record<string, string>> = {
+    home: "/",
     contact: "/contact",
     docs: DOCS_BASE_PATH,
 };
@@ -13,6 +14,14 @@ export const useLandingNav = () => {
     const navigate = useNavigate();
 
     const handleNavClick = (id: string) => {
+        if (id === "home") {
+            if (pathname === "/") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                void navigate("/");
+            }
+            return;
+        }
         const route = ROUTE_LINKS[id];
         if (route) {
             void navigate(route);
