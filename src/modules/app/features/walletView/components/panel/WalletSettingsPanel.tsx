@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import {
     AlertTriangle,
     Building2,
@@ -32,12 +33,12 @@ import { formatCurrency } from "@/utils/formatters/formatCurrency";
 import { formatterDynamicDate } from "@/utils/formatters/formatDynamicDate";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
-const settingsSchema = z.object({
-    name: z.string().min(1, "El nombre es obligatorio"),
-    description: z.string().min(1, "La descripción es obligatoria"),
+const createSettingsSchema = (t: TFunction) => z.object({
+    name: z.string().min(1, t("validation.nameRequired")),
+    description: z.string().min(1, t("validation.descriptionRequired")),
 });
 
-type SettingsFormValues = z.infer<typeof settingsSchema>;
+type SettingsFormValues = z.infer<ReturnType<typeof createSettingsSchema>>;
 
 interface WalletSettingsPanelProps {
     wallet?: WalletType;
@@ -69,6 +70,7 @@ export const WalletSettingsPanel = ({
     onDeleteWallet,
 }: WalletSettingsPanelProps) => {
     const { t } = useTranslation();
+    const settingsSchema = createSettingsSchema(t);
     // Update mutation + wallet info stats (transaction count, etc.)
     const { updateWallet } = useMutateWallets();
     const { data: walletDetailsResponse } = useGetWalletDetails(wallet?.id ?? "");
@@ -164,7 +166,7 @@ export const WalletSettingsPanel = ({
 
                 <div className="grid items-start gap-5 @2xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
                     <div className="flex flex-col gap-5">
-                        <section className="overflow-hidden rounded-2xl border border-light-10 bg-surface/40">
+                        <section className="overflow-hidden rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)]">
                             <div className="flex items-start justify-between gap-3 border-b border-light-10 px-5 py-4">
                                 <div className="min-w-0">
                                     <h3 className="text-base font-semibold text-light">
@@ -252,7 +254,7 @@ export const WalletSettingsPanel = ({
                                         <button
                                             type="submit"
                                             disabled={isSaving || !isDirty}
-                                            className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-light-10 bg-surface px-3.5 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 disabled:cursor-not-allowed disabled:opacity-50"
+                                            className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-3.5 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5 disabled:cursor-not-allowed disabled:opacity-50"
                                         >
                                             <Save className="h-4 w-4" />
                                             {isSaving ? t("wallets.updateLoading") : t("wallets.saveChanges")}
@@ -295,7 +297,7 @@ export const WalletSettingsPanel = ({
                         ) : null}
                     </div>
 
-                    <aside className="overflow-hidden rounded-2xl border border-light-10 bg-surface/40">
+                    <aside className="overflow-hidden rounded-2xl border border-light-10 bg-surface [background-image:var(--surface-gradient)]">
                         <div className="flex items-center gap-2 border-b border-light-10 px-5 py-4">
                             <Info className="h-4 w-4 text-helper" />
                             <h3 className="text-base font-semibold text-light">

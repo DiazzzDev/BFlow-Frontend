@@ -24,7 +24,7 @@ export const ResetPasswordPage = () => {
     const loginPath = loginQuery ? `/auth/login?${loginQuery}` : "/auth/login";
     const { mutateAsync: resetPassword, isPending: isLoading } = useResetPassword();
     if (!email) {
-        toast.error("No se proporcionó un correo electrónico para restablecer la contraseña.");
+        toast.error(t("auth.resetEmailMissing"));
         void navigate("/auth/forgot-password");
         return null;
     }

@@ -70,7 +70,7 @@ export const PaginationSelect = ({
                             setIsOpen(false);
                         }
                     }}
-                    className="flex min-w-[4.5rem] cursor-pointer items-center justify-between gap-2 rounded-lg border border-light-10 bg-surface px-3 py-1.5 text-sm font-medium text-light shadow-sm transition-all hover:border-light-25 hover:bg-light-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 active:scale-[0.97]"
+                    className="flex min-w-[4.5rem] cursor-pointer items-center justify-between gap-2 rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] px-3 py-1.5 text-sm font-medium text-light shadow-sm transition-all hover:border-light-25 hover:bg-light-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 active:scale-[0.97]"
                 >
                     {limit}
                     <ChevronDown
@@ -85,7 +85,7 @@ export const PaginationSelect = ({
                     <div
                         role="listbox"
                         aria-labelledby="paginationLimit"
-                        className="absolute bottom-full z-30 mb-2 min-w-full overflow-hidden rounded-lg border border-light-10 bg-surface p-1 shadow-xl shadow-black/30"
+                        className="absolute bottom-full z-30 mb-2 min-w-full overflow-hidden rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-1 shadow-xl shadow-black/30"
                     >
                         {availableOptions.map((option) => {
                             const isSelected = String(option) === limit;

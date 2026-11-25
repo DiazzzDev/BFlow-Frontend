@@ -9,6 +9,7 @@ import { useSettingsSubscription } from "../hooks/useSettingsSubscription";
 import { useLogout } from "@/auth/hooks/useLogout";
 import { ACCOUNT_DELETION_GRACE_DAYS } from "@/auth/utils/accountDeletion";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { getApiErrorMessage } from "@/utils/api/apiMessage";
 
 interface DeleteAccountModalProps {
@@ -97,7 +98,8 @@ export const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps)
                     />
                 </div>
 
-                <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                <ModalActionFooter>
+                    <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <button
                         type="button"
                         disabled={isDeleting}
@@ -114,7 +116,8 @@ export const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps)
                     >
                         {isDeleting ? t("settings.deleteAccountLoading") : t("settings.deleteAccount")}
                     </button>
-                </div>
+                    </div>
+                </ModalActionFooter>
             </div>
         </CustomModal>
     );

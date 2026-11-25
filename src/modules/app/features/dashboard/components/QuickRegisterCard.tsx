@@ -2,15 +2,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera } from "lucide-react";
 import { toast } from "sonner";
 import { useForm, Controller } from "react-hook-form";
-import { useRef, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import type { TFunction } from "i18next";
 
 import {
     useConfirmReceipt,
     useRegisterQuickTransaction,
     useUploadReceipt,
 } from "../hooks/useMutateDashboard";
+import type { Receipt } from "../dashboard.service";
+import { getReceiptConfirmationPayload } from "../utils/receiptConfirmation";
 import { dashboardCardClass, dashboardLabelClass } from "../utils/dashboardCard";
 
 import { useAuthStore } from "@/auth/authStore";
@@ -20,17 +23,19 @@ import { AmountDisplay } from "./AmountDisplay";
 import { formatterDecimal } from "@/utils/formatters/formatterDecimal";
 import { getApiErrorMessage } from "@/utils/api/apiMessage";
 import { Button } from "@/components/controls/Button";
+import { useAiReceiptConfirmationStore } from "@/modules/app/features/settings/aiReceiptConfirmationStore";
+import { ReceiptConfirmationModal } from "./ReceiptConfirmationModal";
 
-/* eslint-disable @typescript-eslint/no-unnecessary-condition -- Wallet state is nullable at runtime despite its narrower API type. */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- Wallets can be absent during auth hydration. */
 
-const quickRegisterSchema = z.object({
+const createQuickRegisterSchema = (t: TFunction) => z.object({
     amount: z
         .string()
-        .min(1, "El monto es obligatorio")
-        .refine((value) => Number(value) > 0, "El monto debe ser mayor a 0"),
+        .min(1, t("validation.amountRequired"))
+        .refine((value) => Number(value) > 0, t("validation.amountGreaterThanZero")),
 });
 
-type QuickRegisterFormValues = z.infer<typeof quickRegisterSchema>;
+type QuickRegisterFormValues = z.infer<ReturnType<typeof createQuickRegisterSchema>>;
 
 const defaultValues: QuickRegisterFormValues = {
     amount: "",
@@ -51,7 +56,12 @@ interface QuickRegisterCardProps {
 
 export const QuickRegisterCard = ({ preview = false, allowPreviewActions = false }: QuickRegisterCardProps) => {
     const { t } = useTranslation();
+    const quickRegisterSchema = createQuickRegisterSchema(t);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [receiptToConfirm, setReceiptToConfirm] = useState<Receipt | null>(null);
+    const shouldConfirmAiReceipt = useAiReceiptConfirmationStore(
+        (state) => state.shouldConfirmAiReceipt,
+    );
     const wallets = useAuthStore((state) => preview && !allowPreviewActions ? [] : state.user?.wallets ?? []);
     const disableActions = preview && !allowPreviewActions;
     const defaultWallet = wallets.find((wallet) => wallet.defaultWallet) ?? wallets[0] ?? null;
@@ -61,7 +71,7 @@ export const QuickRegisterCard = ({ preview = false, allowPreviewActions = false
     } = useRegisterQuickTransaction();
     const { mutateAsync: uploadReceipt, isPending: isUploadingReceipt } = useUploadReceipt();
     const { mutateAsync: confirmReceipt, isPending: isConfirmingReceipt } = useConfirmReceipt();
-    const isBusy = isPending || isUploadingReceipt || isConfirmingReceipt;
+    const isBusy = isPending || isUploadingReceipt || isConfirmingReceipt || Boolean(receiptToConfirm);
     const {
         control,
         handleSubmit,
@@ -107,20 +117,17 @@ export const QuickRegisterCard = ({ preview = false, allowPreviewActions = false
             const response = await promise;
 
             if (response.data.status === "EXTRACTED") {
-                const suggestedType =
-                    response.data.suggestedType === "INCOME" ? "INCOME" : "EXPENSE";
+                if (shouldConfirmAiReceipt) {
+                    setReceiptToConfirm(response.data);
+                    return;
+                }
+
                 const confirmationPromise = confirmReceipt({
                     receiptId: response.data.id,
-                    payload: {
-                        type: suggestedType,
-                        title: response.data.suggestedTitle || t("dashboard.receiptFallbackTitle"),
-                        description: "",
-                        amount: response.data.suggestedAmount ?? 0,
-                        categoryId: response.data.suggestedCategoryId || "",
-                        date:
-                            response.data.suggestedDate ||
-                            new Date().toISOString().slice(0, 10),
-                    },
+                    payload: getReceiptConfirmationPayload(
+                        response.data,
+                        t("dashboard.receiptFallbackTitle"),
+                    ),
                 });
 
                 toast.promise(confirmationPromise, {
@@ -158,6 +165,7 @@ export const QuickRegisterCard = ({ preview = false, allowPreviewActions = false
     };
 
     return (
+        <>
         <section className={preview ? "flex w-full min-w-0 flex-col rounded-3xl border border-light-10 bg-surface/50 p-6 backdrop-blur-3xl sm:p-8" : dashboardCardClass}>
             <div className="flex items-start justify-between gap-3">
                 <p className={preview ? "text-2xl font-semibold tracking-tight text-light sm:text-3xl" : dashboardLabelClass}>{t("dashboard.quickRegister")}</p>
@@ -238,5 +246,12 @@ export const QuickRegisterCard = ({ preview = false, allowPreviewActions = false
                 />
             </form>
         </section>
+        {receiptToConfirm ? (
+            <ReceiptConfirmationModal
+                receipt={receiptToConfirm}
+                onClose={() => setReceiptToConfirm(null)}
+            />
+        ) : null}
+        </>
     );
 }

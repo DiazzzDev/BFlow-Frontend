@@ -62,7 +62,7 @@ export const WalletInvitationsSidebar = ({
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 28, stiffness: 260 }}
-                        className="absolute right-0 top-0 flex h-full w-full max-w-sm flex-col border-l border-light-10 bg-surface shadow-custom"
+                        className="absolute right-0 top-0 flex h-full w-full max-w-sm flex-col border-l border-light-10 bg-surface [background-image:var(--surface-gradient)] shadow-custom"
                     >
                         <div className="flex items-start justify-between gap-3 border-b border-light-10 px-5 py-4">
                             <div className="flex min-w-0 items-start gap-3">

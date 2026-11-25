@@ -50,7 +50,7 @@ export const VerifyAccountForm = ({ email, planId, onSubmit, onResendCode, isLoa
             await toast.promise(onSubmit({ email, code: value }), {
                 loading: t("auth.verifyLoading"),
                 success: t("auth.verifySuccess"),
-                error: (err) => getCognitoErrorMessage(err, t("auth.verifyError")),
+                error: (err) => getCognitoErrorMessage(err, t, "auth.verifyError"),
             }).unwrap();
             void navigate(getPostLoginPath(planId), { replace: true });
         } catch {
@@ -74,7 +74,7 @@ export const VerifyAccountForm = ({ email, planId, onSubmit, onResendCode, isLoa
             await toast.promise(onResendCode(email), {
                 loading: t("auth.verifyResending"),
                 success: t("auth.verifyResendSuccess"),
-                error: (err) => getCognitoErrorMessage(err, t("auth.verifyResendError")),
+                error: (err) => getCognitoErrorMessage(err, t, "auth.verifyResendError"),
             }).unwrap();
             setCode("");
             restartCooldown();

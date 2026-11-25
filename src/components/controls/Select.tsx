@@ -230,7 +230,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
                             exit={{ opacity: 0, y: -6, scale: 0.98 }}
                             transition={{ duration: 0.16, ease: "easeOut" }}
                             style={menuPosition}
-                            className="fixed z-[100] max-h-56 overflow-y-auto rounded-lg border border-light-10 bg-surface p-1.5 shadow-custom"
+                            className="fixed z-[100] max-h-56 overflow-y-auto rounded-lg border border-light-10 bg-surface [background-image:var(--surface-gradient)] p-1.5 shadow-custom"
                         >
                             {options.map((option) => {
                                 const isSelected = option.value === selectedValue;

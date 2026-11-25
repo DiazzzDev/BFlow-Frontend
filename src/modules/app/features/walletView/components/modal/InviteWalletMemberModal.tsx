@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 
 import type { WalletCollaborator } from "../../../wallets/interfaces/WalletCollaborator";
 import { useMutateWalletInvitations } from "../../../wallets/hooks/useMutateWalletInvitations";
@@ -13,20 +14,21 @@ import { collaboratorStatusLabel } from "../../utils/collaboratorStatus";
 import { Button } from "@/components/controls/Button";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { CustomModal } from "@/components/custom/CustomModal";
+import { ModalActionFooter } from "@/components/custom/ModalActionFooter";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getInitials } from "@/utils/getInitials";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 
-const inviteSchema = z.object({
+const createInviteSchema = (t: TFunction) => z.object({
     invitedEmail: z
         .string()
         .trim()
-        .min(1, "El correo es obligatorio")
-        .email("Ingresa un correo electrónico válido")
+        .min(1, t("validation.emailRequired"))
+        .email(t("validation.emailInvalid"))
         .transform((value) => value.toLowerCase()),
 });
 
-type InviteFormValues = z.infer<typeof inviteSchema>;
+type InviteFormValues = z.infer<ReturnType<typeof createInviteSchema>>;
 
 interface InviteWalletMemberModalProps {
     isOpen: boolean;
@@ -76,6 +78,7 @@ const InviteWalletMemberModalContent = ({
     onClose,
 }: InviteWalletMemberModalContentProps) => {
     const { t } = useTranslation();
+    const inviteSchema = createInviteSchema(t);
     // Invite mutation
     const { inviteMember } = useMutateWalletInvitations();
 
@@ -237,14 +240,14 @@ const InviteWalletMemberModalContent = ({
                 ) : null}
             </div>
 
-            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <ModalActionFooter>
                 <Button
                     type="submit"
                     text={inviteMember.isPending ? t("wallets.inviteLoading") : t("walletView.invite")}
                     disabled={inviteMember.isPending}
                     className="w-full sm:w-auto"
                 />
-            </div>
+            </ModalActionFooter>
         </form>
     );
 };

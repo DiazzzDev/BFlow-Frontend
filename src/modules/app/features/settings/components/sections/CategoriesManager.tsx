@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 
-import { useGetCategories } from "../hooks/useGetCategories";
-import { useMutateCategories } from "../hooks/useMutateCategories";
+import { useGetCategories } from "../../hooks/useGetCategories";
+import { useMutateCategories } from "../../hooks/useMutateCategories";
 import {
     CATEGORY_TYPE_TABS,
     type CategoryTypeFilter,
-} from "../utils/filters";
+} from "../../utils/filters";
 import {
     CATEGORY_TYPE_FORM_OPTIONS,
     CATEGORY_TYPE_LABELS,
-} from "../utils/categoryType";
+} from "../../utils/categoryType";
 
 import { CategoryIcon } from "@/components/icons/CategoryIcon";
 import type { Category } from "@/modules/app/interfaces/Category";
@@ -26,7 +27,6 @@ import { Input } from "@/components/controls/Input";
 import { Label } from "@/components/controls/Label";
 import { Select } from "@/components/controls/Select";
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
-import { CustomModal } from "@/components/custom/CustomModal";
 import { getApiErrorMessage, getApiMessage } from "@/utils/api/apiMessage";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
 import {
@@ -35,14 +35,14 @@ import {
     isCategoryIconKey,
 } from "@/utils/categoryIcons";
 
-const categorySchema = z.object({
-    name: z.string().min(1, "El nombre es obligatorio"),
+const createCategorySchema = (t: TFunction) => z.object({
+    name: z.string().min(1, t("validation.nameRequired")),
     type: z.enum(CATEGORY_TYPE_VALUES),
-    color: z.string().min(1, "El color es obligatorio"),
+    color: z.string().min(1, t("validation.colorRequired")),
     icon: z.enum(categoryIconKeys as [typeof categoryIconKeys[number], ...typeof categoryIconKeys[number][]]),
 });
 
-type CategoryFormValues = z.infer<typeof categorySchema>;
+type CategoryFormValues = z.infer<ReturnType<typeof createCategorySchema>>;
 
 const defaultValues: CategoryFormValues = {
     name: "",
@@ -51,40 +51,18 @@ const defaultValues: CategoryFormValues = {
     icon: defaultCategoryIcon,
 };
 
-interface CategoriesModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
-
-export const CategoriesModal = ({ isOpen, onClose }: CategoriesModalProps) => {
+export const CategoriesManager = () => {
     const { t } = useTranslation();
-    return (
-        <CustomModal
-            isModalOpen={isOpen}
-            setIsModalOpen={(open) => {
-                if (!open) {
-                    onClose();
-                }
-            }}
-            title={t("settings.categoriesTitle")}
-            maxWidth="max-w-4xl"
-        >
-            {/* Remount form/list state whenever the modal opens */}
-            <CategoriesModalContent key={isOpen ? "open" : "closed"} />
-        </CustomModal>
-    );
-};
-
-const CategoriesModalContent = () => {
-    const { t } = useTranslation();
+    const categorySchema = createCategorySchema(t);
     // Categories list + create mutation
     const { data, isLoading, isError } = useGetCategories();
     const createCategory = useMutateCategories();
     const categories = data?.data ?? [];
 
     // List filter + which category is being edited (null = create mode)
-    const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>("ALL");
+    const [typeFilter, setTypeFilter] = useState<CategoryTypeFilter>("EXPENSE");
     const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+    const formRef = useRef<HTMLFormElement>(null);
 
     // RHF form + watched color/icon for the preview chip
     const {
@@ -98,17 +76,14 @@ const CategoriesModalContent = () => {
         defaultValues,
     });
     const selectedColor = useWatch({ control, name: "color" });
-    const selectedIcon = useWatch({ control, name: "icon" });
 
     // Filtered list for the right-hand panel
-    const filteredCategories =
-        typeFilter === "ALL"
-            ? categories
-            : categories.filter((category) => category.type === typeFilter);
+    const filteredCategories = categories.filter((category) => category.type === typeFilter);
 
     // Load a category into the form for edit mode
     const startEdit = (category: Category) => {
         setEditingCategory(category);
+        setTypeFilter(category.type);
         reset({
             name: category.name,
             type: category.type,
@@ -116,6 +91,9 @@ const CategoriesModalContent = () => {
             icon: isCategoryIconKey(category.icon)
                 ? category.icon
                 : defaultCategoryIcon,
+        });
+        requestAnimationFrame(() => {
+            formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
     };
 
@@ -152,87 +130,79 @@ const CategoriesModalContent = () => {
     const handleDelete = (_category: Category) => { };
 
     return (
-        <div className="flex flex-col gap-5 lg:flex-row">
+        <div className="flex flex-col gap-6">
             <form
+                ref={formRef}
                 onSubmit={(event) => {
                     void handleSubmit(onSubmit)(event);
                 }}
-                className="flex-1 rounded-xl border border-light-10 bg-surface-hard/40 p-4"
+                className="flex flex-col gap-5"
             >
-                <div className="mb-3 flex items-center gap-3">
-                    <span
-                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-light-10"
-                        style={{
-                            backgroundColor: `${selectedColor}22`,
-                            color: selectedColor,
-                        }}
-                    >
-                        <CategoryIcon icon={selectedIcon} className="h-4 w-4" />
-                    </span>
-                    <p className="text-sm font-medium text-light">
+                <fieldset className="grid grid-cols-1 gap-5 rounded-xl border border-light-10 bg-surface-hard/40 px-4 pb-4 pt-2 lg:grid-cols-[minmax(0,0.9fr)_minmax(19rem,1.1fr)]">
+                    <legend className="px-1 text-sm font-semibold text-light">
                         {editingCategory ? t("settings.categoryEdit") : t("settings.categoryNew")}
-                    </p>
-                </div>
+                    </legend>
 
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <div className="flex flex-col gap-1.5 sm:col-span-2">
-                        <Label htmlFor="categoryName">{t("settings.name")}</Label>
-                        <Controller
-                            name="name"
-                            control={control}
-                            render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="categoryName"
-                                    placeholder={t("settings.nameExample")}
-                                />
-                            )}
-                        />
-                        {errors.name ? (
-                            <span className="text-xs text-danger">
-                                {errors.name.message}
-                            </span>
-                        ) : null}
+                    <div className="grid grid-cols-1 content-start gap-3 sm:grid-cols-2">
+                        <div className="flex flex-col gap-1.5 sm:col-span-2">
+                            <Label htmlFor="categoryName">{t("settings.name")}</Label>
+                            <Controller
+                                name="name"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        id="categoryName"
+                                        placeholder={t("settings.nameExample")}
+                                    />
+                                )}
+                            />
+                            {errors.name ? (
+                                <span className="text-xs text-danger">
+                                    {errors.name.message}
+                                </span>
+                            ) : null}
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="categoryType">{t("settings.type")}</Label>
+                            <Controller
+                                name="type"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select {...field} id="categoryType">
+                                        {CATEGORY_TYPE_FORM_OPTIONS.map((option) => (
+                                            <option
+                                                key={option.value}
+                                                value={option.value}
+                                            >
+                                                {t(`settings.categoryType.${option.value}`, { defaultValue: option.label })}
+                                            </option>
+                                        ))}
+                                    </Select>
+                                )}
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="categoryColor">{t("settings.color")}</Label>
+                            <Controller
+                                name="color"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        id="categoryColor"
+                                        type="color"
+                                        placeholder="#F97316"
+                                        className="h-10 cursor-pointer px-2 py-1"
+                                    />
+                                )}
+                            />
+                        </div>
                     </div>
 
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="categoryType">{t("settings.type")}</Label>
-                        <Controller
-                            name="type"
-                            control={control}
-                            render={({ field }) => (
-                                <Select {...field} id="categoryType">
-                                    {CATEGORY_TYPE_FORM_OPTIONS.map((option) => (
-                                        <option
-                                            key={option.value}
-                                            value={option.value}
-                                        >
-                                            {t(`settings.categoryType.${option.value}`, { defaultValue: option.label })}
-                                        </option>
-                                    ))}
-                                </Select>
-                            )}
-                        />
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="categoryColor">{t("settings.color")}</Label>
-                        <Controller
-                            name="color"
-                            control={control}
-                            render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="categoryColor"
-                                    type="color"
-                                    placeholder="#F97316"
-                                    className="h-10 cursor-pointer px-2 py-1"
-                                />
-                            )}
-                        />
-                    </div>
-
-                    <div className="flex flex-col gap-1.5 sm:col-span-2">
+                    <div className="flex min-w-0 flex-col gap-1.5">
                         <Label htmlFor="categoryIcon">{t("settings.icon")}</Label>
                         <Controller
                             name="icon"
@@ -256,35 +226,45 @@ const CategoriesModalContent = () => {
                             </span>
                         ) : null}
                     </div>
-                </div>
+                </fieldset>
 
-                <div className="mt-4 flex flex-wrap items-center justify-end gap-2">
-                    {editingCategory ? (
-                        <button
-                            type="button"
-                            onClick={clearForm}
-                            className="cursor-pointer rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5"
-                        >
-                            {t("settings.cancelEdit")}
-                        </button>
-                    ) : null}
-                    <Button
-                        type="submit"
-                        text={editingCategory ? t("common.save") : t("settings.add")}
-                        disabled={createCategory.isPending}
-                        icon={
-                            editingCategory ? (
-                                <Pencil className="h-4 w-4" />
-                            ) : (
-                                <Plus className="h-4 w-4" />
-                            )
-                        }
-                        className="w-fit"
-                    />
+                <div className="flex flex-col gap-3 border-t border-light-10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h3 className="text-sm font-semibold text-light">
+                            {t("settings.categoriesListTitle")}
+                        </h3>
+                        <p className="mt-1 text-sm text-helper">
+                            {t("settings.categoriesListDescription")}
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                        {editingCategory ? (
+                            <button
+                                type="button"
+                                onClick={clearForm}
+                                className="cursor-pointer rounded-lg border border-light-10 px-4 py-2 text-sm font-medium text-light transition-colors hover:bg-light-5"
+                            >
+                                {t("settings.cancelEdit")}
+                            </button>
+                        ) : null}
+                        <Button
+                            type="submit"
+                            text={editingCategory ? t("common.save") : t("settings.add")}
+                            disabled={createCategory.isPending}
+                            icon={
+                                editingCategory ? (
+                                    <Pencil className="h-4 w-4" />
+                                ) : (
+                                    <Plus className="h-4 w-4" />
+                                )
+                            }
+                            className="w-fit"
+                        />
+                    </div>
                 </div>
             </form>
 
-            <div className="flex flex-1 flex-col gap-3">
+            <section className="flex flex-col gap-3 rounded-xl border border-light-10 bg-surface-hard/40 p-4">
                 <div className="flex items-center gap-1 border-b border-light-10">
                     {CATEGORY_TYPE_TABS.map((tab) => (
                         <button
@@ -326,30 +306,31 @@ const CategoriesModalContent = () => {
                     ) : (
                         <ul className="flex flex-col">
                             {filteredCategories.map((category) => (
-                                <li
-                                    key={category.id}
-                                    className="flex items-center gap-3 border-b border-light-10 py-3 last:border-b-0"
-                                >
-                                    <span
-                                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-light-10"
-                                        style={{
-                                            backgroundColor: `${category.color || "#64748B"}22`,
-                                            color: category.color || "#64748B",
-                                        }}
+                                <li key={category.id} className="flex items-center gap-2 border-b border-light-10 py-2 last:border-b-0">
+                                    <button
+                                        type="button"
+                                        onClick={() => startEdit(category)}
+                                        className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-lg p-1 text-left transition-colors hover:bg-light-5"
+                                        aria-label={`${t("settings.edit")} ${category.name}`}
                                     >
-                                        <CategoryIcon
-                                            icon={category.icon}
-                                            className="h-4 w-4"
-                                        />
-                                    </span>
-                                    <div className="min-w-0 flex-1">
-                                        <p className="truncate text-sm font-medium text-light">
-                                            {category.name}
-                                        </p>
-                                        <p className="mt-0.5 text-xs text-helper">
-                                            {CATEGORY_TYPE_LABELS[category.type]}
-                                        </p>
-                                    </div>
+                                        <span
+                                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-light-10"
+                                            style={{
+                                                backgroundColor: `${category.color || "#64748B"}22`,
+                                                color: category.color || "#64748B",
+                                            }}
+                                        >
+                                            <CategoryIcon icon={category.icon} className="h-4 w-4" />
+                                        </span>
+                                        <span className="min-w-0 flex-1">
+                                            <span className="block truncate text-sm font-medium text-light">
+                                                {category.name}
+                                            </span>
+                                            <span className="mt-0.5 block text-xs text-helper">
+                                                {CATEGORY_TYPE_LABELS[category.type]}
+                                            </span>
+                                        </span>
+                                    </button>
                                     <div className="flex shrink-0 items-center gap-1">
                                         <button
                                             type="button"
@@ -373,7 +354,7 @@ const CategoriesModalContent = () => {
                         </ul>
                     )}
                 </div>
-            </div>
+            </section>
         </div>
     );
 };

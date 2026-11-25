@@ -94,7 +94,7 @@ export const Pagination = ({ totalPages = 1 }: PaginationProps) => {
                             className={`flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-sm font-semibold transition-colors ${
                                 isActive
                                     ? "bg-primary text-white"
-                                    : "border border-light-10 bg-surface text-light hover:bg-light-5 active:scale-95"
+                                    : "border border-light-10 bg-surface [background-image:var(--surface-gradient)] text-light hover:bg-light-5 active:scale-95"
                             }`}
                         >
                             {item}

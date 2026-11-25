@@ -1,15 +1,20 @@
 /**
- * Translates AWS Cognito Auth errors into user-friendly Spanish messages
- * and logs diagnostic info to the console.
+ * Maps AWS Cognito Auth errors to translated, user-friendly messages while
+ * keeping the original error available in the console for diagnostics.
  */
+import type { TFunction } from "i18next";
+
 export const getCognitoErrorMessage = (
     error: unknown,
-    fallbackMessage = "Ocurrió un error inesperado"
+    t: TFunction,
+    fallbackKey = "auth.errors.unexpected"
 ): string => {
     console.error("[Cognito Auth Error Detail]:", error);
 
     if (typeof error !== "object" || error === null) {
-        return typeof error === "string" ? error : fallbackMessage;
+        return typeof error === "string"
+            ? error
+            : t(fallbackKey, { defaultValue: fallbackKey });
     }
 
     const errObj = error as { name?: string; code?: string; message?: string };
@@ -18,39 +23,39 @@ export const getCognitoErrorMessage = (
 
     switch (name) {
         case "UsernameExistsException":
-            return "Este correo electrónico ya está registrado. Por favor inicia sesión.";
+            return t("auth.errors.emailAlreadyRegistered");
         case "InvalidPasswordException":
-            return "La contraseña debe contener al menos 8 caracteres, números, letras mayúsculas y minúsculas o símbolos.";
+            return t("auth.errors.passwordPolicy");
         case "InvalidParameterException":
             if (/password/i.test(message)) {
-                return "La contraseña no cumple con las políticas de seguridad de Cognito.";
+                return t("auth.errors.passwordPolicy");
             }
             if (/email/i.test(message)) {
-                return "El formato del correo electrónico no es válido.";
+                return t("auth.errors.invalidEmail");
             }
-            return "Los datos ingresados no coinciden con los requeridos.";
+            return t("auth.errors.invalidData");
         case "CodeMismatchException":
-            return "El código de verificación ingresado es incorrecto.";
+            return t("auth.errors.invalidVerificationCode");
         case "ExpiredCodeException":
-            return "El código ha expirado. Haz clic en 'Reenviar código' para obtener uno nuevo.";
+            return t("auth.errors.expiredVerificationCode");
         case "LimitExceededException":
         case "TooManyRequestsException":
-            return "Demasiados intentos. Por favor espera unos minutos antes de reintentar.";
+            return t("auth.errors.tooManyAttempts");
         case "UserNotFoundException":
-            return "No existe ninguna cuenta asociada a este correo electrónico.";
+            return t("auth.errors.userNotFound");
         case "UserNotConfirmedException":
-            return "Tu cuenta aún no está verificada.";
+            return t("auth.errors.userNotConfirmed");
         case "NotAuthorizedException":
-            return "Correo o contraseña incorrectos.";
+            return t("auth.errors.invalidCredentials");
         case "CodeDeliveryFailureException":
-            return "Error al entregar el correo. Asegúrate de ingresar una dirección válida.";
+            return t("auth.errors.codeDeliveryFailed");
         default:
             if (message.includes("Password does not conform")) {
-                return "La contraseña debe cumplir la política de seguridad (mínimo 8 caracteres).";
+                return t("auth.errors.passwordPolicy");
             }
             if (message.includes("User is not confirmed")) {
-                return "Tu cuenta aún no está verificada.";
+                return t("auth.errors.userNotConfirmed");
             }
-            return message || fallbackMessage;
+            return message || t(fallbackKey, { defaultValue: fallbackKey });
     }
 };

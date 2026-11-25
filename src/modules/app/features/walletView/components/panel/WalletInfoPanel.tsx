@@ -75,7 +75,7 @@ export const WalletInfoPanel = ({
                 }`}
             />
             <div
-                className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-light-10 bg-surface transition-transform duration-300 ease-out @3xl:hidden ${
+                className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col border-l border-light-10 bg-surface [background-image:var(--surface-gradient)] transition-transform duration-300 ease-out @3xl:hidden ${
                     isMobileOpen ? "translate-x-0" : "translate-x-full"
                 }`}
             >

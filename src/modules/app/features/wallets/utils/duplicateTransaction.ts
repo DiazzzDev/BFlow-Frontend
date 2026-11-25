@@ -5,8 +5,8 @@ import type { CreateTransferData } from "../../../components/newTransaction/inte
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
 import { formatTodayDateInputValue } from "@/utils/formatters/formatDateInputValue";
 
-export const withDuplicatedDescription = (description: string) => {
-    const base = description.trim();
+export const withDuplicatedDescription = (description: string | null) => {
+    const base = description?.trim() ?? "";
     return base ? `${base} (Transacción duplicada)` : "(Transacción duplicada)";
 };
 
@@ -21,7 +21,7 @@ export const buildDuplicateExpensePayload = (
     source: transaction.source || "manual",
     recurring: false,
     recurrencePattern: null,
-    categoryId: transaction.categoryId,
+    ...(transaction.categoryId ? { categoryId: transaction.categoryId } : {}),
 });
 
 export const buildDuplicateIncomePayload = (
@@ -35,7 +35,7 @@ export const buildDuplicateIncomePayload = (
     source: transaction.source || "manual",
     recurring: false,
     recurrencePattern: null,
-    categoryId: transaction.categoryId,
+    ...(transaction.categoryId ? { categoryId: transaction.categoryId } : {}),
 });
 
 export const buildDuplicateTransferPayload = (

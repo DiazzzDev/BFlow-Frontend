@@ -132,7 +132,7 @@ export const NotificationsMenu = () => {
                             )}
                         </div>
 
-                        <div className="border-t border-light-10 p-2">
+                        <div className="border-t border-light-10 p-2 hidden">
                             <button
                                 type="button"
                                 className="w-full cursor-pointer rounded-lg border border-light-10 bg-light-5 px-3 py-2 text-sm font-medium text-helper transition-colors hover:border-light-25 hover:text-light"
