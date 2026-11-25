@@ -10,17 +10,17 @@ export const LandingFaq = () => {
     const { t } = useTranslation();
 
     // One question open at a time
-    const [openFaq, setOpenFaq] = useState<number | null>(null);
+    const [openFaq, setOpenFaq] = useState<number | null>(0);
 
     const toggleFaq = (index: number) => {
         setOpenFaq((current) => (current === index ? null : index));
     };
 
     return (
-        <section id="faq" className="w-full bg-surface">
-            <div className="mx-auto grid w-full max-w-360 gap-10 px-8 py-20 md:py-28 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
-                <div>
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
+        <section id="faq" className="w-full bg-surface-hard" aria-labelledby="faq-title">
+            <div className="mx-auto grid w-full max-w-7xl gap-7 px-4 py-14 sm:px-8 md:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:gap-12">
+                <div className="lg:sticky lg:top-28 lg:h-fit">
+                    <h2 id="faq-title" className="text-3xl font-bold tracking-tight md:text-5xl">
                         {t("home.faqTitle")}
                     </h2>
                     <p className="mt-4 max-w-sm text-sm leading-relaxed text-helper md:text-base">
@@ -34,7 +34,7 @@ export const LandingFaq = () => {
                     </p>
                 </div>
 
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
                     {LANDING_FAQS.map((faq, index) => (
                         <FaqItem
                             key={faq.question}

@@ -4,6 +4,8 @@ import { useAuthStore } from "@/auth/authStore";
 
 import { verifyAccount, resendVerificationCode } from "../verifyAccount.service";
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- The API client can return no user during verification edge cases. */
+
 interface VerifyAccountArgs {
     email: string;
     code: string;

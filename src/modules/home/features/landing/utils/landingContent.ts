@@ -135,31 +135,41 @@ export const LANDING_STEPS = [
 ];
 
 // FAQ accordion copy
-export const LANDING_FAQS = [
+export interface LandingFaqContent {
+    question: string;
+    answer: string;
+    reference?: string;
+}
+
+export const LANDING_FAQS: LandingFaqContent[] = [
     {
-        question: "¿Por qué usar BFlow?",
-        answer:
-            "BFlow reúne tus ingresos, gastos, presupuestos y billeteras en un solo lugar para que tengas claridad sobre tu dinero cada día.",
+        question: "¿Qué puedo organizar en BFlow?",
+        answer: "Puedes registrar ingresos y gastos, ordenarlos por categoría y billetera, revisar movimientos y llevar presupuestos desde el mismo espacio.",
     },
     {
-        question: "¿Puedo compartir mis billeteras?",
-        answer:
-            "Sí. Puedes crear billeteras compartidas e invitar a las personas con las que organizas tus finanzas.",
+        question: "¿Cómo funciona el registro con recibo?",
+        answer: "Sube una imagen o un PDF del recibo. BFlow analiza sus datos y te permite revisar la información antes de confirmar el gasto.",
     },
     {
-        question: "¿Cómo se procesan los pagos?",
-        answer:
-            "Los pagos de los planes premium se procesan con Wompi, una plataforma de pagos en línea.",
+        question: "¿Puedo compartir una billetera con alguien más?",
+        answer: "Sí. Puedes invitar miembros a una billetera compartida y asignarles un rol para organizar gastos en conjunto.",
+    },
+    {
+        question: "¿Cómo me ayudan los presupuestos?",
+        answer: "Puedes definir un límite para una billetera o categoría y seguir el avance con una barra y sus indicadores de alerta.",
+    },
+    {
+        question: "¿Qué puedo consultar con Claude?",
+        answer: "Puedes conectar BFlow con Claude como conector personalizado para hacer preguntas sobre tus finanzas desde Claude.",
+    },
+    {
+        question: "¿Cómo se procesan los pagos o reembolsos?",
+        answer: "Los pagos de los planes se procesan con Wompi. Para consultas relacionadas con pagos o reembolsos, consulta su centro de ayuda.",
         reference: "https://www.wompi.sv/",
     },
     {
-        question: "¿Mis datos están seguros?",
+        question: "¿Cómo elijo un plan Pro?",
         answer:
-            "Sí. Protegemos tu información con autenticación segura y buenas prácticas para que tus datos financieros permanezcan privados.",
-    },
-    {
-        question: "¿Puedo cambiar de plan o cancelarlo?",
-        answer:
-            "Sí. Puedes revisar, cambiar o cancelar tu plan desde la configuración de tu cuenta, según las condiciones vigentes.",
+            "Revisa los planes y sus beneficios en la sección de precios. Al elegir un plan, BFlow te guía por el inicio de sesión y los siguientes pasos de compra.",
     },
 ];

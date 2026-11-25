@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition -- IntersectionObserver entries are runtime browser data. */
+
 // Band below the sticky navbar where a section counts as "being read"
 const OBSERVER_MARGIN = "-80px 0px -65% 0px";
 

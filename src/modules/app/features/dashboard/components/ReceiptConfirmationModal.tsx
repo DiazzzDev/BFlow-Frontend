@@ -66,6 +66,8 @@ export const ReceiptConfirmationModal = ({
             ? { ...initialPayload, amount: String(initialPayload.amount || "") }
             : undefined,
     });
+    // React Hook Form's watch subscription is required to update categories when the type changes.
+    // eslint-disable-next-line react-hooks/incompatible-library
     const selectedType = watch("type");
     const categories = categoriesResponse?.data.filter(
         (category) => category.type === selectedType,

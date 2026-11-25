@@ -5,115 +5,149 @@ import { SiInstagram } from "@icons-pack/react-simple-icons";
 import { useLandingNav } from "../hooks/useLandingNav";
 
 import { BflowLogo } from "@/components/brand/BflowLogo";
-
+import { useStartProCheckout } from "../features/landing/hooks/useStartProCheckout";
 
 const GitHubIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.018.005 2.045.138 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.807 5.624-5.48 5.921.43.372.813 1.102.813 2.222 0 1.606-.014 2.898-.014 3.293 0 .32.216.694.825.576C20.565 21.796 24 17.297 24 12 24 5.37 18.627 0 12 0z" />
-    </svg>
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.018.005 2.045.138 3.003.404 2.29-1.552 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.807 5.624-5.48 5.921.43.372.813 1.102.813 2.222 0 1.606-.014 2.898-.014 3.293 0 .32.216.694.825.576C20.565 21.796 24 17.297 24 12 24 5.37 18.627 0 12 0z" />
+  </svg>
 );
 
 export const LandingFooter = () => {
-    const { handleNavClick } = useLandingNav();
-    const { t } = useTranslation();
+  const { handleNavClick } = useLandingNav();
+  const { t } = useTranslation();
+  const handleProClick = useStartProCheckout();
 
-    return (
-        <footer className="border-t border-light-10 bg-surface-hard px-8 md:px-16 xl:px-24 pt-16 pb-10">
-            <div className="max-w-360 mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-10 mb-6 border-b border-light-10 pb-10">
-                    <div className="flex flex-col items-start">
-                        <div className="flex flex-col items-start gap-3 mb-3">
-                            <BflowLogo alt="BFlow Studio" className="h-8 w-8" />
-                            <span className="text-lg font-bold tracking-tight">BFlow <span className="text-light-75">Studio</span></span>
-                        </div>
-                        <p className="text-sm text-helper mb-5 max-w-xs">
-                            {t("home.heroTitle")} {t("home.heroFocus")}
-                        </p>
-                        <div className="flex items-center gap-3">
-                            <a
-                                href="https://github.com/DiazzzDev/BFlow-Financial-Engine"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex text-light transition-colors hover:text-primary"
-                                aria-label="GitHub"
-                            >
-                                <GitHubIcon />
-                            </a>
-                            <a
-                                href="https://www.instagram.com/bflow_studio?stkn=MXZvemE5cnh2NG1kMA=="
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex text-light transition-colors hover:text-primary"
-                                aria-label="Instagram"
-                            >
-                                <SiInstagram className="h-5 w-5" />
-                            </a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 className="text-sm font-semibold mb-4">{t("home.footerAbout")}</h4>
-                        <div className="flex flex-col gap-3">
-                            <button
-                                type="button"
-                                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
-                            >
-                                {t("home.footerHome")}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick("faq")}
-                                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
-                            >
-                                {t("home.navFaq")}
-                            </button>
-                            <Link
-                                to="/contact"
-                                className="text-sm text-helper transition-colors hover:text-light"
-                            >
-                                {t("home.footerContact")}
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 className="text-sm font-semibold mb-4">{t("home.footerPlans")}</h4>
-                        <div className="flex flex-col gap-3">
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick("pricing")}
-                                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
-                            >
-                                {t("home.plans.personal")}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => handleNavClick("pricing")}
-                                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
-                            >
-                                {t("home.plans.pro")}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 className="text-sm font-semibold mb-4">{t("home.footerLegal")}</h4>
-                        <div className="flex flex-col gap-3">
-                            <Link to="/terms" className="text-sm text-helper hover:text-light transition-colors">
-                                {t("home.termsTitle")}
-                            </Link>
-                            <Link to="/privacy" className="text-sm text-helper hover:text-light transition-colors">
-                                {t("home.privacyTitle")}
-                            </Link>
-                            <Link to="/cookies" className="text-sm text-helper hover:text-light transition-colors">
-                                {t("home.cookiesTitle")}
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <p className="text-xs text-label">2026 Bflow Studio</p>
+  return (
+    <footer className="border-t border-light-10 bg-surface-hard px-8 md:px-16 xl:px-24 pt-16 pb-10">
+      <div className="max-w-360 mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-10 mb-6 border-b border-light-10 pb-10">
+          <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start gap-3 mb-3">
+              <BflowLogo alt="BFlow Studio" className="h-8 w-8" />
+              <span className="text-lg font-bold tracking-tight">
+                BFlow <span className="text-light-75">Studio</span>
+              </span>
             </div>
-        </footer>
-    );
+            <p className="text-sm text-helper mb-5 max-w-xs">
+              {t("home.heroTitle")} {t("home.heroFocus")}
+            </p>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://github.com/DiazzzDev/BFlow-Financial-Engine"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex text-light transition-colors hover:text-primary"
+                aria-label="GitHub"
+              >
+                <GitHubIcon />
+              </a>
+              <a
+                href="https://www.instagram.com/bflow_studio?stkn=MXZvemE5cnh2NG1kMA=="
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex text-light transition-colors hover:text-primary"
+                aria-label="Instagram"
+              >
+                <SiInstagram className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-4">
+              {t("home.footerAbout")}
+            </h4>
+            <div className="flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => handleNavClick("home")}
+                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
+              >
+                {t("home.footerHome")}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavClick("faq")}
+                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
+              >
+                {t("home.navFaq")}
+              </button>
+              <Link
+                to="/contact"
+                className="text-sm text-helper transition-colors hover:text-light"
+              >
+                {t("home.footerContact")}
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-4">
+              {t("home.footerPlans")}
+            </h4>
+            <div className="flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => handleNavClick("pricing")}
+                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
+              >
+                {t("home.plans.personal")}
+              </button>
+              <button
+                type="button"
+                onClick={() => { void handleProClick(); }}
+                className="text-sm text-helper hover:text-light transition-colors text-left cursor-pointer"
+              >
+                {t("home.plans.pro")}
+              </button>
+              <button
+                type="button"
+                onClick={() => { void handleProClick("YEARLY"); }}
+                className="text-left text-sm text-helper transition-colors hover:text-light"
+              >
+                {t("home.plans.footerYear")}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold mb-4">
+              {t("home.footerLegal")}
+            </h4>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/terms"
+                className="text-sm text-helper hover:text-light transition-colors"
+              >
+                {t("home.termsTitle")}
+              </Link>
+              <Link
+                to="/privacy"
+                className="text-sm text-helper hover:text-light transition-colors"
+              >
+                {t("home.privacyTitle")}
+              </Link>
+              <Link
+                to="/cookies"
+                className="text-sm text-helper hover:text-light transition-colors"
+              >
+                {t("home.cookiesTitle")}
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-1 text-xs text-label sm:flex-row sm:items-center sm:justify-between">
+          <p>{t("home.footerCopyright")}</p>
+          <p>{t("home.footerOrigin")}</p>
+        </div>
+      </div>
+    </footer>
+  );
 };
