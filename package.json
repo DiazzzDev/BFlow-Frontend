@@ -37,7 +37,7 @@
     "date-fns": "^4.4.0",
     "dayjs": "^1.11.23",
     "framer-motion": "^12.42.2",
-    "i18next": "^27.0.1",
+    "i18next": "^27.2.3",
     "lucide-react": "^1.7.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
