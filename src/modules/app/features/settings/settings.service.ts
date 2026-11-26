@@ -2,6 +2,7 @@ import type { Category, CreateCategoryData } from "@/modules/app/interfaces/Cate
 import { apiRequest, type ApiResponse } from "@/utils/api";
 import { config } from "@/config/config";
 import type { UserProfile } from "@/auth/InternalUser";
+import type { UserSubscription } from "@/auth/InternalUser";
 
 const categoriesUrl = `${config.API_BASE_URL}/api/v1/categories`;
 const profileUrl = `${config.API_BASE_URL}/api/v1/users`;
@@ -80,6 +81,14 @@ export const cancelSubscription = async (subscriptionId: string) => {
         `${subscriptionsUrl}/${subscriptionId}/cancel`,
         { ...defaultApiOptions, method: "PATCH" },
         "Error al cancelar la suscripción",
+    );
+};
+
+export const getMySubscriptions = async () => {
+    return await apiRequest<ApiResponse<UserSubscription[]>>(
+        subscriptionsUrl,
+        { ...defaultApiOptions, method: "GET" },
+        "Error al cargar las suscripciones",
     );
 };
 

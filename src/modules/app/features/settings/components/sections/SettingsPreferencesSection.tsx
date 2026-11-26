@@ -6,13 +6,13 @@ import { TabFilter } from "@/components/controls/TabFilter";
 import { ToggleSwitch } from "@/components/controls/ToggleSwitch";
 import { useChangeLanguage } from "@/modules/app/hooks/useChangeLanguage";
 import { SUPPORTED_LANGUAGES, type LanguageCode } from "@/i18n/types";
-import { useTheme, type Theme } from "@/theme/ThemeProvider";
+import { useTheme, type ThemePreference } from "@/theme/ThemeProvider";
 import { useAiReceiptConfirmationStore } from "../../aiReceiptConfirmationStore";
 
 export const SettingsPreferencesSection = () => {
     const { t } = useTranslation();
     const { activeLanguage, changeLanguage, isPending } = useChangeLanguage();
-    const { theme, setTheme } = useTheme();
+    const { preference, setTheme } = useTheme();
     const shouldConfirmAiReceipt = useAiReceiptConfirmationStore(
         (state) => state.shouldConfirmAiReceipt,
     );
@@ -52,16 +52,16 @@ export const SettingsPreferencesSection = () => {
                             <h3 className="text-sm font-semibold text-light">{t("theme.title")}</h3>
                             <p className="mt-1 text-sm text-helper">{t("settings.preferences.themeDescription")}</p>
                         </div>
-                        <TabFilter
-                            options={[
-                                { value: "light", label: t("theme.light") },
-                                { value: "dark", label: t("theme.dark") },
-                            ]}
-                            selected={theme}
-                            keyFilter="settings-theme"
-                            layoutId="settings-theme-filter"
-                            onChange={(selectedTheme) => setTheme(selectedTheme as Theme)}
-                        />
+                        <select
+                            aria-label={t("theme.title")}
+                            value={preference}
+                            onChange={(event) => setTheme(event.target.value as ThemePreference)}
+                            className="h-10 min-w-35 cursor-pointer rounded-lg border border-light-10 bg-surface-hard px-3 text-sm font-medium text-light outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/30"
+                        >
+                            <option value="system">{t("theme.system")}</option>
+                            <option value="light">{t("theme.light")}</option>
+                            <option value="dark">{t("theme.dark")}</option>
+                        </select>
                     </div>
                 </div>
             </SettingsContentCard>

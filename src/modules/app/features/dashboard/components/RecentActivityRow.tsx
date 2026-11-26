@@ -28,7 +28,7 @@ export const RecentActivityRow = ({
                 type="button"
                 data-testid="recent-activity-row"
                 onClick={() => onClick(activity)}
-                className="flex w-full min-w-0 items-center gap-2 rounded-lg p-2.5 text-left transition-colors hover:bg-light-5 sm:gap-3 sm:px-2"
+                className="flex w-full min-w-0 cursor-pointer items-center gap-2 rounded-lg p-2.5 text-left transition-colors hover:bg-light-5 sm:gap-3 sm:px-2"
             >
                 {/* Category icon */}
                 <div

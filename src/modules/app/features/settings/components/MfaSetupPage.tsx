@@ -142,7 +142,9 @@ export const MfaSetupPage = ({ onBack, onComplete }: MfaSetupPageProps) => {
                             </div>
                         ) : (
                             <div className="mt-4 rounded-xl border border-danger/40 bg-danger/5 p-4 text-sm text-danger">
-                                {t("settings.account.mfa.setupError")}
+                                {setUp.error?.message === "MFA self-service is not enabled for this Cognito client."
+                                    ? t("settings.account.mfa.configurationRequired")
+                                    : t("settings.account.mfa.setupError")}
                             </div>
                         )}
                     </SetupStep>

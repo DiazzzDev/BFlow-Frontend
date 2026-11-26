@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, LogOut, Settings } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,6 @@ import { toast } from "sonner";
 
 import { UserAvatar } from "./UserAvatar";
 import { UserMenuLanguage } from "./UserMenuLanguage";
-import { UserMenuTheme } from "./UserMenuTheme";
 
 import { useDropdown } from "../hooks/useDropdown";
 import { USER_MENU_RESOURCE_LINKS } from "../utils/userMenuLinks";
@@ -21,12 +20,10 @@ const itemClass = `${itemBaseClass} text-light hover:bg-light-5`;
 
 export const UserMenu = () => {
     const { t } = useTranslation();
-    const { pathname } = useLocation();
     const user = useAuthStore((state) => state.user);
     const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
     const { isOpen, toggle, close, containerRef, triggerRef } = useDropdown();
     const panelId = useId();
-    const isSettingsActive = pathname.startsWith(SETTINGS_PATH);
 
     const handleLogout = async () => {
         try {
@@ -83,20 +80,13 @@ export const UserMenu = () => {
                         <Link
                             to={SETTINGS_PATH}
                             onClick={close}
-                            aria-current={isSettingsActive ? "page" : undefined}
                             className={itemClass}
                         >
                             <Settings className="h-4 w-4 text-helper" />
                             <span className="flex-1">{t("nav.settings")}</span>
-                            {isSettingsActive ? (
-                                <span className="rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
-                                    {t("userMenu.active")}
-                                </span>
-                            ) : null}
                         </Link>
 
                         <UserMenuLanguage />
-                        <UserMenuTheme />
 
                         <hr className="my-1 border-light-10" />
 

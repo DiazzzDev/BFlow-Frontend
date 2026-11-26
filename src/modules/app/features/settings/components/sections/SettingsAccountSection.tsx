@@ -1,4 +1,4 @@
-import { LogOut, Pencil, Trash2, UserRound } from "lucide-react";
+import { LogOut, Pencil, ShieldCheck, Trash2, UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { SettingsContentCard } from "./SettingsContentCard";
@@ -12,6 +12,7 @@ interface SettingsAccountSectionProps {
     isLoggingOut: boolean;
     onEditProfile: () => void;
     onChangePassword: () => void;
+    canChangePassword: boolean;
     onEnableMfa: () => void;
     onLogout: () => void;
     onDeleteAccount: () => void;
@@ -21,13 +22,14 @@ export const SettingsAccountSection = ({
     isLoggingOut,
     onEditProfile,
     onChangePassword,
+    canChangePassword,
     onEnableMfa,
     onLogout,
     onDeleteAccount,
 }: SettingsAccountSectionProps) => {
     const { t } = useTranslation();
     const user = useAuthStore((state) => state.user);
-    const { isMfaEnabled, isMfaStatusLoading } = useMfaSetup();
+    const { isMfaEnabled, isMfaStatusLoading, isMfaSelfServiceEnabled, mfaMethods } = useMfaSetup();
     const displayName = user?.name?.trim() || t("settings.profile");
 
     return (
@@ -86,7 +88,7 @@ export const SettingsAccountSection = ({
                 <div>
                     <p className="mb-1 text-sm text-helper">{t("settings.account.security")}</p>
                     <div className="divide-y divide-light-10">
-                        <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+                        {canChangePassword ? <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h3 className="text-sm font-semibold text-light">
                                     {t("settings.account.passwordTitle")}
@@ -102,7 +104,7 @@ export const SettingsAccountSection = ({
                                 onClick={onChangePassword}
                                 className="w-full sm:w-auto"
                             />
-                        </div>
+                        </div> : null}
 
                         <div className="flex flex-col gap-4 pt-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
@@ -112,6 +114,15 @@ export const SettingsAccountSection = ({
                                 <p className="mt-1 text-sm text-helper">
                                     {t("settings.account.twoFactorDescription")}
                                 </p>
+                                {!isMfaSelfServiceEnabled ? (
+                                    <p className="mt-2 text-xs text-warning">{t("settings.account.mfa.configurationRequired")}</p>
+                                ) : null}
+                                {mfaMethods.includes("SOFTWARE_TOKEN_MFA") ? (
+                                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-helper">
+                                        <ShieldCheck className="h-3.5 w-3.5 text-success" />
+                                        {t("settings.account.authenticatorApp")}
+                                    </p>
+                                ) : null}
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${isMfaEnabled ? "bg-success-10 text-success" : "bg-light-5 text-helper"}`}>
@@ -127,7 +138,7 @@ export const SettingsAccountSection = ({
                                         variant="outline"
                                         text={t("settings.account.enable")}
                                         onClick={onEnableMfa}
-                                        disabled={isMfaStatusLoading}
+                                        disabled={isMfaStatusLoading || !isMfaSelfServiceEnabled}
                                         className="w-full sm:w-auto"
                                     />
                                 ) : null}
@@ -139,7 +150,7 @@ export const SettingsAccountSection = ({
                 <div className="rounded-xl border border-danger/40 bg-danger/5 p-4">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex gap-3">
-                            <Trash2 className="mt-0.5 h-4 w-4 shrink-0 text-danger" />
+                            <Trash2 className="h-4 w-4 shrink-0 self-center text-danger" />
                             <div>
                                 <h3 className="text-sm font-semibold text-danger">{t("settings.deleteAccountTitle")}</h3>
                                 <p className="mt-1 text-sm text-helper">{t("settings.account.deleteHint")}</p>

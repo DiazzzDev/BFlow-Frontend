@@ -1,4 +1,4 @@
-import { fetchAuthSession } from "aws-amplify/auth";
+import { getCognitoTokens } from "@/auth/cognito/oidc";
 
 import { getActiveLanguage } from "@/i18n/i18n";
 
@@ -23,10 +23,9 @@ export class APIError extends Error {
     }
 }
 
-async function getAmplifyToken(): Promise<string | undefined> {
+async function getCognitoToken(): Promise<string | undefined> {
     try {
-        const session = await fetchAuthSession();
-        return session.tokens?.accessToken.toString();
+        return (await getCognitoTokens())?.accessToken;
     } catch {
         return undefined;
     }
@@ -43,7 +42,7 @@ export const apiRequest = async <T>(
     }
 
     try {
-        const token = await getAmplifyToken();
+        const token = await getCognitoToken();
 
         const response = await fetch(url, {
             ...options,

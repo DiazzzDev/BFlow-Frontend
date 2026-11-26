@@ -1,135 +1,46 @@
-import {
-    signIn,
-    signOut,
-    signUp,
-    confirmSignUp,
-    autoSignIn,
-    fetchAuthSession,
-    getCurrentUser,
-    resetPassword,
-    confirmResetPassword,
-    signInWithRedirect,
-    resendSignUpCode,
-    updatePassword,
-} from "aws-amplify/auth";
+import { cognitoRequest } from "@/auth/cognito/client";
+import { beginAuthorization, beginHostedPage, beginLogout, getCognitoTokens, getIdTokenClaims, isFederatedIdentity } from "@/auth/cognito/oidc";
+import { assertEmailActionAllowed } from "@/auth/utils/emailActionRateLimit";
+import { markPendingLoginMethod } from "@/auth/utils/lastUsedLoginMethod";
+import { config } from "@/config/config";
+
+type AuthenticationResult = { AccessToken?: string; IdToken?: string; RefreshToken?: string };
+const clientId = config.COGNITO_CLIENT_ID;
+const saveTokens = (result: AuthenticationResult) => {
+    if (!result.AccessToken || !result.IdToken) throw new Error("Cognito returned incomplete tokens.");
+    sessionStorage.setItem("bflow.oidc.tokens", JSON.stringify({ accessToken: result.AccessToken, idToken: result.IdToken, refreshToken: result.RefreshToken }));
+};
 
 export const authService = {
     async login(email: string, password: string) {
-        const cleanEmail = email.trim().toLowerCase();
-        return await signIn({
-            username: cleanEmail,
-            password,
-        });
+        const result = await cognitoRequest<{ AuthenticationResult?: AuthenticationResult; ChallengeName?: string }>("InitiateAuth", { AuthFlow: "USER_PASSWORD_AUTH", ClientId: clientId, AuthParameters: { USERNAME: email.trim().toLowerCase(), PASSWORD: password } });
+        if (result.ChallengeName) throw new Error(`Cognito challenge required: ${result.ChallengeName}`);
+        saveTokens(result.AuthenticationResult ?? {});
     },
-
-    async logout() {
-        await signOut();
-    },
-
+    async logout() { beginLogout(); },
     async getSession() {
-        return await fetchAuthSession();
+        const tokens = await getCognitoTokens();
+        if (!tokens) return { tokens: undefined };
+        return { tokens: { accessToken: { toString: () => tokens.accessToken }, idToken: { toString: () => tokens.idToken, payload: getIdTokenClaims() ?? {} } } };
     },
-
     async getCurrentUser() {
-        return await getCurrentUser();
+        const tokens = await getCognitoTokens(); if (!tokens) throw new Error("No active Cognito session.");
+        const claims = getIdTokenClaims(); return { username: String(claims?.["cognito:username"] ?? claims?.sub ?? ""), userId: String(claims?.sub ?? "") };
     },
-
-    async forgotPassword(email: string) {
-        const cleanEmail = email.trim().toLowerCase();
-        return resetPassword({
-            username: cleanEmail,
-        });
-    },
-
-    async confirmForgotPassword(email: string, code: string, password: string) {
-        const cleanEmail = email.trim().toLowerCase();
-        return confirmResetPassword({
-            username: cleanEmail,
-            confirmationCode: code.trim(),
-            newPassword: password,
-        });
-    },
-
+    async canChangePassword() { return Boolean(await getCognitoTokens()) && !isFederatedIdentity(); },
+    async forgotPassword(email: string) { const username = email.trim().toLowerCase(); assertEmailActionAllowed("password-reset", username); return cognitoRequest("ForgotPassword", { ClientId: clientId, Username: username }); },
+    async confirmForgotPassword(email: string, code: string, password: string) { return cognitoRequest("ConfirmForgotPassword", { ClientId: clientId, Username: email.trim().toLowerCase(), ConfirmationCode: code.trim(), Password: password }); },
     async changePassword(currentPassword: string, newPassword: string) {
-        await updatePassword({
-            oldPassword: currentPassword,
-            newPassword,
-        });
+        const tokens = await getCognitoTokens(); if (!tokens) throw new Error("No active Cognito session.");
+        if (isFederatedIdentity()) throw new Error("Federated users manage passwords with their identity provider.");
+        return cognitoRequest("ChangePassword", { AccessToken: tokens.accessToken, PreviousPassword: currentPassword, ProposedPassword: newPassword });
     },
-
     async register(email: string, password: string, fullName: string) {
-        const cleanEmail = email.trim().toLowerCase();
-        const cleanName = fullName.trim();
-
-        let res;
-        try {
-            res = await signUp({
-                username: cleanEmail,
-                password,
-                options: {
-                    userAttributes: {
-                        email: cleanEmail,
-                        name: cleanName,
-                    },
-                    autoSignIn: {
-                        enabled: true,
-                    },
-                },
-            });
-        } catch (error) {
-            // If UserPool schema rejects 'name' attribute, retry with email only
-            if (
-                typeof error === "object" &&
-                error !== null &&
-                (error as { name?: string }).name === "InvalidParameterException" &&
-                (error as { message?: string }).message?.includes("name")
-            ) {
-                res = await signUp({
-                    username: cleanEmail,
-                    password,
-                    options: {
-                        userAttributes: {
-                            email: cleanEmail,
-                        },
-                        autoSignIn: {
-                            enabled: true,
-                        },
-                    },
-                });
-            } else {
-                throw error;
-            }
-        }
-        console.log("[Cognito Register Success]:", res);
-        return res;
+        const username = email.trim().toLowerCase(); assertEmailActionAllowed("signup", username);
+        return cognitoRequest<{ UserConfirmed?: boolean }>("SignUp", { ClientId: clientId, Username: username, Password: password, UserAttributes: [{ Name: "email", Value: username }, { Name: "name", Value: fullName.trim() }] });
     },
-
-    async confirmRegister(email: string, code: string) {
-        const cleanEmail = email.trim().toLowerCase();
-        const result = await confirmSignUp({
-            username: cleanEmail,
-            confirmationCode: code.trim(),
-        });
-
-        if (result.nextStep.signUpStep === "COMPLETE_AUTO_SIGN_IN") {
-            await autoSignIn();
-        }
-
-        return result;
-    },
-
-    async resendCode(email: string) {
-        const cleanEmail = email.trim().toLowerCase();
-        const res = await resendSignUpCode({
-            username: cleanEmail,
-        });
-        console.log("[Cognito ResendCode Success]:", res);
-        return res;
-    },
-
-    async loginWithGoogle() {
-        await signInWithRedirect({
-            provider: "Google",
-        });
-    },
+    async confirmRegister(email: string, code: string) { return cognitoRequest("ConfirmSignUp", { ClientId: clientId, Username: email.trim().toLowerCase(), ConfirmationCode: code.trim() }); },
+    async resendCode(email: string) { const username = email.trim().toLowerCase(); assertEmailActionAllowed("verification-resend", username); return cognitoRequest("ResendConfirmationCode", { ClientId: clientId, Username: username }); },
+    async loginWithGoogle() { markPendingLoginMethod("Google"); await beginAuthorization("Google"); },
+    async openManagedLogin() { beginHostedPage("login"); },
 };

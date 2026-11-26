@@ -1,4 +1,4 @@
-import { Check, Copy, Info, Mail, RefreshCw, Unplug } from "lucide-react";
+import { Check, Copy, Info, RefreshCw, Unplug } from "lucide-react";
 import { SiClaude } from "@icons-pack/react-simple-icons";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -7,6 +7,7 @@ import { SettingsContentCard } from "./SettingsContentCard";
 import { useGmailIntegration } from "../../hooks/useGmailIntegration";
 
 import chatGptIcon from "@/assets/openai-monoblossom.svg";
+import gmailLogo from "@/modules/home/features/landing/assets/integrations/gmail.svg";
 import { Button } from "@/components/controls/Button";
 import { getClaudeConnectorUrl, getMcpServerUrl } from "@/utils/claudeConnector";
 
@@ -72,8 +73,8 @@ export const SettingsConnectorsSection = () => {
             <div className="divide-y divide-light-10">
                 <div className="flex flex-col gap-4 py-1 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex gap-3 sm:w-[70%]">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-10 text-primary">
-                            <SiClaude className="h-5 w-5 text-orange-500" />
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
+                            <SiClaude className="h-7 w-7 text-orange-500" />
                         </span>
                         <div>
                             <h3 className="text-sm font-semibold text-light">{t("settings.integrations.claudeTitle")}</h3>
@@ -97,8 +98,8 @@ export const SettingsConnectorsSection = () => {
 
                 <div className="flex flex-col gap-4 pt-5 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex gap-3">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary" aria-hidden="true">
-                            <img src={chatGptIcon} alt="" className="h-5 w-5" />
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
+                            <img src={chatGptIcon} alt="" className="h-7 w-7 object-contain" />
                         </span>
                         <div>
                             <h3 className="text-sm font-semibold text-light">{t("settings.integrations.chatGptTitle")}</h3>
@@ -146,8 +147,8 @@ export const SettingsConnectorsSection = () => {
 
                 <div className="flex flex-col gap-4 pt-5 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex gap-3 sm:w-[70%]">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-danger-10 text-danger">
-                            <Mail className="h-5 w-5" />
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
+                            <img src={gmailLogo} alt="" className="h-7 w-7 object-contain" />
                         </span>
                         <div>
                             <div className="flex flex-wrap items-center gap-2">

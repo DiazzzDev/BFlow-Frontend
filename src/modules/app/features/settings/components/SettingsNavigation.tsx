@@ -1,13 +1,12 @@
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 export type SettingsSection =
     | "account"
     | "preferences"
     | "categories"
     | "connectors"
-    | "subscription"
-    | "legal"
-    | "documentation";
+    | "subscription";
 
 interface SettingsNavigationProps {
     activeSection: SettingsSection;
@@ -20,8 +19,6 @@ const navigationItems = [
     { id: "categories", labelKey: "settings.navigation.categories" },
     { id: "connectors", labelKey: "settings.navigation.connectors" },
     { id: "subscription", labelKey: "settings.navigation.subscription" },
-    { id: "legal", labelKey: "settings.navigation.legal" },
-    { id: "documentation", labelKey: "settings.navigation.documentation" },
 ] as const satisfies ReadonlyArray<{ id: SettingsSection; labelKey: string }>;
 
 export const SettingsNavigation = ({
@@ -43,15 +40,13 @@ export const SettingsNavigation = ({
                         key={id}
                         type="button"
                         onClick={() => onSectionChange(id)}
-                        className={`relative flex shrink-0 items-center rounded-xl px-4 py-3 text-left text-sm font-medium transition-[background,border-color,box-shadow,color] lg:w-full ${isActive
-                            ? "border border-light-10 bg-linear-to-b from-[var(--settings-navigation-active-top)] to-[var(--settings-navigation-active-bottom)] text-light shadow-[0_5px_14px_rgb(0_0_0_/_0.18),inset_0_1px_0_rgb(255_255_255_/_0.035)]"
+                        className={`relative flex shrink-0 items-center rounded-xl px-4 py-3 text-left text-sm font-medium transition-colors lg:w-full ${isActive
+                            ? "text-light"
                             : "text-helper hover:bg-light-5 hover:text-light"
                             }`}
                     >
-                        {isActive ? (
-                            <span className="absolute left-1.5 top-1/2 h-5 w-0.75 -translate-y-1/2 rounded-full bg-primary" />
-                        ) : null}
-                        {t(labelKey)}
+                        {isActive ? <motion.span layoutId="settings-active-section" transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-0 rounded-xl border border-light-10 bg-linear-to-b from-[var(--settings-navigation-active-top)] to-[var(--settings-navigation-active-bottom)] shadow-[0_5px_14px_rgb(0_0_0_/_0.18),inset_0_1px_0_rgb(255_255_255_/_0.035)]" /> : null}
+                        <span className="relative">{t(labelKey)}</span>
                     </button>
                 );
             })}

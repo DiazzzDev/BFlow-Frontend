@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 import { RegisterForm } from "./components/RegisterForm";
 import { useRegister } from "./hooks/useRegister";
@@ -36,6 +36,12 @@ export const RegisterPage = () => {
             <GoogleButton disabled={isRegisterPending} />
             <AuthDivider text={t("auth.registerSeparator")} />
             <RegisterForm onRegisterUser={registerUser} isLoading={isRegisterPending} />
+            <p className="mt-6 text-center text-xs leading-5 text-helper">
+                {t("auth.legalNoticePrefix")} {" "}
+                <Link to="/terms" className="text-primary hover:text-primary-dark">{t("home.termsTitle")}</Link>
+                {" "}{t("auth.legalNoticeAnd")} {" "}
+                <Link to="/privacy" className="text-primary hover:text-primary-dark">{t("home.privacyTitle")}</Link>.
+            </p>
         </AuthCard>
     );
 };

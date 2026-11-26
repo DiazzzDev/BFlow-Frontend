@@ -1,8 +1,8 @@
-import { Outlet, useMatches } from "react-router";
+import { Link, Outlet, useMatches } from "react-router";
 
 import { AuthBackground } from "./components/AuthBackground";
 import { AuthFooter } from "./components/AuthFooter";
-import { HomeButton } from "./components/HomeButton";
+import { BflowLogo } from "@/components/brand/BflowLogo";
 
 interface AuthRouteHandle {
     hideAuthChrome?: boolean;
@@ -21,9 +21,13 @@ export const AuthLayout = () => {
     return (
         <div className="relative flex min-h-dvh flex-col overflow-hidden bg-surface-hard text-light">
             <AuthBackground />
-            <HomeButton />
+            <header className="relative z-20 flex h-20 items-center px-6 sm:px-8 lg:px-12">
+                <Link to="/" aria-label="BFlow" className="flex items-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+                    <BflowLogo className="h-7 w-auto" />
+                </Link>
+            </header>
 
-            <main className="relative z-10 flex flex-1 items-center justify-center px-4 pb-12 pt-4 sm:px-6">
+            <main className="relative z-10 flex flex-1 items-center justify-center px-6 pb-12 pt-2 sm:px-8">
                 <Outlet />
             </main>
 
