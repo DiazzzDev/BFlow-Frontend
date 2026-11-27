@@ -1,7 +1,8 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { DeleteAccountModal } from "./components/DeleteAccountModal";
 import { CancelSubscriptionModal } from "./components/CancelSubscriptionModal";
@@ -17,10 +18,10 @@ import {
 } from "./components/SettingsNavigation";
 import { SettingsPreferencesSection } from "./components/sections/SettingsPreferencesSection";
 import { SettingsSubscriptionSection } from "./components/sections/SettingsSubscriptionSection";
-import { SettingsLegalSection } from "./components/sections/SettingsLegalSection";
-import { SettingsDocumentationSection } from "./components/sections/SettingsDocumentationSection";
+import { SettingsFooter } from "./components/SettingsFooter";
 
 import { useLogout } from "@/auth/hooks/useLogout";
+import { authService } from "@/auth/services/authService";
 
 export const SettingsPage = () => {
     const { t } = useTranslation();
@@ -31,7 +32,12 @@ export const SettingsPage = () => {
     const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
     const [isCancelSubscriptionModalOpen, setIsCancelSubscriptionModalOpen] = useState(false);
     const [isMfaSetupOpen, setIsMfaSetupOpen] = useState(false);
+    const [canChangePassword, setCanChangePassword] = useState(false);
     const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
+
+    useEffect(() => {
+        void authService.canChangePassword().then(setCanChangePassword).catch(() => setCanChangePassword(false));
+    }, []);
 
     const handleLogout = async () => {
         try {
@@ -49,6 +55,7 @@ export const SettingsPage = () => {
                 isLoggingOut={isLoggingOut}
                 onEditProfile={() => setIsProfileModalOpen(true)}
                 onChangePassword={() => setIsChangePasswordModalOpen(true)}
+                canChangePassword={canChangePassword}
                 onEnableMfa={() => setIsMfaSetupOpen(true)}
                 onLogout={() => {
                     void handleLogout();
@@ -64,8 +71,6 @@ export const SettingsPage = () => {
                 onCancelSubscription={() => setIsCancelSubscriptionModalOpen(true)}
             />
         ),
-        legal: <SettingsLegalSection />,
-        documentation: <SettingsDocumentationSection />,
     } satisfies Record<SettingsSection, ReactNode>;
 
     if (isMfaSetupOpen) {
@@ -113,7 +118,17 @@ export const SettingsPage = () => {
                                 {t(`settings.navigation.${activeSection}`)}
                             </h2>
                         </div>
-                        {sectionContent[activeSection]}
+                        <AnimatePresence mode="wait" initial={false}>
+                            <motion.div
+                                key={activeSection}
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                transition={{ duration: 0.18, ease: "easeOut" }}
+                            >
+                                {sectionContent[activeSection]}
+                            </motion.div>
+                        </AnimatePresence>
                     </main>
                 </div>
 
@@ -133,6 +148,7 @@ export const SettingsPage = () => {
                     isOpen={isCancelSubscriptionModalOpen}
                     onClose={() => setIsCancelSubscriptionModalOpen(false)}
                 />
+                <SettingsFooter />
             </div>
         </div>
     );

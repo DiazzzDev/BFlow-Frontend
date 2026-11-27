@@ -1,7 +1,9 @@
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 import { useGoogleLogin } from "@/modules/auth/features/login/hooks/useGoogleLogin";
+import { getLastUsedLoginMethod } from "@/auth/utils/lastUsedLoginMethod";
 
 interface GoogleButtonProps {
     disabled?: boolean;
@@ -10,13 +12,17 @@ interface GoogleButtonProps {
 export const GoogleButton = ({ disabled = false }: GoogleButtonProps) => {
     const { t } = useTranslation();
     const { mutateAsync: loginWithGoogle, isPending } = useGoogleLogin();
+    const isLastUsed = getLastUsedLoginMethod() === "Google";
 
     return (
-        <button
+        <div className="relative">
+            <button
             type="button"
             disabled={disabled || isPending}
             onClick={() => {
-                void loginWithGoogle();
+                void loginWithGoogle().catch((error: unknown) => {
+                    toast.error(error instanceof Error ? error.message : t("auth.loginError"));
+                });
             }}
             className="inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2.5 rounded-lg border border-light-10 bg-surface-hard text-sm font-medium text-light transition-colors hover:border-light-25 hover:bg-light-5 disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -31,6 +37,12 @@ export const GoogleButton = ({ disabled = false }: GoogleButtonProps) => {
                 </svg>
             )}
             {isPending ? t("auth.googleLoading") : t("auth.continueGoogle")}
-        </button>
+            </button>
+            {isLastUsed ? (
+                <span className="absolute -right-2 -top-2 rounded-full border border-primary/50 bg-surface px-2 py-0.5 text-[10px] font-semibold text-primary">
+                    {t("auth.lastUsed")}
+                </span>
+            ) : null}
+        </div>
     );
 };

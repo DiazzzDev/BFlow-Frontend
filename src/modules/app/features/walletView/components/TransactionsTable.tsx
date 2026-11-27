@@ -130,6 +130,24 @@ const TransactionContributorCell = ({
     );
 };
 
+const TransactionSourceBadge = ({ source }: { source: Transaction["source"] }) => {
+    const { t } = useTranslation();
+    const labels: Record<Transaction["source"], string> = {
+        manual: t("walletView.transactionSource.manual"),
+        quick: t("walletView.transactionSource.quick"),
+        recurring: t("walletView.transactionSource.recurring"),
+        gmail: t("walletView.transactionSource.gmail"),
+        receipt: t("walletView.transactionSource.receipt"),
+        import: t("walletView.transactionSource.import"),
+    };
+
+    return (
+        <span className="inline-flex rounded-full border border-light-10 bg-light-5 px-2 py-0.5 text-xs text-helper">
+            {labels[source]}
+        </span>
+    );
+};
+
 interface TransactionActionsMenuProps {
     transaction: Transaction;
     actionsDisabled: boolean;
@@ -285,6 +303,9 @@ export const TransactionsTable = ({
                                     </th>
                                 ) : null}
                                 <th className={tableHeaderClass}>
+                                    {t("walletView.source")}
+                                </th>
+                                <th className={tableHeaderClass}>
                                     {t("walletView.date")}
                                 </th>
                                 <th
@@ -318,6 +339,9 @@ export const TransactionsTable = ({
                                             <SkeletonText className="h-4 w-20" />
                                         </td>
                                     ) : null}
+                                    <td className={tableCellClass}>
+                                        <SkeletonText className="h-5 w-18 rounded-full" />
+                                    </td>
                                     <td className={tableCellClass}>
                                         <SkeletonText className="h-4 w-20" />
                                     </td>
@@ -422,6 +446,9 @@ export const TransactionsTable = ({
                                                 </span>
                                             )
                                         ) : null}
+                                        <span className="w-fit">
+                                            <TransactionSourceBadge source={tx.source} />
+                                        </span>
                                     </div>
                                 </div>
 
@@ -468,6 +495,9 @@ export const TransactionsTable = ({
                                 </th>
                             ) : null}
                             <th className={tableHeaderClass}>
+                                {t("walletView.source")}
+                            </th>
+                            <th className={tableHeaderClass}>
                                 {t("walletView.date")}
                             </th>
                             <th className={`${tableHeaderClass} text-right`}>
@@ -508,6 +538,9 @@ export const TransactionsTable = ({
                                             />
                                         </td>
                                     ) : null}
+                                    <td className={tableCellClass}>
+                                        <TransactionSourceBadge source={tx.source} />
+                                    </td>
                                     <td className={tableCellClass}>
                                         <p className="truncate text-sm text-helper">
                                             {formatMonthYear(tx.date)}

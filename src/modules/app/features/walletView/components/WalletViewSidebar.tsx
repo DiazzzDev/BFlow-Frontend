@@ -1,7 +1,9 @@
-import { ArrowDownLeft, ArrowUpRight, CalendarClock } from "lucide-react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ArrowDownLeft, ArrowUpRight, CalendarClock, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import type { UpcomingTransaction } from "../interfaces/WalletDetails";
+import type { Recurring } from "@/modules/app/components/scheduleTransaction/interfaces/Recurring";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import { SkeletonText } from "@/components/loaders/SkeletonText";
@@ -17,6 +19,9 @@ export interface WalletViewSidebarProps {
     currency: string;
     upcoming: UpcomingTransaction[];
     onSchedule?: () => void;
+    recurring?: Recurring[];
+    onEditRecurring?: (recurring: Recurring) => void;
+    onDeleteRecurring?: (recurring: Recurring) => void;
     isLoading?: boolean;
     className?: string;
 }
@@ -42,6 +47,9 @@ export const WalletViewSidebar = ({
     currency,
     upcoming,
     onSchedule,
+    recurring = [],
+    onEditRecurring,
+    onDeleteRecurring,
     isLoading = false,
     className = "",
 }: WalletViewSidebarProps) => {
@@ -105,9 +113,17 @@ export const WalletViewSidebar = ({
                     <ul className="mb-6 flex flex-col">
                         {upcoming.map((item) => (
                             <UpcomingRow
-                                key={`${item.title}-${item.nextExecutionDate}`}
+                                key={item.id ?? `${item.title}-${item.nextExecutionDate}`}
                                 item={item}
                                 currency={currency}
+                                recurring={recurring.find((recurrence) =>
+                                    item.id
+                                        ? recurrence.id === item.id
+                                        : recurrence.title === item.title &&
+                                            recurrence.nextExecutionDate === item.nextExecutionDate,
+                                )}
+                                onEdit={onEditRecurring}
+                                onDelete={onDeleteRecurring}
                             />
                         ))}
                     </ul>
@@ -132,14 +148,21 @@ export const WalletViewSidebar = ({
 const UpcomingRow = ({
     item,
     currency,
+    recurring,
+    onEdit,
+    onDelete,
 }: {
     item: UpcomingTransaction;
     currency: string;
+    recurring?: Recurring;
+    onEdit?: (recurring: Recurring) => void;
+    onDelete?: (recurring: Recurring) => void;
 }) => {
     const isIncome = item.type === "INCOME";
+    const { t } = useTranslation();
 
     return (
-        <li className="flex items-center gap-3 border-b border-light-10 py-3 last:border-b-0">
+        <li className={`flex items-center gap-3 border-b border-light-10 py-3 last:border-b-0 ${item.active === false ? "opacity-60" : ""}`}>
             <div
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
                     isIncome ? "bg-info-25 text-info" : "bg-danger-sweet text-danger"
@@ -168,6 +191,50 @@ const UpcomingRow = ({
                 {isIncome ? "+" : "-"}
                 {formatCurrency(Math.abs(item.amount), currency)}
             </p>
+            {recurring ? (
+                <Menu as="div" className="relative">
+                    <MenuButton
+                        type="button"
+                        aria-label={t("transactions.actions")}
+                        className="cursor-pointer rounded-lg p-1.5 text-helper transition-colors hover:bg-light-5 hover:text-light"
+                    >
+                        <MoreVertical className="h-4 w-4" />
+                    </MenuButton>
+                    <MenuItems
+                        anchor="bottom end"
+                        className="z-50 w-40 rounded-xl border border-light-10 bg-surface p-1 shadow-custom focus:outline-none"
+                    >
+                        <MenuItem>
+                            {({ focus }) => (
+                                <button
+                                    type="button"
+                                    onClick={() => onEdit?.(recurring)}
+                                    className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-light ${
+                                        focus ? "bg-light-5" : ""
+                                    }`}
+                                >
+                                    <Pencil className="h-4 w-4" />
+                                    {t("transactions.update")}
+                                </button>
+                            )}
+                        </MenuItem>
+                        <MenuItem>
+                            {({ focus }) => (
+                                <button
+                                    type="button"
+                                    onClick={() => onDelete?.(recurring)}
+                                    className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm text-danger ${
+                                        focus ? "bg-danger/10" : ""
+                                    }`}
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                    {t("transactions.delete")}
+                                </button>
+                            )}
+                        </MenuItem>
+                    </MenuItems>
+                </Menu>
+            ) : null}
         </li>
     );
 };

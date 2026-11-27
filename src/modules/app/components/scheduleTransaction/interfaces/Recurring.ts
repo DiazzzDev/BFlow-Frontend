@@ -14,6 +14,11 @@ export interface CreateRecurringData {
     endDate?: string;
 }
 
-export interface Recurring extends CreateRecurringData {
+export interface Recurring extends Omit<CreateRecurringData, "description" | "categoryId" | "endDate"> {
     id: string;
+    description: string | null;
+    categoryId: string | null;
+    endDate: string | null;
+    nextExecutionDate: string;
+    active: boolean;
 }

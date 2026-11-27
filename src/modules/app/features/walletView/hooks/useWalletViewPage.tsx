@@ -13,6 +13,7 @@ import { useGetOverview } from "./useGetOverview";
 import { useGetTransactions } from "./useGetTransactions";
 import { useGetWallet } from "./useGetWallet";
 import { useGetWalletDetails } from "./useGetWalletDetails";
+import { useGetWalletRecurring } from "./useGetWalletRecurring";
 
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePaginationParams } from "@/hooks/usePaginationParams";
@@ -35,6 +36,8 @@ export const useWalletViewPage = (walletId: string) => {
 
     const wallet = walletResponse?.data;
     const memberCount = wallet?.memberCount ?? 1;
+    const recurringQuery = useGetWalletRecurring(walletId);
+    const recurring = Array.isArray(recurringQuery.data) ? recurringQuery.data : [];
 
     // Drop ?tab=transfers from the URL when the wallet is shared
     useEffect(() => {
@@ -120,13 +123,25 @@ export const useWalletViewPage = (walletId: string) => {
         totalPages,
         numberOfElements,
         isLoadingList,
+        recurring,
+        isLoadingRecurring: recurringQuery.isLoading,
         sidebar: {
             lastActivity: walletDetails?.lastActivity ?? "—",
             highestExpense: walletDetails?.highestExpense ?? "—",
             transactionsCount: walletDetails?.transactions ?? 0,
             initialValue: walletDetails?.initialValue ?? 0,
             currency: wallet?.currency ?? "USD",
-            upcoming: walletDetails?.upcoming ?? [],
+            // The recurrence endpoint is canonical and includes inactive records too.
+            // It also gives every item a stable id, unlike the summary endpoint.
+            upcoming: recurring.map((item) => ({
+                id: item.id,
+                title: item.title,
+                amount: item.amount,
+                type: item.type,
+                nextExecutionDate: item.nextExecutionDate,
+                active: item.active,
+            })),
+            recurring,
             isLoading: isWalletDetailsLoading,
         },
     };

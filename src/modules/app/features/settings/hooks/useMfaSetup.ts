@@ -1,12 +1,8 @@
-import {
-    fetchMFAPreference,
-    setUpTOTP,
-    updateMFAPreference,
-    verifyTOTPSetup,
-} from "aws-amplify/auth";
+import { fetchMfaPreference, setUpTotp, verifyAndEnableTotp } from "@/auth/cognito/mfa";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useAuthStore } from "@/auth/authStore";
+import { config } from "@/config/config";
 
 const mfaPreferenceQueryKey = ["mfa-preference"];
 
@@ -15,19 +11,18 @@ export const useMfaSetup = () => {
     const queryClient = useQueryClient();
     const preferenceQuery = useQuery({
         queryKey: mfaPreferenceQueryKey,
-        queryFn: fetchMFAPreference,
+        queryFn: fetchMfaPreference,
         enabled: Boolean(user),
         staleTime: 1000 * 60,
     });
 
     const setUp = useMutation({
-        mutationFn: setUpTOTP,
+        mutationFn: setUpTotp,
     });
 
     const verify = useMutation({
         mutationFn: async (code: string) => {
-            await verifyTOTPSetup({ code });
-            await updateMFAPreference({ totp: "PREFERRED" });
+            await verifyAndEnableTotp(code);
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: mfaPreferenceQueryKey });
@@ -35,7 +30,9 @@ export const useMfaSetup = () => {
     });
 
     return {
-        isMfaEnabled: preferenceQuery.data?.enabled?.includes("TOTP") ?? false,
+        isMfaSelfServiceEnabled: config.COGNITO_SELF_SERVICE_MFA_ENABLED,
+        isMfaEnabled: preferenceQuery.data?.enabled.includes("SOFTWARE_TOKEN_MFA") ?? false,
+        mfaMethods: preferenceQuery.data?.enabled ?? [],
         isMfaStatusLoading: preferenceQuery.isLoading,
         setUp,
         verify,

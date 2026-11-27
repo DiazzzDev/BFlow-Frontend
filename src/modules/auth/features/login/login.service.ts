@@ -6,6 +6,7 @@ import {
 } from "@/auth/services/session.service";
 import { authService } from "@/auth/services/authService";
 import type { InternalUser } from "@/auth/InternalUser";
+import { recordEmailLogin } from "@/auth/utils/lastUsedLoginMethod";
 
 export { syncAuthUser } from "@/auth/services/session.service";
 
@@ -36,16 +37,7 @@ export const isUserNotConfirmedError = (error: unknown): boolean => {
 };
 
 export const login = async (email: string, password: string) => {
-    try {
-        const result = await authService.login(email, password);
-
-        if (!result.isSignedIn) {
-            if (result.nextStep.signInStep === "CONFIRM_SIGN_UP") {
-                throw new UserNotConfirmedError(email);
-            }
-            throw new Error(result.nextStep.signInStep);
-        }
-    } catch (error) {
+    try { await authService.login(email, password); } catch (error) {
         if (isUserNotConfirmedError(error)) {
             throw new UserNotConfirmedError(email);
         }
@@ -62,7 +54,9 @@ export const login = async (email: string, password: string) => {
         throw new Error("Tokens not found");
     }
 
-    return syncAuthUser(tokens.idToken, email);
+    const user = await syncAuthUser(tokens.idToken, email);
+    recordEmailLogin();
+    return user;
 };
 
 /**

@@ -4,6 +4,7 @@ export type DetailTab =
     | "overview"
     | "incomes"
     | "expenses"
+    | "recurring"
     | "transfers"
     | "members"
     | "settings";
@@ -12,13 +13,14 @@ export const WALLET_VIEW_TABS: Array<{ id: DetailTab; label: string }> = [
     { id: "overview", label: "Todas las transacciones" },
     { id: "incomes", label: "Ingresos" },
     { id: "expenses", label: "Gastos" },
+    { id: "recurring", label: "Cargos automáticos" },
     { id: "transfers", label: "Transferencias" },
     { id: "members", label: "Miembros" },
     { id: "settings", label: "Ajustes" },
 ];
 
 export const TAB_TO_TYPE: Record<
-    Exclude<DetailTab, "overview" | "members" | "settings">,
+    Exclude<DetailTab, "overview" | "recurring" | "members" | "settings">,
     TransactionType
 > = {
     incomes: "INCOME",
@@ -54,7 +56,7 @@ export const resolveWalletViewTab = (
         : tab;
 
 export const isManagementTab = (tab: DetailTab) =>
-    tab === "members" || tab === "settings";
+    tab === "members" || tab === "settings" || tab === "recurring";
 
 export const isDetailTab = (value: string | null): value is DetailTab =>
     !!value && WALLET_VIEW_TABS.some((tab) => tab.id === value);

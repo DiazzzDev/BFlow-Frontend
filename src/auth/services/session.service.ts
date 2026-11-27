@@ -119,14 +119,20 @@ export const syncAuthUser = async (idToken: string, email?: string) => {
 
 export const getSessionTokens = async (): Promise<CognitoSessionTokens | null> => {
     const session = await authService.getSession();
-    const accessToken = session.tokens?.accessToken.toString();
-    const idToken = session.tokens?.idToken?.toString();
+    const { tokens } = session;
+
+    if (!tokens) {
+        return null;
+    }
+
+    const accessToken = tokens.accessToken.toString();
+    const idToken = tokens.idToken.toString();
 
     if (!accessToken || !idToken) {
         return null;
     }
 
-    const emailClaim = session.tokens?.idToken?.payload.email;
+    const emailClaim = tokens.idToken.payload.email;
     const email = typeof emailClaim === "string" ? emailClaim : undefined;
 
     return { accessToken, idToken, email };

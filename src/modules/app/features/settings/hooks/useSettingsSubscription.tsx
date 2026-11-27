@@ -1,11 +1,14 @@
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+
+import { getMySubscriptions } from "../settings.service";
 
 import { useAuthStore } from "@/auth/authStore";
 import type { SubscriptionStatus, UserSubscription } from "@/auth/InternalUser";
 import { getActiveLanguage } from "@/i18n/i18n";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
-const formatSubscriptionDate = (date: string | null, language: string): string | null => {
+const formatSubscriptionDate = (date: string | null | undefined, language: string): string | null => {
     if (!date) {
         return null;
     }
@@ -23,7 +26,7 @@ const formatSubscriptionDate = (date: string | null, language: string): string |
     }).format(parsedDate);
 };
 
-const getDaysRemaining = (date: string | null): number | null => {
+const getDaysRemaining = (date: string | null | undefined): number | null => {
     if (!date) {
         return null;
     }
@@ -56,10 +59,39 @@ export const useSettingsSubscription = () => {
     const { t } = useTranslation();
     const activeLanguage = getActiveLanguage();
     const user = useAuthStore((state) => state.user);
-    const subscription = user?.subscription ?? null;
+    const userSubscription = user?.subscription ?? null;
+    const subscriptionsQuery = useQuery({
+        queryKey: ["my-subscriptions"],
+        queryFn: getMySubscriptions,
+        enabled: Boolean(user),
+        staleTime: 60_000,
+    });
+    const subscriptions = (subscriptionsQuery.data?.data ?? []).map((item) => ({
+        ...item,
+        // /subscriptions returns billing history and does not include planCode;
+        // reuse the synchronized current-plan code when the records match.
+        planCode: item.planCode ?? (item.id === userSubscription?.id
+            ? userSubscription.planCode
+            : item.planName),
+    }));
+    const subscription = subscriptions.find((item) => item.id === userSubscription?.id)
+        ?? subscriptions.find((item) => item.status === "ACTIVE" || item.status === "PENDING_ACTIVATION")
+        ?? userSubscription
+        ?? null;
     const freePlan = subscription ? isFreePlan(subscription) : true;
     const canCancel =
         Boolean(subscription?.id) && !freePlan && subscription?.status !== "CANCELED";
+    const history = subscriptions.map((item) => ({
+        id: item.id,
+        planCode: item.planCode,
+        planName: item.planName,
+        status: item.status,
+        billingAmount: item.billingAmount === null
+            ? null
+            : formatCurrency(item.billingAmount, "USD", activeLanguage),
+        startsAt: formatSubscriptionDate(item.startsAt, activeLanguage),
+        endsAt: formatSubscriptionDate(item.endsAt, activeLanguage),
+    }));
 
     return {
         subscription,
@@ -75,11 +107,11 @@ export const useSettingsSubscription = () => {
             activeLanguage,
         ),
         endDate: formatSubscriptionDate(
-            subscription?.endsAt ?? subscription?.nextBillingAt ?? null,
+            subscription?.endsAt ?? subscription?.nextBillingAt,
             activeLanguage,
         ),
         daysRemaining: getDaysRemaining(
-            subscription?.endsAt ?? subscription?.nextBillingAt ?? null,
+            subscription?.endsAt ?? subscription?.nextBillingAt,
         ),
         billingAmount:
             subscription?.billingAmount !== null &&
@@ -92,5 +124,9 @@ export const useSettingsSubscription = () => {
                   )
                 : null,
         canCancel,
+        history,
+        isLoading: subscriptionsQuery.isLoading,
+        isError: subscriptionsQuery.isError,
+        refetch: subscriptionsQuery.refetch,
     };
 };
