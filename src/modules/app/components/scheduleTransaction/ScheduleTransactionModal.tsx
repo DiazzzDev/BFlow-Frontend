@@ -6,6 +6,7 @@ import { useGetWallets } from "../../features/wallets/hooks/useGetWallets";
 import { RecurringForm } from "./forms/RecurringForm";
 
 import type { Wallet } from "@/modules/app/interfaces/Wallet";
+import type { Recurring } from "./interfaces/Recurring";
 import { CustomModal } from "@/components/custom/CustomModal";
 import { SelectAutoComplete } from "@/components/controls/SelectAutocomplete";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -19,6 +20,7 @@ interface ScheduleTransactionModalProps {
     walletId?: string;
     /** When true (or when no walletId), show a wallet picker. */
     requireWalletSelect?: boolean;
+    recurring?: Recurring | null;
 }
 
 // Shell: optional wallet picker + remount form when the modal opens
@@ -27,6 +29,7 @@ export const ScheduleTransactionModal = ({
     setIsModalOpen,
     walletId = "",
     requireWalletSelect,
+    recurring,
 }: ScheduleTransactionModalProps) => {
     const { t } = useTranslation();
 
@@ -34,13 +37,14 @@ export const ScheduleTransactionModal = ({
         <CustomModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            title={t("walletView.schedule")}
+            title={recurring ? t("transactions.update") : t("walletView.schedule")}
             maxWidth="max-w-lg"
         >
             <ScheduleTransactionModalContent
                 key={isModalOpen ? "open" : "closed"}
                 walletId={walletId}
                 requireWalletSelect={requireWalletSelect}
+                recurring={recurring}
                 onClose={() => setIsModalOpen(false)}
             />
         </CustomModal>
@@ -50,12 +54,14 @@ export const ScheduleTransactionModal = ({
 interface ScheduleTransactionModalContentProps {
     walletId: string;
     requireWalletSelect?: boolean;
+    recurring?: Recurring | null;
     onClose: () => void;
 }
 
 const ScheduleTransactionModalContent = ({
     walletId,
     requireWalletSelect,
+    recurring,
     onClose,
 }: ScheduleTransactionModalContentProps) => {
     const { t } = useTranslation();
@@ -109,6 +115,7 @@ const ScheduleTransactionModalContent = ({
                 <RecurringForm
                     key={resolvedWalletId}
                     walletId={resolvedWalletId}
+                    recurring={recurring}
                     onSuccess={onClose}
                 />
             ) : null}

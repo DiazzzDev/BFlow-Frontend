@@ -6,6 +6,18 @@ export const TRANSACTION_TYPE_VALUES = [
 
 export type TransactionType = (typeof TRANSACTION_TYPE_VALUES)[number];
 
+/** Origins emitted by the financial services for an income or expense. */
+export const TRANSACTION_SOURCE_VALUES = [
+    "manual",
+    "quick",
+    "recurring",
+    "gmail",
+    "receipt",
+    "import",
+] as const;
+
+export type TransactionSource = (typeof TRANSACTION_SOURCE_VALUES)[number];
+
 export interface Transaction {
     id: string;
     type: TransactionType;
@@ -26,5 +38,5 @@ export interface Transaction {
     contributorEmail: string | null;
     contributorPictureUrl: string | null;
     status: string | null;
-    source: string;
+    source: TransactionSource;
 }

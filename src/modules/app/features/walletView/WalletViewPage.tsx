@@ -10,6 +10,7 @@ import { WalletTransactionsPanel } from "./components/panel/WalletTransactionsPa
 import { WalletMembersPanel } from "./components/panel/WalletMembersPanel";
 import { WalletSettingsPanel } from "./components/panel/WalletSettingsPanel";
 import { WalletInfoPanel } from "./components/panel/WalletInfoPanel";
+import { WalletRecurringPanel } from "./components/panel/WalletRecurringPanel";
 import { isManagementTab, getWalletAllowedTransactionTypes } from "./utils/tabs/walletViewTabs";
 import { NewTransactionModal } from "../../components/newTransaction/NewTransactionModal";
 import { ScheduleTransactionModal } from "../../components/scheduleTransaction/ScheduleTransactionModal";
@@ -17,6 +18,11 @@ import { DeleteTransactionModal } from "./components/modal/DeleteTransactionModa
 import { DeleteWalletModal } from "./components/modal/DeleteWalletModal";
 import { InviteWalletMemberModal } from "./components/modal/InviteWalletMemberModal";
 import { RemoveWalletMemberModal } from "./components/modal/RemoveWalletMemberModal";
+import { useDeleteRecurring } from "../../components/scheduleTransaction/hooks/useMutateRecurring";
+import type { Recurring } from "../../components/scheduleTransaction/interfaces/Recurring";
+import { CustomModal } from "@/components/custom/CustomModal";
+import { Button } from "@/components/controls/Button";
+import { toast } from "sonner";
 
 import { CustomEmptyState } from "@/components/custom/CustomEmptyState";
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
@@ -35,6 +41,9 @@ export const WalletViewPage = () => {
     const [isInviteOpen, setIsInviteOpen] = useState(false);
     const [memberToRemove, setMemberToRemove] = useState<WalletMember | null>(null);
     const [isDeleteWalletOpen, setIsDeleteWalletOpen] = useState(false);
+    const [editRecurring, setEditRecurring] = useState<Recurring | null>(null);
+    const [deleteRecurring, setDeleteRecurring] = useState<Recurring | null>(null);
+    const deleteRecurringMutation = useDeleteRecurring();
     const allowedTypes = getWalletAllowedTransactionTypes(view.memberCount);
 
     if (view.isNotFound) {
@@ -81,6 +90,12 @@ export const WalletViewPage = () => {
                         isLoading={view.isWalletLoading}
                         onDeleteWallet={() => setIsDeleteWalletOpen(true)}
                     />
+                ) : view.activeTab === "recurring" ? (
+                    <WalletRecurringPanel
+                        recurring={view.recurring}
+                        isLoading={view.isLoadingRecurring}
+                        currency={view.wallet?.currency ?? "USD"}
+                    />
                 ) : (
                     <WalletTransactionsPanel
                         query={view.query}
@@ -104,7 +119,11 @@ export const WalletViewPage = () => {
                 isMobileOpen={isInfoDrawerOpen}
                 onCloseMobile={() => setIsInfoDrawerOpen(false)}
                 onSchedule={() => setIsScheduleOpen(true)}
-                sidebarProps={view.sidebar}
+                sidebarProps={{
+                    ...view.sidebar,
+                    onEditRecurring: setEditRecurring,
+                    onDeleteRecurring: setDeleteRecurring,
+                }}
             />
 
             <NewTransactionModal isModalOpen={isNewTransactionOpen} setIsModalOpen={setIsNewTransactionOpen} walletId={id} initialType={view.transactionType} allowedTypes={allowedTypes} />
@@ -113,9 +132,13 @@ export const WalletViewPage = () => {
 
             <DeleteTransactionModal transaction={deleteTransaction} onClose={() => setDeleteTransaction(null)} />
             <ScheduleTransactionModal isModalOpen={isScheduleOpen} setIsModalOpen={setIsScheduleOpen} walletId={id} />
+            <ScheduleTransactionModal isModalOpen={Boolean(editRecurring)} setIsModalOpen={(open) => { if (!open) setEditRecurring(null); }} walletId={id} recurring={editRecurring} />
             <InviteWalletMemberModal isOpen={isInviteOpen} walletId={id} walletName={view.wallet?.name} onClose={() => setIsInviteOpen(false)} />
             <RemoveWalletMemberModal isOpen={Boolean(memberToRemove)} walletId={id} member={memberToRemove} onClose={() => setMemberToRemove(null)} />
             <DeleteWalletModal isOpen={isDeleteWalletOpen} walletId={id} walletName={view.wallet?.name ?? ""} onClose={() => setIsDeleteWalletOpen(false)} />
+            <CustomModal isModalOpen={Boolean(deleteRecurring)} setIsModalOpen={(open) => { if (!open) setDeleteRecurring(null); }} title={t("transactions.delete")}>
+                <div className="space-y-5"><p className="text-sm text-helper">{t("walletView.deleteRecurringHint", { title: deleteRecurring?.title ?? "" })}</p><div className="flex justify-end gap-3"><Button type="button" variant="outline" text={t("common.cancel")} onClick={() => setDeleteRecurring(null)} /><Button type="button" variant="danger" text={t("transactions.delete")} disabled={deleteRecurringMutation.isPending} onClick={() => { if (!deleteRecurring) return; const promise = deleteRecurringMutation.mutateAsync({ id: deleteRecurring.id, walletId: id }); toast.promise(promise, { loading: t("common.loading"), success: t("transactions.deleteFallback"), error: (error: Error) => error.message }); void promise.then(() => setDeleteRecurring(null)); }} /></div></div>
+            </CustomModal>
         </div>
     );
 };

@@ -61,6 +61,8 @@ export const WalletViewTabs = ({
                                                 ? "income"
                                                 : tab.id === "expenses"
                                                   ? "expense"
+                                                  : tab.id === "recurring"
+                                                    ? "recurring"
                                                   : tab.id === "transfers"
                                                     ? "transfer"
                                                     : tab.id

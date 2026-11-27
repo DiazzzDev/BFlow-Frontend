@@ -9,7 +9,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 
 import { useGetCategories } from "../../../features/settings/hooks/useGetCategories";
-import { usePostRecurring } from "../hooks/useMutateRecurring";
+import { usePostRecurring, useUpdateRecurring } from "../hooks/useMutateRecurring";
+import type { Recurring } from "../interfaces/Recurring";
 import {
     RECURRING_INTERVAL_UNIT_LABELS,
     RECURRING_TYPE_TABS,
@@ -80,16 +81,19 @@ const defaultFormValues: RecurringFormValues = {
 
 interface RecurringFormProps {
     walletId: string;
+    recurring?: Recurring | null;
     onSuccess?: () => void;
 }
 
-export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
+export const RecurringForm = ({ walletId, recurring, onSuccess }: RecurringFormProps) => {
     const { t } = useTranslation();
     const recurringSchema = createRecurringSchema(t);
     const [areAdvancedOptionsVisible, setAreAdvancedOptionsVisible] = useState(false);
 
     // Create mutation
     const createRecurring = usePostRecurring();
+    const editRecurring = useUpdateRecurring();
+    const isPending = createRecurring.isPending || editRecurring.isPending;
 
     // Category list filtered by EXPENSE/INCOME type
     const { data: categoriesResponse, isLoading: isCategoriesLoading } =
@@ -105,7 +109,19 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
         formState: { errors },
     } = useForm<RecurringFormValues>({
         resolver: zodResolver(recurringSchema),
-        defaultValues: defaultFormValues,
+        defaultValues: recurring
+            ? {
+                  type: recurring.type,
+                  title: recurring.title,
+                  description: recurring.description ?? "",
+                  amount: String(recurring.amount),
+                  categoryId: recurring.categoryId ?? "",
+                  frequency: recurring.frequency,
+                  intervalValue: String(recurring.intervalValue),
+                  startDate: recurring.startDate,
+                  endDate: recurring.endDate ?? "",
+              }
+            : defaultFormValues,
     });
     const type = useWatch({ control, name: "type" });
     const frequency = useWatch({ control, name: "frequency" });
@@ -118,7 +134,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
 
     // Create recurring then reset form
     const onSubmit = async (formData: RecurringFormValues) => {
-        const promise = createRecurring.mutateAsync({
+        const data = {
             title: formData.title,
             ...(formData.description.trim() ? { description: formData.description.trim() } : {}),
             amount: Number(formData.amount),
@@ -129,7 +145,10 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             intervalValue: Number(formData.intervalValue),
             startDate: formData.startDate,
             ...(formData.endDate ? { endDate: formData.endDate } : {}),
-        });
+        };
+        const promise = recurring
+            ? editRecurring.mutateAsync({ id: recurring.id, data })
+            : createRecurring.mutateAsync(data);
 
         toast.promise(promise, {
             loading: t("transactions.recurringLoading"),
@@ -186,7 +205,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                             <Input
                                 id="recurringTitle"
                                 placeholder="Ej. Netflix"
-                                disabled={createRecurring.isPending}
+                                disabled={isPending}
                                 {...field}
                             />
                         )}
@@ -211,7 +230,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                 type="text"
                                 inputMode="decimal"
                                 placeholder="0.00"
-                                disabled={createRecurring.isPending}
+                                disabled={isPending}
                                 name={field.name}
                                 value={field.value}
                                 onChange={(e) => {
@@ -241,7 +260,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                     render={({ field }) => (
                         <DatePicker
                             id="recurringStartDate"
-                            disabled={createRecurring.isPending}
+                            disabled={isPending}
                             {...field}
                         />
                     )}
@@ -265,7 +284,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                             <Select
                                 id="recurringFrequency"
                                 value={field.value}
-                                disabled={createRecurring.isPending}
+                                disabled={isPending}
                                 onChange={(event) =>
                                     field.onChange(event.target.value)
                                 }
@@ -301,7 +320,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                 type="text"
                                 inputMode="numeric"
                                 placeholder="1"
-                                disabled={createRecurring.isPending}
+                                disabled={isPending}
                                 name={field.name}
                                 value={field.value}
                                 onChange={(e) => {
@@ -368,7 +387,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                                 <DatePicker
                                                     id="recurringEndDate"
                                                     minDate={startDate}
-                                                    disabled={createRecurring.isPending}
+                                                    disabled={isPending}
                                                     {...field}
                                                 />
                                             )}
@@ -391,7 +410,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                                 <Select
                                                     id="recurringCategoryId"
                                                     value={field.value}
-                                                    disabled={createRecurring.isPending || isCategoriesLoading}
+                                                    disabled={isPending || isCategoriesLoading}
                                                     onChange={(event) => field.onChange(event.target.value)}
                                                     onBlur={field.onBlur}
                                                 >
@@ -424,7 +443,7 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
                                                 id="recurringDescription"
                                                 placeholder="Detalle de la transacción"
                                                 rows={3}
-                                                disabled={createRecurring.isPending}
+                                                disabled={isPending}
                                                 {...field}
                                             />
                                         )}
@@ -440,11 +459,11 @@ export const RecurringForm = ({ walletId, onSuccess }: RecurringFormProps) => {
             <ModalActionFooter>
                 <Button
                     type="submit"
-                    disabled={createRecurring.isPending}
+                    disabled={isPending}
                     text={
-                        createRecurring.isPending
-                            ? "Programando..."
-                            : t("walletView.schedule")
+                        isPending
+                            ? recurring ? t("common.update") : "Programando..."
+                            : recurring ? t("transactions.update") : t("walletView.schedule")
                     }
                 />
             </ModalActionFooter>

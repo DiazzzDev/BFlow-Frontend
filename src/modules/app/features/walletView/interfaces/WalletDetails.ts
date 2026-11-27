@@ -9,8 +9,10 @@ export interface WalletDetails {
 }
 
 export interface UpcomingTransaction {
+    id?: string;
     title: string;
     amount: number;
     type: Exclude<TransactionType, "TRANSFER">;
     nextExecutionDate: string;
+    active?: boolean;
 }

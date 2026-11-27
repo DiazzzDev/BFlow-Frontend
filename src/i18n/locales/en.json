@@ -605,7 +605,21 @@
         "date": "Date",
         "amount": "Amount",
         "searchResults": "No results",
-        "searchHint": "Try another search term"
+        "searchHint": "Try another search term",
+        "source": "Source",
+        "transactionSource": { "manual": "Manual", "quick": "Quick", "recurring": "Automatic", "gmail": "Gmail", "receipt": "Receipt", "import": "Imported" },
+        "recurring": "Automatic charges",
+        "recurringFilters": "Filters",
+        "recurringType": "Type",
+        "recurringFrequency": "Frequency",
+        "recurringAllTypes": "All types",
+        "recurringAllFrequencies": "All frequencies",
+        "recurringList": "Recurrences",
+        "noRecurring": "No automatic charges",
+        "noRecurringHint": "Schedule a charge to see it in this calendar.",
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month",
+        "deleteRecurringHint": "You will delete the automatic charge \"{{title}}\" and it will stop generating transactions."
     },
     "history": {
         "title": "History",

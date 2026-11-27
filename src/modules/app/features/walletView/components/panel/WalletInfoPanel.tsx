@@ -52,7 +52,7 @@ export const WalletInfoPanel = ({
                     <motion.div
                         key="wallet-info-panel"
                         initial={{ width: 0, opacity: 0, x: 16 }}
-                        animate={{ width: 320, opacity: 1, x: 0 }}
+                        animate={{ width: 352, opacity: 1, x: 0 }}
                         exit={{ width: 0, opacity: 0, x: 16 }}
                         transition={{ type: "spring", stiffness: 320, damping: 32 }}
                         className="hidden min-h-0 shrink-0 overflow-hidden border-l border-light-10 @3xl:block"
@@ -60,7 +60,7 @@ export const WalletInfoPanel = ({
                         <WalletViewSidebar
                             {...sidebarProps}
                             onSchedule={handleSchedule}
-                            className="h-full w-80"
+                            className="h-full w-88"
                         />
                     </motion.div>
                 )}

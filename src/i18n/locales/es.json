@@ -607,7 +607,21 @@
         "date": "Fecha",
         "amount": "Monto",
         "searchResults": "Sin resultados",
-        "searchHint": "Prueba con otro término de búsqueda"
+        "searchHint": "Prueba con otro término de búsqueda",
+        "source": "Origen",
+        "transactionSource": { "manual": "Manual", "quick": "Rápido", "recurring": "Automático", "gmail": "Gmail", "receipt": "Recibo", "import": "Importado" },
+        "recurring": "Cargos automáticos",
+        "recurringFilters": "Filtros",
+        "recurringType": "Tipo",
+        "recurringFrequency": "Frecuencia",
+        "recurringAllTypes": "Todos los tipos",
+        "recurringAllFrequencies": "Todas las frecuencias",
+        "recurringList": "Recurrencias",
+        "noRecurring": "Sin cargos automáticos",
+        "noRecurringHint": "Programa un cargo para verlo en este calendario.",
+        "previousMonth": "Mes anterior",
+        "nextMonth": "Mes siguiente",
+        "deleteRecurringHint": "Eliminarás el cargo automático \"{{title}}\" y dejará de generar movimientos."
     },
     "history": {
         "title": "Historial",
