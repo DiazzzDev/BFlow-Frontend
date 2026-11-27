@@ -4,7 +4,7 @@ type CognitoErrorPayload = { __type?: string; message?: string };
 
 const endpoint = () => {
     const [region] = config.VITE_COGNITO_USER_POOL_ID.split("_");
-    if (!region || !config.VITE_COGNITO_USER_POOL_ID.includes("_")) throw new Error("VITE_COGNITO_USER_POOL_ID must include its AWS region.");
+    if (!region || !config.VITE_COGNITO_USER_POOL_ID.includes("_")) {throw new Error("VITE_COGNITO_USER_POOL_ID must include its AWS region.");}
     return `https://cognito-idp.${region}.amazonaws.com/`;
 };
 

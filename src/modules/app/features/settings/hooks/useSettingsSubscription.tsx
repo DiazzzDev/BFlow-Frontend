@@ -8,7 +8,7 @@ import type { SubscriptionStatus, UserSubscription } from "@/auth/InternalUser";
 import { getActiveLanguage } from "@/i18n/i18n";
 import { formatCurrency } from "@/utils/formatters/formatCurrency";
 
-const formatSubscriptionDate = (date: string | null, language: string): string | null => {
+const formatSubscriptionDate = (date: string | null | undefined, language: string): string | null => {
     if (!date) {
         return null;
     }
@@ -26,7 +26,7 @@ const formatSubscriptionDate = (date: string | null, language: string): string |
     }).format(parsedDate);
 };
 
-const getDaysRemaining = (date: string | null): number | null => {
+const getDaysRemaining = (date: string | null | undefined): number | null => {
     if (!date) {
         return null;
     }
@@ -41,7 +41,7 @@ const getDaysRemaining = (date: string | null): number | null => {
 };
 
 const isFreePlan = (subscription: UserSubscription): boolean => {
-    const planCode = subscription.planCode?.trim().toUpperCase() ?? "";
+    const planCode = subscription.planCode.trim().toUpperCase();
     const planName = subscription.planName.trim().toUpperCase();
 
     return planCode === "FREE" || planName === "FREE";
@@ -59,6 +59,7 @@ export const useSettingsSubscription = () => {
     const { t } = useTranslation();
     const activeLanguage = getActiveLanguage();
     const user = useAuthStore((state) => state.user);
+    const userSubscription = user?.subscription ?? null;
     const subscriptionsQuery = useQuery({
         queryKey: ["my-subscriptions"],
         queryFn: getMySubscriptions,
@@ -69,13 +70,13 @@ export const useSettingsSubscription = () => {
         ...item,
         // /subscriptions returns billing history and does not include planCode;
         // reuse the synchronized current-plan code when the records match.
-        planCode: item.planCode ?? (item.id === user?.subscription.id
-            ? user.subscription.planCode
+        planCode: item.planCode ?? (item.id === userSubscription?.id
+            ? userSubscription.planCode
             : item.planName),
     }));
-    const subscription = subscriptions.find((item) => item.id === user?.subscription.id)
+    const subscription = subscriptions.find((item) => item.id === userSubscription?.id)
         ?? subscriptions.find((item) => item.status === "ACTIVE" || item.status === "PENDING_ACTIVATION")
-        ?? user?.subscription
+        ?? userSubscription
         ?? null;
     const freePlan = subscription ? isFreePlan(subscription) : true;
     const canCancel =
@@ -85,7 +86,7 @@ export const useSettingsSubscription = () => {
         planCode: item.planCode,
         planName: item.planName,
         status: item.status,
-        billingAmount: item.billingAmount === null || item.billingAmount === undefined
+        billingAmount: item.billingAmount === null
             ? null
             : formatCurrency(item.billingAmount, "USD", activeLanguage),
         startsAt: formatSubscriptionDate(item.startsAt, activeLanguage),
@@ -106,11 +107,11 @@ export const useSettingsSubscription = () => {
             activeLanguage,
         ),
         endDate: formatSubscriptionDate(
-            subscription?.endsAt ?? subscription?.nextBillingAt ?? null,
+            subscription?.endsAt ?? subscription?.nextBillingAt,
             activeLanguage,
         ),
         daysRemaining: getDaysRemaining(
-            subscription?.endsAt ?? subscription?.nextBillingAt ?? null,
+            subscription?.endsAt ?? subscription?.nextBillingAt,
         ),
         billingAmount:
             subscription?.billingAmount !== null &&

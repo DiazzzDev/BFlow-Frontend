@@ -55,7 +55,7 @@ describe("Cognito PKCE callback", () => {
         sessionStorage.setItem("bflow.oidc.state", "expected-state");
         sessionStorage.setItem("bflow.oidc.verifier", "verifier");
         window.location.search = "?code=authorization-code&state=expected-state";
-        vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ access_token: "access", id_token: "id", refresh_token: "refresh" }) }));
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({ access_token: "access", id_token: "id", refresh_token: "refresh" }) }));
         const { exchangeAuthorizationCode } = await import("@/auth/cognito/oidc");
 
         await expect(exchangeAuthorizationCode()).resolves.toEqual({ accessToken: "access", idToken: "id", refreshToken: "refresh" });
@@ -68,7 +68,7 @@ describe("Cognito PKCE callback", () => {
     it("recovers a short-lived PKCE transaction when Cognito returns in a new tab", async () => {
         localStorage.setItem("bflow.oidc.transaction", JSON.stringify({ state: "state", verifier: "verifier", createdAt: Date.now() }));
         window.location.search = "?code=authorization-code&state=state";
-        vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => ({ access_token: "access", id_token: "id" }) }));
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve({ access_token: "access", id_token: "id" }) }));
         const { exchangeAuthorizationCode } = await import("@/auth/cognito/oidc");
 
         await expect(exchangeAuthorizationCode()).resolves.toMatchObject({ accessToken: "access", idToken: "id" });

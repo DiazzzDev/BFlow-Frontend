@@ -7,11 +7,11 @@ const TRANSACTION_TTL_MS = 10 * 60 * 1000;
 const configurationError = "Cognito no está configurado para este entorno. Configura las variables VITE_COGNITO_* antes de iniciar sesión.";
 const domain = () => {
     const value = config.COGNITO_DOMAIN.replace(/\/$/, "");
-    if (!/^https:\/\/[^/]+$/i.test(value)) throw new Error(configurationError);
+    if (!/^https:\/\/[^/]+$/i.test(value)) {throw new Error(configurationError);}
     return value;
 };
 const assertOAuthConfiguration = () => {
-    if (!config.COGNITO_CLIENT_ID || !config.VITE_COGNITO_REDIRECT_SIGN_IN) throw new Error(configurationError);
+    if (!config.COGNITO_CLIENT_ID || !config.VITE_COGNITO_REDIRECT_SIGN_IN) {throw new Error(configurationError);}
     domain();
 };
 const authorizationScope = () => [
@@ -33,7 +33,7 @@ const saveTransaction = (transaction: OAuthTransaction) => {
 };
 const readTransaction = (): OAuthTransaction | null => {
     const state = sessionStorage.getItem(keys.state); const verifier = sessionStorage.getItem(keys.verifier);
-    if (state && verifier) return { state, verifier, createdAt: Date.now() };
+    if (state && verifier) {return { state, verifier, createdAt: Date.now() };}
     try {
         const value = JSON.parse(localStorage.getItem(keys.transaction) ?? "") as OAuthTransaction;
         return value.state && value.verifier && Date.now() - value.createdAt <= TRANSACTION_TTL_MS ? value : null;
@@ -47,7 +47,7 @@ export const beginAuthorization = async (provider?: string) => {
     const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
     saveTransaction({ state, verifier, createdAt: Date.now() });
     const query = new URLSearchParams({ client_id: config.COGNITO_CLIENT_ID, response_type: "code", scope: authorizationScope(), redirect_uri: config.VITE_COGNITO_REDIRECT_SIGN_IN, state, code_challenge: b64(new Uint8Array(digest)), code_challenge_method: "S256" });
-    if (provider) query.set("identity_provider", provider);
+    if (provider) {query.set("identity_provider", provider);}
     window.location.assign(`${domain()}/oauth2/authorize?${query.toString()}`);
 };
 
@@ -57,19 +57,19 @@ export const exchangeAuthorizationCode = async (): Promise<CognitoTokens> => {
     const authorizationError = query.get("error");
     const authorizationErrorDescription = query.get("error_description");
     const transaction = readTransaction();
-    if (authorizationError) throw new Error(authorizationErrorDescription ?? `Cognito authorization failed: ${authorizationError}`);
-    if (!code || !transaction || state !== transaction.state) throw new Error("Invalid Cognito callback. Start the sign-in flow again from this browser tab.");
+    if (authorizationError) {throw new Error(authorizationErrorDescription ?? `Cognito authorization failed: ${authorizationError}`);}
+    if (!code || !transaction || state !== transaction.state) {throw new Error("Invalid Cognito callback. Start the sign-in flow again from this browser tab.");}
     const response = await fetch(`${domain()}/oauth2/token`, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ grant_type: "authorization_code", client_id: config.COGNITO_CLIENT_ID, redirect_uri: config.VITE_COGNITO_REDIRECT_SIGN_IN, code, code_verifier: transaction.verifier }) });
-    if (!response.ok) throw new Error("Cognito token exchange failed.");
+    if (!response.ok) {throw new Error("Cognito token exchange failed.");}
     const payload = await response.json() as { access_token?: string; id_token?: string; refresh_token?: string };
-    if (!payload.access_token || !payload.id_token) throw new Error("Cognito returned incomplete tokens.");
+    if (!payload.access_token || !payload.id_token) {throw new Error("Cognito returned incomplete tokens.");}
     const tokens = { accessToken: payload.access_token, idToken: payload.id_token, refreshToken: payload.refresh_token };
     sessionStorage.setItem(keys.tokens, JSON.stringify(tokens)); clearTransaction(); return tokens;
 };
 
 export const getStoredCognitoTokens = (): CognitoTokens | null => {
     const raw = sessionStorage.getItem(keys.tokens);
-    if (!raw) return null;
+    if (!raw) {return null;}
     try { return JSON.parse(raw) as CognitoTokens; } catch { sessionStorage.removeItem(keys.tokens); return null; }
 };
 
@@ -82,7 +82,7 @@ const isExpiring = (token: string) => { const exp = decodeJwtPayload(token)?.exp
 
 export const getCognitoTokens = async (): Promise<CognitoTokens | null> => {
     const tokens = getStoredCognitoTokens();
-    if (!tokens || !isExpiring(tokens.accessToken)) return tokens;
+    if (!tokens || !isExpiring(tokens.accessToken)) {return tokens;}
     if (!tokens.refreshToken) { clearStoredCognitoTokens(); return null; }
     const response = await fetch(`${domain()}/oauth2/token`, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ grant_type: "refresh_token", client_id: config.COGNITO_CLIENT_ID, refresh_token: tokens.refreshToken }) });
     if (!response.ok) { clearStoredCognitoTokens(); return null; }

@@ -31,7 +31,7 @@ export const useMfaSetup = () => {
 
     return {
         isMfaSelfServiceEnabled: config.COGNITO_SELF_SERVICE_MFA_ENABLED,
-        isMfaEnabled: preferenceQuery.data?.enabled?.includes("SOFTWARE_TOKEN_MFA") ?? false,
+        isMfaEnabled: preferenceQuery.data?.enabled.includes("SOFTWARE_TOKEN_MFA") ?? false,
         mfaMethods: preferenceQuery.data?.enabled ?? [],
         isMfaStatusLoading: preferenceQuery.isLoading,
         setUp,

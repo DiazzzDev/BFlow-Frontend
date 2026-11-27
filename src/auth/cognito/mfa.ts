@@ -9,7 +9,7 @@ const accessToken = async () => {
         throw new Error("MFA self-service is not enabled for this Cognito client.");
     }
     const tokens = await getCognitoTokens();
-    if (!tokens) throw new Error("No active Cognito session.");
+    if (!tokens) {throw new Error("No active Cognito session.");}
     return tokens.accessToken;
 };
 
@@ -20,7 +20,7 @@ export const fetchMfaPreference = async () => {
 
 export const setUpTotp = async (): Promise<TotpSetup> => {
     const result = await cognitoRequest<{ SecretCode?: string }>("AssociateSoftwareToken", { AccessToken: await accessToken() });
-    if (!result.SecretCode) throw new Error("Cognito did not return a TOTP secret.");
+    if (!result.SecretCode) {throw new Error("Cognito did not return a TOTP secret.");}
     return { sharedSecret: result.SecretCode, getSetupUri: (issuer, accountName = "") => new URL(`otpauth://totp/${encodeURIComponent(issuer)}:${encodeURIComponent(accountName)}?${new URLSearchParams({ secret: result.SecretCode!, issuer }).toString()}`) };
 };
 

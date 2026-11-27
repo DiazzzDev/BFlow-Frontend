@@ -97,13 +97,13 @@ export const WalletRecurringPanel = ({ recurring, isLoading, currency }: WalletR
     const toggleVisibility = (id: string) => {
         setVisibleIds((current) => {
             const next = new Set(current.size === 0 ? filteredRecurring.map((item) => item.id) : current);
-            if (next.has(id)) next.delete(id);
-            else next.add(id);
+            if (next.has(id)) {next.delete(id);}
+            else {next.add(id);}
             return next;
         });
     };
 
-    if (isLoading) return <div className="mx-7 h-96 animate-pulse bg-light-5" />;
+    if (isLoading) {return <div className="mx-7 h-96 animate-pulse bg-light-5" />;}
 
     return (
         <div className="grid min-h-[32rem] flex-1 grid-cols-1 lg:min-h-0 lg:grid-cols-[minmax(16rem,1fr)_minmax(0,2fr)]">

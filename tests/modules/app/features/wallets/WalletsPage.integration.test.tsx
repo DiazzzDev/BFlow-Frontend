@@ -15,6 +15,7 @@ import type { WalletCollaborator } from "@/modules/app/features/wallets/interfac
 import type { GetWalletsParams } from "@/modules/app/features/wallets/wallets.service";
 import type { CreateWalletData, UpdateWalletData, Wallet } from "@/modules/app/interfaces/Wallet";
 import type { Transaction } from "@/modules/app/interfaces/Transaction";
+import type { Recurring } from "@/modules/app/components/scheduleTransaction/interfaces/Recurring";
 import type { ApiResponse, PaginatedListResponse } from "@/utils/api";
 import { useAuthStore } from "@/auth/authStore";
 import i18n from "@/i18n/i18n";
@@ -47,6 +48,7 @@ const services = vi.hoisted(() => ({
     getWalletTransactions: vi.fn<(id: string, params: { type?: string }) => Promise<PaginatedListResponse<Transaction>>>(),
     getWalletMembers: vi.fn<(id: string) => Promise<ApiResponse<WalletMember[]>>>(),
     removeWalletMember: vi.fn<(walletId: string, memberId: string) => Promise<ApiResponse<string>>>(),
+    getWalletRecurring: vi.fn<(walletId: string) => Promise<Recurring[]>>(),
 }));
 
 vi.mock("@/modules/app/features/wallets/wallets.service", () => ({
@@ -73,6 +75,10 @@ vi.mock("@/modules/app/features/walletView/walletView.service", () => ({
 
 vi.mock("@/modules/app/features/history/history.service", () => ({
     getHistory: services.getHistory,
+}));
+
+vi.mock("@/modules/app/components/scheduleTransaction/scheduleTransaction.service", () => ({
+    getWalletRecurring: services.getWalletRecurring,
 }));
 
 vi.mock("@/modules/app/features/wallets/hooks/useDuplicateTransaction", () => ({
@@ -199,6 +205,7 @@ describe("wallets feature flow", () => {
             upcoming: [],
         }));
         services.getWalletTransactions.mockResolvedValue(paginated([transaction]));
+        services.getWalletRecurring.mockResolvedValue([]);
         services.getWalletMembers.mockImplementation(() => Promise.resolve(apiResponse(members)));
         services.removeWalletMember.mockImplementation((_walletId, memberId) => {
             members = members.filter((item) => item.id !== memberId);

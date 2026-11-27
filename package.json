@@ -78,6 +78,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.4.0",
+    "happy-dom": "^21.0.4",
     "husky": "^9.1.7",
     "jsdom": "^31.0.1",
     "playwright": "^1.65.1",
