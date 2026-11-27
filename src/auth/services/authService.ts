@@ -27,7 +27,10 @@ export const authService = {
         if (result.ChallengeName) {throw new Error(`Cognito challenge required: ${result.ChallengeName}`);}
         saveTokens(result.AuthenticationResult ?? {});
     },
-    logout() { beginLogout(); },
+    logout(): Promise<void> {
+        beginLogout();
+        return Promise.resolve();
+    },
     async getSession(): Promise<AuthSession> {
         const tokens = await getCognitoTokens();
         if (!tokens) {return { tokens: undefined };}
